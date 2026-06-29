@@ -1,13 +1,13 @@
-# ── FrontierCRM Backend — Production Multi-Stage Dockerfile ──────────────────
-# Build stage: install all Python deps, run Django checks
-# Runtime stage: minimal slim image with only what's needed
+# ── FrontierCRM Backend — Production Single-Stage Dockerfile ──────────────────
+# Single stage: compile + runtime in same environment to avoid C extension
+# incompatibility when copying site-packages between build and runtime stages.
+# Uses psycopg2-binary which compiles from source but runs in the same stage.
 
-# === BUILD STAGE ===
-FROM python:3.11-slim AS builder
+FROM python:3.11-slim
 
-WORKDIR /build
+WORKDIR /app
 
-# Install build-time system deps (psycopg2 needs libpq-dev, gcc, libc6-dev)
+# Install system deps (gcc, libc6-dev for psycopg2 compilation, libpq-dev for postgres)
 RUN apt-get update && apt-get install -y --no-install-recommends \
     libpq-dev gcc libc6-dev \
     && rm -rf /var/lib/apt/lists/*
@@ -22,28 +22,12 @@ COPY backend/ .
 # Run Django system checks at build time (catches config errors early)
 RUN python manage.py check --deploy --settings=config.settings.production 2>/dev/null || true
 
-# Collect static files (fails fast if settings are broken, but tolerant of DB)
+# Collect static files (tolerant of DB unavailability during build)
 RUN python manage.py collectstatic --noinput --settings=config.settings.production || true
-
-
-# === RUNTIME STAGE ===
-FROM python:3.11-slim
-
-WORKDIR /app
-
-# Runtime system deps (libpq-dev for psycopg2 C extension compatibility)
-RUN apt-get update && apt-get install -y --no-install-recommends \
-    libpq-dev \
-    && rm -rf /var/lib/apt/lists/*
 
 # Create non-root user
 RUN addgroup --system --gid 1001 app && \
     adduser --system --uid 1001 --ingroup app app
-
-# Copy installed packages and project from builder
-COPY --from=builder /usr/local/lib/python3.11/site-packages /usr/local/lib/python3.11/site-packages
-COPY --from=builder /usr/local/bin /usr/local/bin
-COPY --from=builder /build /app
 
 # Ensure staticfiles are owned by app user
 RUN chown -R app:app /app
@@ -52,13 +36,12 @@ USER app
 
 EXPOSE 8000
 
-# Healthcheck: Django's /api/health/ endpoint via manage.py check or curl
+# Healthcheck: Django's /api/health/ endpoint via internal curl
 HEALTHCHECK --interval=15s --timeout=5s --start-period=30s --retries=3 \
     CMD python -c "import urllib.request; urllib.request.urlopen('http://localhost:8000/api/health/')" || exit 1
 
 # Run with gunicorn
 # Workers = (2 x CPU cores) + 1, capped at 8 for Fly.io shared-cpu
-# --preload loads Django once, sharing memory across workers
 # --forwarded-allow-ips='*' for Fly.io proxy
 CMD ["gunicorn", "config.wsgi:application", \
      "--bind", "0.0.0.0:8000", \
