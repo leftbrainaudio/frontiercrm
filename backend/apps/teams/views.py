@@ -2,6 +2,8 @@
 
 from __future__ import annotations
 
+import uuid
+
 from rest_framework import serializers, viewsets
 from rest_framework.decorators import action
 from rest_framework.permissions import IsAdminUser
@@ -81,10 +83,23 @@ class MembershipViewSet(viewsets.ModelViewSet):
         if not email:
             return Response({"error": "email required"}, status=400)
 
+        # Resolve role: accept UUID or role name
+        resolved_role_id = None
+        if role_id:
+            try:
+                uuid.UUID(str(role_id))
+                resolved_role_id = role_id
+            except (ValueError, AttributeError):
+                role = Role.objects.filter(
+                    tenant_id=request.user.tenant_id,
+                    name__iexact=str(role_id),
+                ).first()
+                resolved_role_id = role.id if role else None
+
         user, _ = User.objects.get_or_create(email=email, defaults={"username": email.split("@")[0]})
         membership, created = Membership.objects.get_or_create(
             user=user,
             tenant_id=request.user.tenant_id,
-            defaults={"role_id": role_id},
+            defaults={"role_id": resolved_role_id},
         )
         return Response(MembershipSerializer(membership).data, status=201 if created else 200)

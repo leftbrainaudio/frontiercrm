@@ -31,9 +31,9 @@ FROM python:3.11-slim
 
 WORKDIR /app
 
-# Runtime system deps (only libpq for psycopg2)
+# Runtime system deps (libpq-dev for psycopg2 C extension compatibility)
 RUN apt-get update && apt-get install -y --no-install-recommends \
-    libpq5 \
+    libpq-dev \
     && rm -rf /var/lib/apt/lists/*
 
 # Create non-root user
