@@ -9,6 +9,7 @@ from __future__ import annotations
 
 from datetime import date, datetime, timedelta, timezone as dt_timezone
 from decimal import Decimal
+from uuid import UUID as _UUID
 
 from django.db.models import (
     Case,
@@ -44,7 +45,7 @@ def _parse_date_params(request):
     today = timezone.now().date()
     start_date_str = request.query_params.get("start_date")
     end_date_str = request.query_params.get("end_date")
-    pipeline_id = request.query_params.get("pipeline_id")
+    pipeline_id_str = request.query_params.get("pipeline_id")
     group_by = request.query_params.get("group_by")
 
     try:
@@ -58,6 +59,14 @@ def _parse_date_params(request):
 
     if start_date > end_date:
         start_date, end_date = end_date, start_date
+
+    # Validate pipeline_id is a valid UUID or None
+    pipeline_id = pipeline_id_str
+    if pipeline_id_str:
+        try:
+            _UUID(pipeline_id_str)
+        except (ValueError, TypeError, AttributeError):
+            pipeline_id = None
 
     period_label = _period_label(start_date, end_date, today)
     return start_date, end_date, pipeline_id, group_by, period_label
@@ -220,7 +229,7 @@ def _compute_summary(deals_qs, prev_deals_qs):
         "avg_deal_value_change": pct_change(
             float(agg["avg_deal_value"] or 0), float(prev_agg["prev_avg_deal_value"] or 0)
         ),
-        "avg_days_to_close": round(float(avg_days_agg.get("avg_days", 0) or 0) / 86400, 1),
+        "avg_days_to_close": round(float(avg_days_agg.get("avg_days", 0) or 0) / 86400_000_000, 1),
         "weighted_pipeline": float(weighted_agg.get("weighted") or 0),
     }
 
