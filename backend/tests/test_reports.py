@@ -203,24 +203,27 @@ class TestDashboardSummaryMetrics:
 
     def test_won_value_is_sum_of_won_deals(self, auth_client, user, pipeline_fixture):
         p, (_s1, _s2, s3) = pipeline_fixture
-        _deal(user.tenant_id, p, s3, value=Decimal("5000.00"), status="won")
-        _deal(user.tenant_id, p, s3, value=Decimal("7000.00"), status="won")
-        _deal(user.tenant_id, p, s3, value=Decimal("3000.00"), status="lost")
+        now = timezone.now()
+        _deal(user.tenant_id, p, s3, value=Decimal("5000.00"), status="won", closed_at=now)
+        _deal(user.tenant_id, p, s3, value=Decimal("7000.00"), status="won", closed_at=now)
+        _deal(user.tenant_id, p, s3, value=Decimal("3000.00"), status="lost", closed_at=now)
         resp = auth_client.get(DASHBOARD_URL)
         assert resp.json()["summary"]["won_value"] == 12000.0
 
     def test_lost_value_is_sum_of_lost_deals(self, auth_client, user, pipeline_fixture):
         p, (_s1, _s2, s3) = pipeline_fixture
-        _deal(user.tenant_id, p, s3, value=Decimal("4000.00"), status="lost")
-        _deal(user.tenant_id, p, s3, value=Decimal("6000.00"), status="lost")
+        now = timezone.now()
+        _deal(user.tenant_id, p, s3, value=Decimal("4000.00"), status="lost", closed_at=now)
+        _deal(user.tenant_id, p, s3, value=Decimal("6000.00"), status="lost", closed_at=now)
         resp = auth_client.get(DASHBOARD_URL)
         assert resp.json()["summary"]["lost_value"] == 10000.0
 
     def test_win_rate_computed_correctly(self, auth_client, user, pipeline_fixture):
         """Win rate = Won / (Won + Lost). Open deals excluded."""
         p, (_s1, _s2, s3) = pipeline_fixture
-        _deal(user.tenant_id, p, s3, value=Decimal("6000.00"), status="won")
-        _deal(user.tenant_id, p, s3, value=Decimal("4000.00"), status="lost")
+        now = timezone.now()
+        _deal(user.tenant_id, p, s3, value=Decimal("6000.00"), status="won", closed_at=now)
+        _deal(user.tenant_id, p, s3, value=Decimal("4000.00"), status="lost", closed_at=now)
         _deal(user.tenant_id, p, s3, value=Decimal("99999.00"), status="open")  # excluded
         resp = auth_client.get(DASHBOARD_URL)
         # 1 won out of 2 closed = 0.5
@@ -229,7 +232,8 @@ class TestDashboardSummaryMetrics:
     def test_win_rate_zero_when_all_lost(self, auth_client, user, pipeline_fixture):
         """Tenant with only lost deals: win_rate=0, no division by zero."""
         p, (_s1, _s2, s3) = pipeline_fixture
-        _deal(user.tenant_id, p, s3, value=Decimal("5000.00"), status="lost")
+        now = timezone.now()
+        _deal(user.tenant_id, p, s3, value=Decimal("5000.00"), status="lost", closed_at=now)
         resp = auth_client.get(DASHBOARD_URL)
         assert resp.json()["summary"]["win_rate"] == 0.0
         # Also make sure avg_days_to_close doesn't blow up

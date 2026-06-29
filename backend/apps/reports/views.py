@@ -13,6 +13,7 @@ from decimal import Decimal
 from django.db.models import (
     Case,
     Count,
+    DurationField,
     ExpressionWrapper,
     F,
     FloatField,
@@ -172,8 +173,6 @@ def _compute_summary(deals_qs, prev_deals_qs):
     )
 
     # Avg days to close for deals closed in period
-    from django.db.models import ExpressionWrapper, F, fields
-
     closed_deals = deals_qs.filter(closed_at__isnull=False)
     avg_days_agg = closed_deals.aggregate(
         avg_days=Coalesce(
@@ -181,49 +180,49 @@ def _compute_summary(deals_qs, prev_deals_qs):
                 Sum(
                     ExpressionWrapper(
                         F("closed_at") - F("created_at"),
-                        output_field=fields.DurationField(),
+                        output_field=DurationField(),
                     )
                 ) / Count("id"),
                 output_field=FloatField(),
-            closed_deals = deals_qs.filter(closed_at__isnull=False)
-            avg_days_agg = closed_deals.aggregate(
-                avg_days=Coalesce(
-                    ExpressionWrapper(
-                        Sum(
-                            ExpressionWrapper(
-                                F("closed_at") - F("created_at"),
-                                output_field=fields.DurationField(),
-                            )
-                        ) / Count("id"),
-                        output_field=FloatField(),
-                    ),
-                    Value(0.0, output_field=FloatField()),
-                )
-            )
+            ),
+            Value(0.0, output_field=FloatField()),
+        )
+    )
 
-            return {
-                "total_pipeline_value": float(agg["total_pipeline_value"]),
-                "pipeline_value_change": pct_change(
-                    float(agg["total_pipeline_value"]), float(prev_agg["prev_pipeline_value"])
-                ),
-                "won_value": float(agg["won_value"]),
-                "won_value_change": pct_change(
-                    float(agg["won_value"]), float(prev_agg["prev_won_value"])
-                ),
-                "lost_value": float(agg["lost_value"]),
-                "win_rate": round(win_rate, 4),
-                "win_rate_change": pp_change(win_rate, prev_win_rate),
-                "active_deals": agg["active_deals"] or 0,
-                "active_deals_change": (agg["active_deals"] or 0) - (prev_agg["prev_active_deals"] or 0)
-                if prev_agg["prev_active_deals"] is not None
-                else None,
-                "avg_deal_value": float(agg["avg_deal_value"] or 0),
-                "avg_deal_value_change": pct_change(
-                    float(agg["avg_deal_value"] or 0), float(prev_agg["prev_avg_deal_value"] or 0)
-                ),
-                "avg_days_to_close": round(float(avg_days_agg.get("avg_days", 0) or 0) / 86400, 1),
-                "weighted_pipeline": float(weighted_agg.get("weighted") or 0),
-            }
+    # Weighted pipeline = sum of deal.value * stage.probability for open deals
+    weighted_qs = deals_qs.filter(status="open").annotate(
+        deal_weight=ExpressionWrapper(
+            F("value") * F("stage__probability"),
+            output_field=FloatField(),
+        )
+    )
+    weighted_agg = weighted_qs.aggregate(
+        weighted=Coalesce(Sum("deal_weight"), Value(0.0, output_field=FloatField()))
+    )
+
+    return {
+        "total_pipeline_value": float(agg["total_pipeline_value"]),
+        "pipeline_value_change": pct_change(
+            float(agg["total_pipeline_value"]), float(prev_agg["prev_pipeline_value"])
+        ),
+        "won_value": float(agg["won_value"]),
+        "won_value_change": pct_change(
+            float(agg["won_value"]), float(prev_agg["prev_won_value"])
+        ),
+        "lost_value": float(agg["lost_value"]),
+        "win_rate": round(win_rate, 4),
+        "win_rate_change": pp_change(win_rate, prev_win_rate),
+        "active_deals": agg["active_deals"] or 0,
+        "active_deals_change": (agg["active_deals"] or 0) - (prev_agg["prev_active_deals"] or 0)
+        if prev_agg["prev_active_deals"] is not None
+        else None,
+        "avg_deal_value": float(agg["avg_deal_value"] or 0),
+        "avg_deal_value_change": pct_change(
+            float(agg["avg_deal_value"] or 0), float(prev_agg["prev_avg_deal_value"] or 0)
+        ),
+        "avg_days_to_close": round(float(avg_days_agg.get("avg_days", 0) or 0) / 86400, 1),
+        "weighted_pipeline": float(weighted_agg.get("weighted") or 0),
+    }
 
 
 def _compute_pipeline_value_trend(qs, start_date, end_date):
