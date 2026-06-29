@@ -10,7 +10,7 @@ celery[redis]==5.4
 channels[redis]==4.2
 channels-redis==4.2
 gunicorn==23.0
-psycopg2-binary==2.9
+psycopg[binary]==3.2
 meilisearch==0.41
 pydantic==2.13
 pydantic-settings==2.11

@@ -1,15 +1,14 @@
 # ── FrontierCRM Backend — Production Single-Stage Dockerfile ──────────────────
-# Single stage: compile + runtime in same environment to avoid C extension
-# incompatibility when copying site-packages between build and runtime stages.
-# Uses psycopg2-binary which compiles from source but runs in the same stage.
+# Single stage: compile + runtime in same environment.
+# Uses psycopg[binary] which ships pre-compiled wheels — no C compiler needed.
 
 FROM python:3.11-slim
 
 WORKDIR /app
 
-# Install system deps (gcc, libc6-dev for psycopg2 compilation, libpq-dev for postgres)
+# Install runtime system deps (libpq for psycopg DB connectivity)
 RUN apt-get update && apt-get install -y --no-install-recommends \
-    libpq-dev gcc libc6-dev \
+    libpq5 \
     && rm -rf /var/lib/apt/lists/*
 
 # Install Python dependencies (with gunicorn for serve)
@@ -22,14 +21,11 @@ COPY backend/ .
 # Run Django system checks at build time (catches config errors early)
 RUN python manage.py check --deploy --settings=config.settings.production 2>/dev/null || true
 
-# Collect static files (tolerant of DB unavailability during build)
-RUN python manage.py collectstatic --noinput --settings=config.settings.production || true
-
 # Create non-root user
 RUN addgroup --system --gid 1001 app && \
     adduser --system --uid 1001 --ingroup app app
 
-# Ensure staticfiles are owned by app user
+# Ensure app files are owned by the app user
 RUN chown -R app:app /app
 
 USER app
@@ -40,9 +36,7 @@ EXPOSE 8000
 HEALTHCHECK --interval=15s --timeout=5s --start-period=30s --retries=3 \
     CMD python -c "import urllib.request; urllib.request.urlopen('http://localhost:8000/api/health/')" || exit 1
 
-# Run with gunicorn
-# Workers = (2 x CPU cores) + 1, capped at 8 for Fly.io shared-cpu
-# --forwarded-allow-ips='*' for Fly.io proxy
+# Run with gunicorn (--forwarded-allow-ips='*' for Fly.io proxy)
 CMD ["gunicorn", "config.wsgi:application", \
      "--bind", "0.0.0.0:8000", \
      "--workers", "4", \
