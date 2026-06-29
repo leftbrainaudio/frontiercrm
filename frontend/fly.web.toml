@@ -15,8 +15,8 @@ kill_timeout = 10
   force_https = true
   auto_stop_machines = false
   auto_start_machines = false
-  min_machines_running = 2
-  processes = ["web"]
+  min_machines_running = 1
+  processes = ["app"]
 
   [http_service.concurrency]
     type = "connections"
@@ -36,7 +36,7 @@ kill_timeout = 10
   port = 80
   protocol = "tcp"
   internal_port = 80
-  processes = ["web"]
+  processes = ["app"]
 
   [[services.ports]]
     port = 443
@@ -59,8 +59,11 @@ kill_timeout = 10
   VITE_API_URL = "https://api.frontiercrm.com"
 
 [[vm]]
-  processes = ["web"]
+  processes = ["app"]
   size = "shared-cpu-1x"
   memory = "256mb"
   cpu_kind = "shared"
   cpus = 1
+
+[processes]
+  app = "nginx -g 'daemon off;'"
