@@ -3,11 +3,15 @@
 from __future__ import annotations
 
 from django_filters.rest_framework import FilterSet
-from rest_framework import serializers, viewsets
+from rest_framework import serializers, status, viewsets
+from rest_framework.decorators import action
+from rest_framework.parsers import FormParser, MultiPartParser
+from rest_framework.response import Response
 
+from .csv_import import import_contacts_csv
 from .models import Account, Contact
 
-# ── Account ──────────────────────────────────────────────────────────────────
+# -- Account -----------------------------------------------------------------
 
 
 class AccountSerializer(serializers.ModelSerializer):
@@ -57,7 +61,7 @@ class AccountViewSet(viewsets.ModelViewSet):
         serializer.save(tenant_id=self.request.user.tenant_id)
 
 
-# ── Contact ──────────────────────────────────────────────────────────────────
+# -- Contact -----------------------------------------------------------------
 
 
 class ContactSerializer(serializers.ModelSerializer):
@@ -112,6 +116,7 @@ class ContactViewSet(viewsets.ModelViewSet):
     filterset_class = ContactFilter
     search_fields = ["first_name", "last_name", "email", "phone", "job_title"]
     ordering_fields = ["created_at", "last_name", "first_name", "email"]
+    parser_classes = [FormParser, MultiPartParser]
 
     def get_serializer_class(self):
         if self.action == "list":
@@ -123,3 +128,43 @@ class ContactViewSet(viewsets.ModelViewSet):
 
     def perform_create(self, serializer):
         serializer.save(tenant_id=self.request.user.tenant_id)
+
+    @action(detail=False, methods=["post"], parser_classes=[FormParser, MultiPartParser])
+    def import_csv(self, request):
+        """Upload a CSV file and import contacts.
+
+        Accepts multipart form data with:
+          - file: the CSV file
+          - column_mapping: optional JSON dict mapping CSV columns to model fields
+          - dry_run: if 'true', preview only (no writes)
+          - update_existing: if 'true', update matching contacts by email
+        """
+        file = request.FILES.get("file")
+        if not file:
+            return Response({"error": "No file uploaded"}, status=status.HTTP_400_BAD_REQUEST)
+
+        try:
+            content = file.read().decode("utf-8-sig")
+        except Exception:
+            return Response({"error": "Failed to read file as UTF-8 text"}, status=status.HTTP_400_BAD_REQUEST)
+
+        column_mapping = request.data.get("column_mapping")
+        if column_mapping and isinstance(column_mapping, str):
+            import json
+            try:
+                column_mapping = json.loads(column_mapping)
+            except json.JSONDecodeError:
+                return Response({"error": "Invalid column_mapping JSON"}, status=status.HTTP_400_BAD_REQUEST)
+
+        dry_run = str(request.data.get("dry_run", "true")).lower() == "true"
+        update_existing = str(request.data.get("update_existing", "false")).lower() == "true"
+
+        result = import_contacts_csv(
+            tenant_id=str(request.user.tenant_id),
+            file_content=content,
+            column_mapping=column_mapping,
+            dry_run=dry_run,
+            update_existing=update_existing,
+        )
+
+        return Response(result.to_dict())

@@ -1,0 +1,14 @@
+# ── FrontierCRM Staging Redis ─────────────────────────────────────────────────
+app = "frontiercrm-redis-staging"
+primary_region = "iad"
+
+[build]
+  image = "redis:7-alpine"
+
+[[services]]
+  protocol = "tcp"
+  internal_port = 6379
+
+  [[services.ports]]
+    port = 6379
+    handlers = []

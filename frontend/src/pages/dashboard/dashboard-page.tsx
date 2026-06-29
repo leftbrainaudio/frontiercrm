@@ -221,9 +221,9 @@ export function DashboardPage() {
     const deals: Deal[] = dealsData.results;
     const totalPipelineValue = deals
       .filter((d) => d.status === 'open')
-      .reduce((sum, d) => sum + d.value, 0);
+      .reduce((sum, d) => sum + Number(d.value), 0);
     const wonDeals = deals.filter((d) => d.status === 'won');
-    const wonValue = wonDeals.reduce((sum, d) => sum + d.value, 0);
+    const wonValue = wonDeals.reduce((sum, d) => sum + Number(d.value), 0);
     const activeDeals = deals.filter((d) => d.status === 'open').length;
     const totalClosed = wonDeals.length + deals.filter((d) => d.status === 'lost').length;
     const winRate = totalClosed > 0 ? wonDeals.length / totalClosed : 0;

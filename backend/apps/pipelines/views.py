@@ -5,11 +5,14 @@ from __future__ import annotations
 from django_filters.rest_framework import FilterSet
 from rest_framework import serializers, status, viewsets
 from rest_framework.decorators import action
+from rest_framework.parsers import FormParser, MultiPartParser
 from rest_framework.response import Response
+
+from apps.contacts.csv_import import import_deals_csv
 
 from .models import Deal, Pipeline, Stage
 
-# ── Pipeline ─────────────────────────────────────────────────────────────────
+# -- Pipeline -----------------------------------------------------------------
 
 
 class StageSerializer(serializers.ModelSerializer):
@@ -56,7 +59,7 @@ class StageViewSet(viewsets.ModelViewSet):
         serializer.save(tenant_id=self.request.user.tenant_id)
 
 
-# ── Deal ─────────────────────────────────────────────────────────────────────
+# -- Deal ---------------------------------------------------------------------
 
 
 class DealSerializer(serializers.ModelSerializer):
@@ -123,6 +126,7 @@ class DealViewSet(viewsets.ModelViewSet):
     filterset_class = DealFilter
     search_fields = ["name", "description"]
     ordering_fields = ["created_at", "value", "expected_close_date", "status"]
+    parser_classes = [FormParser, MultiPartParser]
 
     def get_serializer_class(self):
         if self.action == "list":
@@ -203,3 +207,43 @@ class DealViewSet(viewsets.ModelViewSet):
 
         deal.save()
         return Response(self.get_serializer(deal).data)
+
+    @action(detail=False, methods=["post"], parser_classes=[FormParser, MultiPartParser])
+    def import_csv(self, request):
+        """Upload a CSV file and import deals.
+
+        Accepts multipart form data with:
+          - file: the CSV file
+          - column_mapping: optional JSON dict mapping CSV columns to model fields
+          - dry_run: if 'true' (default), preview only (no writes)
+          - update_existing: if 'true', update matching deals by name+pipeline
+        """
+        file = request.FILES.get("file")
+        if not file:
+            return Response({"error": "No file uploaded"}, status=status.HTTP_400_BAD_REQUEST)
+
+        try:
+            content = file.read().decode("utf-8-sig")
+        except Exception:
+            return Response({"error": "Failed to read file as UTF-8 text"}, status=status.HTTP_400_BAD_REQUEST)
+
+        column_mapping = request.data.get("column_mapping")
+        if column_mapping and isinstance(column_mapping, str):
+            import json
+            try:
+                column_mapping = json.loads(column_mapping)
+            except json.JSONDecodeError:
+                return Response({"error": "Invalid column_mapping JSON"}, status=status.HTTP_400_BAD_REQUEST)
+
+        dry_run = str(request.data.get("dry_run", "true")).lower() == "true"
+        update_existing = str(request.data.get("update_existing", "false")).lower() == "true"
+
+        result = import_deals_csv(
+            tenant_id=str(request.user.tenant_id),
+            file_content=content,
+            column_mapping=column_mapping,
+            dry_run=dry_run,
+            update_existing=update_existing,
+        )
+
+        return Response(result.to_dict())

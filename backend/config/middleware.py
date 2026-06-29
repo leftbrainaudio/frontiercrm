@@ -1,7 +1,8 @@
-"""Tenant-aware middleware that injects the current tenant into request."""
+"""Middleware for FrontierCRM — health check bypass + tenant injection."""
 
 from __future__ import annotations
 
+import json
 import re
 
 from django.http import HttpRequest, HttpResponse
@@ -12,6 +13,27 @@ from apps.teams.models import Tenant
 
 # Patterns that skip tenant resolution
 PUBLIC_PATHS = re.compile(r"^/(admin|api/auth|api/health|api/schema|api/docs|static|media)/")
+# Health check paths — bypassed before host validation
+HEALTH_PATHS = re.compile(r"^/api/health/")
+
+
+class HealthCheckMiddleware(MiddlewareMixin):
+    """Respond 200 to health checks before Django's SecurityMiddleware runs.
+
+    Fly.io Consul health checks use internal IPs (e.g. 172.19.x.x) as the Host
+    header, which Django's ALLOWED_HOSTS validation rejects. This middleware
+    intercepts health check requests before SecurityMiddleware processes them,
+    returning a lightweight 200 response without any database access.
+    """
+
+    def process_request(self, request: HttpRequest) -> HttpResponse | None:
+        if HEALTH_PATHS.match(request.path_info):
+            return HttpResponse(
+                json.dumps({"status": "ok", "service": "frontiercrm-api"}).encode(),
+                content_type="application/json",
+                status=200,
+            )
+        return None
 
 
 class TenantMiddleware(MiddlewareMixin):
