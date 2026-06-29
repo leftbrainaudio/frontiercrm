@@ -13,11 +13,11 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     && rm -rf /var/lib/apt/lists/*
 
 # Install Python dependencies (with gunicorn for serve)
-COPY requirements.txt .
+COPY backend/requirements.txt .
 RUN pip install --no-cache-dir -r requirements.txt gunicorn
 
 # Copy project source
-COPY . .
+COPY backend/ .
 
 # Run Django system checks at build time (catches config errors early)
 RUN python manage.py check --deploy --settings=config.settings.production 2>/dev/null || true
