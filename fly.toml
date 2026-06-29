@@ -102,14 +102,14 @@ kill_timeout = 30
 
 [[vm]]
   processes = ["worker"]
-  size = "shared-cpu-0.25x"
+  size = "shared-cpu-1x"
   memory = "256mb"
   cpu_kind = "shared"
   cpus = 1
 
 [[vm]]
   processes = ["beat"]
-  size = "shared-cpu-0.25x"
+  size = "shared-cpu-1x"
   memory = "256mb"
   cpu_kind = "shared"
   cpus = 1
