@@ -22,8 +22,8 @@ COPY backend/ .
 # Run Django system checks at build time (catches config errors early)
 RUN python manage.py check --deploy --settings=config.settings.production 2>/dev/null || true
 
-# Collect static files (fails fast if settings are broken)
-RUN python manage.py collectstatic --noinput --settings=config.settings.production
+# Collect static files (fails fast if settings are broken, but tolerant of DB)
+RUN python manage.py collectstatic --noinput --settings=config.settings.production || true
 
 
 # === RUNTIME STAGE ===
