@@ -1,4 +1,3 @@
-import { useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
 import {
   DollarSign,
@@ -8,6 +7,7 @@ import {
   Activity,
   ClipboardList,
   ArrowRight,
+  BarChart3,
 } from 'lucide-react';
 import {
   BarChart,
@@ -22,11 +22,10 @@ import { Card } from '../../components/ui/card';
 import { Skeleton } from '../../components/ui/skeleton';
 import { Badge } from '../../components/ui/badge';
 import { Button } from '../../components/ui/button';
-import { usePipelines, useDeals } from '../../api/deals';
+import { useDashboardReport, useStaleDeals } from '../../api/reports';
 import { useActivities } from '../../api/activities';
 import { useTasks } from '../../api/tasks';
 import { cn } from '../../lib/utils';
-import type { Deal } from '../../types';
 
 function formatCurrency(value: number): string {
   return new Intl.NumberFormat('en-US', {
@@ -118,7 +117,7 @@ function ActivityItem({
   type: string;
   time: string;
 }) {
-  const typeIcon = {
+  const typeIcon: Record<string, string> = {
     note: '📝',
     call: '📞',
     email: '📧',
@@ -128,12 +127,9 @@ function ActivityItem({
     deal_status_change: '🏆',
     file_upload: '📎',
     system: '⚙️',
-  } as const;
+  };
 
-  const icon =
-    typeIcon[type as keyof typeof typeIcon] ?? (
-      <Activity className="h-4 w-4" />
-    );
+  const icon = typeIcon[type] ?? <Activity className="h-4 w-4" />;
 
   return (
     <div className="flex items-start gap-3 py-2.5">
@@ -161,12 +157,12 @@ function TaskItem({
   priority: string;
   dueAt: string | null;
 }) {
-  const priorityColor = {
+  const priorityColor: Record<string, string> = {
     urgent: 'bg-red-500',
     high: 'bg-amber-500',
     medium: 'bg-blue-500',
     low: 'bg-gray-400',
-  } as const;
+  };
 
   const formatDue = (date: string | null) => {
     if (!date) return 'No due date';
@@ -185,7 +181,7 @@ function TaskItem({
       <span
         className={cn(
           'mt-1.5 h-2 w-2 shrink-0 rounded-full',
-          priorityColor[priority as keyof typeof priorityColor] ?? 'bg-gray-400',
+          priorityColor[priority] ?? 'bg-gray-400',
         )}
       />
       <div className="min-w-0 flex-1">
@@ -206,71 +202,31 @@ function TaskItem({
 export function DashboardPage() {
   const navigate = useNavigate();
 
-  const { data: pipelines, isLoading: pipelinesLoading } = usePipelines();
-  const { data: dealsData, isLoading: dealsLoading } = useDeals({ page_size: '200' });
+  // Use the server-side report endpoint instead of client-side computation
+  const { data: report, isLoading: reportLoading } = useDashboardReport({
+    start_date: new Date(Date.now() - 30 * 24 * 60 * 60 * 1000).toISOString().slice(0, 10),
+    end_date: new Date().toISOString().slice(0, 10),
+  });
+  const { data: staleDeals } = useStaleDeals({ days_since_activity: '14', limit: '5' });
   const { data: activitiesData, isLoading: activitiesLoading } = useActivities({
     page_size: '5',
   });
   const { data: tasksData, isLoading: tasksLoading } = useTasks({ page_size: '5' });
 
-  const isLoading = pipelinesLoading || dealsLoading;
+  const isLoading = reportLoading;
 
-  const metrics = useMemo(() => {
-    if (!dealsData?.results) return null;
+  const hasStaleDeals = staleDeals?.stale_deals && staleDeals.stale_deals.length > 0;
 
-    const deals: Deal[] = dealsData.results;
-    const totalPipelineValue = deals
-      .filter((d) => d.status === 'open')
-      .reduce((sum, d) => sum + Number(d.value), 0);
-    const wonDeals = deals.filter((d) => d.status === 'won');
-    const wonValue = wonDeals.reduce((sum, d) => sum + Number(d.value), 0);
-    const activeDeals = deals.filter((d) => d.status === 'open').length;
-    const totalClosed = wonDeals.length + deals.filter((d) => d.status === 'lost').length;
-    const winRate = totalClosed > 0 ? wonDeals.length / totalClosed : 0;
-    const avgDealValue =
-      deals.length > 0
-        ? deals.reduce((sum, d) => sum + d.value, 0) / deals.length
-        : 0;
-
-    // Group deals by stage
-    const stageMap = new Map<string, { count: number; value: number }>();
-    for (const d of deals) {
-      const name = d.stage_name || d.stage;
-      const existing = stageMap.get(name) ?? { count: 0, value: 0 };
-      existing.count++;
-      existing.value += d.value;
-      stageMap.set(name, existing);
-    }
-
-    const dealsByStage = Array.from(stageMap.entries())
-      .map(([stage_name, data]) => ({ stage_name, ...data }))
-      .sort((a, b) => b.value - a.value);
-
-    return {
-      total_pipeline_value: totalPipelineValue,
-      won_value: wonValue,
-      win_rate: winRate,
-      active_deals: activeDeals,
-      avg_deal_value: avgDealValue,
-      deals_by_stage: dealsByStage,
-      activities_this_week: activitiesData?.count ?? 0,
-      tasks_due: tasksData?.count ?? 0,
-    };
-  }, [dealsData, activitiesData, tasksData]);
-
-  const activities = activitiesData?.results ?? [];
-  const tasks = tasksData?.results ?? [];
-
-  const chartData = useMemo(() => {
-    if (!metrics?.deals_by_stage) return [];
-    return metrics.deals_by_stage.map((s) => ({
+  const chartData =
+    report?.deals_by_stage?.map((s) => ({
       name: s.stage_name,
       value: s.value,
       count: s.count,
-    }));
-  }, [metrics]);
+    })) ?? [];
 
-  const hasDeals = dealsData && dealsData.results.length > 0;
+  const hasDeals = report && report.summary.active_deals > 0;
+  const activities = activitiesData?.results ?? [];
+  const tasks = tasksData?.results ?? [];
 
   return (
     <div className="space-y-6">
@@ -289,30 +245,86 @@ export function DashboardPage() {
         </div>
       </div>
 
+      {/* Stale Deals Warning Banner */}
+      {hasStaleDeals && (
+        <div className="flex items-center gap-3 rounded-lg border border-red-200 dark:border-red-800 bg-red-50 dark:bg-red-900/20 px-4 py-3">
+          <div className="flex h-8 w-8 items-center justify-center rounded-full bg-red-100 dark:bg-red-900/50">
+            <BarChart3 className="h-4 w-4 text-red-600 dark:text-red-400" />
+          </div>
+          <div className="flex-1">
+            <p className="text-sm font-medium text-red-800 dark:text-red-300">
+              {staleDeals!.stale_deals.length} deal{staleDeals!.stale_deals.length !== 1 ? 's' : ''} need{staleDeals!.stale_deals.length === 1 ? 's' : ''} attention
+            </p>
+            <p className="text-xs text-red-600 dark:text-red-400">
+              {staleDeals!.stale_deals.filter((d) => d.is_overdue).length} overdue · View in Reports for details
+            </p>
+          </div>
+          <Button
+            variant="ghost"
+            size="sm"
+            onClick={() => navigate('/reports')}
+          >
+            View Reports
+          </Button>
+        </div>
+      )}
+
       {/* Metric Cards */}
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
         <MetricCard
           title="Total Pipeline Value"
-          value={isLoading ? '' : formatCurrency(metrics?.total_pipeline_value ?? 0)}
+          value={isLoading ? '' : formatCurrency(report?.summary.total_pipeline_value ?? 0)}
           icon={<DollarSign className="h-5 w-5" />}
+          trend={
+            report?.summary.pipeline_value_change != null
+              ? {
+                  value: `${report.summary.pipeline_value_change >= 0 ? '+' : ''}${report.summary.pipeline_value_change.toFixed(1)}%`,
+                  positive: report.summary.pipeline_value_change >= 0,
+                }
+              : undefined
+          }
           loading={isLoading}
         />
         <MetricCard
           title="Won Deals"
-          value={isLoading ? '' : formatCurrency(metrics?.won_value ?? 0)}
+          value={isLoading ? '' : formatCurrency(report?.summary.won_value ?? 0)}
           icon={<Target className="h-5 w-5" />}
+          trend={
+            report?.summary.won_value_change != null
+              ? {
+                  value: `${report.summary.won_value_change >= 0 ? '+' : ''}${report.summary.won_value_change.toFixed(1)}%`,
+                  positive: report.summary.won_value_change >= 0,
+                }
+              : undefined
+          }
           loading={isLoading}
         />
         <MetricCard
           title="Win Rate"
-          value={isLoading ? '' : formatPercent(metrics?.win_rate ?? 0)}
+          value={isLoading ? '' : formatPercent(report?.summary.win_rate ?? 0)}
           icon={<TrendingUp className="h-5 w-5" />}
+          trend={
+            report?.summary.win_rate_change != null
+              ? {
+                  value: `${report.summary.win_rate_change >= 0 ? '+' : ''}${report.summary.win_rate_change.toFixed(1)}pp`,
+                  positive: report.summary.win_rate_change >= 0,
+                }
+              : undefined
+          }
           loading={isLoading}
         />
         <MetricCard
           title="Active Deals"
-          value={isLoading ? '' : String(metrics?.active_deals ?? 0)}
+          value={isLoading ? '' : String(report?.summary.active_deals ?? 0)}
           icon={<Briefcase className="h-5 w-5" />}
+          trend={
+            report?.summary.active_deals_change != null
+              ? {
+                  value: `${report.summary.active_deals_change >= 0 ? '+' : ''}${report.summary.active_deals_change}`,
+                  positive: report.summary.active_deals_change >= 0,
+                }
+              : undefined
+          }
           loading={isLoading}
         />
       </div>
@@ -448,6 +460,12 @@ export function DashboardPage() {
           onClick={() => navigate('/pipeline')}
         >
           View Pipeline
+        </Button>
+        <Button
+          icon={<BarChart3 className="h-4 w-4" />}
+          onClick={() => navigate('/reports')}
+        >
+          View Full Reports
         </Button>
       </div>
     </div>

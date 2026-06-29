@@ -1,8 +1,8 @@
 """
-CSV import utilities for contacts and deals.
+CSV import utilities for contacts, deals, and accounts.
 
 Each import function:
-  1. Parses a CSV file (uploaded as InMemoryUploadedFile).
+  1. Parses a CSV file (passed as a string).
   2. Maps columns based on a user-provided mapping dict.
   3. Handles conflict detection (preview mode) and conflict resolution (import mode).
 
@@ -14,6 +14,11 @@ Columns → Model field mapping for deals:
   name, value, currency, status, description, tags,
   contact_email, account_name, stage_name, pipeline_name,
   expected_close_date, close_reason
+
+Columns → Model field mapping for accounts:
+  name, domain, industry, description, website, phone,
+  address_line1, address_line2, city, state, postcode, country,
+  employees, annual_revenue, logo_url
 """
 
 from __future__ import annotations
@@ -26,7 +31,7 @@ from typing import Any
 # NOTE: model imports are Lazy (inside functions) so this module can be
 # imported at Django startup without circular / premature app registry issues.
 
-# -- Helpers -------------------------------------------------------------------
+# -- Field sets (exported for use by views) ------------------------------------
 
 CONTACT_FIELDS = {
     "first_name", "last_name", "email", "phone", "mobile",
@@ -38,6 +43,175 @@ DEAL_FIELDS = {
     "name", "value", "currency", "status", "description",
     "tags", "expected_close_date", "close_reason",
 }
+
+ACCOUNT_FIELDS = {
+    "name", "domain", "industry", "description", "website",
+    "phone", "address_line1", "address_line2", "city",
+    "state", "postal_code", "country", "employees_count",
+    "annual_revenue", "logo_url",
+}
+
+DEFAULT_DEDUP_KEYS = {
+    "contact": "email",
+    "deal": "name",
+    "account": "name",
+}
+
+MAX_ROWS_DEFAULT = 10_000
+
+# -- Auto-detect column mapping ------------------------------------------------
+
+CONTACT_ALIASES = {
+    "first name": "first_name",
+    "firstname": "first_name",
+    "given name": "first_name",
+    "givenname": "first_name",
+    "last name": "last_name",
+    "lastname": "last_name",
+    "surname": "last_name",
+    "last_name": "last_name",
+    "family name": "last_name",
+    "email address": "email",
+    "e-mail": "email",
+    "emailaddress": "email",
+    "mobile phone": "mobile",
+    "cell": "mobile",
+    "work phone": "phone",
+    "telephone": "phone",
+    "job title": "job_title",
+    "jobtitle": "job_title",
+    "title": "job_title",
+    "position": "job_title",
+    "company": "account_name",
+    "organization": "account_name",
+    "organisation": "account_name",
+    "account name": "account_name",
+    "account_name": "account_name",
+    "zip code": "postal_code",
+    "zipcode": "postal_code",
+    "zip": "postal_code",
+    "post code": "postal_code",
+    "postcode": "postal_code",
+    "street address": "street",
+    "address": "street",
+    "country code": "country",
+}
+
+DEAL_ALIASES = {
+    "deal name": "name",
+    "dealname": "name",
+    "deal_value": "value",
+    "deal value": "value",
+    "amount": "value",
+    "deal stage": "stage_name",
+    "stage": "stage_name",
+    "deal stage name": "stage_name",
+    "pipeline": "pipeline_name",
+    "pipeline name": "pipeline_name",
+    "pipeline_name": "pipeline_name",
+    "contact email": "contact_email",
+    "contact_email": "contact_email",
+    "contact e-mail": "contact_email",
+    "account": "account_name",
+    "organization": "account_name",
+    "company": "account_name",
+    "expected close": "expected_close_date",
+    "expected close date": "expected_close_date",
+    "close date": "expected_close_date",
+    "close_date": "expected_close_date",
+    "close reason": "close_reason",
+    "close_reason": "close_reason",
+    **{k: v for k, v in CONTACT_ALIASES.items()
+       if v not in ("first_name", "last_name", "email", "mobile",
+                    "phone", "job_title", "department", "city",
+                    "state", "postal_code", "country", "account_name")},
+}
+
+ACCOUNT_ALIASES = {
+    "account name": "name",
+    "account_name": "name",
+    "organization": "name",
+    "company": "name",
+    "website": "domain",  # many CSV call the domain field "website"
+    "domain name": "domain",
+    "domainname": "domain",
+    "industry": "industry",
+    "description": "description",
+    "phone": "phone",
+    "address": "address_line1",
+    "address line 1": "address_line1",
+    "address_line1": "address_line1",
+    "address line 2": "address_line2",
+    "address_line2": "address_line2",
+    "city": "city",
+    "state": "state",
+    "state/province": "state",
+    "zip code": "postal_code",
+    "zipcode": "postal_code",
+    "zip": "postal_code",
+    "post code": "postal_code",
+    "postcode": "postal_code",
+    "country": "country",
+    "employees": "employees_count",
+    "employee count": "employees_count",
+    "employees_count": "employees_count",
+    "number of employees": "employees_count",
+    "annual revenue": "annual_revenue",
+    "annual_revenue": "annual_revenue",
+    "revenue": "annual_revenue",
+    "logo url": "logo_url",
+    "logo_url": "logo_url",
+    "logo": "logo_url",
+}
+
+ENTITY_ALIASES = {
+    "contact": CONTACT_ALIASES,
+    "deal": DEAL_ALIASES,
+    "account": ACCOUNT_ALIASES,
+}
+
+
+def auto_detect_mapping(
+    headers: list[str], entity_type: str
+) -> dict[str, str]:
+    """
+    Try to match CSV column names to model fields.
+
+    Uses direct match, case-insensitive match, and fuzzy match
+    via a known alias dictionary for the given entity_type.
+
+    Returns a dict {csv_header: model_field}.
+    """
+    aliases = ENTITY_ALIASES.get(entity_type, {})
+    mapping: dict[str, str] = {}
+
+    for header in headers:
+        stripped = header.strip()
+        # Direct (exact) match — header is already a model field name
+        if entity_type == "contact" and stripped in CONTACT_FIELDS:
+            mapping[header] = stripped
+            continue
+        if entity_type == "deal" and stripped in DEAL_FIELDS:
+            mapping[header] = stripped
+            continue
+        if entity_type == "account" and stripped in ACCOUNT_FIELDS:
+            mapping[header] = stripped
+            continue
+
+        # Alias lookup (lowercased)
+        lower = stripped.lower()
+        if lower in aliases:
+            mapping[header] = aliases[lower]
+            continue
+
+        # Direct pass-through: use header as-is (user probably named
+        # the column exactly after a model field with different casing)
+        mapping[header] = stripped
+
+    return mapping
+
+
+# -- Helpers -------------------------------------------------------------------
 
 
 def _parse_csv(file_content: str) -> tuple[list[str], list[dict[str, str]]]:
@@ -56,11 +230,24 @@ def _resolve_tags(tag_str: str) -> list[str]:
     return [t.strip() for t in re.split(r"[;,|]", tag_str) if t.strip()]
 
 
-# -- Contact Import ------------------------------------------------------------
+def _validate_entity_type(entity_type: str) -> None:
+    """Raise ValueError if entity_type is unsupported."""
+    valid = {"contact", "deal", "account"}
+    if entity_type not in valid:
+        raise ValueError(
+            f"Unsupported entity_type '{entity_type}'. "
+            f"Must be one of: {', '.join(sorted(valid))}"
+        )
 
 
-class ContactImportResult:
-    """Result of a contact CSV import operation."""
+# -- Generic import runner (single implementation) -----------------------------
+
+# The three result classes share the same structure; we keep them for
+# backward compatibility but share a single implementation internally.
+
+
+class ImportResultBase:
+    """Shared result container for all entity types."""
 
     def __init__(self) -> None:
         self.created: list[dict[str, Any]] = []
@@ -83,35 +270,162 @@ class ContactImportResult:
         }
 
 
-def import_contacts_csv(
+class ContactImportResult(ImportResultBase):
+    """Result of a contact CSV import operation."""
+    pass
+
+
+class DealImportResult(ImportResultBase):
+    """Result of a deal CSV import operation."""
+    pass
+
+
+class AccountImportResult(ImportResultBase):
+    """Result of an account CSV import operation."""
+    pass
+
+
+_RESULT_CLASSES = {
+    "contact": ContactImportResult,
+    "deal": DealImportResult,
+    "account": AccountImportResult,
+}
+
+
+def _build_field_map(
+    headers: list[str],
+    column_mapping: dict[str, str] | None,
+) -> dict[str, str]:
+    """Build a {csv_column: model_field} map."""
+    if column_mapping:
+        return dict(column_mapping)
+    return {h: h for h in headers}
+
+
+def _get_dedup_value(
+    row: dict[str, str], dedup_key: str
+) -> str:
+    """Return the dedup value from a row, or empty string."""
+    return row.get(dedup_key, "").strip()
+
+
+def _apply_update(instance: Any, kwargs: dict[str, Any],
+                  strategy: str) -> Any:
+    """
+    Apply fields to an existing instance based on conflict strategy.
+
+    'skip': do nothing (instance left unchanged)
+    'update': only set non-empty fields (safe merge)
+    'overwrite': set all fields including empty/None
+    """
+    if strategy == "skip":
+        return instance
+
+    changed = False
+    for k, v in kwargs.items():
+        if k in ("tenant_id",):
+            continue
+        if strategy == "overwrite":
+            setattr(instance, k, v)
+            changed = True
+        elif strategy == "update" and v not in (None, "", [], {}):
+            setattr(instance, k, v)
+            changed = True
+
+    if changed:
+        instance.save()
+    return instance
+
+
+def import_entities_csv(
+    entity_type: str,
     tenant_id: str,
     file_content: str,
     column_mapping: dict[str, str] | None = None,
     *,
     dry_run: bool = False,
-    update_existing: bool = False,
+    dedup_key: str | None = None,
+    conflict_strategy: str = "skip",
     skip_errors: bool = True,
-) -> ContactImportResult:
+    max_rows: int = MAX_ROWS_DEFAULT,
+) -> ImportResultBase:
     """
-    Import contacts from a CSV string.
+    Generic CSV import for any entity type (contact, deal, account).
 
-    column_mapping maps CSV column names -> model field names.
-    If None, uses the CSV headers directly as field names.
-
-    Conflict detection is by email (case-insensitive).
+    Parameters
+    ----------
+    entity_type : str
+        One of 'contact', 'deal', 'account'.
+    tenant_id : str
+        UUID of the tenant.
+    file_content : str
+        Raw CSV file content as a string.
+    column_mapping : dict[str, str] | None
+        Maps CSV column names → model field names.
+        If None, uses CSV headers directly.
+    dry_run : bool
+        If True, no database writes are performed.
+    dedup_key : str | None
+        Field to use for duplicate detection. Falls back to
+        entity-specific default (email for contact, name for deal/account).
+    conflict_strategy : str
+        'skip' (default) — leave existing records unchanged.
+        'update' — update existing records, only non-empty fields.
+        'overwrite' — overwrite existing records, all fields.
+    skip_errors : bool
+        If True, skip rows that cause errors and continue.
+        If False, stop on the first error.
+    max_rows : int
+        Maximum number of rows to process (default: 10_000).
     """
-    # Lazy imports
-    from apps.contacts.models import Account, Contact
+    _validate_entity_type(entity_type)
+    result_cls = _RESULT_CLASSES[entity_type]
+    result = result_cls()
 
     headers, rows = _parse_csv(file_content)
-    result = ContactImportResult()
-    result.total_rows = len(rows)
+    result.total_rows = min(len(rows), max_rows)
+    rows = rows[:max_rows]
 
-    # Build field mapping
-    if column_mapping:
-        field_map = column_mapping
-    else:
-        field_map = {h: h for h in headers}
+    field_map = _build_field_map(headers, column_mapping)
+
+    resolved_dedup_key = dedup_key or DEFAULT_DEDUP_KEYS.get(entity_type, "name")
+    created: list[dict[str, Any]] = []
+    updated: list[dict[str, Any]] = []
+    skipped: list[dict[str, Any]] = []
+    errors: list[dict[str, Any]] = []
+
+    # ── Resolve entity-specific kwargs ────────────────────────────────────
+
+    if entity_type == "contact":
+        created, updated, skipped, errors = _import_contacts(
+            rows, field_map, tenant_id, resolved_dedup_key,
+            conflict_strategy, dry_run, skip_errors,
+        )
+    elif entity_type == "deal":
+        created, updated, skipped, errors = _import_deals(
+            rows, field_map, tenant_id, resolved_dedup_key,
+            conflict_strategy, dry_run, skip_errors,
+        )
+    elif entity_type == "account":
+        created, updated, skipped, errors = _import_accounts(
+            rows, field_map, tenant_id, resolved_dedup_key,
+            conflict_strategy, dry_run, skip_errors,
+        )
+
+    result.created = created
+    result.updated = updated
+    result.skipped = skipped
+    result.errors = errors
+    return result
+
+
+# ── Contact import ────────────────────────────────────────────────────────────
+
+
+def _import_contacts(rows, field_map, tenant_id, dedup_key,
+                     conflict_strategy, dry_run, skip_errors):
+    """Internal contact import logic shared by preview and confirm."""
+    from apps.contacts.models import Account, Contact
 
     # Pre-fetch existing accounts
     existing_accounts = {
@@ -128,7 +442,6 @@ def import_contacts_csv(
         entry: dict[str, Any] = {"row": idx, "data": dict(row)}
 
         try:
-            # Map row data to model fields
             model_data: dict[str, Any] = {}
             for csv_col, val in row.items():
                 field_name = field_map.get(csv_col, csv_col)
@@ -165,7 +478,7 @@ def import_contacts_csv(
             if "tags" in model_data and isinstance(model_data["tags"], str):
                 model_data["tags"] = _resolve_tags(model_data["tags"])
 
-            # Trim to model fields
+            # Build contact kwargs
             contact_kwargs: dict[str, Any] = {
                 k: v for k, v in model_data.items()
                 if k in CONTACT_FIELDS
@@ -174,13 +487,21 @@ def import_contacts_csv(
             if account:
                 contact_kwargs["account"] = account
 
-            # Conflict detection by email
-            if email:
+            # Conflict detection
+            dedup_value = _get_dedup_value(row, dedup_key)
+            existing = None
+            if dedup_value:
+                filter_kwargs = {
+                    "tenant_id": tenant_id,
+                    f"{dedup_key}__iexact": dedup_value,
+                }
+                existing = Contact.objects.filter(**filter_kwargs).first()
+            elif email and dedup_key != "email":
+                # Fallback to email if dedup_value was empty
                 existing = Contact.objects.filter(
-                    tenant_id=tenant_id,
-                    email__iexact=email,
+                    tenant_id=tenant_id, email__iexact=email,
                 ).first()
-            else:
+            elif first_name and last_name:
                 existing = Contact.objects.filter(
                     tenant_id=tenant_id,
                     first_name__iexact=first_name,
@@ -188,16 +509,13 @@ def import_contacts_csv(
                 ).first()
 
             if existing:
-                if update_existing:
-                    if not dry_run:
-                        for k, v in contact_kwargs.items():
-                            if v:
-                                setattr(existing, k, v)
-                        existing.save()
-                    updated.append(entry)
-                else:
+                if conflict_strategy == "skip":
                     entry["reason"] = "Existing contact found"
                     skipped.append(entry)
+                else:
+                    if not dry_run:
+                        _apply_update(existing, contact_kwargs, conflict_strategy)
+                    updated.append(entry)
             else:
                 if not dry_run:
                     Contact.objects.create(**contact_kwargs)
@@ -209,71 +527,19 @@ def import_contacts_csv(
             if not skip_errors:
                 break
 
-    result.created = created
-    result.updated = updated
-    result.skipped = skipped
-    result.errors = errors
-    return result
+    return created, updated, skipped, errors
 
 
-# -- Deal Import ---------------------------------------------------------------
+# ── Deal import ───────────────────────────────────────────────────────────────
 
 
-class DealImportResult:
-    """Result of a deal CSV import operation."""
-
-    def __init__(self) -> None:
-        self.created: list[dict[str, Any]] = []
-        self.updated: list[dict[str, Any]] = []
-        self.skipped: list[dict[str, Any]] = []
-        self.errors: list[dict[str, Any]] = []
-        self.total_rows = 0
-
-    def to_dict(self) -> dict[str, Any]:
-        return {
-            "created": self.created,
-            "updated": self.updated,
-            "skipped": self.skipped,
-            "errors": self.errors,
-            "total_rows": self.total_rows,
-            "created_count": len(self.created),
-            "updated_count": len(self.updated),
-            "skipped_count": len(self.skipped),
-            "error_count": len(self.errors),
-        }
-
-
-def import_deals_csv(
-    tenant_id: str,
-    file_content: str,
-    column_mapping: dict[str, str] | None = None,
-    *,
-    dry_run: bool = False,
-    update_existing: bool = False,
-    skip_errors: bool = True,
-) -> DealImportResult:
-    """
-    Import deals from a CSV string.
-
-    column_mapping maps CSV column names -> model field names.
-    If None, uses the CSV headers directly as field names.
-
-    Conflicts are detected by deal name (case-insensitive) within the same pipeline.
-    """
+def _import_deals(rows, field_map, tenant_id, dedup_key,
+                  conflict_strategy, dry_run, skip_errors):
+    """Internal deal import logic shared by preview and confirm."""
     from apps.pipelines.models import Deal, Pipeline, Stage
     from apps.contacts.models import Account, Contact
 
-    headers, rows = _parse_csv(file_content)
-    result = DealImportResult()
-    result.total_rows = len(rows)
-
-    # Build field mapping
-    if column_mapping:
-        field_map = column_mapping
-    else:
-        field_map = {h: h for h in headers}
-
-    # Pre-fetch pipelines and stages
+    # Pre-fetch pipelines
     pipelines = {
         p.name.lower(): p
         for p in Pipeline.objects.filter(tenant_id=tenant_id, deleted_at__isnull=True)
@@ -374,24 +640,25 @@ def import_deals_csv(
                     else:
                         deal_kwargs[field] = val
 
-            # Conflict detection by name within pipeline
-            existing = Deal.objects.filter(
-                tenant_id=tenant_id,
-                pipeline=pipeline,
-                name__iexact=deal_name,
-            ).first()
+            # Conflict detection by dedup_key within pipeline
+            dedup_value = _get_dedup_value(row, dedup_key)
+            existing = None
+            if dedup_value:
+                filter_kwargs = {
+                    "tenant_id": tenant_id,
+                    "pipeline": pipeline,
+                    f"{dedup_key}__iexact": dedup_value,
+                }
+                existing = Deal.objects.filter(**filter_kwargs).first()
 
             if existing:
-                if update_existing:
-                    if not dry_run:
-                        for k, v in deal_kwargs.items():
-                            if v not in (None, "", 0) and k not in ("tenant_id",):
-                                setattr(existing, k, v)
-                        existing.save()
-                    updated.append(entry)
-                else:
+                if conflict_strategy == "skip":
                     entry["reason"] = f"Existing deal in pipeline '{pipeline.name}'"
                     skipped.append(entry)
+                else:
+                    if not dry_run:
+                        _apply_update(existing, deal_kwargs, conflict_strategy)
+                    updated.append(entry)
             else:
                 if not dry_run:
                     Deal.objects.create(**deal_kwargs)
@@ -403,8 +670,187 @@ def import_deals_csv(
             if not skip_errors:
                 break
 
-    result.created = created
-    result.updated = updated
-    result.skipped = skipped
-    result.errors = errors
-    return result
+    return created, updated, skipped, errors
+
+
+# ── Account import ────────────────────────────────────────────────────────────
+
+
+def _import_accounts(rows, field_map, tenant_id, dedup_key,
+                     conflict_strategy, dry_run, skip_errors):
+    """Internal account import logic shared by preview and confirm."""
+    from apps.contacts.models import Account
+
+    created: list[dict[str, Any]] = []
+    updated: list[dict[str, Any]] = []
+    skipped: list[dict[str, Any]] = []
+    errors: list[dict[str, Any]] = []
+
+    for idx, row in enumerate(rows, start=2):
+        entry: dict[str, Any] = {"row": idx, "data": dict(row)}
+
+        try:
+            model_data: dict[str, Any] = {}
+            for csv_col, val in row.items():
+                field_name = field_map.get(csv_col, csv_col)
+                if field_name in ACCOUNT_FIELDS:
+                    model_data[field_name] = val.strip() if val else ""
+
+            name = model_data.get("name", "").strip()
+            if not name:
+                entry["reason"] = "Missing required: name"
+                errors.append(entry)
+                if not skip_errors:
+                    break
+                continue
+
+            # Build account kwargs
+            account_kwargs: dict[str, Any] = {
+                k: v for k, v in model_data.items()
+                if k in ACCOUNT_FIELDS
+            }
+            account_kwargs["tenant_id"] = tenant_id
+
+            # Handle numeric fields
+            if "employees_count" in account_kwargs:
+                try:
+                    v = account_kwargs["employees_count"]
+                    account_kwargs["employees_count"] = int(v) if v else None
+                except (ValueError, TypeError):
+                    account_kwargs["employees_count"] = None
+
+            if "annual_revenue" in account_kwargs:
+                try:
+                    v = account_kwargs["annual_revenue"]
+                    account_kwargs["annual_revenue"] = Decimal(str(v)) if v else None
+                except Exception:
+                    account_kwargs["annual_revenue"] = None
+
+            # Conflict detection by dedup_key
+            dedup_value = _get_dedup_value(row, dedup_key)
+            existing = None
+            if dedup_value:
+                filter_kwargs = {
+                    "tenant_id": tenant_id,
+                    f"{dedup_key}__iexact": dedup_value,
+                }
+                existing = Account.objects.filter(**filter_kwargs).first()
+
+            if existing:
+                if conflict_strategy == "skip":
+                    entry["reason"] = "Existing account found"
+                    skipped.append(entry)
+                else:
+                    if not dry_run:
+                        _apply_update(existing, account_kwargs, conflict_strategy)
+                    updated.append(entry)
+            else:
+                if not dry_run:
+                    Account.objects.create(**account_kwargs)
+                created.append(entry)
+
+        except Exception as exc:
+            entry["reason"] = str(exc)
+            errors.append(entry)
+            if not skip_errors:
+                break
+
+    return created, updated, skipped, errors
+
+
+# ── Public API (backward-compatible wrappers) ────────────────────────────────
+
+
+def import_contacts_csv(
+    tenant_id: str,
+    file_content: str,
+    column_mapping: dict[str, str] | None = None,
+    *,
+    dry_run: bool = False,
+    update_existing: bool = False,
+    skip_errors: bool = True,
+    dedup_key: str | None = None,
+    conflict_strategy: str | None = None,
+    max_rows: int = MAX_ROWS_DEFAULT,
+) -> ContactImportResult:
+    """
+    Import contacts from a CSV string.
+
+    Backward-compatible: accepts the old ``update_existing`` boolean.
+    When both ``update_existing`` and ``conflict_strategy`` are provided,
+    ``conflict_strategy`` wins.
+    """
+    if conflict_strategy is None:
+        conflict_strategy = "update" if update_existing else "skip"
+    return import_entities_csv(
+        "contact", tenant_id, file_content,
+        column_mapping=column_mapping,
+        dry_run=dry_run,
+        dedup_key=dedup_key,
+        conflict_strategy=conflict_strategy,
+        skip_errors=skip_errors,
+        max_rows=max_rows,
+    )
+
+
+def import_deals_csv(
+    tenant_id: str,
+    file_content: str,
+    column_mapping: dict[str, str] | None = None,
+    *,
+    dry_run: bool = False,
+    update_existing: bool = False,
+    skip_errors: bool = True,
+    dedup_key: str | None = None,
+    conflict_strategy: str | None = None,
+    max_rows: int = MAX_ROWS_DEFAULT,
+) -> DealImportResult:
+    """
+    Import deals from a CSV string.
+
+    Backward-compatible: accepts the old ``update_existing`` boolean.
+    When both ``update_existing`` and ``conflict_strategy`` are provided,
+    ``conflict_strategy`` wins.
+    """
+    if conflict_strategy is None:
+        conflict_strategy = "update" if update_existing else "skip"
+    return import_entities_csv(
+        "deal", tenant_id, file_content,
+        column_mapping=column_mapping,
+        dry_run=dry_run,
+        dedup_key=dedup_key,
+        conflict_strategy=conflict_strategy,
+        skip_errors=skip_errors,
+        max_rows=max_rows,
+    )
+
+
+def import_accounts_csv(
+    tenant_id: str,
+    file_content: str,
+    column_mapping: dict[str, str] | None = None,
+    *,
+    dry_run: bool = False,
+    update_existing: bool = False,
+    skip_errors: bool = True,
+    dedup_key: str | None = None,
+    conflict_strategy: str | None = None,
+    max_rows: int = MAX_ROWS_DEFAULT,
+) -> AccountImportResult:
+    """
+    Import accounts from a CSV string.
+
+    Mirrors the contact import pattern but for the Account model.
+    Default dedup key is ``name``.
+    """
+    if conflict_strategy is None:
+        conflict_strategy = "update" if update_existing else "skip"
+    return import_entities_csv(
+        "account", tenant_id, file_content,
+        column_mapping=column_mapping,
+        dry_run=dry_run,
+        dedup_key=dedup_key,
+        conflict_strategy=conflict_strategy,
+        skip_errors=skip_errors,
+        max_rows=max_rows,
+    )

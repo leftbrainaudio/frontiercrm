@@ -18,12 +18,24 @@ MEILISEARCH_REINDEX_SCHEDULE = {
 
 # ── Email Sync ────────────────────────────────────────────────────────────────
 # Sync Gmail inbox for all users with OAuth tokens.
-# Rate-limited by Gmail API quotas. Runs every 10 minutes.
+# Rate-limited by Gmail API quotas.
 EMAIL_SYNC_SCHEDULE = {
     "sync-all-gmail": {
         "task": "apps.email.tasks.sync_all_gmail",
         "schedule": timedelta(minutes=10),
         "options": {"expires": 200},
+    },
+}
+
+# ── Gmail Delta Sync ─────────────────────────────────────────────────────────
+# Per-connection delta sync via Gmail History API.
+# Scheduled via Celery beat for all active gmail connections.
+# Default 60s interval for Starter tier.
+GMAIL_DELTA_SYNC_SCHEDULE = {
+    "sync-gmail-deltas": {
+        "task": "apps.sync.tasks.sync_email_delta",
+        "schedule": timedelta(seconds=60),
+        "options": {"expires": 55},
     },
 }
 
@@ -60,6 +72,7 @@ HEARTBEAT_SCHEDULE = {
 BEAT_SCHEDULE = {}
 BEAT_SCHEDULE.update(MEILISEARCH_REINDEX_SCHEDULE)
 BEAT_SCHEDULE.update(EMAIL_SYNC_SCHEDULE)
+BEAT_SCHEDULE.update(GMAIL_DELTA_SYNC_SCHEDULE)
 BEAT_SCHEDULE.update(BACKUP_SCHEDULE)
 BEAT_SCHEDULE.update(CLEANUP_SCHEDULE)
 BEAT_SCHEDULE.update(HEARTBEAT_SCHEDULE)

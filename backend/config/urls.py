@@ -37,6 +37,10 @@ api_patterns = [
     path("webhooks/", include("apps.webhooks.urls")),
     path("files/", include("apps.files.urls")),
     path("search/", include("apps.search.urls")),
+    path("sync/", include("apps.sync.urls")),
+    path("imports/", include("apps.imports.urls")),
+    # Reports
+    path("reports/", include("apps.reports.urls")),
     # Health
     path("health/", include("apps.core.health_urls")),
 ]

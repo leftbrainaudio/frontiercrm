@@ -260,3 +260,154 @@ export interface DashboardMetrics {
   tasks_due: number;
   recent_deals: Deal[];
 }
+
+// ── Report Types (ADR-007) ────────────────────────────────────────────
+
+export interface DashboardReport {
+  period: { start_date: string; end_date: string; label: string };
+  summary: {
+    total_pipeline_value: number;
+    pipeline_value_change: number | null;
+    won_value: number;
+    won_value_change: number | null;
+    lost_value: number;
+    win_rate: number;
+    win_rate_change: number | null;
+    active_deals: number;
+    active_deals_change: number | null;
+    avg_deal_value: number;
+    avg_deal_value_change: number | null;
+    avg_days_to_close: number;
+    weighted_pipeline: number;
+  };
+  pipeline_value_trend: { date: string; value: number }[];
+  deals_by_stage: { stage_name: string; stage_id: string; count: number; value: number; probability: number }[];
+  win_rate_by_stage: { from_stage: string; to_stage: string; conversion_rate: number; deals_entered: number; deals_converted: number }[];
+  deal_velocity: { stage_name: string; avg_days: number; deals_in_stage: number }[];
+  activity_metrics: {
+    total: number;
+    by_type: { activity_type: string; label: string; count: number }[];
+    by_day: { date: string; count: number }[];
+    calls_with_duration: { total_minutes: number; avg_minutes: number };
+  };
+  tasks_summary: {
+    total_due: number;
+    overdue: number;
+    due_today: number;
+    by_priority: Record<string, number>;
+  };
+  by_owner?: OwnerMetrics[];
+}
+
+export interface OwnerMetrics {
+  owner_id: string;
+  owner_name: string;
+  pipeline_value: number;
+  won_value: number;
+  win_rate: number;
+  active_deals: number;
+  won_deals: number;
+  lost_deals: number;
+  avg_deal_value: number;
+  activity_count: number;
+}
+
+export interface StaleDeal {
+  id: string;
+  name: string;
+  value: number;
+  stage_name: string;
+  owner_name: string;
+  days_in_stage: number;
+  days_since_last_activity: number;
+  expected_close_date: string | null;
+  is_overdue: boolean;
+}
+
+export interface StaleDealsResponse {
+  stale_deals: StaleDeal[];
+}
+
+// ── Report types ───────────────────────────────────────────────
+
+export interface DashboardReport {
+  period: { start_date: string; end_date: string; label: string };
+  summary: {
+    total_pipeline_value: number;
+    pipeline_value_change: number | null;
+    won_value: number;
+    won_value_change: number | null;
+    lost_value: number;
+    win_rate: number;
+    win_rate_change: number | null;
+    active_deals: number;
+    active_deals_change: number | null;
+    avg_deal_value: number;
+    avg_deal_value_change: number | null;
+    avg_days_to_close: number;
+    weighted_pipeline: number;
+  };
+  pipeline_value_trend: { date: string; value: number }[];
+  deals_by_stage: {
+    stage_name: string;
+    stage_id: string;
+    count: number;
+    value: number;
+    probability: number;
+  }[];
+  win_rate_by_stage: {
+    from_stage: string;
+    to_stage: string;
+    conversion_rate: number;
+    deals_entered: number;
+    deals_converted: number;
+  }[];
+  deal_velocity: {
+    stage_name: string;
+    avg_days: number;
+    deals_in_stage: number;
+  }[];
+  activity_metrics: {
+    total: number;
+    by_type: { activity_type: string; label: string; count: number }[];
+    by_day: { date: string; count: number }[];
+    calls_with_duration: { total_minutes: number; avg_minutes: number };
+  };
+  tasks_summary: {
+    total_due: number;
+    overdue: number;
+    due_today: number;
+    by_priority: Record<string, number>;
+  };
+  by_owner?: OwnerMetrics[];
+}
+
+export interface OwnerMetrics {
+  owner_id: string;
+  owner_name: string;
+  pipeline_value: number;
+  won_value: number;
+  win_rate: number;
+  active_deals: number;
+  won_deals: number;
+  lost_deals: number;
+  avg_deal_value: number;
+  activity_count: number;
+}
+
+export interface StaleDeal {
+  id: string;
+  name: string;
+  value: number;
+  stage_name: string;
+  owner_name: string;
+  days_in_stage: number;
+  days_since_last_activity: number;
+  expected_close_date: string | null;
+  is_overdue: boolean;
+}
+
+export interface StaleDealsResponse {
+  stale_deals: StaleDeal[];
+}
+

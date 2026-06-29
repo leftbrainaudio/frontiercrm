@@ -42,6 +42,10 @@ INSTALLED_APPS = [
     "apps.webhooks",
     "apps.files",
     "apps.search",
+    "apps.imports",
+    "apps.reports",
+    # Sync engine
+    "apps.sync",
 ]
 
 MIDDLEWARE = [

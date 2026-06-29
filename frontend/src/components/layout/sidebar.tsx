@@ -18,10 +18,12 @@ import { useAuth } from '../../hooks/useAuth';
 
 const navItems = [
   { to: '/dashboard', icon: LayoutDashboard, label: 'Dashboard' },
+  { to: '/reports', icon: BarChart3, label: 'Reports' },
   { to: '/contacts', icon: Users, label: 'Contacts' },
   { to: '/pipeline', icon: TrendingUp, label: 'Pipeline' },
   { to: '/activities', icon: Calendar, label: 'Activities' },
   { to: '/email', icon: Mail, label: 'Email' },
+  { to: '/reports', icon: BarChart3, label: 'Reports' },
   { to: '/settings', icon: Settings, label: 'Settings' },
 ];
 

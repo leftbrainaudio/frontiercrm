@@ -212,12 +212,11 @@ class DealViewSet(viewsets.ModelViewSet):
     def import_csv(self, request):
         """Upload a CSV file and import deals.
 
-        Accepts multipart form data with:
-          - file: the CSV file
-          - column_mapping: optional JSON dict mapping CSV columns to model fields
-          - dry_run: if 'true' (default), preview only (no writes)
-          - update_existing: if 'true', update matching deals by name+pipeline
+        DEPRECATED: Use POST /api/imports/deals/preview/ instead.
         """
+        from apps.imports.models import ImportJob
+        from apps.imports.views import _format_preview
+
         file = request.FILES.get("file")
         if not file:
             return Response({"error": "No file uploaded"}, status=status.HTTP_400_BAD_REQUEST)
@@ -237,13 +236,70 @@ class DealViewSet(viewsets.ModelViewSet):
 
         dry_run = str(request.data.get("dry_run", "true")).lower() == "true"
         update_existing = str(request.data.get("update_existing", "false")).lower() == "true"
+        conflict_strategy = "update" if update_existing else "skip"
 
-        result = import_deals_csv(
-            tenant_id=str(request.user.tenant_id),
+        # Create an ImportJob internally for audit trail
+        import_job = ImportJob.objects.create(
+            tenant_id=request.user.tenant_id,
+            created_by_id=request.user.id or request.user.pk,
+            entity_type=ImportJob.EntityType.DEAL,
+            status=ImportJob.Status.DRAFT,
+            original_filename=file.name,
+            file_size=file.size,
             file_content=content,
-            column_mapping=column_mapping,
-            dry_run=dry_run,
-            update_existing=update_existing,
+            column_mapping=column_mapping or {},
+            conflict_strategy=conflict_strategy,
         )
 
-        return Response(result.to_dict())
+        if dry_run:
+            preview_data = _format_preview(
+                import_deals_csv,
+                tenant_id=str(request.user.tenant_id),
+                file_content=content,
+                column_mapping=column_mapping,
+                dedup_key=None,
+                conflict_strategy=conflict_strategy,
+            )
+            import_job.preview = preview_data
+            import_job.status = ImportJob.Status.PREVIEWED
+            import_job.save(update_fields=["preview", "status", "updated_at"])
+            # Build backward-compatible response
+            result_data = {
+                "created_count": preview_data["created_rows"],
+                "updated_count": preview_data["updated_rows"],
+                "skipped_count": preview_data["skipped_rows"],
+                "error_count": preview_data["error_rows"],
+                "total_rows": preview_data["total_rows"],
+                "import_job_id": str(import_job.id),
+                "created": preview_data.get("sample_created", []),
+                "updated": [],
+                "skipped": preview_data.get("sample_skipped", []),
+                "errors": preview_data.get("sample_errors", []),
+            }
+        else:
+            result = import_deals_csv(
+                tenant_id=str(request.user.tenant_id),
+                file_content=content,
+                column_mapping=column_mapping,
+                dry_run=False,
+                conflict_strategy=conflict_strategy,
+                dedup_key=None,
+            )
+            d = result.to_dict()
+            import_job.summary = {
+                "total_rows": d["total_rows"],
+                "created_count": d["created_count"],
+                "updated_count": d["updated_count"],
+                "skipped_count": d["skipped_count"],
+                "error_count": d["error_count"],
+                "errors": d["errors"][:50],
+            }
+            import_job.status = ImportJob.Status.COMPLETED
+            import_job.save(update_fields=["summary", "status", "updated_at"])
+            result_data = d
+
+        result_data["import_job_id"] = str(import_job.id)
+
+        response = Response(result_data)
+        response["X-Deprecation"] = "use /api/imports/deals/preview/ instead"
+        return response

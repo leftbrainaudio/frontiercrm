@@ -5,7 +5,10 @@ from .base import *  # noqa: F403, F401
 DEBUG = False
 
 # ── SSL / Security headers ────────────────────────────────────────────────────
-SECURE_SSL_REDIRECT = True
+# Django's SECURE_SSL_REDIRECT would cause a redirect loop because Fly.io
+# terminates TLS at the edge and forwards HTTP internally. Fly.io handles
+# HTTP→HTTPS redirection natively at the proxy level.
+SECURE_SSL_REDIRECT = False
 SESSION_COOKIE_SECURE = True
 CSRF_COOKIE_SECURE = True
 SECURE_HSTS_SECONDS = 31536000
