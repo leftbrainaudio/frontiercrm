@@ -1,0 +1,66 @@
+# ── FrontierCRM Web (Frontend) — Fly.io Config ───────────────────────────────
+# Deploy: flyctl deploy --remote-only -c fly.web.toml
+# Serves the SPA from Nginx on port 80 (Fly.io handles TLS termination)
+
+app = "frontiercrm-web"
+primary_region = "iad"
+kill_signal = "SIGTERM"
+kill_timeout = 10
+
+[build]
+  dockerfile = "Dockerfile.prod"
+
+[http_service]
+  internal_port = 80
+  force_https = true
+  auto_stop_machines = false
+  auto_start_machines = false
+  min_machines_running = 2
+  processes = ["web"]
+
+  [http_service.concurrency]
+    type = "connections"
+    hard_limit = 250
+    soft_limit = 100
+
+  [http_service.health_check]
+    path = "/"
+    method = "GET"
+    protocol = "http"
+    interval = "15s"
+    timeout = "5s"
+    grace_period = "15s"
+    restart_limit = 6
+
+[[services]]
+  port = 80
+  protocol = "tcp"
+  internal_port = 80
+  processes = ["web"]
+
+  [[services.ports]]
+    port = 443
+    handlers = ["tls"]
+
+    [services.concurrency]
+      type = "connections"
+      hard_limit = 250
+      soft_limit = 100
+
+  [[services.http_checks]]
+    path = "/"
+    method = "GET"
+    interval = "15s"
+    timeout = "5s"
+    grace_period = "15s"
+    restart_limit = 6
+
+[env]
+  VITE_API_URL = "https://api.frontiercrm.com"
+
+[[vm]]
+  processes = ["web"]
+  size = "shared-cpu-0.25x"
+  memory = "256mb"
+  cpu_kind = "shared"
+  cpus = 1

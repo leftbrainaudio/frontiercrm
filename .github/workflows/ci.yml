@@ -1,0 +1,174 @@
+name: CI/CD
+
+on:
+  push:
+    branches: [main, master, develop]
+  pull_request:
+    branches: [main, master]
+
+env:
+  # Shared env vars for CI jobs
+  DJANGO_SECRET_KEY: ci-secret-key-do-not-use
+  DJANGO_DEBUG: "False"
+  DATABASE_URL: postgresql://postgres:postgres@localhost:5432/frontiercrm_test
+  REDIS_URL: redis://localhost:6379/1
+  CELERY_BROKER_URL: redis://localhost:6379/0
+  CELERY_RESULT_BACKEND: redis://localhost:6379/0
+  MEILISEARCH_URL: http://localhost:7700
+  MEILISEARCH_API_KEY: masterKey
+
+jobs:
+  # ── Lint & Type Check ───────────────────────────────────────────────────────
+  lint:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: backend
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+          cache: pip
+          cache-dependency-path: backend/requirements.txt
+      - run: pip install -r requirements.txt
+      - name: Ruff lint
+        run: ruff check .
+      - name: Ruff format check
+        run: ruff format --check .
+
+  # ── Backend Tests ───────────────────────────────────────────────────────────
+  test:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: backend
+    services:
+      postgres:
+        image: postgres:16-alpine
+        env:
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: postgres
+          POSTGRES_DB: frontiercrm_test
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+      redis:
+        image: redis:7-alpine
+        ports:
+          - 6379:6379
+        options: >-
+          --health-cmd "redis-cli ping"
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+          cache: pip
+          cache-dependency-path: backend/requirements.txt
+      - run: pip install -r requirements.txt
+      - run: python manage.py migrate --noinput
+      - name: Run tests with coverage
+        run: pytest --cov --cov-report=term --cov-report=xml --junitxml=junit.xml
+      - uses: codecov/codecov-action@v5
+        with:
+          file: ./coverage.xml
+          fail_ci_if_error: false
+      - uses: dorny/test-reporter@v1
+        if: success() || failure()
+        with:
+          name: Test Results
+          path: ./junit.xml
+          reporter: java-junit
+
+  # ── Frontend Lint & Build ───────────────────────────────────────────────────
+  frontend:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: frontend
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+          cache: npm
+          cache-dependency-path: frontend/package-lock.json
+      - run: npm ci
+      - name: TypeScript check
+        run: npx tsc --noEmit
+      - name: Lint
+        run: npm run lint
+      - name: Build
+        run: npm run build
+
+  # ── Docker Build (backend) ─────────────────────────────────────────────────
+  docker-build-api:
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/main' || github.ref == 'refs/heads/master'
+    needs: [lint, test, frontend]
+    steps:
+      - uses: actions/checkout@v4
+      - name: Build backend Docker image
+        run: docker build -f backend/Dockerfile.prod -t frontiercrm-api:ci-${{ github.sha }} backend/
+      - name: Build frontend Docker image
+        run: docker build -f frontend/Dockerfile.prod -t frontiercrm-web:ci-${{ github.sha }} frontend/
+
+  # ── Deploy to Staging ──────────────────────────────────────────────────────
+  deploy-staging:
+    if: github.ref == 'refs/heads/develop'
+    needs: [lint, test, frontend]
+    runs-on: ubuntu-latest
+    environment: staging
+    concurrency:
+      group: staging-deploy
+      cancel-in-progress: true
+    steps:
+      - uses: actions/checkout@v4
+      - uses: superfly/flyctl-actions/setup-flyctl@master
+      - name: Deploy API to staging
+        run: flyctl deploy --remote-only -c fly.toml --app frontiercrm-api-staging
+        env:
+          FLY_API_TOKEN: ${{ secrets.FLY_API_TOKEN }}
+      - name: Deploy frontend to staging
+        run: flyctl deploy --remote-only -c frontend/fly.web.toml --app frontiercrm-web-staging
+        env:
+          FLY_API_TOKEN: ${{ secrets.FLY_API_TOKEN }}
+
+  # ── Deploy to Production ───────────────────────────────────────────────────
+  deploy-production:
+    if: github.ref == 'refs/heads/main' || github.ref == 'refs/heads/master'
+    needs: [lint, test, frontend, docker-build-api]
+    runs-on: ubuntu-latest
+    environment: production
+    concurrency:
+      group: prod-deploy
+      cancel-in-progress: false
+    steps:
+      - uses: actions/checkout@v4
+      - uses: superfly/flyctl-actions/setup-flyctl@master
+      - name: Deploy API to production
+        run: flyctl deploy --remote-only -c fly.toml --app frontiercrm-api
+        env:
+          FLY_API_TOKEN: ${{ secrets.FLY_API_TOKEN }}
+      - name: Run database migrations
+        run: flyctl ssh console -a frontiercrm-api -C "python manage.py migrate --noinput"
+        env:
+          FLY_API_TOKEN: ${{ secrets.FLY_API_TOKEN }}
+      - name: Deploy frontend to production
+        run: flyctl deploy --remote-only -c frontend/fly.web.toml --app frontiercrm-web
+        env:
+          FLY_API_TOKEN: ${{ secrets.FLY_API_TOKEN }}
+      - name: Post-deploy health check
+        run: |
+          sleep 15
+          curl -sSf --retry 5 --retry-delay 10 https://api.frontiercrm.com/api/health/ || exit 1
+          curl -sSf --retry 5 --retry-delay 10 https://app.frontiercrm.com/ || exit 1
+        shell: bash

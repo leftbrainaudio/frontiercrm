@@ -1,0 +1,545 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>FrontierCRM — Component Library</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body {
+  background: #0B1120;
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 48px 24px;
+}
+.container { max-width: 1100px; width: 100%; }
+.header { margin-bottom: 36px; }
+.header h1 { color: #F1F5F9; font-size: 28px; font-weight: 700; letter-spacing: -0.015em; }
+.header .subtitle { color: #64748B; font-size: 14px; margin-top: 8px; display: flex; align-items: center; gap: 8px; }
+.header .subtitle .dot { display: inline-block; width: 8px; height: 8px; border-radius: 50%; background: #14B8A6; }
+.components-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 16px; }
+.component-card {
+  background: #121A2E;
+  border: 1px solid #1E293B;
+  border-radius: 10px;
+  overflow: hidden;
+}
+.component-header {
+  padding: 12px 14px;
+  border-bottom: 1px solid #1E293B;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.component-header h3 { color: #F1F5F9; font-size: 13px; font-weight: 600; }
+.component-header .comp-number { color: #475569; font-size: 11px; font-family: 'JetBrains Mono', monospace; }
+.component-preview {
+  padding: 16px 14px;
+  min-height: 80px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.component-preview .variants { display: flex; flex-wrap: wrap; gap: 6px; }
+
+/* Button variants */
+.btn { display: inline-flex; align-items: center; justify-content: center; gap: 6px; padding: 6px 12px; border-radius: 6px; font-size: 12px; font-weight: 500; font-family: 'Inter', sans-serif; border: 1px solid transparent; cursor: default; transition: none; }
+.btn-primary { background: #2563EB; color: #fff; }
+.btn-secondary { background: transparent; color: #E2E8F0; border-color: #334155; }
+.btn-outline { background: transparent; color: #60A5FA; border-color: #2563EB; }
+.btn-ghost { background: transparent; color: #94A3B8; }
+.btn-danger { background: #EF4444; color: #fff; }
+.btn-sm { padding: 4px 8px; font-size: 11px; border-radius: 4px; }
+
+/* Input styles */
+.input-demo { display: flex; flex-direction: column; gap: 6px; }
+.input-demo input { height: 34px; padding: 0 10px; border-radius: 6px; border: 1px solid #334155; background: #0F172A; color: #F1F5F9; font-size: 12px; font-family: 'Inter', sans-serif; width: 100%; outline: none; }
+.input-demo input::placeholder { color: #64748B; }
+
+/* Card mini */
+.mini-card { background: #0F172A; border: 1px solid #1E293B; border-radius: 6px; padding: 10px; }
+.mini-card .card-title { color: #F1F5F9; font-size: 12px; font-weight: 600; }
+.mini-card .card-body { color: #94A3B8; font-size: 11px; margin-top: 4px; }
+
+/* Badge */
+.badge-demo { display: inline-flex; align-items: center; gap: 4px; padding: 2px 6px; border-radius: 9999px; font-size: 10px; font-weight: 600; }
+.badge-neutral { background: #1E293B; color: #94A3B8; }
+.badge-primary { background: rgba(37,99,235,0.15); color: #60A5FA; }
+.badge-success { background: rgba(20,184,166,0.15); color: #34D399; }
+.badge-warning { background: rgba(245,158,11,0.15); color: #FBBF24; }
+.badge-error { background: rgba(239,68,68,0.15); color: #F87171; }
+
+/* Avatar */
+.avatar { display: inline-flex; align-items: center; justify-content: center; border-radius: 9999px; background: #2563EB; color: #fff; font-weight: 600; font-size: 10px; width: 28px; height: 28px; }
+.avatar-group { display: flex; }
+.avatar-group .avatar:not(:first-child) { margin-left: -8px; }
+
+/* Toggle */
+.toggle { display: inline-flex; align-items: center; gap: 6px; }
+.toggle-track { width: 28px; height: 16px; border-radius: 9999px; background: #334155; position: relative; }
+.toggle-track.on { background: #2563EB; }
+.toggle-track .thumb { width: 12px; height: 12px; border-radius: 50%; background: #fff; position: absolute; top: 2px; left: 2px; }
+
+/* Progress */
+.progress-bar { height: 6px; background: #1E293B; border-radius: 9999px; overflow: hidden; }
+.progress-bar .fill { height: 100%; border-radius: 9999px; background: linear-gradient(90deg, #2563EB, #14B8A6); }
+
+/* Table mini */
+.mini-table { width: 100%; border-collapse: collapse; font-size: 10px; }
+.mini-table th { color: #64748B; font-weight: 600; text-transform: uppercase; letter-spacing: 0.04em; text-align: left; padding: 4px 6px; border-bottom: 1px solid #1E293B; }
+.mini-table td { color: #E2E8F0; padding: 4px 6px; border-bottom: 1px solid #1E293B; }
+.mini-table tr:last-child td { border-bottom: none; }
+
+/* Kanban mini */
+.kanban-mini { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 6px; }
+.kanban-col { background: #0F172A; border-radius: 6px; padding: 6px; }
+.kanban-col .col-header { color: #94A3B8; font-size: 10px; font-weight: 600; text-align: center; margin-bottom: 4px; }
+.kanban-card { background: #1E293B; border-radius: 4px; padding: 4px 6px; margin-bottom: 3px; }
+.kanban-card .deal-name { color: #F1F5F9; font-size: 9px; font-weight: 600; }
+.kanban-card .deal-value { color: #64748B; font-size: 8px; }
+
+/* Chips */
+.chip { display: inline-flex; align-items: center; gap: 4px; padding: 3px 8px; border-radius: 4px; background: #1E293B; color: #94A3B8; font-size: 10px; }
+
+.footer { margin-top: 32px; text-align: center; color: #475569; font-size: 12px; }
+</style>
+</head>
+<body>
+<div class="container">
+  <div class="header">
+    <h1>🧩 Component Library Overview</h1>
+    <div class="subtitle">
+      <span class="dot"></span>
+      FrontierCRM · 17 Core Components · React 19 + Tailwind v4
+      <span style="color:#475569">·</span>
+      <span style="color:#475569">WCAG 2.1 AA</span>
+    </div>
+  </div>
+
+  <div class="components-grid">
+
+    <!-- 1. Button -->
+    <div class="component-card">
+      <div class="component-header">
+        <h3>Button</h3>
+        <span class="comp-number">§2.1</span>
+      </div>
+      <div class="component-preview">
+        <div class="variants">
+          <span class="btn btn-primary">Primary</span>
+          <span class="btn btn-secondary">Secondary</span>
+          <span class="btn btn-outline">Outline</span>
+        </div>
+        <div class="variants">
+          <span class="btn btn-ghost">Ghost</span>
+          <span class="btn btn-danger">Danger</span>
+          <span class="btn btn-secondary btn-sm">Small</span>
+        </div>
+        <div style="color:#475569; font-size:10px; margin-top:4px">6 variants · 5 sizes (xs-xl) · Loading + Focus + Disabled states</div>
+      </div>
+    </div>
+
+    <!-- 2. Input -->
+    <div class="component-card">
+      <div class="component-header">
+        <h3>Input</h3>
+        <span class="comp-number">§2.2</span>
+      </div>
+      <div class="component-preview">
+        <div class="input-demo">
+          <input type="text" placeholder="Standard input..." value="Filled value" readonly>
+          <input type="text" placeholder="Search contacts..." readonly style="border-color:#2563EB; box-shadow:0 0 0 2px rgba(37,99,235,0.2);">
+          <input type="text" placeholder="Error state" readonly style="border-color:#EF4444; box-shadow:0 0 0 2px rgba(239,68,68,0.15);">
+        </div>
+        <div style="color:#475569; font-size:10px; margin-top:4px">7 variants · Error + Focus + Disabled states · Search w/ clear</div>
+      </div>
+    </div>
+
+    <!-- 3. Card -->
+    <div class="component-card">
+      <div class="component-header">
+        <h3>Card</h3>
+        <span class="comp-number">§2.3</span>
+      </div>
+      <div class="component-preview">
+        <div class="mini-card">
+          <div style="display:flex; justify-content:space-between; align-items:center">
+            <div class="card-title">📈 Pipeline Value</div>
+            <span class="badge-demo badge-primary">KPI</span>
+          </div>
+          <div style="font-size:20px; font-weight:700; color:#F1F5F9; margin-top:8px">$847,500</div>
+          <div style="color:#34D399; font-size:11px">+12.3% vs last week</div>
+        </div>
+        <div class="variants" style="margin-top:4px">
+          <span class="btn btn-ghost btn-sm">Default</span>
+          <span class="btn btn-ghost btn-sm">Clickable</span>
+          <span class="btn btn-ghost btn-sm">Stat</span>
+          <span class="btn btn-ghost btn-sm">Kanban</span>
+          <span class="btn btn-ghost btn-sm">Elevated</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- 4. Modal -->
+    <div class="component-card">
+      <div class="component-header">
+        <h3>Modal & Dialog</h3>
+        <span class="comp-number">§2.4</span>
+      </div>
+      <div class="component-preview">
+        <div style="background:#0F172A; border:1px solid #1E293B; border-radius:8px; padding:12px; position:relative">
+          <div style="display:flex; justify-content:space-between; align-items:center; border-bottom:1px solid #1E293B; padding-bottom:8px; margin-bottom:8px">
+            <div style="color:#F1F5F9; font-size:12px; font-weight:600">Confirm Action</div>
+            <div style="color:#64748B; font-size:12px; cursor:default">✕</div>
+          </div>
+          <div style="color:#94A3B8; font-size:11px; margin-bottom:12px">Are you sure you want to delete this deal? This action cannot be undone.</div>
+          <div style="display:flex; justify-content:flex-end; gap:6px; border-top:1px solid #1E293B; padding-top:8px">
+            <span class="btn btn-ghost btn-sm">Cancel</span>
+            <span class="btn btn-danger btn-sm">Delete</span>
+          </div>
+        </div>
+        <div style="color:#475569; font-size:10px">3 sizes (400px / 480px / 640px) · Focus trap · Escape to close</div>
+      </div>
+    </div>
+
+    <!-- 5. Table -->
+    <div class="component-card">
+      <div class="component-header">
+        <h3>Table</h3>
+        <span class="comp-number">§2.5</span>
+      </div>
+      <div class="component-preview">
+        <table class="mini-table">
+          <thead>
+            <tr><th>Name</th><th>Stage</th><th>Value</th><th>Owner</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>Acme Corp</td><td><span class="badge-demo badge-primary">Proposal</span></td><td style="font-weight:600">$24,500</td><td>Alex</td></tr>
+            <tr><td>Beta Inc</td><td><span class="badge-demo badge-success">Closed Won</span></td><td style="font-weight:600">$52,000</td><td>Jamie</td></tr>
+            <tr style="background:rgba(37,99,235,0.06)"><td>Gamma LLC</td><td><span class="badge-demo badge-warning">Discovery</span></td><td style="font-weight:600">$8,200</td><td>Sam</td></tr>
+          </tbody>
+        </table>
+        <div style="color:#475569; font-size:10px">3 row heights · Sort · Select · Expand · Drag · Responsive</div>
+      </div>
+    </div>
+
+    <!-- 6. Form -->
+    <div class="component-card">
+      <div class="component-header">
+        <h3>Form</h3>
+        <span class="comp-number">§2.6</span>
+      </div>
+      <div class="component-preview">
+        <div style="display:flex; flex-direction:column; gap:8px">
+          <div>
+            <div style="color:#94A3B8; font-size:10px; margin-bottom:3px">Email <span style="color:#EF4444">*</span></div>
+            <input type="text" value="user@example.com" readonly style="height:30px; padding:0 8px; border-radius:6px; border:1px solid #334155; background:#0F172A; color:#F1F5F9; font-size:11px; width:100%; outline:none; font-family:'Inter',sans-serif">
+          </div>
+          <div>
+            <div style="color:#94A3B8; font-size:10px; margin-bottom:3px">Full Name <span style="color:#EF4444">*</span></div>
+            <input type="text" readonly style="height:30px; padding:0 8px; border-radius:6px; border:1px solid #EF4444; background:rgba(239,68,68,0.05); color:#F1F5F9; font-size:11px; width:100%; outline:none; font-family:'Inter',sans-serif">
+            <div style="color:#EF4444; font-size:9px; margin-top:2px">Full name is required</div>
+          </div>
+        </div>
+        <div style="color:#475569; font-size:10px">Single-column preferred · Labels above · Validation states</div>
+      </div>
+    </div>
+
+    <!-- 7. Badge -->
+    <div class="component-card">
+      <div class="component-header">
+        <h3>Badge</h3>
+        <span class="comp-number">§2.7</span>
+      </div>
+      <div class="component-preview">
+        <div class="variants">
+          <span class="badge-demo badge-neutral">Neutral</span>
+          <span class="badge-demo badge-primary">Lead</span>
+          <span class="badge-demo badge-success">Qualified</span>
+          <span class="badge-demo badge-warning">Warning</span>
+          <span class="badge-demo badge-error">Error</span>
+        </div>
+        <div class="variants" style="margin-top:4px">
+          <span class="badge-demo badge-success" style="display:inline-flex;align-items:center;gap:4px">
+            <span style="width:5px;height:5px;border-radius:50%;background:#34D399;display:inline-block"></span>
+            With Dot
+          </span>
+          <span class="badge-demo badge-primary" style="display:inline-flex;align-items:center;gap:4px">
+            Dismissible <span style="color:#64748B;cursor:default">×</span>
+          </span>
+        </div>
+      </div>
+    </div>
+
+    <!-- 8. Avatar -->
+    <div class="component-card">
+      <div class="component-header">
+        <h3>Avatar</h3>
+        <span class="comp-number">§2.8</span>
+      </div>
+      <div class="component-preview">
+        <div class="variants" style="align-items:center">
+          <div class="avatar" style="width:24px;height:24px;font-size:8px">AC</div>
+          <div class="avatar" style="width:32px;height:32px;font-size:10px">JL</div>
+          <div class="avatar" style="width:40px;height:40px;font-size:13px">SK</div>
+          <div class="avatar" style="width:56px;height:56px;font-size:16px">DR</div>
+        </div>
+        <div class="variants" style="align-items:center">
+          <div class="avatar-group">
+            <div class="avatar" style="width:28px;height:28px;font-size:9px;background:#2563EB">AC</div>
+            <div class="avatar" style="width:28px;height:28px;font-size:9px;background:#14B8A6">JL</div>
+            <div class="avatar" style="width:28px;height:28px;font-size:9px;background:#F59E0B">SK</div>
+            <div class="avatar" style="width:28px;height:28px;font-size:9px;background:#475569">+3</div>
+          </div>
+          <div style="color:#94A3B8; font-size:10px; margin-left:8px">Group (stacked)</div>
+        </div>
+        <div style="color:#475569; font-size:10px">5 sizes (24-72px) · Initials · Photo · Online indicator</div>
+      </div>
+    </div>
+
+    <!-- 9. Dropdown -->
+    <div class="component-card">
+      <div class="component-header">
+        <h3>Dropdown</h3>
+        <span class="comp-number">§2.9</span>
+      </div>
+      <div class="component-preview">
+        <div style="background:#0F172A; border:1px solid #1E293B; border-radius:6px; padding:4px; width:160px">
+          <div style="padding:4px 8px; color:#F1F5F9; font-size:11px; display:flex; align-items:center; justify-content:space-between; cursor:default">
+            Select Stage <span style="color:#64748B">▼</span>
+          </div>
+        </div>
+        <div style="background:#0F172A; border:1px solid #1E293B; border-radius:6px; margin-top:4px; width:160px">
+          <div style="padding:6px 8px; color:#F1F5F9; font-size:11px; background:rgba(37,99,235,0.1); cursor:default">✓ Lead</div>
+          <div style="padding:6px 8px; color:#94A3B8; font-size:11px; cursor:default">Qualified</div>
+          <div style="padding:6px 8px; color:#475569; font-size:11px; cursor:default">Proposal (disabled)</div>
+          <div style="height:1px; background:#1E293B; margin:2px 0"></div>
+          <div style="padding:6px 8px; color:#F87171; font-size:11px; cursor:default">Lost</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 10. Menu -->
+    <div class="component-card">
+      <div class="component-header">
+        <h3>Menu (Navigation)</h3>
+        <span class="comp-number">§2.10</span>
+      </div>
+      <div class="component-preview">
+        <div style="background:#0F172A; border:1px solid #1E293B; border-radius:6px; width:100%; display:flex; flex-direction:column">
+          <div style="padding:6px 10px; background:rgba(37,99,235,0.08); border-left:3px solid #2563EB; color:#60A5FA; font-size:11px; font-weight:600">● Dashboard</div>
+          <div style="padding:6px 10px; color:#94A3B8; font-size:11px">○ Pipeline</div>
+          <div style="padding:6px 10px; color:#94A3B8; font-size:11px">○ Contacts</div>
+          <div style="height:1px; background:#1E293B;"></div>
+          <div style="padding:6px 10px; color:#94A3B8; font-size:11px">○ Reports</div>
+        </div>
+        <div style="color:#475569; font-size:10px; margin-top:4px">Sidebar (240px) · Horizontal · Active/Badge/Separator</div>
+      </div>
+    </div>
+
+    <!-- 11. Sidebar -->
+    <div class="component-card">
+      <div class="component-header">
+        <h3>Sidebar</h3>
+        <span class="comp-number">§2.11</span>
+      </div>
+      <div class="component-preview">
+        <div style="display:flex; gap:8px">
+          <div style="width:80px; background:#0F172A; border:1px solid #1E293B; border-radius:6px; padding:6px; display:flex; flex-direction:column; align-items:center; gap:10px">
+            <div style="width:20px; height:20px; background:linear-gradient(135deg,#2563EB,#14B8A6); border-radius:4px"></div>
+            <div style="color:#94A3B8; font-size:10px">≡</div>
+            <div style="color:#60A5FA; font-size:10px">◆</div>
+            <div style="color:#94A3B8; font-size:10px">♟</div>
+            <div style="color:#94A3B8; font-size:10px">©</div>
+          </div>
+          <div style="width:130px; background:#0F172A; border:1px solid #1E293B; border-radius:6px; padding:6px;">
+            <div style="font-size:10px; font-weight:700; color:#F1F5F9; margin-bottom:8px">FrontierCRM</div>
+            <div style="padding:4px 6px; background:rgba(37,99,235,0.08); border-left:3px solid #2563EB; color:#60A5FA; font-size:10px; font-weight:600">Dashboard</div>
+            <div style="padding:4px 6px; color:#94A3B8; font-size:10px">Pipeline</div>
+            <div style="padding:4px 6px; color:#94A3B8; font-size:10px">Contacts</div>
+            <div style="height:1px; background:#1E293B; margin:4px 0"></div>
+            <div style="padding:4px 6px; color:#F59E0B; font-size:9px; background:rgba(245,158,11,0.1); border-radius:4px">⬆ Upgrade to Growth</div>
+          </div>
+        </div>
+        <div style="color:#475569; font-size:10px">Expanded (240px) · Collapsed (60px) · Mobile overlay</div>
+      </div>
+    </div>
+
+    <!-- 12. Pipeline Kanban -->
+    <div class="component-card">
+      <div class="component-header">
+        <h3>Pipeline Kanban</h3>
+        <span class="comp-number">§2.12</span>
+      </div>
+      <div class="component-preview">
+        <div class="kanban-mini">
+          <div class="kanban-col">
+            <div class="col-header">Lead</div>
+            <div class="kanban-card"><div class="deal-name">Acme</div><div class="deal-value">$24K</div></div>
+            <div class="kanban-card"><div class="deal-name">Beta</div><div class="deal-value">$15K</div></div>
+          </div>
+          <div class="kanban-col">
+            <div class="col-header">Qlf'd</div>
+            <div class="kanban-card"><div class="deal-name">Gamma</div><div class="deal-value">$52K</div></div>
+          </div>
+          <div class="kanban-col">
+            <div class="col-header">Proposal</div>
+            <div class="kanban-card"><div class="deal-name">Delta</div><div class="deal-value">$120K</div></div>
+          </div>
+        </div>
+        <div style="color:#475569; font-size:10px">Drag-and-drop · Multi-select · Undo toast · Empty drop zones</div>
+      </div>
+    </div>
+
+    <!-- 13. Dashboard Widget -->
+    <div class="component-card">
+      <div class="component-header">
+        <h3>Dashboard Widget</h3>
+        <span class="comp-number">§2.13</span>
+      </div>
+      <div class="component-preview">
+        <div style="background:#0F172A; border:1px solid #1E293B; border-radius:6px; padding:10px">
+          <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:8px">
+            <span style="color:#94A3B8; font-size:10px; font-weight:600">Pipeline Value</span>
+            <span style="color:#475569; font-size:9px">Today · Week · Month</span>
+          </div>
+          <div style="font-size:22px; font-weight:700; color:#F1F5F9">$847,500</div>
+          <div style="color:#34D399; font-size:11px; margin-bottom:8px">↑ +12.3% vs last week</div>
+          <div class="progress-bar"><div class="fill" style="width:64%"></div></div>
+          <div style="display:flex; justify-content:space-between; margin-top:2px">
+            <span style="color:#64748B; font-size:9px">Goal: $1.3M</span>
+            <span style="color:#94A3B8; font-size:9px">64%</span>
+          </div>
+        </div>
+        <div style="color:#475569; font-size:10px">6 types (KPI, Chart, List, Progress, Activity, Kanban-mini)</div>
+      </div>
+    </div>
+
+    <!-- 14. Timeline / Activity Feed -->
+    <div class="component-card">
+      <div class="component-header">
+        <h3>Activity Feed</h3>
+        <span class="comp-number">§2.14</span>
+      </div>
+      <div class="component-preview">
+        <div style="padding-left:16px; border-left:2px solid #1E293B; display:flex; flex-direction:column; gap:8px">
+          <div style="display:flex; gap:6px; align-items:flex-start">
+            <span style="width:6px;height:6px;border-radius:50%;background:#2563EB;flex-shrink:0;margin-top:3px;margin-left:-17px"></span>
+            <div>
+              <div style="color:#94A3B8; font-size:9px">2:30 PM</div>
+              <div style="color:#E2E8F0; font-size:10px">Jamie sent follow-up email</div>
+            </div>
+          </div>
+          <div style="display:flex; gap:6px; align-items:flex-start">
+            <span style="width:6px;height:6px;border-radius:50%;background:#14B8A6;flex-shrink:0;margin-top:3px;margin-left:-17px"></span>
+            <div>
+              <div style="color:#94A3B8; font-size:9px">1:15 PM</div>
+              <div style="color:#E2E8F0; font-size:10px">Alex moved Beta Inc → Proposal</div>
+            </div>
+          </div>
+          <div style="display:flex; gap:6px; align-items:flex-start">
+            <span style="width:6px;height:6px;border-radius:50%;background:#F59E0B;flex-shrink:0;margin-top:3px;margin-left:-17px"></span>
+            <div>
+              <div style="color:#94A3B8; font-size:9px">11:00 AM</div>
+              <div style="color:#E2E8F0; font-size:10px">Call with Dana — 22 min</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 15. SearchBar -->
+    <div class="component-card">
+      <div class="component-header">
+        <h3>SearchBar</h3>
+        <span class="comp-number">§2.15</span>
+      </div>
+      <div class="component-preview">
+        <div style="display:flex; gap:6px">
+          <div style="flex:1; height:32px; background:#0F172A; border:1px solid #334155; border-radius:8px; display:flex; align-items:center; padding:0 8px; gap:6px">
+            <span style="color:#64748B">🔍</span>
+            <span style="color:#64748B; font-size:11px">Search contacts, deals...</span>
+            <span style="margin-left:auto; color:#475569; font-size:9px; background:#1E293B; padding:1px 4px; border-radius:3px">⌘K</span>
+          </div>
+        </div>
+        <div style="background:#0F172A; border:1px solid #1E293B; border-radius:6px; margin-top:4px; padding:6px">
+          <div style="color:#64748B; font-size:9px; font-weight:600; margin-bottom:4px">Deals (3)</div>
+          <div style="color:#E2E8F0; font-size:10px">Acme Corp · Proposal · $24,500</div>
+          <div style="color:#E2E8F0; font-size:10px">Beta Inc · Qualified · $52,000</div>
+          <div style="color:#475569; font-size:9px; margin-top:4px">↓ Show all results</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 16. Notification -->
+    <div class="component-card">
+      <div class="component-header">
+        <h3>Notification</h3>
+        <span class="comp-number">§2.16</span>
+      </div>
+      <div class="component-preview">
+        <div style="display:flex; gap:8px">
+          <div style="position:relative">
+            <span style="font-size:20px">🔔</span>
+            <span style="position:absolute; top:-4px; right:-6px; background:#EF4444; color:#fff; font-size:8px; font-weight:700; width:16px; height:16px; border-radius:50%; display:flex; align-items:center; justify-content:center">3</span>
+          </div>
+          <div style="flex:1; background:#0F172A; border:1px solid #1E293B; border-radius:6px; padding:8px">
+            <div style="display:flex; gap:6px; align-items:flex-start">
+              <span style="color:#2563EB; font-size:6px">●</span>
+              <div>
+                <div style="color:#E2E8F0; font-size:10px">Alex updated Beta Inc</div>
+                <div style="color:#64748B; font-size:9px">2 min ago</div>
+              </div>
+            </div>
+            <div style="display:flex; gap:6px; align-items:flex-start; margin-top:6px; opacity:0.6">
+              <span style="color:#94A3B8; font-size:6px">○</span>
+              <div>
+                <div style="color:#E2E8F0; font-size:10px">14 leads imported</div>
+                <div style="color:#64748B; font-size:9px">1h ago</div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div style="color:#475569; font-size:10px">Toast + Panel · 6 types · 5s auto-dismiss · Badge count</div>
+      </div>
+    </div>
+
+    <!-- 17. Onboarding Step / Wizard -->
+    <div class="component-card">
+      <div class="component-header">
+        <h3>Onboarding Wizard</h3>
+        <span class="comp-number">§2.17</span>
+      </div>
+      <div class="component-preview">
+        <div style="display:flex; align-items:center; justify-content:center; gap:8px; margin-bottom:10px">
+          <span style="width:16px;height:16px;border-radius:50%;background:#2563EB;color:#fff;font-size:8px;font-weight:700;display:flex;align-items:center;justify-content:center">✓</span>
+          <span style="width:10px;height:2px;background:#2563EB;border-radius:1px"></span>
+          <span style="width:16px;height:16px;border-radius:50%;background:#2563EB;color:#fff;font-size:8px;font-weight:700;display:flex;align-items:center;justify-content:center">●</span>
+          <span style="width:10px;height:2px;background:#334155;border-radius:1px"></span>
+          <span style="width:14px;height:14px;border-radius:50%;border:2px solid #334155;color:#64748B;font-size:8px;display:flex;align-items:center;justify-content:center">○</span>
+          <span style="width:10px;height:2px;background:#334155;border-radius:1px"></span>
+          <span style="width:14px;height:14px;border-radius:50%;border:2px solid #334155;color:#64748B;font-size:8px;display:flex;align-items:center;justify-content:center">○</span>
+        </div>
+        <div style="background:#0F172A; border:1px dashed #334155; border-radius:8px; padding:16px; text-align:center">
+          <div style="font-size:18px; margin-bottom:6px">🎯</div>
+          <div style="color:#F1F5F9; font-size:12px; font-weight:600">Import Your Contacts</div>
+          <div style="color:#64748B; font-size:10px; margin-top:4px">Drag & drop CSV or connect Gmail</div>
+          <div style="display:flex; gap:6px; justify-content:center; margin-top:10px">
+            <span class="btn btn-secondary btn-sm">Back</span>
+            <span class="btn btn-primary btn-sm">Next</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="footer">
+    FrontierCRM Design System · 17 Core Components · React 19 + Tailwind CSS v4 · WCAG 2.1 AA
+  </div>
+</div>
+</body>
+</html>

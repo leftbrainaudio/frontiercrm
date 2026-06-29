@@ -1,0 +1,30 @@
+{
+  "Rules": [
+    {
+      "Id": "expire-temp-uploads",
+      "Status": "Enabled",
+      "Filter": {"Prefix": "temp/"},
+      "Expiration": {"Days": 1}
+    },
+    {
+      "Id": "expire-old-uploads",
+      "Status": "Enabled",
+      "Filter": {"Prefix": "uploads/"},
+      "Expiration": {"Days": 365}
+    },
+    {
+      "Id": "expire-old-backups",
+      "Status": "Enabled",
+      "Filter": {"Prefix": "backups/"},
+      "Expiration": {"Days": 30}
+    },
+    {
+      "Id": "abort-incomplete-multipart-uploads",
+      "Status": "Enabled",
+      "Filter": {"Prefix": ""},
+      "AbortIncompleteMultipartUpload": {
+        "DaysAfterInitiation": 7
+      }
+    }
+  ]
+}

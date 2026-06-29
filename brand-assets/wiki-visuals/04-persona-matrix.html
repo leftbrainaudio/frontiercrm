@@ -1,0 +1,365 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>FrontierCRM — Persona Matrix</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body {
+  background: #0B1120;
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 48px 24px;
+}
+.container { max-width: 960px; width: 100%; }
+.header { margin-bottom: 36px; }
+.header h1 { color: #F1F5F9; font-size: 28px; font-weight: 700; letter-spacing: -0.015em; }
+.header .subtitle { color: #64748B; font-size: 14px; margin-top: 8px; display: flex; align-items: center; gap: 8px; }
+.header .subtitle .dot { display: inline-block; width: 8px; height: 8px; border-radius: 50%; background: #14B8A6; }
+
+.persona-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+}
+
+/* Persona card */
+.persona-card {
+  background: #121A2E;
+  border: 1px solid #1E293B;
+  border-radius: 12px;
+  padding: 20px;
+  position: relative;
+  overflow: hidden;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+.persona-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 12px 32px rgba(0,0,0,0.25);
+}
+
+/* Accent bar */
+.persona-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 4px;
+  height: 100%;
+}
+.card-blue::before { background: #2563EB; }
+.card-teal::before { background: #14B8A6; }
+.card-amber::before { background: #F59E0B; }
+.card-slate::before { background: #475569; }
+
+/* Top row: avatar + name + role */
+.persona-top {
+  display: flex;
+  align-items: flex-start;
+  gap: 14px;
+  margin-bottom: 16px;
+}
+.persona-avatar {
+  width: 48px;
+  height: 48px;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 22px;
+  flex-shrink: 0;
+}
+.avatar-blue { background: rgba(37,99,235,0.15); }
+.avatar-teal { background: rgba(20,184,166,0.15); }
+.avatar-amber { background: rgba(245,158,11,0.15); }
+.avatar-slate { background: rgba(71,85,105,0.2); }
+
+.persona-name-area { }
+.persona-name { color: #F1F5F9; font-size: 17px; font-weight: 700; }
+.persona-role { color: #64748B; font-size: 12px; margin-top: 2px; }
+.persona-tag {
+  display: inline-block;
+  font-size: 10px;
+  font-weight: 600;
+  padding: 2px 8px;
+  border-radius: 9999px;
+  margin-top: 6px;
+}
+.tag-blue { background: rgba(37,99,235,0.12); color: #60A5FA; }
+.tag-teal { background: rgba(20,184,166,0.12); color: #34D399; }
+.tag-amber { background: rgba(245,158,11,0.12); color: #FBBF24; }
+.tag-slate { background: rgba(71,85,105,0.2); color: #94A3B8; }
+
+/* Needs section */
+.needs-title { color: #475569; font-size: 10px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 8px; }
+.needs-list { display: flex; flex-direction: column; gap: 5px; }
+.need-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  color: #94A3B8;
+  font-size: 12px;
+  line-height: 1.4;
+}
+.need-item .need-icon {
+  font-size: 10px;
+  flex-shrink: 0;
+  margin-top: 2px;
+}
+
+/* Feature priorities */
+.feature-pills { display: flex; flex-wrap: wrap; gap: 4px; margin-top: 12px; }
+.pill { font-size: 9px; font-weight: 600; padding: 2px 6px; border-radius: 4px; }
+.pill-p0 { background: rgba(37,99,235,0.15); color: #60A5FA; }
+.pill-p1 { background: rgba(20,184,166,0.12); color: #34D399; }
+.pill-p2 { background: rgba(71,85,105,0.2); color: #64748B; }
+
+/* Footer */
+.footer { margin-top: 28px; text-align: center; color: #475569; font-size: 12px; }
+.persona-count { text-align: center; margin-bottom: 20px; }
+.persona-count span { color: #64748B; font-size: 12px; }
+.persona-count strong { color: #94A3B8; }
+
+@media (max-width: 700px) {
+  .persona-grid { grid-template-columns: 1fr; }
+}
+</style>
+</head>
+<body>
+<div class="container">
+  <div class="header">
+    <h1>👥 User Persona Matrix</h1>
+    <div class="subtitle">
+      <span class="dot"></span>
+      FrontierCRM · 8 Personas · SMB 10–200 seat sweet spot
+      <span style="color:#475569">·</span>
+      <span style="color:#475569">Derived from competitive research</span>
+    </div>
+  </div>
+
+  <div class="persona-count">
+    <strong>8 personas</strong> <span>· segmented by role, goals, and CRM needs</span>
+  </div>
+
+  <div class="persona-grid">
+
+    <!-- 1. Alex — SMB Sales Rep -->
+    <div class="persona-card card-blue">
+      <div class="persona-top">
+        <div class="persona-avatar avatar-blue">🎯</div>
+        <div class="persona-name-area">
+          <div class="persona-name">Alex</div>
+          <div class="persona-role">SMB Sales Rep (SDR / AE)</div>
+          <span class="persona-tag tag-blue">End User</span>
+        </div>
+      </div>
+      <div class="needs-title">Top Needs</div>
+      <div class="needs-list">
+        <div class="need-item"><span class="need-icon">⚡</span> One-click activity capture — calls, emails, meetings</div>
+        <div class="need-item"><span class="need-icon">🚀</span> Lightning-fast pipeline — 1-2 clicks from any screen</div>
+        <div class="need-item"><span class="need-icon">📱</span> Full mobile parity — send emails, close deals on phone</div>
+        <div class="need-item"><span class="need-icon">🤖</span> AI next-best-action surfaces highest-impact activity</div>
+      </div>
+      <div class="feature-pills">
+        <span class="pill pill-p0">Pipeline</span>
+        <span class="pill pill-p0">Email Sync</span>
+        <span class="pill pill-p0">Mobile</span>
+        <span class="pill pill-p0">AI Scoring</span>
+        <span class="pill pill-p1">Sequences</span>
+      </div>
+    </div>
+
+    <!-- 2. Jordan — Enterprise Sales Rep -->
+    <div class="persona-card card-teal">
+      <div class="persona-top">
+        <div class="persona-avatar avatar-teal">🤝</div>
+        <div class="persona-name-area">
+          <div class="persona-name">Jordan</div>
+          <div class="persona-role">Enterprise Account Executive</div>
+          <span class="persona-tag tag-teal">Power User</span>
+        </div>
+      </div>
+      <div class="needs-title">Top Needs</div>
+      <div class="needs-list">
+        <div class="need-item"><span class="need-icon">🗺️</span> Multi-threaded deal tracking with stakeholder maps</div>
+        <div class="need-item"><span class="need-icon">👁️</span> Team activity feed — SE, CS, management on each account</div>
+        <div class="need-item"><span class="need-icon">📊</span> AI forecasting — predictive close dates from activity</div>
+        <div class="need-item"><span class="need-icon">✍️</span> AI meeting note summarization with action items</div>
+      </div>
+      <div class="feature-pills">
+        <span class="pill pill-p0">Stakeholder Maps</span>
+        <span class="pill pill-p0">Activity Feed</span>
+        <span class="pill pill-p0">AI Forecast</span>
+        <span class="pill pill-p0">Slack</span>
+        <span class="pill pill-p1">Deal Rooms</span>
+      </div>
+    </div>
+
+    <!-- 3. Morgan — Sales Manager -->
+    <div class="persona-card card-amber">
+      <div class="persona-top">
+        <div class="persona-avatar avatar-amber">📈</div>
+        <div class="persona-name-area">
+          <div class="persona-name">Morgan</div>
+          <div class="persona-role">Sales Manager (5-15 reps)</div>
+          <span class="persona-tag tag-amber">Influencer</span>
+        </div>
+      </div>
+      <div class="needs-title">Top Needs</div>
+      <div class="needs-list">
+        <div class="need-item"><span class="need-icon">📡</span> Real-time pipeline dashboard — no manual reporting</div>
+        <div class="need-item"><span class="need-icon">⏱️</span> Deal velocity analysis — time-in-stage, stalled alerts</div>
+        <div class="need-item"><span class="need-icon">📋</span> Rep activity analytics — calls/email per day, conversion</div>
+        <div class="need-item"><span class="need-icon">🚩</span> AI deal risk scoring before the rep knows</div>
+      </div>
+      <div class="feature-pills">
+        <span class="pill pill-p0">Dashboards</span>
+        <span class="pill pill-p0">Deal Velocity</span>
+        <span class="pill pill-p0">Rep Analytics</span>
+        <span class="pill pill-p0">AI Scoring</span>
+        <span class="pill pill-p1">Forecast Acc.</span>
+      </div>
+    </div>
+
+    <!-- 4. Riley — Sales Director / VP -->
+    <div class="persona-card card-blue">
+      <div class="persona-top">
+        <div class="persona-avatar avatar-blue">🏆</div>
+        <div class="persona-name-area">
+          <div class="persona-name">Riley</div>
+          <div class="persona-role">Sales Director / VP of Sales</div>
+          <span class="persona-tag tag-blue">Decision Maker</span>
+        </div>
+      </div>
+      <div class="needs-title">Top Needs</div>
+      <div class="needs-list">
+        <div class="need-item"><span class="need-icon">🎯</span> Accurate revenue forecasting for board/investors</div>
+        <div class="need-item"><span class="need-icon">🗺️</span> Territory planning — coverage w/o overlap or gaps</div>
+        <div class="need-item"><span class="need-icon">🔍</span> Sales process analytics — funnel conversion rates</div>
+        <div class="need-item"><span class="need-icon">📄</span> Playbook & methodology support embedded in CRM</div>
+      </div>
+      <div class="feature-pills">
+        <span class="pill pill-p0">Executive Summary</span>
+        <span class="pill pill-p0">Territory Mgmt</span>
+        <span class="pill pill-p0">Forecast</span>
+        <span class="pill pill-p1">Playbooks</span>
+        <span class="pill pill-p1">Process Analytics</span>
+      </div>
+    </div>
+
+    <!-- 5. Casey — CRM Admin -->
+    <div class="persona-card card-slate">
+      <div class="persona-top">
+        <div class="persona-avatar avatar-slate">⚙️</div>
+        <div class="persona-name-area">
+          <div class="persona-name">Casey</div>
+          <div class="persona-role">CRM Administrator / IT Manager</div>
+          <span class="persona-tag tag-slate">Gatekeeper</span>
+        </div>
+      </div>
+      <div class="needs-title">Top Needs</div>
+      <div class="needs-list">
+        <div class="need-item"><span class="need-icon">🔧</span> No-code configuration — fields, picklists, page layouts</div>
+        <div class="need-item"><span class="need-icon">🔌</span> API-first design — REST API, GraphQL, webhooks</div>
+        <div class="need-item"><span class="need-icon">📥</span> Bulk import/export — CSV, mapping preview, conflicts</div>
+        <div class="need-item"><span class="need-icon">🔒</span> Role-based access control + audit log</div>
+      </div>
+      <div class="feature-pills">
+        <span class="pill pill-p0">API/Webhooks</span>
+        <span class="pill pill-p0">RBAC</span>
+        <span class="pill pill-p0">No-Code Config</span>
+        <span class="pill pill-p0">Bulk Import</span>
+        <span class="pill pill-p1">Audit Log</span>
+      </div>
+    </div>
+
+    <!-- 6. Sam — Small Business Owner -->
+    <div class="persona-card card-amber">
+      <div class="persona-top">
+        <div class="persona-avatar avatar-amber">🚀</div>
+        <div class="persona-name-area">
+          <div class="persona-name">Sam</div>
+          <div class="persona-role">Founder / CEO (3-15 person business)</div>
+          <span class="persona-tag tag-amber">Sole Buyer</span>
+        </div>
+      </div>
+      <div class="needs-title">Top Needs</div>
+      <div class="needs-list">
+        <div class="need-item"><span class="need-icon">⏱️</span> Minimal setup — import contacts, start in 10 minutes</div>
+        <div class="need-item"><span class="need-icon">📊</span> Simple dashboard — leads, deals, tickets in one view</div>
+        <div class="need-item"><span class="need-icon">🔗</span> Email + calendar sync out of the box</div>
+        <div class="need-item"><span class="need-icon">💵</span> Flat pricing — one price for whole company</div>
+      </div>
+      <div class="feature-pills">
+        <span class="pill pill-p0">Quick Setup</span>
+        <span class="pill pill-p0">Email Sync</span>
+        <span class="pill pill-p0">Mobile</span>
+        <span class="pill pill-p1">AI Drafting</span>
+        <span class="pill pill-p1">All-in-One</span>
+      </div>
+    </div>
+
+    <!-- 7. Taylor — Customer Support -->
+    <div class="persona-card card-teal">
+      <div class="persona-top">
+        <div class="persona-avatar avatar-teal">💬</div>
+        <div class="persona-name-area">
+          <div class="persona-name">Taylor</div>
+          <div class="persona-role">Customer Support / Success Agent</div>
+          <span class="persona-tag tag-teal">End User</span>
+        </div>
+      </div>
+      <div class="needs-title">Top Needs</div>
+      <div class="needs-list">
+        <div class="need-item"><span class="need-icon">🔄</span> Customer 360 — sales pipeline + support tickets unified</div>
+        <div class="need-item"><span class="need-icon">🎫</span> Ticket management — queue, SLA, status pipeline</div>
+        <div class="need-item"><span class="need-icon">📚</span> Knowledge base with AI-suggested answers</div>
+        <div class="need-item"><span class="need-icon">🚨</span> Collision detection — sales + support on same account</div>
+      </div>
+      <div class="feature-pills">
+        <span class="pill pill-p0">Customer 360</span>
+        <span class="pill pill-p0">Ticket Mgmt</span>
+        <span class="pill pill-p0">KB</span>
+        <span class="pill pill-p1">SLA Tracking</span>
+        <span class="pill pill-p1">Collab</span>
+      </div>
+    </div>
+
+    <!-- 8. Dana — C-Suite Executive -->
+    <div class="persona-card card-blue">
+      <div class="persona-top">
+        <div class="persona-avatar avatar-blue">👑</div>
+        <div class="persona-name-area">
+          <div class="persona-name">Dana</div>
+          <div class="persona-role">CEO / CRO / COO</div>
+          <span class="persona-tag tag-blue">Ultimate Buyer</span>
+        </div>
+      </div>
+      <div class="needs-title">Top Needs</div>
+      <div class="needs-list">
+        <div class="need-item"><span class="need-icon">📈</span> Revenue predictability — confidence in next quarter</div>
+        <div class="need-item"><span class="need-icon">❤️</span> Customer health scoring — churn risk flags</div>
+        <div class="need-item"><span class="need-icon">📋</span> Executive dashboard — ARR, pipeline coverage, NRR</div>
+        <div class="need-item"><span class="need-icon">💲</span> Predictable TCO — no outgrow-tier surprises</div>
+      </div>
+      <div class="feature-pills">
+        <span class="pill pill-p0">Exec Summary</span>
+        <span class="pill pill-p0">Churn Prediction</span>
+        <span class="pill pill-p0">Forecast</span>
+        <span class="pill pill-p1">Health Scoring</span>
+        <span class="pill pill-p1">Team KPIs</span>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="footer">
+    FrontierCRM · 8 Personas · Derived from market research across 10 CRM competitors · Feature priorities: P0 (core) → P1 (important) → P2 (nice-to-have)
+  </div>
+</div>
+</body>
+</html>

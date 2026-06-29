@@ -1,0 +1,355 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>FrontierCRM — Color Palette</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body {
+  background: #0B1120;
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  padding: 48px 24px;
+}
+.container {
+  max-width: 900px;
+  width: 100%;
+}
+.header {
+  margin-bottom: 36px;
+}
+.header h1 {
+  color: #F1F5F9;
+  font-size: 28px;
+  font-weight: 700;
+  letter-spacing: -0.015em;
+}
+.header .subtitle {
+  color: #64748B;
+  font-size: 14px;
+  font-weight: 400;
+  margin-top: 8px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.header .subtitle .dot {
+  display: inline-block;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #14B8A6;
+}
+.palette-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 28px;
+}
+.section {
+  background: #121A2E;
+  border: 1px solid #1E293B;
+  border-radius: 12px;
+  padding: 24px;
+}
+.section-title {
+  color: #94A3B8;
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin-bottom: 16px;
+}
+.swatch-row {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 12px;
+}
+.swatch {
+  border-radius: 10px;
+  overflow: hidden;
+  border: 1px solid rgba(255,255,255,0.06);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+.swatch:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 8px 24px rgba(0,0,0,0.3);
+}
+.swatch-color {
+  height: 80px;
+  position: relative;
+}
+.swatch-info {
+  background: #0F172A;
+  padding: 10px 12px;
+}
+.swatch-name {
+  color: #F1F5F9;
+  font-size: 12px;
+  font-weight: 600;
+  font-family: 'JetBrains Mono', monospace;
+}
+.swatch-hex {
+  color: #64748B;
+  font-size: 11px;
+  font-family: 'JetBrains Mono', monospace;
+  margin-top: 2px;
+}
+.swatch-usage {
+  color: #94A3B8;
+  font-size: 10px;
+  margin-top: 4px;
+  line-height: 1.3;
+}
+.badge {
+  display: inline-block;
+  font-size: 9px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  padding: 2px 6px;
+  border-radius: 4px;
+  margin-top: 6px;
+}
+.badge-primary { background: rgba(37,99,235,0.15); color: #60A5FA; }
+.badge-secondary { background: rgba(20,184,166,0.15); color: #34D399; }
+.badge-accent { background: rgba(245,158,11,0.15); color: #FBBF24; }
+.badge-neutral { background: rgba(71,85,105,0.25); color: #94A3B8; }
+
+/* Semantic row */
+.semantic-row {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 12px;
+}
+
+.footer {
+  margin-top: 24px;
+  text-align: center;
+  color: #475569;
+  font-size: 12px;
+}
+
+@media (max-width: 700px) {
+  .swatch-row { grid-template-columns: repeat(2, 1fr); }
+  .semantic-row { grid-template-columns: repeat(2, 1fr); }
+}
+</style>
+</head>
+<body>
+<div class="container">
+  <div class="header">
+    <h1>🎨 Brand Color Palette</h1>
+    <div class="subtitle">
+      <span class="dot"></span>
+      FrontierCRM · Design System v1.0
+      <span style="color:#475569">·</span>
+      <span style="color:#475569">WCAG 2.1 AA</span>
+    </div>
+  </div>
+
+  <div class="palette-grid">
+
+    <!-- PRIMARY: Blue -->
+    <div class="section">
+      <div class="section-title">Primary — Blue (Trust & Action)</div>
+      <div class="swatch-row">
+        <div class="swatch">
+          <div class="swatch-color" style="background:#2563EB"></div>
+          <div class="swatch-info">
+            <div class="swatch-name">Primary</div>
+            <div class="swatch-hex">#2563EB</div>
+            <div style="margin-top:4px"><span class="badge badge-primary">Brand Blue</span></div>
+            <div class="swatch-usage">Primary buttons, links, active nav</div>
+          </div>
+        </div>
+        <div class="swatch">
+          <div class="swatch-color" style="background:#1D4ED8"></div>
+          <div class="swatch-info">
+            <div class="swatch-name">Primary-700</div>
+            <div class="swatch-hex">#1D4ED8</div>
+            <div class="swatch-usage">Active/pressed state. WCAG AAA on white</div>
+          </div>
+        </div>
+        <div class="swatch">
+          <div class="swatch-color" style="background:#3B82F6"></div>
+          <div class="swatch-info">
+            <div class="swatch-name">Primary-500</div>
+            <div class="swatch-hex">#3B82F6</div>
+            <div class="swatch-usage">Accent on dark, info indicators</div>
+          </div>
+        </div>
+        <div class="swatch" style="grid-column:span 2; display:grid; grid-template-columns:1fr 1fr; gap:0">
+          <div style="background:#EFF6FF; padding:10px 12px;">
+            <div style="color:#1E40AF; font-size:11px; font-weight:600; font-family:'JetBrains Mono',monospace">50</div>
+            <div style="color:#2563EB; font-size:10px; font-family:'JetBrains Mono',monospace">#EFF6FF</div>
+            <div style="color:#475569; font-size:9px; margin-top:2px">Light bg, hover states</div>
+          </div>
+          <div style="background:#DBEAFE; padding:10px 12px;">
+            <div style="color:#1E40AF; font-size:11px; font-weight:600; font-family:'JetBrains Mono',monospace">100</div>
+            <div style="color:#2563EB; font-size:10px; font-family:'JetBrains Mono',monospace">#DBEAFE</div>
+            <div style="color:#475569; font-size:9px; margin-top:2px">Selected list items</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- SECONDARY: Teal -->
+    <div class="section">
+      <div class="section-title">Secondary — Teal (Growth & Success)</div>
+      <div class="swatch-row">
+        <div class="swatch">
+          <div class="swatch-color" style="background:#14B8A6"></div>
+          <div class="swatch-info">
+            <div class="swatch-name">Secondary</div>
+            <div class="swatch-hex">#14B8A6</div>
+            <div style="margin-top:4px"><span class="badge badge-secondary">Teal</span></div>
+            <div class="swatch-usage">Secondary accent, badges, data viz</div>
+          </div>
+        </div>
+        <div class="swatch">
+          <div class="swatch-color" style="background:#0D9488"></div>
+          <div class="swatch-info">
+            <div class="swatch-name">Secondary-600</div>
+            <div class="swatch-hex">#0D9488</div>
+            <div class="swatch-usage">Secondary hover state</div>
+          </div>
+        </div>
+        <div class="swatch">
+          <div class="swatch-color" style="background:#34D399"></div>
+          <div class="swatch-info">
+            <div class="swatch-name">Secondary-400</div>
+            <div class="swatch-hex">#34D399</div>
+            <div class="swatch-usage">Success indicators, progress bars</div>
+          </div>
+        </div>
+        <div class="swatch">
+          <div class="swatch-color" style="background:#10B981"></div>
+          <div class="swatch-info">
+            <div class="swatch-name">Success</div>
+            <div class="swatch-hex">#10B981</div>
+            <div class="swatch-usage">Completed, won, active states</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ACCENT: Amber -->
+    <div class="section">
+      <div class="section-title">Accent — Amber (Warmth & Attention)</div>
+      <div class="swatch-row">
+        <div class="swatch">
+          <div class="swatch-color" style="background:#F59E0B"></div>
+          <div class="swatch-info">
+            <div class="swatch-name">Accent</div>
+            <div class="swatch-hex">#F59E0B</div>
+            <div style="margin-top:4px"><span class="badge badge-accent">Amber</span></div>
+            <div class="swatch-usage">Attention calls, warnings, highlights</div>
+          </div>
+        </div>
+        <div class="swatch">
+          <div class="swatch-color" style="background:#D97706"></div>
+          <div class="swatch-info">
+            <div class="swatch-name">Accent-600</div>
+            <div class="swatch-hex">#D97706</div>
+            <div class="swatch-usage">Warning border, hover state</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- NEUTRAL: Slate -->
+    <div class="section">
+      <div class="section-title">Neutral — Slate (Structure & Readability)</div>
+      <div class="swatch-row">
+        <div class="swatch">
+          <div class="swatch-color" style="background:#F8FAFC"></div>
+          <div class="swatch-info" style="background:#fff">
+            <div class="swatch-name" style="color:#1E293B">Slate-50</div>
+            <div class="swatch-hex" style="color:#64748B">#F8FAFC</div>
+            <span class="badge badge-neutral" style="background:rgba(0,0,0,0.05);color:#475569">Page BG</span>
+            <div class="swatch-usage" style="color:#64748B">Page backgrounds (light mode)</div>
+          </div>
+        </div>
+        <div class="swatch">
+          <div class="swatch-color" style="background:#E2E8F0"></div>
+          <div class="swatch-info" style="background:#fff">
+            <div class="swatch-name" style="color:#1E293B">Slate-200</div>
+            <div class="swatch-hex" style="color:#64748B">#E2E8F0</div>
+            <span class="badge badge-neutral" style="background:rgba(0,0,0,0.05);color:#475569">Border</span>
+            <div class="swatch-usage" style="color:#64748B">Borders, dividers, separators</div>
+          </div>
+        </div>
+        <div class="swatch">
+          <div class="swatch-color" style="background:#475569"></div>
+          <div class="swatch-info">
+            <div class="swatch-name">Slate-600</div>
+            <div class="swatch-hex">#475569</div>
+            <span class="badge badge-neutral" style="background:rgba(255,255,255,0.1)">Body</span>
+            <div class="swatch-usage">Body text, secondary content</div>
+          </div>
+        </div>
+        <div class="swatch">
+          <div class="swatch-color" style="background:#1E293B"></div>
+          <div class="swatch-info">
+            <div class="swatch-name">Slate-800</div>
+            <div class="swatch-hex">#1E293B</div>
+            <span class="badge badge-neutral" style="background:rgba(255,255,255,0.1)">Heading</span>
+            <div class="swatch-usage">Strong headings, dark border</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- SEMANTIC -->
+    <div class="section">
+      <div class="section-title">Semantic — Status Colors</div>
+      <div class="semantic-row">
+        <div class="swatch">
+          <div class="swatch-color" style="background:#3B82F6"></div>
+          <div class="swatch-info">
+            <div class="swatch-name">Info</div>
+            <div class="swatch-hex">#3B82F6</div>
+            <div class="swatch-usage">Informational status</div>
+          </div>
+        </div>
+        <div class="swatch">
+          <div class="swatch-color" style="background:#10B981"></div>
+          <div class="swatch-info">
+            <div class="swatch-name">Success</div>
+            <div class="swatch-hex">#10B981</div>
+            <div class="swatch-usage">Completed, active</div>
+          </div>
+        </div>
+        <div class="swatch">
+          <div class="swatch-color" style="background:#F59E0B"></div>
+          <div class="swatch-info">
+            <div class="swatch-name">Warning</div>
+            <div class="swatch-hex">#F59E0B</div>
+            <div class="swatch-usage">Pending, caution</div>
+          </div>
+        </div>
+        <div class="swatch">
+          <div class="swatch-color" style="background:#EF4444"></div>
+          <div class="swatch-info">
+            <div class="swatch-name">Error</div>
+            <div class="swatch-hex">#EF4444</div>
+            <div class="swatch-usage">Errors, lost, blocked</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="footer">
+    FrontierCRM Design System · Color Palette v1.0 · WCAG 2.1 AA Compliant
+  </div>
+</div>
+</body>
+</html>

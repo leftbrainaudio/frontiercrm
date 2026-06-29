@@ -1,0 +1,115 @@
+# ── FrontierCRM API — Fly.io Config ──────────────────────────────────────────
+# Deploy: flyctl deploy --remote-only -c fly.toml
+# Zero-downtime via blue-green (Fly.io default with max-per-process)
+#
+# Three processes:
+#   app    - Gunicorn HTTP server (always on)
+#   worker - Celery worker (scales to zero)
+#   beat   - Celery beat scheduler (scales to zero)
+
+app = "frontiercrm-api"
+primary_region = "iad"
+kill_signal = "SIGTERM"
+kill_timeout = 30
+
+[experimental]
+  cmd = "gunicorn config.wsgi:application --bind 0.0.0.0:8000 --workers 4 --worker-class sync --timeout 120 --keep-alive 65 --max-requests 10000 --access-logfile - --error-logfile - --forwarded-allow-ips *"
+
+[build]
+  dockerfile = "backend/Dockerfile.prod"
+
+[env]
+  DJANGO_SETTINGS_MODULE = "config.settings.production"
+  DJANGO_DEBUG = "False"
+
+[mounts]
+  source = "frontiercrm_media"
+  destination = "/app/media"
+
+[[services]]
+  processes = ["app"]
+  protocol = "tcp"
+  internal_port = 8000
+
+  [[services.ports]]
+    port = 443
+    handlers = ["tls"]
+
+  [services.concurrency]
+    type = "requests"
+    hard_limit = 50
+    soft_limit = 20
+
+  [[services.http_checks]]
+    path = "/api/health/"
+    method = "GET"
+    interval = "15s"
+    timeout = "5s"
+    grace_period = "30s"
+    restart_limit = 6
+
+  [[services.http_checks]]
+    path = "/api/health/ready/"
+    method = "GET"
+    interval = "30s"
+    timeout = "5s"
+    grace_period = "60s"
+    restart_limit = 6
+
+  [[services.ports]]
+    port = 80
+    handlers = ["http"]
+    force_https = true
+
+[[services]]
+  processes = ["worker"]
+  protocol = "tcp"
+  internal_port = 8000
+  auto_stop_machines = true
+  auto_start_machines = true
+  min_machines_running = 0
+
+  [services.concurrency]
+    type = "requests"
+    hard_limit = 10
+    soft_limit = 5
+
+[[services]]
+  processes = ["beat"]
+  protocol = "tcp"
+  internal_port = 8000
+  auto_stop_machines = true
+  auto_start_machines = true
+  min_machines_running = 0
+
+  [services.concurrency]
+    type = "requests"
+    hard_limit = 10
+    soft_limit = 5
+
+[processes]
+  app = "gunicorn config.wsgi:application --bind 0.0.0.0:8000 --workers 4 --worker-class sync --timeout 120 --keep-alive 65 --max-requests 10000 --access-logfile - --error-logfile - --forwarded-allow-ips *"
+  worker = "celery -A config worker -l info --concurrency=2"
+  beat = "celery -A config beat -l info"
+
+# ── VM specs per process ─────────────────────────────────────────────────────
+[[vm]]
+  processes = ["app"]
+  size = "shared-cpu-1x"
+  memory = "512mb"
+  cpu_kind = "shared"
+  cpus = 1
+
+[[vm]]
+  processes = ["worker"]
+  size = "shared-cpu-0.25x"
+  memory = "256mb"
+  cpu_kind = "shared"
+  cpus = 1
+
+[[vm]]
+  processes = ["beat"]
+  size = "shared-cpu-0.25x"
+  memory = "256mb"
+  cpu_kind = "shared"
+  cpus = 1
