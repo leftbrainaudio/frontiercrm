@@ -30,9 +30,10 @@ const navItems = [
   { to: '/timeline', icon: History, label: 'Timeline' },
   { to: '/email', icon: Mail, label: 'Email' },
   { to: '/settings', icon: Settings, label: 'Settings' },
-  { to: '/settings/integrations/slack', icon: MessageSquare, label: 'Slack' },
-  { to: '/settings/users', icon: Shield, label: 'Users' },
-  { to: '/settings/audit-log', icon: ClipboardList, label: 'Audit Log' },
+  // Phase 5 features — pages & routes exist; uncomment when ready for production
+  // { to: '/settings/integrations/slack', icon: MessageSquare, label: 'Slack' },
+  // { to: '/settings/users', icon: Shield, label: 'Users' },
+  // { to: '/settings/audit-log', icon: ClipboardList, label: 'Audit Log' },
 ];
 
 interface SidebarProps {

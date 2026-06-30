@@ -332,7 +332,7 @@ export function EmailPage() {
   const gmailCallback = useGmailCallback();
   const triggerSync = useTriggerSync();
 
-  const gmailConnection = connections?.find((c) => c.provider === 'gmail');
+  const gmailConnection = Array.isArray(connections) ? connections.find((c) => c.provider === 'gmail') : undefined;
 
   // Handle OAuth callback from URL params
   const [oauthProcessing, setOauthProcessing] = useState(false);
