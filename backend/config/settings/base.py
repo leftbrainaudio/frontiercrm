@@ -199,6 +199,12 @@ CELERY_BEAT_SCHEDULE = {
         "schedule": crontab(hour=3, minute=0),  # daily at 03:00 UTC
         "options": {"expires": 3600},
     },
+    # ── Calendar Watch Channel Renewal ─────────────────────────────────────
+    "renew-calendar-watch-channels": {
+        "task": "apps.sync.tasks_calendar.renew_calendar_watch_channels",
+        "schedule": 21600.0,  # every 6 hours
+        "options": {"expires": 3600},
+    },
 }
 
 # ── Redis (cache) ────────────────────────────────────────────────────────────

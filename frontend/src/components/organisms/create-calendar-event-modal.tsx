@@ -1,10 +1,9 @@
-import { useState, type ReactNode } from 'react';
+import { useState } from 'react';
 import {
   Calendar,
   MapPin,
   Users,
   Clock,
-  Link,
   Bell,
   Sun,
 } from 'lucide-react';
