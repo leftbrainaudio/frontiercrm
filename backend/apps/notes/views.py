@@ -5,6 +5,8 @@ from __future__ import annotations
 from django_filters.rest_framework import FilterSet
 from rest_framework import serializers, viewsets
 
+from apps.core.permissions import RolePermission, TenantAwarePermission
+
 from .models import Note
 
 
@@ -31,6 +33,17 @@ class NoteViewSet(viewsets.ModelViewSet):
     serializer_class = NoteSerializer
     filterset_class = NoteFilter
     search_fields = ["title", "content"]
+    permission_classes = [TenantAwarePermission, RolePermission]
+
+    def get_required_permission(self) -> str | None:
+        return {
+            "list": None,  # notes are embedded in other views
+            "retrieve": None,
+            "create": "notes.create",
+            "update": "notes.create",
+            "partial_update": "notes.create",
+            "destroy": "notes.delete",
+        }.get(self.action)
 
     def get_queryset(self):
         return Note.objects.filter(tenant_id=self.request.user.tenant_id)

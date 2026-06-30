@@ -4,9 +4,27 @@ from django.conf import settings
 from django.conf.urls.static import static
 from django.contrib import admin
 from django.urls import include, path, re_path
-from rest_framework.schemas import get_schema_view
+from drf_spectacular.views import SpectacularAPIView, SpectacularRedocView, SpectacularSwaggerView
 from rest_framework_simplejwt.views import TokenRefreshView
 
+from apps.accounts.saml_views import (
+    SamlProviderDetailView,
+    SamlProviderListCreateView,
+    saml_acs,
+    saml_domain_check,
+    saml_logout,
+    saml_metadata,
+    saml_sp_login,
+)
+from apps.accounts.two_factor_views import (
+    two_factor_admin_reset,
+    two_factor_confirm,
+    two_factor_disable,
+    two_factor_regenerate_codes,
+    two_factor_setup,
+    two_factor_status,
+    two_factor_verify,
+)
 from apps.accounts.views import (
     SignupView,
     google_oauth_callback,
@@ -14,6 +32,8 @@ from apps.accounts.views import (
     login_view,
     magic_link_confirm,
     magic_link_request,
+    social_auth_callback,
+    social_auth_init,
 )
 
 api_patterns = [
@@ -25,6 +45,24 @@ api_patterns = [
     path("auth/magic-link/confirm/", magic_link_confirm, name="auth-magic-link-confirm"),
     path("auth/google/init/", google_oauth_init, name="auth-google-init"),
     path("auth/google/callback/", google_oauth_callback, name="auth-google-callback"),
+    path("auth/social/", social_auth_callback, name="auth-social-callback"),
+    path("auth/social/<str:provider>/init/", social_auth_init, name="auth-social-init"),
+    # ── 2FA Routes ─────────────────────────────────────────────────
+    path("auth/2fa/setup/", two_factor_setup, name="auth-2fa-setup"),
+    path("auth/2fa/confirm/", two_factor_confirm, name="auth-2fa-confirm"),
+    path("auth/2fa/verify/", two_factor_verify, name="auth-2fa-verify"),
+    path("auth/2fa/disable/", two_factor_disable, name="auth-2fa-disable"),
+    path("auth/2fa/status/", two_factor_status, name="auth-2fa-status"),
+    path("auth/2fa/recovery-codes/regenerate/", two_factor_regenerate_codes, name="auth-2fa-regenerate"),
+    path("auth/2fa/admin/reset/<uuid:user_id>/", two_factor_admin_reset, name="auth-2fa-admin-reset"),
+    # ── SAML Routes ────────────────────────────────────────────────
+    path("auth/saml/login/", saml_sp_login, name="auth-saml-login"),
+    path("auth/saml/<uuid:tenant_id>/acs/", saml_acs, name="auth-saml-acs"),
+    path("auth/saml/<uuid:tenant_id>/metadata/", saml_metadata, name="auth-saml-metadata"),
+    path("auth/saml/domain-check/", saml_domain_check, name="auth-saml-domain-check"),
+    path("auth/saml/logout/", saml_logout, name="auth-saml-logout"),
+    path("auth/saml/providers/", SamlProviderListCreateView.as_view(), name="auth-saml-providers"),
+    path("auth/saml/providers/<uuid:id>/", SamlProviderDetailView.as_view(), name="auth-saml-provider-detail"),
     # App endpoints
     path("accounts/", include("apps.accounts.urls")),
     path("contacts/", include("apps.contacts.urls")),
@@ -35,29 +73,38 @@ api_patterns = [
     path("tasks/", include("apps.tasks.urls")),
     path("teams/", include("apps.teams.urls")),
     path("webhooks/", include("apps.webhooks.urls")),
+    path("api-keys/", include("apps.apikeys.urls")),
     path("files/", include("apps.files.urls")),
+    path("slack/", include("apps.slack.urls")),
     path("search/", include("apps.search.urls")),
     path("sync/", include("apps.sync.urls")),
     path("imports/", include("apps.imports.urls")),
     # Reports
     path("reports/", include("apps.reports.urls")),
+    # Export
+    path("export/", include("apps.export.urls")),
     # Health
     path("health/", include("apps.core.health_urls")),
+    # Custom fields
+    path("custom-fields/", include("apps.core.urls_api")),
 ]
 
 urlpatterns = [
     path("admin/", admin.site.urls),
     path("api/", include(api_patterns)),
-    path(
-        "api/schema/",
-        get_schema_view(
-            title="FrontierCRM API",
-            description="API for FrontierCRM — the modern CRM platform",
-            version="1.0.0",
-        ),
-        name="openapi-schema",
-    ),
     path("api/docs/", include("rest_framework.urls", namespace="rest_framework")),
+    # OpenAPI / Swagger / ReDoc
+    path("api/docs/schema/", SpectacularAPIView.as_view(), name="schema"),
+    path(
+        "api/docs/swagger/",
+        SpectacularSwaggerView.as_view(url_name="schema"),
+        name="swagger-ui",
+    ),
+    path(
+        "api/docs/redoc/",
+        SpectacularRedocView.as_view(url_name="schema"),
+        name="redoc",
+    ),
 ]
 
 # ── SPA catch-all: serve frontend for non-API routes ─────────────────────

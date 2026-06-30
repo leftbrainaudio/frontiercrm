@@ -1,4 +1,5 @@
-import { useState, useCallback, useMemo } from 'react';
+import { useState, useCallback, useMemo, useRef } from 'react';
+import { useNavigate } from 'react-router-dom';
 import {
   DndContext,
   DragOverlay,
@@ -6,13 +7,13 @@ import {
   useSensor,
   useSensors,
   useDroppable,
-  useDraggable,
   PointerSensor,
   KeyboardSensor,
   type DragStartEvent,
   type DragEndEvent,
 } from '@dnd-kit/core';
-import { SortableContext, verticalListSortingStrategy } from '@dnd-kit/sortable';
+import { SortableContext, verticalListSortingStrategy, useSortable } from '@dnd-kit/sortable';
+import { CSS } from '@dnd-kit/utilities';
 import { useQueryClient } from '@tanstack/react-query';
 import toast from 'react-hot-toast';
 import {
@@ -25,16 +26,21 @@ import {
   XCircle,
   Archive,
   TrendingUp,
+  Download,
 } from 'lucide-react';
 import { format, parseISO } from 'date-fns';
-import { usePipelines, useDeals, useCreateDeal, useMoveDealStage, useChangeDealStatus } from '../../api/deals';
-import type { Pipeline, Stage, Deal, DealStatus } from '../../types';
+import { usePipelines, useDeals, useUpdateDeal, useChangeDealStatus } from '../../api/deals';
+import { useCustomFieldDefs } from '../../api/custom-fields';
+import type { Pipeline, Stage, Deal, DealStatus, PaginatedResponse } from '../../types';
 import { cn } from '../../lib/utils';
-import { Button } from '../../components/ui/button';
-import { Input } from '../../components/ui/input';
-import { Modal } from '../../components/ui/modal';
-import { Skeleton } from '../../components/ui/skeleton';
-import { Badge } from '../../components/ui/badge';
+import { Button } from '../../components/atoms/button';
+import { Modal } from '../../components/molecules/modal';
+import { Input } from '../../components/atoms/input';
+import { AddDealModal } from '../../components/molecules/add-deal-modal';
+import { Skeleton } from '../../components/atoms/skeleton';
+import { Badge } from '../../components/atoms/badge';
+import { Select } from '../../components/atoms/select';
+import { ExportButton } from '../../components/ui/export-button';
 
 /* -------------------------------------------------------------------------- */
 /*  Helpers                                                                    */
@@ -89,6 +95,49 @@ function getStageColor(stage: Stage, dark = false): string {
   return stage.color || '#6366f1';
 }
 
+/* ── Deal Custom Fields ── */
+
+function DealCustomFieldsSection({
+  customFields,
+}: {
+  customFields: Record<string, unknown>;
+}) {
+  const { data: defs } = useCustomFieldDefs('deals');
+
+  if (!defs || defs.length === 0) return null;
+
+  const activeDefs = defs.filter((d) => d.is_active);
+
+  const entries = activeDefs
+    .map((def) => ({
+      def,
+      value: customFields[def.id],
+    }))
+    .filter((e) => e.value !== undefined && e.value !== null && e.value !== '');
+
+  if (entries.length === 0) return null;
+
+  return (
+    <div>
+      <p className="text-xs text-text-tertiary dark:text-dark-text-tertiary uppercase tracking-wider font-medium mb-2">
+        Custom Fields
+      </p>
+      <div className="grid grid-cols-2 gap-3">
+        {entries.map(({ def, value }) => (
+          <div key={def.id}>
+            <p className="text-xs text-text-tertiary dark:text-dark-text-tertiary">
+              {def.name}
+            </p>
+            <p className="text-sm text-text-primary dark:text-dark-text-primary mt-0.5">
+              {String(value)}
+            </p>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+}
+
 /* -------------------------------------------------------------------------- */
 /*  Deal Card (draggable)                                                      */
 /* -------------------------------------------------------------------------- */
@@ -100,13 +149,21 @@ interface DealCardProps {
 }
 
 function DealCard({ deal, onClick, isDragOverlay }: DealCardProps) {
-  const { attributes, listeners, setNodeRef, transform, isDragging } = useDraggable({
+  const {
+    attributes,
+    listeners,
+    setNodeRef,
+    transform,
+    transition,
+    isDragging,
+  } = useSortable({
     id: deal.id,
     data: { deal, type: 'deal' },
   });
 
   const style: React.CSSProperties = {
-    transform: transform ? `translate3d(${transform.x}px, ${transform.y}px, 0)` : undefined,
+    transform: CSS.Transform.toString(transform),
+    transition: transition ?? undefined,
     opacity: isDragging ? 0.4 : undefined,
     zIndex: isDragging ? 999 : undefined,
   };
@@ -126,11 +183,11 @@ function DealCard({ deal, onClick, isDragOverlay }: DealCardProps) {
       ref={setNodeRef}
       style={style}
       className={cn(
-        'group relative rounded-lg border border-border bg-white p-3 shadow-sm transition-shadow',
+        'group relative rounded-lg border border-border bg-white p-3 shadow-sm transition-shadow transition-transform transition-opacity',
         'hover:shadow-md hover:border-brand-300',
         'dark:border-dark-border dark:bg-dark-surface dark:hover:border-brand-600',
         isDragOverlay && 'shadow-lg rotate-3 scale-105',
-        isDragging ? 'cursor-grabbing' : 'cursor-pointer',
+        isDragging ? 'cursor-grabbing scale-[0.97]' : 'cursor-pointer',
       )}
       onClick={() => !isDragging && onClick(deal)}
       role="button"
@@ -234,7 +291,7 @@ function KanbanColumn({ stage, deals, onDealClick, isLoading }: KanbanColumnProp
   return (
     <div
       className={cn(
-        'flex shrink-0 flex-col w-[280px] rounded-xl border border-border bg-surface-secondary/50',
+        'flex shrink-0 flex-col w-full md:w-[280px] rounded-xl border border-border bg-surface-secondary/50',
         'dark:border-dark-border dark:bg-dark-surface-secondary/50',
         isOver && 'ring-2 ring-brand-500/50 bg-brand-50/30 dark:bg-brand-900/10',
       )}
@@ -324,179 +381,6 @@ function PipelineTabs({ pipelines, selected, onChange }: PipelineTabsProps) {
 }
 
 /* -------------------------------------------------------------------------- */
-/*  Add Deal Form                                                              */
-/* -------------------------------------------------------------------------- */
-
-interface AddDealFormProps {
-  pipelines: Pipeline[];
-  defaultPipelineId?: string;
-  onSuccess: () => void;
-  onCancel: () => void;
-}
-
-function AddDealForm({ pipelines, defaultPipelineId, onSuccess, onCancel }: AddDealFormProps) {
-  const createDeal = useCreateDeal();
-  const [name, setName] = useState('');
-  const [value, setValue] = useState('');
-  const [contact, setContact] = useState('');
-  const [pipelineId, setPipelineId] = useState(defaultPipelineId || pipelines[0]?.id || '');
-  const [stageId, setStageId] = useState('');
-  const [expectedCloseDate, setExpectedCloseDate] = useState('');
-  const [errors, setErrors] = useState<Record<string, string>>({});
-
-  const selectedPipeline = pipelines.find((p) => p.id === pipelineId);
-  const stages = selectedPipeline?.stages || [];
-
-  // Auto-select first stage when pipeline changes
-  const handlePipelineChange: React.ChangeEventHandler<HTMLSelectElement> = (e) => {
-    setPipelineId(e.target.value);
-    const p = pipelines.find((p) => p.id === e.target.value);
-    if (p && p.stages.length > 0) {
-      setStageId(p.stages[0].id);
-    } else {
-      setStageId('');
-    }
-  };
-
-  // Initialize stage from default
-  useState(() => {
-    if (!stageId && stages.length > 0) {
-      setStageId(stages[0].id);
-    }
-  });
-
-  const validate = (): boolean => {
-    const errs: Record<string, string> = {};
-    if (!name.trim()) errs.name = 'Deal name is required';
-    if (!value.trim() || isNaN(Number(value)) || Number(value) < 0) errs.value = 'Enter a valid value';
-    if (!pipelineId) errs.pipeline = 'Select a pipeline';
-    if (!stageId) errs.stage = 'Select a stage';
-    setErrors(errs);
-    return Object.keys(errs).length === 0;
-  };
-
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!validate()) return;
-    try {
-      await createDeal.mutateAsync({
-        name: name.trim(),
-        value: Number(value),
-        contact_name: contact.trim() || undefined,
-        pipeline: pipelineId,
-        stage: stageId,
-        expected_close_date: expectedCloseDate || undefined,
-      } as any);
-      toast.success('Deal created');
-      onSuccess();
-    } catch (err: unknown) {
-      const msg = err instanceof Error ? err.message : 'Failed to create deal';
-      toast.error(msg);
-    }
-  };
-
-  return (
-    <form onSubmit={handleSubmit} className="space-y-4">
-      <Input
-        label="Deal Name"
-        value={name}
-        onChange={(e) => setName(e.target.value)}
-        placeholder="e.g. Enterprise Contract"
-        error={errors.name}
-        required
-      />
-
-      <Input
-        label="Value ($)"
-        type="number"
-        min={0}
-        value={value}
-        onChange={(e) => setValue(e.target.value)}
-        placeholder="e.g. 50000"
-        error={errors.value}
-        required
-      />
-
-      <Input
-        label="Contact"
-        value={contact}
-        onChange={(e) => setContact(e.target.value)}
-        placeholder="Contact name"
-      />
-
-      {/* Pipeline select */}
-      <div>
-        <label className="mb-1.5 block text-sm font-medium text-text-primary dark:text-dark-text-primary">
-          Pipeline
-        </label>
-        <select
-          value={pipelineId}
-          onChange={handlePipelineChange}
-          className={cn(
-            'w-full rounded-lg border border-border bg-white px-3 py-2.5 text-sm transition-colors',
-            'focus:outline-none focus:ring-2 focus:ring-brand-500/20 focus:border-brand-500',
-            'dark:bg-transparent dark:border-dark-border dark:text-dark-text-primary',
-            errors.pipeline && 'border-red-500 dark:border-red-400',
-          )}
-          required
-        >
-          <option value="">Select pipeline</option>
-          {pipelines.map((p) => (
-            <option key={p.id} value={p.id}>{p.name}</option>
-          ))}
-        </select>
-        {errors.pipeline && (
-          <p className="mt-1 text-xs text-red-600 dark:text-red-400">{errors.pipeline}</p>
-        )}
-      </div>
-
-      {/* Stage select */}
-      <div>
-        <label className="mb-1.5 block text-sm font-medium text-text-primary dark:text-dark-text-primary">
-          Stage
-        </label>
-        <select
-          value={stageId}
-          onChange={(e: React.ChangeEvent<HTMLSelectElement>) => setStageId(e.target.value)}
-          className={cn(
-            'w-full rounded-lg border border-border bg-white px-3 py-2.5 text-sm transition-colors',
-            'focus:outline-none focus:ring-2 focus:ring-brand-500/20 focus:border-brand-500',
-            'dark:bg-transparent dark:border-dark-border dark:text-dark-text-primary',
-            errors.stage && 'border-red-500 dark:border-red-400',
-          )}
-          required
-        >
-          <option value="">Select stage</option>
-          {stages.map((s) => (
-            <option key={s.id} value={s.id}>{s.name}</option>
-          ))}
-        </select>
-        {errors.stage && (
-          <p className="mt-1 text-xs text-red-600 dark:text-red-400">{errors.stage}</p>
-        )}
-      </div>
-
-      <Input
-        label="Expected Close Date"
-        type="date"
-        value={expectedCloseDate}
-        onChange={(e) => setExpectedCloseDate(e.target.value)}
-      />
-
-      {/* Footer buttons via Modal footer slot */}
-      <div className="flex items-center justify-end gap-3 pt-2">
-        <Button type="button" variant="secondary" onClick={onCancel}>
-          Cancel
-        </Button>
-        <Button type="submit" loading={createDeal.isPending}>
-          Create Deal
-        </Button>
-      </div>
-    </form>
-  );
-}
-
-/* -------------------------------------------------------------------------- */
 /*  Deal Detail Modal                                                          */
 /* -------------------------------------------------------------------------- */
 
@@ -504,14 +388,39 @@ interface DealDetailProps {
   deal: Deal | null;
   open: boolean;
   onClose: () => void;
+  pipelines: Pipeline[];
 }
 
-function DealDetailModal({ deal, open, onClose }: DealDetailProps) {
+function DealDetailModal({ deal, open, onClose, pipelines }: DealDetailProps) {
+  const navigate = useNavigate();
+  const updateDeal = useUpdateDeal();
   const changeStatus = useChangeDealStatus();
   const queryClient = useQueryClient();
+
+  const [isEditing, setIsEditing] = useState(false);
   const [closeReason, setCloseReason] = useState('');
   const [showCloseReason, setShowCloseReason] = useState(false);
   const [actionLoading, setActionLoading] = useState<string | null>(null);
+  const [saving, setSaving] = useState(false);
+
+  // Form state
+  const [formName, setFormName] = useState('');
+  const [formValue, setFormValue] = useState('');
+  const [formStage, setFormStage] = useState('');
+  const [formContactName, setFormContactName] = useState('');
+  const [formCloseDate, setFormCloseDate] = useState('');
+
+  // Reset form when deal changes or modal opens
+  const prevDealId = useRef<string | null>(null);
+  if (deal && deal.id !== prevDealId.current) {
+    prevDealId.current = deal.id;
+    setFormName(deal.name);
+    setFormValue(String(deal.value));
+    setFormStage(deal.stage);
+    setFormContactName(deal.contact_name || '');
+    setFormCloseDate(deal.expected_close_date ? deal.expected_close_date.slice(0, 10) : '');
+    setIsEditing(false);
+  }
 
   if (!deal) return null;
 
@@ -521,6 +430,10 @@ function DealDetailModal({ deal, open, onClose }: DealDetailProps) {
     lost: 'danger',
     abandoned: 'neutral',
   };
+
+  // Find the pipeline this deal belongs to, for the stage dropdown
+  const dealPipeline = pipelines.find((p) => p.id === deal.pipeline);
+  const stages = (dealPipeline?.stages || []).slice().sort((a, b) => a.display_order - b.display_order);
 
   const handleStatusChange = async (status: DealStatus) => {
     if (status === 'lost' && !closeReason.trim()) {
@@ -545,15 +458,46 @@ function DealDetailModal({ deal, open, onClose }: DealDetailProps) {
     }
   };
 
+  const handleSave = async () => {
+    setSaving(true);
+    try {
+      await updateDeal.mutateAsync({
+        id: deal.id,
+        name: formName.trim(),
+        value: parseFloat(formValue) || 0,
+        stage: formStage,
+        expected_close_date: formCloseDate || null,
+      });
+      toast.success('Deal updated');
+      queryClient.invalidateQueries({ queryKey: ['deals'] });
+      queryClient.invalidateQueries({ queryKey: ['pipelines'] });
+      setIsEditing(false);
+    } catch (err: unknown) {
+      const msg = err instanceof Error ? err.message : 'Failed to update deal';
+      toast.error(msg);
+    } finally {
+      setSaving(false);
+    }
+  };
+
+  const handleCancel = () => {
+    setFormName(deal.name);
+    setFormValue(String(deal.value));
+    setFormStage(deal.stage);
+    setFormContactName(deal.contact_name || '');
+    setFormCloseDate(deal.expected_close_date ? deal.expected_close_date.slice(0, 10) : '');
+    setIsEditing(false);
+  };
+
   return (
     <Modal
       open={open}
       onClose={onClose}
-      title={deal.name}
+      title={isEditing ? 'Edit Deal' : deal.name}
       size="md"
     >
       <div className="space-y-5">
-        {/* Status badge + Probability */}
+        {/* Status badge + Probability — always visible */}
         <div className="flex items-center gap-3 flex-wrap">
           <Badge variant={statusBadgeVariant[deal.status]}>{deal.status}</Badge>
           {deal.win_probability != null && (
@@ -562,137 +506,237 @@ function DealDetailModal({ deal, open, onClose }: DealDetailProps) {
               {deal.win_probability}% probability
             </span>
           )}
-        </div>
-
-        {/* Value */}
-        <div className="bg-surface-secondary dark:bg-dark-surface-secondary rounded-lg p-4">
-          <p className="text-xs text-text-tertiary dark:text-dark-text-tertiary uppercase tracking-wider font-medium">
-            Deal Value
-          </p>
-          <p className="text-2xl font-bold text-text-primary dark:text-dark-text-primary mt-1">
-            {formatCurrency(deal.value, deal.currency)}
-          </p>
-        </div>
-
-        {/* Details grid */}
-        <div className="grid grid-cols-2 gap-4">
-          <div>
-            <p className="text-xs text-text-tertiary dark:text-dark-text-tertiary uppercase tracking-wider font-medium">
-              Pipeline
-            </p>
-            <p className="text-sm text-text-primary dark:text-dark-text-primary mt-0.5">
-              {deal.pipeline_name}
-            </p>
-          </div>
-          <div>
-            <p className="text-xs text-text-tertiary dark:text-dark-text-tertiary uppercase tracking-wider font-medium">
-              Stage
-            </p>
-            <p className="text-sm text-text-primary dark:text-dark-text-primary mt-0.5">
-              {deal.stage_name}
-            </p>
-          </div>
-          <div>
-            <p className="text-xs text-text-tertiary dark:text-dark-text-tertiary uppercase tracking-wider font-medium">
-              Contact
-            </p>
-            <p className="text-sm text-text-primary dark:text-dark-text-primary mt-0.5">
-              {deal.contact_name || '—'}
-            </p>
-          </div>
-          <div>
-            <p className="text-xs text-text-tertiary dark:text-dark-text-tertiary uppercase tracking-wider font-medium">
-              Expected Close
-            </p>
-            <p className="text-sm text-text-primary dark:text-dark-text-primary mt-0.5">
-              {formatDate(deal.expected_close_date)}
-            </p>
-          </div>
-          <div>
-            <p className="text-xs text-text-tertiary dark:text-dark-text-tertiary uppercase tracking-wider font-medium">
-              Account
-            </p>
-            <p className="text-sm text-text-primary dark:text-dark-text-primary mt-0.5">
-              {deal.account_name || '—'}
-            </p>
-          </div>
-          <div>
-            <p className="text-xs text-text-tertiary dark:text-dark-text-tertiary uppercase tracking-wider font-medium">
-              Owner
-            </p>
-            <p className="text-sm text-text-primary dark:text-dark-text-primary mt-0.5">
-              {deal.owner_id || '—'}
-            </p>
-          </div>
-        </div>
-
-        {/* Description */}
-        {deal.description && (
-          <div>
-            <p className="text-xs text-text-tertiary dark:text-dark-text-tertiary uppercase tracking-wider font-medium mb-1">
-              Description
-            </p>
-            <p className="text-sm text-text-primary dark:text-dark-text-primary whitespace-pre-wrap">
-              {deal.description}
-            </p>
-          </div>
-        )}
-
-        {/* Close reason input */}
-        {showCloseReason && (
-          <div>
-            <Input
-              label="Close Reason"
-              value={closeReason}
-              onChange={(e) => setCloseReason(e.target.value)}
-              placeholder="e.g. Budget, Competitor, Timing..."
-            />
-            <div className="mt-2 flex gap-2">
-              <Button
-                size="sm"
-                variant="danger"
-                loading={actionLoading === 'lost'}
-                onClick={() => handleStatusChange('lost')}
-              >
-                Confirm Lost
-              </Button>
-              <Button size="sm" variant="ghost" onClick={() => setShowCloseReason(false)}>
-                Cancel
-              </Button>
-            </div>
-          </div>
-        )}
-
-        {/* Status change actions */}
-        {deal.status === 'open' && !showCloseReason && (
-          <div className="flex items-center gap-3 pt-2 border-t border-border dark:border-dark-border">
-            <Button
-              size="sm"
-              variant="primary"
-              icon={<CheckCircle2 className="h-4 w-4" />}
-              loading={actionLoading === 'won'}
-              onClick={() => handleStatusChange('won')}
-            >
-              Mark Won
-            </Button>
-            <Button
-              size="sm"
-              variant="danger"
-              icon={<XCircle className="h-4 w-4" />}
-              loading={actionLoading === 'lost'}
-              onClick={() => handleStatusChange('lost')}
-            >
-              Mark Lost
-            </Button>
+          {!isEditing && (
+            <div className="flex-1" />
+          )}
+          {!isEditing && (
             <Button
               size="sm"
               variant="ghost"
-              icon={<Archive className="h-4 w-4" />}
-              onClick={() => handleStatusChange('abandoned')}
+              icon={<Calendar className="h-4 w-4" />}
+              onClick={() => {
+                navigate(`/timeline?entity_type=deal&entity_id=${deal.id}`);
+                onClose();
+              }}
             >
-              Abandon
+              View Activities
             </Button>
-          </div>
+          )}
+        </div>
+
+        {isEditing ? (
+          /* ── EDIT MODE ── */
+          <>
+            <Input
+              label="Deal Name"
+              value={formName}
+              onChange={(e) => setFormName(e.target.value)}
+            />
+
+            <div className="grid grid-cols-2 gap-4">
+              <Input
+                label="Value"
+                type="number"
+                min={0}
+                step="0.01"
+                value={formValue}
+                onChange={(e) => setFormValue(e.target.value)}
+              />
+              <Input
+                label="Close Date"
+                type="date"
+                value={formCloseDate}
+                onChange={(e) => setFormCloseDate(e.target.value)}
+              />
+            </div>
+
+            <Select
+              label="Pipeline Stage"
+              value={formStage}
+              onChange={(e) => setFormStage(e.target.value)}
+            >
+              {stages.map((s) => (
+                <option key={s.id} value={s.id}>
+                  {s.name}
+                </option>
+              ))}
+            </Select>
+
+            <Input
+              label="Contact Name"
+              value={formContactName}
+              onChange={(e) => setFormContactName(e.target.value)}
+              placeholder="Contact name"
+            />
+
+            {/* Save / Cancel */}
+            <div className="flex items-center justify-end gap-3 pt-2 border-t border-border dark:border-dark-border">
+              <Button variant="ghost" onClick={handleCancel} disabled={saving}>
+                Cancel
+              </Button>
+              <Button variant="primary" onClick={handleSave} loading={saving}>
+                Save Changes
+              </Button>
+            </div>
+          </>
+        ) : (
+          /* ── VIEW MODE ── */
+          <>
+            {/* Value */}
+            <div className="bg-surface-secondary dark:bg-dark-surface-secondary rounded-lg p-4">
+              <p className="text-xs text-text-tertiary dark:text-dark-text-tertiary uppercase tracking-wider font-medium">
+                Deal Value
+              </p>
+              <p className="text-2xl font-bold text-text-primary dark:text-dark-text-primary mt-1">
+                {formatCurrency(deal.value, deal.currency)}
+              </p>
+            </div>
+
+            {/* Details grid */}
+            <div className="grid grid-cols-2 gap-4">
+              <div>
+                <p className="text-xs text-text-tertiary dark:text-dark-text-tertiary uppercase tracking-wider font-medium">
+                  Pipeline
+                </p>
+                <p className="text-sm text-text-primary dark:text-dark-text-primary mt-0.5">
+                  {deal.pipeline_name}
+                </p>
+              </div>
+              <div>
+                <p className="text-xs text-text-tertiary dark:text-dark-text-tertiary uppercase tracking-wider font-medium">
+                  Stage
+                </p>
+                <p className="text-sm text-text-primary dark:text-dark-text-primary mt-0.5">
+                  {deal.stage_name}
+                </p>
+              </div>
+              <div>
+                <p className="text-xs text-text-tertiary dark:text-dark-text-tertiary uppercase tracking-wider font-medium">
+                  Contact
+                </p>
+                <p className="text-sm text-text-primary dark:text-dark-text-primary mt-0.5">
+                  {deal.contact_name || '—'}
+                </p>
+              </div>
+              <div>
+                <p className="text-xs text-text-tertiary dark:text-dark-text-tertiary uppercase tracking-wider font-medium">
+                  Expected Close
+                </p>
+                <p className="text-sm text-text-primary dark:text-dark-text-primary mt-0.5">
+                  {formatDate(deal.expected_close_date)}
+                </p>
+              </div>
+              <div>
+                <p className="text-xs text-text-tertiary dark:text-dark-text-tertiary uppercase tracking-wider font-medium">
+                  Account
+                </p>
+                <p className="text-sm text-text-primary dark:text-dark-text-primary mt-0.5">
+                  {deal.account_name || '—'}
+                </p>
+              </div>
+              <div>
+                <p className="text-xs text-text-tertiary dark:text-dark-text-tertiary uppercase tracking-wider font-medium">
+                  Owner
+                </p>
+                <p className="text-sm text-text-primary dark:text-dark-text-primary mt-0.5">
+                  {deal.owner_id || '—'}
+                </p>
+              </div>
+            </div>
+
+            {/* Description */}
+            {deal.description && (
+              <div>
+                <p className="text-xs text-text-tertiary dark:text-dark-text-tertiary uppercase tracking-wider font-medium mb-1">
+                  Description
+                </p>
+                <p className="text-sm text-text-primary dark:text-dark-text-primary whitespace-pre-wrap">
+                  {deal.description}
+                </p>
+              </div>
+            )}
+
+            {/* Custom fields */}
+            <DealCustomFieldsSection customFields={deal.custom_fields} />
+
+            {/* Close reason input */}
+            {showCloseReason && (
+              <div>
+                <Input
+                  label="Close Reason"
+                  value={closeReason}
+                  onChange={(e) => setCloseReason(e.target.value)}
+                  placeholder="e.g. Budget, Competitor, Timing..."
+                />
+                <div className="mt-2 flex gap-2">
+                  <Button
+                    size="sm"
+                    variant="danger"
+                    loading={actionLoading === 'lost'}
+                    onClick={() => handleStatusChange('lost')}
+                  >
+                    Confirm Lost
+                  </Button>
+                  <Button size="sm" variant="ghost" onClick={() => setShowCloseReason(false)}>
+                    Cancel
+                  </Button>
+                </div>
+              </div>
+            )}
+
+            {/* Status change actions */}
+            {deal.status === 'open' && !showCloseReason && (
+              <div className="flex items-center gap-3 pt-2 border-t border-border dark:border-dark-border">
+                <Button
+                  size="sm"
+                  variant="primary"
+                  icon={<CheckCircle2 className="h-4 w-4" />}
+                  loading={actionLoading === 'won'}
+                  onClick={() => handleStatusChange('won')}
+                >
+                  Mark Won
+                </Button>
+                <Button
+                  size="sm"
+                  variant="danger"
+                  icon={<XCircle className="h-4 w-4" />}
+                  loading={actionLoading === 'lost'}
+                  onClick={() => handleStatusChange('lost')}
+                >
+                  Mark Lost
+                </Button>
+                <Button
+                  size="sm"
+                  variant="ghost"
+                  icon={<Archive className="h-4 w-4" />}
+                  onClick={() => handleStatusChange('abandoned')}
+                >
+                  Abandon
+                </Button>
+                <div className="flex-1" />
+                <Button
+                  size="sm"
+                  variant="secondary"
+                  onClick={() => setIsEditing(true)}
+                >
+                  Edit
+                </Button>
+              </div>
+            )}
+
+            {/* Edit button for non-open deals */}
+            {deal.status !== 'open' && !showCloseReason && (
+              <div className="flex items-center justify-end pt-2 border-t border-border dark:border-dark-border">
+                <Button
+                  size="sm"
+                  variant="secondary"
+                  onClick={() => setIsEditing(true)}
+                >
+                  Edit
+                </Button>
+              </div>
+            )}
+          </>
         )}
       </div>
     </Modal>
@@ -750,11 +794,11 @@ function PipelineErrorState({ message, onRetry }: { message: string; onRetry?: (
 
 function PipelineLoadingState() {
   return (
-    <div className="flex gap-4 overflow-x-auto pb-4 px-1">
+    <div className="flex flex-col md:flex-row gap-4 overflow-x-auto pb-4 px-1">
       {Array.from({ length: 4 }).map((_, i) => (
         <div
           key={i}
-          className="flex shrink-0 flex-col w-[280px] rounded-xl border border-border bg-surface-secondary/50 p-3 dark:border-dark-border dark:bg-dark-surface-secondary/50"
+          className="flex shrink-0 flex-col w-full md:w-[280px] rounded-xl border border-border bg-surface-secondary/50 p-3 dark:border-dark-border dark:bg-dark-surface-secondary/50"
         >
           <Skeleton width="60%" height={18} className="mb-1" />
           <Skeleton width="40%" height={12} className="mb-4" />
@@ -801,9 +845,12 @@ function PipelineHeader({
           </span>
         </div>
       </div>
-      <Button icon={<Plus className="h-4 w-4" />} onClick={onAddDeal}>
-        Add Deal
-      </Button>
+      <div className="flex items-center gap-2">
+        <ExportButton url="/export/deals/" filename="deals.csv" label="Export CSV" variant="secondary" size="sm" />
+        <Button icon={<Plus className="h-4 w-4" />} onClick={onAddDeal}>
+          Add Deal
+        </Button>
+      </div>
     </div>
   );
 }
@@ -820,7 +867,7 @@ export function PipelinePage() {
   const pipelineFilter = selectedPipelineId ? { pipeline: selectedPipelineId } : undefined;
   const { data: dealsData, isLoading: dealsLoading, isError: dealsError, refetch: refetchDeals } = useDeals(pipelineFilter);
 
-  const moveStage = useMoveDealStage();
+  const updateDeal = useUpdateDeal();
   const queryClient = useQueryClient();
 
   // Active pipeline
@@ -891,14 +938,10 @@ export function PipelinePage() {
     if (overData?.type === 'column') {
       targetStageId = over.id as string;
     } else if (overData?.deal) {
-      const overDeal = overData.deal as Deal;
-      targetStageId = overDeal.stage;
-    } else if (overData?.type === 'deal') {
       targetStageId = (overData.deal as Deal).stage;
     }
 
-    // If the stage actually has the stage id as a key (SortableContext items are deal ids)
-    // Check if the over id is a stage id (matches one of our pipeline stages)
+    // Fallback: check if over id matches a pipeline stage
     if (!targetStageId) {
       const stages = activePipeline?.stages || [];
       if (stages.some((s) => s.id === over.id)) {
@@ -908,20 +951,42 @@ export function PipelinePage() {
 
     if (!targetStageId || targetStageId === dealData.stage) return;
 
+    // Find the target stage name for the optimistic update
+    const targetStage = activePipeline?.stages.find((s) => s.id === targetStageId);
+    const targetStageName = targetStage?.name || dealData.stage_name;
+
+    // Optimistic update: snapshot + update ALL cached deals queries
+    const cacheEntries = queryClient.getQueriesData<PaginatedResponse<Deal>>({ queryKey: ['deals'] });
+    const snapshots: Array<{ key: readonly unknown[]; data: PaginatedResponse<Deal> }> = [];
+    const now = new Date().toISOString();
+
+    for (const [key, data] of cacheEntries) {
+      if (!data?.results) continue;
+      snapshots.push({ key, data: structuredClone(data) });
+      queryClient.setQueryData<PaginatedResponse<Deal>>(key, {
+        ...data,
+        results: data.results.map((d) =>
+          d.id === dealId
+            ? { ...d, stage: targetStageId, stage_name: targetStageName, entered_stage_at: now }
+            : d,
+        ),
+      });
+    }
+
     try {
-      await moveStage.mutateAsync({ id: dealId, stage_id: targetStageId });
-      queryClient.invalidateQueries({ queryKey: ['deals'] });
+      await updateDeal.mutateAsync({ id: dealId, stage: targetStageId });
       toast.success('Deal moved');
+      // Invalidate after success so server data (including activities) syncs
+      queryClient.invalidateQueries({ queryKey: ['deals'] });
     } catch (err: unknown) {
+      // Rollback every snapshot on failure
+      for (const { key, data } of snapshots) {
+        queryClient.setQueryData(key, data);
+      }
       const msg = err instanceof Error ? err.message : 'Failed to move deal';
       toast.error(msg);
     }
-  }, [activePipeline, moveStage, queryClient]);
-
-  const handleAddDealSuccess = useCallback(() => {
-    setAddDealOpen(false);
-    queryClient.invalidateQueries({ queryKey: ['deals'] });
-  }, [queryClient]);
+  }, [activePipeline, updateDeal, queryClient]);
 
   const handlePipelineChange = useCallback((id: string) => {
     setSelectedPipelineId(id);
@@ -968,7 +1033,14 @@ export function PipelinePage() {
         />
       )}
 
-      {/* Loaded state */}
+      {/* Loaded state — no pipelines exist */}
+      {!isLoading && !isError && !activePipeline && pipelinesList.length === 0 && (
+        <PipelineErrorState
+          message="No pipelines configured yet. Contact your administrator."
+        />
+      )}
+
+      {/* Loaded state — pipeline active */}
       {!isLoading && !isError && activePipeline && (
         <>
           <PipelineHeader
@@ -988,7 +1060,7 @@ export function PipelinePage() {
               onDragStart={handleDragStart}
               onDragEnd={handleDragEnd}
             >
-              <div className="flex gap-4 overflow-x-auto pb-4 flex-1 -mx-1 px-1">
+              <div className="flex flex-col md:flex-row gap-4 overflow-x-auto pb-4 flex-1 -mx-1 px-1">
                 {sortedStages.map((stage) => (
                   <KanbanColumn
                     key={stage.id}
@@ -1014,26 +1086,19 @@ export function PipelinePage() {
       )}
 
       {/* Add Deal Modal */}
-      <Modal
+      <AddDealModal
         open={addDealOpen}
         onClose={() => setAddDealOpen(false)}
-        title="Add Deal"
-        description="Create a new deal in the pipeline"
-        size="md"
-      >
-        <AddDealForm
-          pipelines={pipelinesList}
-          defaultPipelineId={activePipeline?.id}
-          onSuccess={handleAddDealSuccess}
-          onCancel={() => setAddDealOpen(false)}
-        />
-      </Modal>
+        pipelines={pipelinesList}
+        defaultPipelineId={activePipeline?.id}
+      />
 
       {/* Deal Detail Modal */}
       <DealDetailModal
         deal={detailDeal}
         open={!!detailDeal}
         onClose={() => setDetailDeal(null)}
+        pipelines={pipelinesList}
       />
     </div>
   );

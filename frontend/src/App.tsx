@@ -4,6 +4,7 @@ import { RouterProvider } from 'react-router-dom';
 import { Toaster } from 'react-hot-toast';
 import { router } from './router';
 import { useAuthStore } from './store/auth';
+import { useThemeStore } from './store/theme';
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -17,17 +18,15 @@ const queryClient = new QueryClient({
 
 function AppInit({ children }: { children: React.ReactNode }) {
   const init = useAuthStore((s) => s.init);
+  const theme = useThemeStore((s) => s.theme);
   const [ready, setReady] = useState(false);
 
   useEffect(() => {
     init();
-    // Initialize theme from localStorage
-    const theme = localStorage.getItem('theme');
-    if (theme === 'dark') {
-      document.documentElement.classList.add('dark');
-    }
+    // Apply theme class from store
+    document.documentElement.classList.toggle('dark', theme === 'dark');
     setReady(true);
-  }, [init]);
+  }, [init, theme]);
 
   if (!ready) return null;
 

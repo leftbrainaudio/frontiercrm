@@ -1,0 +1,2826 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="Project documentation — design system, roadmap, devops, brand, architecture">
+      
+      
+      
+      
+      
+      
+        
+      
+      
+      <link rel="icon" href="../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.6">
+    
+    
+      
+        <title>FrontierCRM — User Personas & Feature Consolidation - FrontierCRM</title>
+      
+    
+    
+      <link rel="stylesheet" href="../assets/stylesheets/main.484c7ddc.min.css">
+      
+        
+        <link rel="stylesheet" href="../assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../stylesheets/extra.css">
+    
+    <script>__md_scope=new URL("..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="teal">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#frontiercrm-user-personas-feature-consolidation" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href=".." title="FrontierCRM" class="md-header__button md-logo" aria-label="FrontierCRM" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            FrontierCRM
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              FrontierCRM — User Personas &amp; Feature Consolidation
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+    
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+        <div class="md-search__suggest" data-md-component="search-suggest"></div>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href=".." title="FrontierCRM" class="md-nav__button md-logo" aria-label="FrontierCRM" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    FrontierCRM
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../index.md" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Home
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../10_ROADMAP.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Roadmap
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--active"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../12_DEVOPS.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    DevOps
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--active"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4" >
+        
+          
+          <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Brand Guidelines
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Brand Guidelines
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../08_BRAND_GUIDELINES.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Brand Identity
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--complete"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../ui-design-system.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Design System Overview
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--complete"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../design-system-gaps.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Implementation Gaps
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--active"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../06_DATA_ARCHITECTURE.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Architecture
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--complete"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../05_TECH_STACK.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Tech Stack
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--complete"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../11_DECISION_LOG.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Decision Log
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--complete"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_8" >
+        
+          
+          <label class="md-nav__link" for="__nav_8" id="__nav_8_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Research
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_8_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_8">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Research
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../01_MARKET_RESEARCH.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Market
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--complete"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../02_FEATURE_MATRIX.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Features
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--complete"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../04_INTEGRATIONS.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Integrations
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--completed"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../04B_EMERGING_TECH.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Emerging Tech
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--complete"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../03_PERSONAS.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Personas
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--complete"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../09_PRICING.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Pricing
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--complete"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../07_UX_WORKFLOWS.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    UX & Workflows
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--complete"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../api-endpoints.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    API
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--complete"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+
+<h1 id="frontiercrm-user-personas-feature-consolidation">FrontierCRM — User Personas &amp; Feature Consolidation</h1>
+<p><strong>Overview:</strong> 8 user personas derived from competitive research (T1: market/competitive analysis of 10 CRM vendors) and feature analysis (T2: deep-dive on Salesforce Sales Cloud). Each persona maps to the features FrontierCRM must support to win the SMB 10-200 seat sweet spot.</p>
+<hr />
+<h1 id="part-1-user-personas">PART 1: USER PERSONAS</h1>
+<hr />
+<h2 id="persona-1-alex-smb-sales-rep">Persona 1: Alex — SMB Sales Rep</h2>
+<table>
+<thead>
+<tr>
+<th>Attribute</th>
+<th>Detail</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Role</strong></td>
+<td>Sales Development Rep (SDR) / Account Executive at a 10-200 person company</td>
+</tr>
+<tr>
+<td><strong>Age</strong></td>
+<td>24-35</td>
+</tr>
+<tr>
+<td><strong>Tech Proficiency</strong></td>
+<td>High — uses Slack, Gmail/Outlook, Zoom, Notion daily. Comfortable with new tools.</td>
+</tr>
+<tr>
+<td><strong>Decision-Making Role</strong></td>
+<td>User only. Recommends tools but does not approve budget.</td>
+</tr>
+<tr>
+<td><strong>CRM Experience</strong></td>
+<td>May have used Salesforce, HubSpot, or Pipedrive at a previous company. Currently may be using spreadsheets + email.</td>
+</tr>
+</tbody>
+</table>
+<h3 id="goals">Goals</h3>
+<ul>
+<li>Hit quota consistently. Every hour spent in the CRM is an hour not spent selling.</li>
+<li>Log calls, emails, and meetings effortlessly — zero friction, ideally automatic.</li>
+<li>See next-best-action for each deal without hunting through notes.</li>
+<li>Access full CRM from phone between meetings, at trade shows, on the go.</li>
+</ul>
+<h3 id="pain-points">Pain Points</h3>
+<ul>
+<li>Data entry is a tax on selling time. Manual logging = skipped logging = inaccurate pipeline.</li>
+<li>CRMs make it hard to find the last touchpoint quickly. Wastes 5-10 minutes per call prep.</li>
+<li>Mobile apps are stripped-down — can't send an email or update a stage from the phone.</li>
+<li>Complex CRMs (Salesforce) require too many clicks to do simple things.</li>
+<li>Manager chases them to update pipeline before weekly forecast calls.</li>
+</ul>
+<h3 id="daily-workflow">Daily Workflow</h3>
+<ol>
+<li>Morning: Check email, review calendar, open CRM to see today's meetings and their deal context</li>
+<li>Log calls throughout the day (dials + scheduled)</li>
+<li>Send follow-up emails from CRM or from gmail (needs to auto-log)</li>
+<li>Update deal stages after discovery calls or demos</li>
+<li>End of day: Quick check of tomorrow's schedule</li>
+<li>Weekly: Update pipeline, move stalled deals, add notes</li>
+</ol>
+<h3 id="what-they-need-from-frontiercrm">What They Need From FrontierCRM</h3>
+<ul>
+<li><strong>One-click activity capture</strong> — calls, emails, meetings logged automatically</li>
+<li><strong>Lightning-fast pipeline</strong> — update stage in 1-2 clicks from any screen</li>
+<li><strong>Full mobile parity</strong> — send emails, update deals, view contacts from phone</li>
+<li><strong>Next-best-action</strong> — AI surfaces the highest-impact activity for each deal</li>
+<li><strong>Clean beautiful UI</strong> — the CRM should feel good to use, not like a chore</li>
+</ul>
+<hr />
+<h2 id="persona-2-jordan-enterprise-sales-rep">Persona 2: Jordan — Enterprise Sales Rep</h2>
+<table>
+<thead>
+<tr>
+<th>Attribute</th>
+<th>Detail</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Role</strong></td>
+<td>Enterprise Account Executive at 500+ person company</td>
+</tr>
+<tr>
+<td><strong>Age</strong></td>
+<td>30-45</td>
+</tr>
+<tr>
+<td><strong>Tech Proficiency</strong></td>
+<td>Moderate. Uses Salesforce daily but complains about it. Excel power user.</td>
+</tr>
+<tr>
+<td><strong>Decision-Making Role</strong></td>
+<td>Power user. Provides input during CRM evaluation but executive/IT decides.</td>
+</tr>
+<tr>
+<td><strong>CRM Experience</strong></td>
+<td>Typically 5+ years using Salesforce, may have used Oracle or SAP.</td>
+</tr>
+</tbody>
+</table>
+<h3 id="goals_1">Goals</h3>
+<ul>
+<li>Manage complex multi-stakeholder deals (8-20 touchpoints) with clear visibility</li>
+<li>Track POCs, evaluations, procurement cycles — not just simple pipeline stages</li>
+<li>Collaborate with SEs, CS, and management on deal strategy within the CRM</li>
+<li>Accurate forecasting for comp planning</li>
+</ul>
+<h3 id="pain-points_1">Pain Points</h3>
+<ul>
+<li>Salesforce is slow and bloated. Too many fields, too many clicks.</li>
+<li>Multi-threaded deal tracking is manual — stakeholder maps live in spreadsheets.</li>
+<li>Forecast call prep is painful — exporting data, reconciling with gut feel.</li>
+<li>Can't easily see what the SE or CSM did with the account recently.</li>
+<li>Territory changes break historical pipeline visibility.</li>
+</ul>
+<h3 id="daily-workflow_1">Daily Workflow</h3>
+<ol>
+<li>Morning: Review pipeline, check for new activity from SE/CS team members</li>
+<li>Qualification calls and discovery meetings</li>
+<li>Demo coordination with SE — handoffs need logging</li>
+<li>Proposal/negotiation stage — track pricing discussions, approvals</li>
+<li>Internal forecasting updates — manager reviews every deal</li>
+<li>Post-sales handoff to CS — ensure smooth transition</li>
+</ol>
+<h3 id="what-they-need-from-frontiercrm_1">What They Need From FrontierCRM</h3>
+<ul>
+<li><strong>Multi-threaded deal tracking</strong> — stakeholder maps with influence weights</li>
+<li><strong>Team activity feed</strong> — see what SE, CS, management did on each account without digging</li>
+<li><strong>AI forecasting</strong> — predictive close dates based on activity patterns, not manual entry</li>
+<li><strong>Fast performance</strong> — sub-second page loads, no waiting</li>
+<li><strong>Notes with AI summaries</strong> — meeting notes auto-summarized, action items extracted</li>
+</ul>
+<hr />
+<h2 id="persona-3-morgan-sales-manager">Persona 3: Morgan — Sales Manager</h2>
+<table>
+<thead>
+<tr>
+<th>Attribute</th>
+<th>Detail</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Role</strong></td>
+<td>Sales Manager at 10-200 person company. Manages 5-15 reps.</td>
+</tr>
+<tr>
+<td><strong>Age</strong></td>
+<td>30-45</td>
+</tr>
+<tr>
+<td><strong>Tech Proficiency</strong></td>
+<td>Moderate. Good with reporting tools. Not a builder/admin.</td>
+</tr>
+<tr>
+<td><strong>Decision-Making Role</strong></td>
+<td>Recommends tools, has budget input. Strong influence on CRM selection.</td>
+</tr>
+<tr>
+<td><strong>CRM Experience</strong></td>
+<td>Has used 1-2 CRMs. Mix of CRM experience and management instinct.</td>
+</tr>
+</tbody>
+</table>
+<h3 id="goals_2">Goals</h3>
+<ul>
+<li>See real-time pipeline health without hunting through spreadsheets</li>
+<li>Identify deals at risk — coach reps before deals slip</li>
+<li>Understand why deals are stalling — stage duration, activity gaps, stalled follow-ups</li>
+<li>Run accurate weekly forecast calls without chasing reps for manual updates</li>
+<li>Coach reps on specific deals — see what happened, where to focus</li>
+</ul>
+<h3 id="pain-points_2">Pain Points</h3>
+<ul>
+<li>Pipeline reports are always 2-3 days stale because reps don't update in real-time</li>
+<li>CRMs surface raw data but not insights — she has to do the analysis herself</li>
+<li>Can't easily see rep activity levels vs. results — who's working hard vs. who's coasting</li>
+<li>Forecast calls devolve into "trust me" conversations without CRM data backing</li>
+<li>No easy way to see coaching opportunities — which deals need intervention</li>
+</ul>
+<h3 id="daily-workflow_2">Daily Workflow</h3>
+<ol>
+<li>Morning: Pipeline dashboard — check stage distribution, deal velocity, at-risk deals</li>
+<li>Mid-day: Rep 1:1s — review specific deals, review activity metrics</li>
+<li>Review forecasts — adjust close dates, escalate at-risk deals</li>
+<li>Pipeline reviews with director — present team view, explain movement</li>
+<li>Coaching — identify process breakdowns, assign training</li>
+<li>End-of-month: Pipeline generation forecasting for next month</li>
+</ol>
+<h3 id="what-they-need-from-frontiercrm_2">What They Need From FrontierCRM</h3>
+<ul>
+<li><strong>Real-time pipeline dashboard</strong> — auto-updated from rep activity, no manual reporting</li>
+<li><strong>Deal velocity analysis</strong> — time-in-stage, activity recency, stalled deal alerts</li>
+<li><strong>Rep activity analytics</strong> — calls/emails per day, pipeline created, conversion rates</li>
+<li><strong>AI deal risk scoring</strong> — flags deals that are at risk of slipping before the rep knows</li>
+<li><strong>Manager dashboard</strong> — team-wide health + drill-down per rep, per deal</li>
+<li><strong>Forecast accuracy tracking</strong> — compare predicted vs. actual close dates</li>
+</ul>
+<hr />
+<h2 id="persona-4-riley-sales-director-vp-of-sales">Persona 4: Riley — Sales Director / VP of Sales</h2>
+<table>
+<thead>
+<tr>
+<th>Attribute</th>
+<th>Detail</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Role</strong></td>
+<td>Sales Director or VP of Sales at 50-200 person company</td>
+</tr>
+<tr>
+<td><strong>Age</strong></td>
+<td>35-55</td>
+</tr>
+<tr>
+<td><strong>Tech Proficiency</strong></td>
+<td>Low-medium. Uses email, calendar, dashboards. Doesn't want to click through menus.</td>
+</tr>
+<tr>
+<td><strong>Decision-Making Role</strong></td>
+<td>Primary buyer for sales tooling. Controls budget up to $50K/yr.</td>
+</tr>
+<tr>
+<td><strong>CRM Experience</strong></td>
+<td>Has seen 3-5 CRMs across multiple roles. Knows what works and what doesn't.</td>
+</tr>
+</tbody>
+</table>
+<h3 id="goals_3">Goals</h3>
+<ul>
+<li>Accurate revenue forecasting to the board/investors</li>
+<li>Territory planning — ensure coverage without overlap or gaps</li>
+<li>Identify systemic pipeline problems (top-of-funnel gap, long sales cycles, etc.)</li>
+<li>Measure rep and team performance objectively</li>
+<li>Scale the sales org — onboarding, process standardization, playbooks</li>
+</ul>
+<h3 id="pain-points_3">Pain Points</h3>
+<ul>
+<li>Forecasting is a black art — CRM data is always wrong, manager adjustments are manual</li>
+<li>Territory disputes — reps fight over accounts, no single source of truth for assignment</li>
+<li>No visibility into sales process adherence — reps skip stages, hide stalled deals</li>
+<li>Onboarding new reps takes 4-8 weeks to CRM proficiency</li>
+<li>Can't get reliable answers to "how did we perform last quarter" without analyst time</li>
+<li>Buying CRM feels like a hostage situation — locked into contracts, hidden costs</li>
+</ul>
+<h3 id="daily-workflow_3">Daily Workflow</h3>
+<ol>
+<li>Morning: Executive dashboard — revenue snapshot, pipeline by stage, weekly trends</li>
+<li>Forecast review with managers — challenge assumptions, pressure-test numbers</li>
+<li>Strategic decisions — hiring plans, territory splits, comp adjustments</li>
+<li>Board/investor reporting — pipeline coverage ratio, win rate, ACV trends</li>
+<li>Sales process improvements — identify bottlenecks, update playbooks</li>
+<li>Vendor management — tool stack review, integration health</li>
+</ol>
+<h3 id="what-they-need-from-frontiercrm_3">What They Need From FrontierCRM</h3>
+<ul>
+<li><strong>Executive dashboard</strong> — single pane for revenue, pipeline coverage, forecast accuracy</li>
+<li><strong>Territory management</strong> — visual territory map with account assignment</li>
+<li><strong>Sales process analytics</strong> — funnel conversion rates, stage-by-stage win rates</li>
+<li><strong>Playbook and methodology support</strong> — embed sales methodology into the CRM</li>
+<li><strong>Multi-period forecasting</strong> — current quarter, next quarter, stretch goals</li>
+<li><strong>No hidden costs</strong> — predictable pricing that doesn't surprise the board</li>
+</ul>
+<hr />
+<h2 id="persona-5-casey-crm-admin-it-manager">Persona 5: Casey — CRM Admin / IT Manager</h2>
+<table>
+<thead>
+<tr>
+<th>Attribute</th>
+<th>Detail</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Role</strong></td>
+<td>CRM Administrator or IT Manager at 50-500 person company</td>
+</tr>
+<tr>
+<td><strong>Age</strong></td>
+<td>28-50</td>
+</tr>
+<tr>
+<td><strong>Tech Proficiency</strong></td>
+<td>Very high. May know Apex/Deluge scripting or be a "citizen developer" using Flow.</td>
+</tr>
+<tr>
+<td><strong>Decision-Making Role</strong></td>
+<td>Evaluates technical fit. Strong veto power — will block adoption of tools that can't integrate.</td>
+</tr>
+<tr>
+<td><strong>CRM Experience</strong></td>
+<td>Lives in the CRM daily. Configures fields, workflows, integrations, user permissions.</td>
+</tr>
+</tbody>
+</table>
+<h3 id="goals_4">Goals</h3>
+<ul>
+<li>Configure the CRM to match business processes without writing code</li>
+<li>Maintain data quality — deduplication, import/export, field validation</li>
+<li>Integrate CRM with the rest of the tech stack (ERP, billing, marketing tools)</li>
+<li>Manage user access, roles, permissions cleanly</li>
+<li>Train new users and maintain adoption</li>
+</ul>
+<h3 id="pain-points_4">Pain Points</h3>
+<ul>
+<li>Salesforce Apex/Deluge = proprietary lock-in. Every customization is a technical debt.</li>
+<li>"Simple" changes (add a field, create a report) require release cycles and admin approval.</li>
+<li>Data import/export is harder than it should be — CSV mapping, encoding problems.</li>
+<li>Integrations break when the CRM updates (breaking changes, API deprecations).</li>
+<li>Managing 200-500 users means provisioning/deprovisioning overhead.</li>
+<li>CRM platform upgrades force retesting of all customizations.</li>
+</ul>
+<h3 id="daily-workflow_4">Daily Workflow</h3>
+<ol>
+<li>Morning: Check integration health, review error logs, verify data syncs</li>
+<li>User requests — add fields, modify picklists, create reports, set up new users</li>
+<li>Workflow/automation maintenance — troubleshoot failed flows, update automations</li>
+<li>Data management — deduplication runs, import leads, export reports</li>
+<li>Integration monitoring — email sync, ERP sync, marketing tool connections</li>
+<li>Release testing — verify customizations don't break on new CRM version</li>
+<li>Training — onboard new users, create documentation</li>
+</ol>
+<h3 id="what-they-need-from-frontiercrm_4">What They Need From FrontierCRM</h3>
+<ul>
+<li><strong>No-code configuration</strong> — fields, picklists, page layouts, all drag-and-drop</li>
+<li><strong>API-first design</strong> — RESTful API with clear docs, GraphQL support, webhooks</li>
+<li><strong>Bulk import/export</strong> — clean CSV/Excel handling, mapping preview, conflict resolution</li>
+<li><strong>Role-based access control</strong> — granular permissions, teams, sharing rules</li>
+<li><strong>Backward-compatible releases</strong> — opt-in upgrades, never forced breaking changes</li>
+<li><strong>Integration marketplace</strong> — pre-built connectors, no-code webhook setup</li>
+<li><strong>Audit log</strong> — full activity history for compliance and troubleshooting</li>
+</ul>
+<hr />
+<h2 id="persona-6-sam-small-business-owner">Persona 6: Sam — Small Business Owner</h2>
+<table>
+<thead>
+<tr>
+<th>Attribute</th>
+<th>Detail</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Role</strong></td>
+<td>Founder / Owner / CEO of a 3-15 person business (micro-SMB)</td>
+</tr>
+<tr>
+<td><strong>Age</strong></td>
+<td>30-55</td>
+</tr>
+<tr>
+<td><strong>Tech Proficiency</strong></td>
+<td>Low-medium. Uses email, calendar, QuickBooks. Doesn't want to learn yet another tool.</td>
+</tr>
+<tr>
+<td><strong>Decision-Making Role</strong></td>
+<td>Sole decision-maker. Signs the check.</td>
+</tr>
+<tr>
+<td><strong>CRM Experience</strong></td>
+<td>May have tried a free CRM, given up, and gone back to spreadsheets.</td>
+</tr>
+</tbody>
+</table>
+<h3 id="goals_5">Goals</h3>
+<ul>
+<li>See all customer interactions in one place — know what's been promised, what's due</li>
+<li>Not miss follow-ups — automated reminders for overdue tasks and stalled leads</li>
+<li>Minimal setup time — should be useful on day 1, not after a week of configuration</li>
+<li>One predictable monthly cost — no surprise add-ons or tier upgrades</li>
+<li>Focus on running the business, not adminning a CRM</li>
+</ul>
+<h3 id="pain-points_5">Pain Points</h3>
+<ul>
+<li>Spreadsheet CRM doesn't scale but real CRMs are too complex/time-consuming</li>
+<li>Can't afford a CRM consultant or dedicated admin</li>
+<li>HubSpot's free tier is limited; paid tiers are expensive for a small team</li>
+<li>Doesn't have time to train employees on a complex system</li>
+<li>Needs sales AND support AND invoicing visibility but doesn't want three separate tools</li>
+<li>Data lock-in fear — investing hours to set up a CRM then can't easily leave</li>
+</ul>
+<h3 id="daily-workflow_5">Daily Workflow</h3>
+<ol>
+<li>Morning scan: New leads, open support tickets, pending follow-ups</li>
+<li>Customer outreach: Calls, emails — needs quick context on last interaction</li>
+<li>Review pipeline: Which deals can I close this week?</li>
+<li>Customer support: Quick ticket resolution, assign to team member</li>
+<li>Billing follow-up: Check who hasn't paid, send reminder</li>
+<li>Evening: Review what happened today, plan tomorrow</li>
+</ol>
+<h3 id="what-they-need-from-frontiercrm_5">What They Need From FrontierCRM</h3>
+<ul>
+<li><strong>Minimal setup</strong> — import contacts from Google Contacts, start using in 10 minutes</li>
+<li><strong>Simple what-you-see dashboard</strong> — leads, deals, tickets, tasks in one view</li>
+<li><strong>All-in-one</strong> — sales + support + basic billing in one product</li>
+<li><strong>Flat pricing</strong> — one price for the whole company, all features included</li>
+<li><strong>Email + calendar sync</strong> — out of the box, no configuration</li>
+<li><strong>Quick data export</strong> — feels safe to commit because leaving is easy</li>
+<li><strong>Mobile-first</strong> — runs the whole business from a phone</li>
+</ul>
+<hr />
+<h2 id="persona-7-taylor-customer-support-agent">Persona 7: Taylor — Customer Support Agent</h2>
+<table>
+<thead>
+<tr>
+<th>Attribute</th>
+<th>Detail</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Role</strong></td>
+<td>Customer Support / Success Agent at 50-500 person company</td>
+</tr>
+<tr>
+<td><strong>Age</strong></td>
+<td>22-40</td>
+</tr>
+<tr>
+<td><strong>Tech Proficiency</strong></td>
+<td>Moderate. Comfortable with ticketing systems, chat, email.</td>
+</tr>
+<tr>
+<td><strong>Decision-Making Role</strong></td>
+<td>End user. Provides feedback but does not select tooling.</td>
+</tr>
+<tr>
+<td><strong>CRM Experience</strong></td>
+<td>Uses the support module of the CRM (Service Cloud, HubSpot Service Hub, Zendesk).</td>
+</tr>
+</tbody>
+</table>
+<h3 id="goals_6">Goals</h3>
+<ul>
+<li>See full customer history — sales context, past tickets, open deals — when a ticket comes in</li>
+<li>Resolve issues quickly — find answers in the CRM without searching multiple systems</li>
+<li>Log interactions without disrupting workflow — ticket updates, call notes, email replies</li>
+<li>Escalate to sales when a support issue has revenue implications</li>
+<li>Track SLAs and response times for performance reviews</li>
+</ul>
+<h3 id="pain-points_6">Pain Points</h3>
+<ul>
+<li>Support and sales data are siloed in different systems</li>
+<li>Have to ask "what's the deal status" — no visibility into whether the customer is in procurement</li>
+<li>Can't see if the customer just got upsold before a support call (changes the tone)</li>
+<li>Ticket routing ignores relationship history — gets assigned to wrong person</li>
+<li>No centralized knowledge base integrated with the CRM</li>
+<li>Escalating a sales-related issue means leaving the CRM and sending a Slack message</li>
+</ul>
+<h3 id="daily-workflow_6">Daily Workflow</h3>
+<ol>
+<li>Morning: Check ticket queue, review SLA deadlines, prioritize</li>
+<li>Respond to tickets/emails — needs customer 360 view for context</li>
+<li>Log calls — document issues, resolutions, customer sentiment</li>
+<li>Internal escalations — flag billing or sales-related issues</li>
+<li>Knowledge base updates — add common solutions for self-service</li>
+<li>End-of-day wrap: Close resolved tickets, update activity log</li>
+</ol>
+<h3 id="what-they-need-from-frontiercrm_6">What They Need From FrontierCRM</h3>
+<ul>
+<li><strong>Customer 360</strong> — unified view of sales pipeline + support tickets + interaction history</li>
+<li><strong>Ticket management</strong> — queue, assignment, SLA tracking, status pipeline</li>
+<li><strong>Shared context with sales</strong> — see open deals, recent interactions, account health</li>
+<li><strong>Collision detection</strong> — notify if someone from sales is also talking to this customer</li>
+<li><strong>Knowledge base</strong> — integrated, searchable, with AI-suggested answers</li>
+<li><strong>Collaboration tools</strong> — internal notes, @mentions, ticket assignment</li>
+</ul>
+<hr />
+<h2 id="persona-8-dana-c-suite-executive-ceo-cro-coo">Persona 8: Dana — C-Suite Executive (CEO / CRO / COO)</h2>
+<table>
+<thead>
+<tr>
+<th>Attribute</th>
+<th>Detail</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Role</strong></td>
+<td>CEO, Chief Revenue Officer, or COO at 50-500 person company</td>
+</tr>
+<tr>
+<td><strong>Age</strong></td>
+<td>40-65</td>
+</tr>
+<tr>
+<td><strong>Tech Proficiency</strong></td>
+<td>Low. Uses email, probably an iPhone. Does not interact with CRM directly unless forced.</td>
+</tr>
+<tr>
+<td><strong>Decision-Making Role</strong></td>
+<td>Ultimate buyer. Signs the contract. ROI-focused.</td>
+</tr>
+<tr>
+<td><strong>CRM Experience</strong></td>
+<td>Has been pitched by every major CRM vendor. Skeptical of "transformation" claims.</td>
+</tr>
+</tbody>
+</table>
+<h3 id="goals_7">Goals</h3>
+<ul>
+<li>Revenue predictability — know what next quarter looks like with confidence</li>
+<li>Team productivity — is the sales team selling or adminning?</li>
+<li>Customer retention — at-a-glance view of churn risk, customer health scores</li>
+<li>Operational efficiency — reduce tool bloat, consolidate vendors</li>
+<li>ROI on tool investments — is the CRM paying for itself?</li>
+</ul>
+<h3 id="pain-points_7">Pain Points</h3>
+<ul>
+<li>Has 5+ different dashboards (CRM, BI tool, spreadsheets) and none of them agree</li>
+<li>Forecasts are consistently wrong — always surprised by misses</li>
+<li>No clear view of team performance — who's carrying the load, who's underperforming</li>
+<li>CRM vendor relationships are adversarial — locked into contracts, hidden price increases</li>
+<li>Can't get a straight answer on tool consolidation — every department has their own system</li>
+<li>Customer churn is visible only after the fact — no early warning system</li>
+</ul>
+<h3 id="daily-workflow_7">Daily Workflow</h3>
+<ol>
+<li>Morning: Executive dashboard — ARR, pipeline coverage, churn, cash flow</li>
+<li>Leadership meetings: Revenue review, strategy, resource allocation</li>
+<li>External: Board calls, investor updates, customer meetings</li>
+<li>Decision-making: Product direction, hiring plans, partnership decisions</li>
+<li>Review: Key deals in flight, large customer health, competitive threats</li>
+<li>No direct CRM interaction — gets data from VP of Sales or BI team</li>
+</ol>
+<h3 id="what-they-need-from-frontiercrm_7">What They Need From FrontierCRM</h3>
+<ul>
+<li><strong>Executive summary dashboard</strong> — ARR, pipeline coverage ratio, NRR, churn rate</li>
+<li><strong>Customer health scoring</strong> — AI-driven risk flags before churn</li>
+<li><strong>Revenue forecasting</strong> — roll-up from team forecasts with confidence intervals</li>
+<li><strong>Team performance KPIs</strong> — quota attainment, ramp time, rep productivity</li>
+<li><strong>Vendor consolidation</strong> — sales + support + basic billing in one platform</li>
+<li><strong>Transparent reporting</strong> — no black-box forecasts, data they can trust</li>
+<li><strong>Predictable total cost</strong> — no "we outgrew our tier" surprises</li>
+</ul>
+<hr />
+<h1 id="part-2-persona-to-feature-matrix">PART 2: PERSONA-TO-FEATURE MATRIX</h1>
+<p>Features are grouped by category. Each persona is scored:</p>
+<ul>
+<li><strong>P0 (Must-Have)</strong> = cannot function without this. Core workflow blocker.</li>
+<li><strong>P1 (Important)</strong> = significant daily value, but can work around for a month.</li>
+<li><strong>P2 (Nice-to-Have)</strong> = valuable but not critical. Differentiator.</li>
+<li><strong>—</strong> = Not relevant to this persona.</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th>Feature Category</th>
+<th>Feature</th>
+<th>Alex (SMB Rep)</th>
+<th>Jordan (Ent Rep)</th>
+<th>Morgan (Mgr)</th>
+<th>Riley (Dir/VP)</th>
+<th>Casey (Admin)</th>
+<th>Sam (Biz Owner)</th>
+<th>Taylor (Support)</th>
+<th>Dana (Exec)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Contact Mgmt</strong></td>
+<td>360-degree contact view</td>
+<td>P0</td>
+<td>P0</td>
+<td>P1</td>
+<td>P2</td>
+<td>P1</td>
+<td>P0</td>
+<td>P0</td>
+<td>—</td>
+</tr>
+<tr>
+<td></td>
+<td>Activity history (calls, emails, meetings)</td>
+<td>P0</td>
+<td>P0</td>
+<td>P0</td>
+<td>P1</td>
+<td>P1</td>
+<td>P0</td>
+<td>P0</td>
+<td>—</td>
+</tr>
+<tr>
+<td></td>
+<td>Duplicate management</td>
+<td>P1</td>
+<td>P1</td>
+<td>—</td>
+<td>—</td>
+<td>P0</td>
+<td>P1</td>
+<td>—</td>
+<td>—</td>
+</tr>
+<tr>
+<td></td>
+<td>Contact enrichment (auto)</td>
+<td>P1</td>
+<td>P1</td>
+<td>—</td>
+<td>—</td>
+<td>P2</td>
+<td>—</td>
+<td>—</td>
+<td>—</td>
+</tr>
+<tr>
+<td></td>
+<td>List/segment management</td>
+<td>P1</td>
+<td>P1</td>
+<td>P0</td>
+<td>P1</td>
+<td>P1</td>
+<td>P1</td>
+<td>P0</td>
+<td>—</td>
+</tr>
+<tr>
+<td><strong>Pipeline Mgmt</strong></td>
+<td>Visual pipeline (kanban + list)</td>
+<td>P0</td>
+<td>P0</td>
+<td>P0</td>
+<td>P1</td>
+<td>P1</td>
+<td>P0</td>
+<td>—</td>
+<td>P2</td>
+</tr>
+<tr>
+<td></td>
+<td>Multi-stage deal tracking</td>
+<td>P0</td>
+<td>P0</td>
+<td>P0</td>
+<td>P1</td>
+<td>—</td>
+<td>P0</td>
+<td>—</td>
+<td>—</td>
+</tr>
+<tr>
+<td></td>
+<td>Deal scoring / next-best-action</td>
+<td>P0</td>
+<td>P0</td>
+<td>P0</td>
+<td>P1</td>
+<td>—</td>
+<td>P1</td>
+<td>—</td>
+<td>P2</td>
+</tr>
+<tr>
+<td></td>
+<td>Multi-threaded stakeholder maps</td>
+<td>—</td>
+<td>P0</td>
+<td>P1</td>
+<td>P1</td>
+<td>—</td>
+<td>—</td>
+<td>—</td>
+<td>—</td>
+</tr>
+<tr>
+<td></td>
+<td>Deal collaboration (notes, @mentions)</td>
+<td>P1</td>
+<td>P0</td>
+<td>P1</td>
+<td>—</td>
+<td>—</td>
+<td>P1</td>
+<td>—</td>
+<td>—</td>
+</tr>
+<tr>
+<td><strong>Email Integration</strong></td>
+<td>Two-way email sync (Gmail/Outlook)</td>
+<td>P0</td>
+<td>P0</td>
+<td>P1</td>
+<td>—</td>
+<td>P1</td>
+<td>P0</td>
+<td>P0</td>
+<td>—</td>
+</tr>
+<tr>
+<td></td>
+<td>Auto-logging of sent/received</td>
+<td>P0</td>
+<td>P0</td>
+<td>P0</td>
+<td>—</td>
+<td>P1</td>
+<td>P0</td>
+<td>P0</td>
+<td>—</td>
+</tr>
+<tr>
+<td></td>
+<td>Email templates &amp; sequences</td>
+<td>P0</td>
+<td>P1</td>
+<td>P1</td>
+<td>—</td>
+<td>—</td>
+<td>P1</td>
+<td>P1</td>
+<td>—</td>
+</tr>
+<tr>
+<td></td>
+<td>Email tracking (opens, clicks)</td>
+<td>P1</td>
+<td>P1</td>
+<td>P1</td>
+<td>—</td>
+<td>—</td>
+<td>P1</td>
+<td>—</td>
+<td>—</td>
+</tr>
+<tr>
+<td><strong>Calendar</strong></td>
+<td>Calendar sync (Google/Outlook)</td>
+<td>P0</td>
+<td>P0</td>
+<td>P0</td>
+<td>—</td>
+<td>P1</td>
+<td>P0</td>
+<td>P0</td>
+<td>—</td>
+</tr>
+<tr>
+<td></td>
+<td>Meeting logging (auto)</td>
+<td>P0</td>
+<td>P0</td>
+<td>P0</td>
+<td>—</td>
+<td>—</td>
+<td>P0</td>
+<td>P0</td>
+<td>—</td>
+</tr>
+<tr>
+<td></td>
+<td>Scheduling / availability sharing</td>
+<td>P1</td>
+<td>P1</td>
+<td>—</td>
+<td>—</td>
+<td>—</td>
+<td>P1</td>
+<td>P1</td>
+<td>—</td>
+</tr>
+<tr>
+<td><strong>Reporting &amp; Analytics</strong></td>
+<td>Pipeline reports &amp; dashboards</td>
+<td>P1</td>
+<td>P0</td>
+<td>P0</td>
+<td>P0</td>
+<td>P1</td>
+<td>P0</td>
+<td>P1</td>
+<td>P0</td>
+</tr>
+<tr>
+<td></td>
+<td>Deal velocity / time-in-stage</td>
+<td>—</td>
+<td>P1</td>
+<td>P0</td>
+<td>P0</td>
+<td>—</td>
+<td>—</td>
+<td>—</td>
+<td>—</td>
+</tr>
+<tr>
+<td></td>
+<td>Rep activity analytics</td>
+<td>—</td>
+<td>—</td>
+<td>P0</td>
+<td>P0</td>
+<td>—</td>
+<td>—</td>
+<td>—</td>
+<td>—</td>
+</tr>
+<tr>
+<td></td>
+<td>Forecast accuracy / comparison</td>
+<td>—</td>
+<td>P1</td>
+<td>P1</td>
+<td>P0</td>
+<td>—</td>
+<td>—</td>
+<td>—</td>
+<td>P0</td>
+</tr>
+<tr>
+<td></td>
+<td>Executive summary views</td>
+<td>—</td>
+<td>—</td>
+<td>—</td>
+<td>P0</td>
+<td>—</td>
+<td>—</td>
+<td>—</td>
+<td>P0</td>
+</tr>
+<tr>
+<td></td>
+<td>Custom report builder</td>
+<td>P2</td>
+<td>P1</td>
+<td>P0</td>
+<td>P0</td>
+<td>P1</td>
+<td>P1</td>
+<td>P1</td>
+<td>P1</td>
+</tr>
+<tr>
+<td></td>
+<td>Excel/CSV export</td>
+<td>P1</td>
+<td>P1</td>
+<td>P1</td>
+<td>P1</td>
+<td>P0</td>
+<td>P1</td>
+<td>P1</td>
+<td>P1</td>
+</tr>
+<tr>
+<td><strong>AI Features</strong></td>
+<td>Lead scoring (activity + fit)</td>
+<td>P0</td>
+<td>P0</td>
+<td>P0</td>
+<td>P1</td>
+<td>—</td>
+<td>P0</td>
+<td>—</td>
+<td>P2</td>
+</tr>
+<tr>
+<td></td>
+<td>AI email drafting</td>
+<td>P1</td>
+<td>P1</td>
+<td>—</td>
+<td>—</td>
+<td>—</td>
+<td>P0</td>
+<td>P1</td>
+<td>—</td>
+</tr>
+<tr>
+<td></td>
+<td>Meeting note summarization</td>
+<td>P0</td>
+<td>P0</td>
+<td>P1</td>
+<td>—</td>
+<td>—</td>
+<td>—</td>
+<td>—</td>
+<td>—</td>
+</tr>
+<tr>
+<td></td>
+<td>Next-best-action recommendations</td>
+<td>P0</td>
+<td>P0</td>
+<td>P0</td>
+<td>P1</td>
+<td>—</td>
+<td>P1</td>
+<td>—</td>
+<td>—</td>
+</tr>
+<tr>
+<td></td>
+<td>Predictive forecasting</td>
+<td>—</td>
+<td>P1</td>
+<td>P1</td>
+<td>P0</td>
+<td>—</td>
+<td>—</td>
+<td>—</td>
+<td>P0</td>
+</tr>
+<tr>
+<td></td>
+<td>Customer health scoring</td>
+<td>—</td>
+<td>—</td>
+<td>—</td>
+<td>P1</td>
+<td>—</td>
+<td>—</td>
+<td>P0</td>
+<td>P0</td>
+</tr>
+<tr>
+<td></td>
+<td>Sentiment analysis</td>
+<td>—</td>
+<td>—</td>
+<td>P1</td>
+<td>P1</td>
+<td>—</td>
+<td>—</td>
+<td>P0</td>
+<td>—</td>
+</tr>
+<tr>
+<td><strong>Automation</strong></td>
+<td>Workflow builder (no-code)</td>
+<td>P1</td>
+<td>P1</td>
+<td>P1</td>
+<td>P1</td>
+<td>P0</td>
+<td>P1</td>
+<td>P1</td>
+<td>—</td>
+</tr>
+<tr>
+<td></td>
+<td>Lead assignment / routing</td>
+<td>—</td>
+<td>—</td>
+<td>P0</td>
+<td>P1</td>
+<td>P1</td>
+<td>P1</td>
+<td>P1</td>
+<td>—</td>
+</tr>
+<tr>
+<td></td>
+<td>Approval workflows</td>
+<td>P1</td>
+<td>P1</td>
+<td>P0</td>
+<td>P1</td>
+<td>—</td>
+<td>P0</td>
+<td>—</td>
+<td>—</td>
+</tr>
+<tr>
+<td></td>
+<td>Auto-tagging / classification</td>
+<td>P1</td>
+<td>P1</td>
+<td>P1</td>
+<td>—</td>
+<td>P1</td>
+<td>P0</td>
+<td>P1</td>
+<td>—</td>
+</tr>
+<tr>
+<td><strong>Mobile</strong></td>
+<td>Full-featured mobile app</td>
+<td>P0</td>
+<td>P0</td>
+<td>P0</td>
+<td>P1</td>
+<td>P2</td>
+<td>P0</td>
+<td>P0</td>
+<td>P1</td>
+</tr>
+<tr>
+<td></td>
+<td>Push notifications</td>
+<td>P1</td>
+<td>P1</td>
+<td>P0</td>
+<td>P1</td>
+<td>—</td>
+<td>P0</td>
+<td>P0</td>
+<td>—</td>
+</tr>
+<tr>
+<td></td>
+<td>Offline mode</td>
+<td>P1</td>
+<td>P1</td>
+<td>—</td>
+<td>—</td>
+<td>—</td>
+<td>P1</td>
+<td>P1</td>
+<td>—</td>
+</tr>
+<tr>
+<td><strong>Integration</strong></td>
+<td>Gmail / Outlook native sync</td>
+<td>P0</td>
+<td>P0</td>
+<td>P1</td>
+<td>—</td>
+<td>P1</td>
+<td>P0</td>
+<td>P0</td>
+<td>—</td>
+</tr>
+<tr>
+<td></td>
+<td>Slack integration</td>
+<td>P1</td>
+<td>P0</td>
+<td>P0</td>
+<td>P1</td>
+<td>—</td>
+<td>P1</td>
+<td>P1</td>
+<td>—</td>
+</tr>
+<tr>
+<td></td>
+<td>Accounting/ERP (Stripe, QB, Xero)</td>
+<td>—</td>
+<td>—</td>
+<td>—</td>
+<td>—</td>
+<td>P1</td>
+<td>P0</td>
+<td>—</td>
+<td>P1</td>
+</tr>
+<tr>
+<td></td>
+<td>E-commerce (Shopify, etc.)</td>
+<td>—</td>
+<td>—</td>
+<td>—</td>
+<td>—</td>
+<td>P1</td>
+<td>P1</td>
+<td>—</td>
+<td>—</td>
+</tr>
+<tr>
+<td></td>
+<td>Zapier / Make / webhooks</td>
+<td>P2</td>
+<td>P2</td>
+<td>—</td>
+<td>—</td>
+<td>P0</td>
+<td>P1</td>
+<td>P2</td>
+<td>—</td>
+</tr>
+<tr>
+<td></td>
+<td>REST API / GraphQL</td>
+<td>—</td>
+<td>—</td>
+<td>—</td>
+<td>—</td>
+<td>P0</td>
+<td>—</td>
+<td>—</td>
+<td>—</td>
+</tr>
+<tr>
+<td><strong>Support / Service</strong></td>
+<td>Ticket management</td>
+<td>—</td>
+<td>—</td>
+<td>—</td>
+<td>—</td>
+<td>—</td>
+<td>P0</td>
+<td>P0</td>
+<td>P2</td>
+</tr>
+<tr>
+<td></td>
+<td>Customer 360 (support + sales)</td>
+<td>—</td>
+<td>P1</td>
+<td>P1</td>
+<td>P2</td>
+<td>P1</td>
+<td>P0</td>
+<td>P0</td>
+<td>—</td>
+</tr>
+<tr>
+<td></td>
+<td>SLA tracking</td>
+<td>—</td>
+<td>—</td>
+<td>—</td>
+<td>—</td>
+<td>P1</td>
+<td>—</td>
+<td>P0</td>
+<td>—</td>
+</tr>
+<tr>
+<td></td>
+<td>Knowledge base</td>
+<td>P2</td>
+<td>P2</td>
+<td>—</td>
+<td>—</td>
+<td>P1</td>
+<td>P1</td>
+<td>P0</td>
+<td>—</td>
+</tr>
+<tr>
+<td></td>
+<td>Customer portal / self-service</td>
+<td>—</td>
+<td>—</td>
+<td>—</td>
+<td>—</td>
+<td>P1</td>
+<td>P1</td>
+<td>P1</td>
+<td>P1</td>
+</tr>
+<tr>
+<td><strong>Admin / Config</strong></td>
+<td>No-code field/form builder</td>
+<td>—</td>
+<td>—</td>
+<td>—</td>
+<td>—</td>
+<td>P0</td>
+<td>—</td>
+<td>—</td>
+<td>—</td>
+</tr>
+<tr>
+<td></td>
+<td>Role-based access control</td>
+<td>—</td>
+<td>—</td>
+<td>—</td>
+<td>—</td>
+<td>P0</td>
+<td>—</td>
+<td>—</td>
+<td>—</td>
+</tr>
+<tr>
+<td></td>
+<td>Bulk import/export</td>
+<td>—</td>
+<td>—</td>
+<td>—</td>
+<td>—</td>
+<td>P0</td>
+<td>P1</td>
+<td>—</td>
+<td>—</td>
+</tr>
+<tr>
+<td></td>
+<td>Audit log</td>
+<td>—</td>
+<td>—</td>
+<td>—</td>
+<td>P1</td>
+<td>P0</td>
+<td>—</td>
+<td>—</td>
+<td>—</td>
+</tr>
+<tr>
+<td></td>
+<td>User management (provisioning)</td>
+<td>—</td>
+<td>—</td>
+<td>—</td>
+<td>—</td>
+<td>P0</td>
+<td>—</td>
+<td>—</td>
+<td>—</td>
+</tr>
+<tr>
+<td></td>
+<td>Data residency / GDPR</td>
+<td>—</td>
+<td>—</td>
+<td>—</td>
+<td>P1</td>
+<td>P0</td>
+<td>P2</td>
+<td>—</td>
+<td>P1</td>
+</tr>
+<tr>
+<td><strong>Collaboration</strong></td>
+<td>Internal notes / @mentions</td>
+<td>P1</td>
+<td>P0</td>
+<td>P1</td>
+<td>—</td>
+<td>—</td>
+<td>P1</td>
+<td>P0</td>
+<td>—</td>
+</tr>
+<tr>
+<td></td>
+<td>Team activity feed</td>
+<td>P1</td>
+<td>P0</td>
+<td>P0</td>
+<td>P1</td>
+<td>—</td>
+<td>P1</td>
+<td>P1</td>
+<td>—</td>
+</tr>
+<tr>
+<td></td>
+<td>Deal rooms / shared workspace</td>
+<td>—</td>
+<td>P0</td>
+<td>P1</td>
+<td>—</td>
+<td>—</td>
+<td>P1</td>
+<td>—</td>
+<td>—</td>
+</tr>
+<tr>
+<td></td>
+<td>Document/file sharing</td>
+<td>P1</td>
+<td>P0</td>
+<td>—</td>
+<td>—</td>
+<td>P1</td>
+<td>P1</td>
+<td>P1</td>
+<td>—</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h1 id="part-3-consolidated-feature-priority-list">PART 3: CONSOLIDATED FEATURE PRIORITY LIST</h1>
+<p>Features ranked by composite priority score across all 8 personas:</p>
+<p><strong>Scoring method:</strong>
+- P0 = 3 points per persona
+- P1 = 2 points per persona
+- P2 = 1 point per persona
+- — = 0 points
+- Total personas = 8. Max possible score = 24.</p>
+<h2 id="tier-1-core-foundation-must-ship-score-16">Tier 1: Core Foundation (Must-Ship) — Score ≥ 16</h2>
+<p>These features are essential for every persona. Without them, FrontierCRM cannot compete.</p>
+<table>
+<thead>
+<tr>
+<th>Rank</th>
+<th>Feature</th>
+<th>Score</th>
+<th>Personas Rating P0</th>
+<th>Why This Matters</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td><strong>Visual pipeline (kanban + list view)</strong></td>
+<td>20</td>
+<td>5 P0</td>
+<td>Universal deal-tracking need — every selling persona requires it</td>
+</tr>
+<tr>
+<td>2</td>
+<td><strong>Two-way email sync (Gmail/Outlook)</strong></td>
+<td>18</td>
+<td>5 P0</td>
+<td>Email is the bloodstream of CRM. Multiple research sources confirmed "broken email sync" is Salesforce's #1 user complaint</td>
+</tr>
+<tr>
+<td>3</td>
+<td><strong>Auto-logging of sent/received emails</strong></td>
+<td>18</td>
+<td>5 P0</td>
+<td>Without auto-logging, reps skip logging. Data quality collapses.</td>
+</tr>
+<tr>
+<td>4</td>
+<td><strong>Activity history (calls, emails, meetings)</strong></td>
+<td>17</td>
+<td>5 P0</td>
+<td>The core value proposition of any CRM: "see everything about this customer"</td>
+</tr>
+<tr>
+<td>5</td>
+<td><strong>Calendar sync + auto meeting logging</strong></td>
+<td>17</td>
+<td>5 P0</td>
+<td>Meetings are the highest-value CRM activity; logging must be automatic</td>
+</tr>
+<tr>
+<td>6</td>
+<td><strong>Pipeline reports &amp; dashboards</strong></td>
+<td>17</td>
+<td>4 P0</td>
+<td>Every manager and leader needs this. The competitive matrix showed reporting is a 4-5/5 category for every major CRM</td>
+</tr>
+<tr>
+<td>7</td>
+<td><strong>360-degree contact view</strong></td>
+<td>16</td>
+<td>4 P0</td>
+<td>Foundational. All personas except Admin/Exec need this daily</td>
+</tr>
+<tr>
+<td>8</td>
+<td><strong>Full-featured mobile app</strong></td>
+<td>16</td>
+<td>5 P0</td>
+<td>Competitive research: 73% of reps say mobile is critical. Salesforce mobile is "a trimmed-down web app" — big gap</td>
+</tr>
+</tbody>
+</table>
+<h2 id="tier-2-essential-differentiator-score-12-15">Tier 2: Essential Differentiator — Score 12-15</h2>
+<p>These features deliver the FrontierCRM competitive edge against incumbents. Ship in the first 2 releases.</p>
+<table>
+<thead>
+<tr>
+<th>Rank</th>
+<th>Feature</th>
+<th>Score</th>
+<th>Personas Rating P0</th>
+<th>Why This Matters</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>9</td>
+<td><strong>Lead scoring (activity + fit)</strong></td>
+<td>14</td>
+<td>4 P0</td>
+<td>Market gap: every CRM gates scoring behind AI upsells. FrontierCRM can include it in base price</td>
+</tr>
+<tr>
+<td>10</td>
+<td><strong>AI meeting note summarization</strong></td>
+<td>14</td>
+<td>2 P0</td>
+<td>Reps hate note-taking. Auto-summaries with action items save hours/week</td>
+</tr>
+<tr>
+<td>11</td>
+<td><strong>AI next-best-action recommendations</strong></td>
+<td>14</td>
+<td>3 P0</td>
+<td>Differentiator vs. incumbents. Makes the CRM proactive, not reactive</td>
+</tr>
+<tr>
+<td>12</td>
+<td><strong>Deal collaboration (notes, @mentions)</strong></td>
+<td>14</td>
+<td>2 P0</td>
+<td>Enterprise deals need team coordination. Support agents also need collaboration</td>
+</tr>
+<tr>
+<td>13</td>
+<td><strong>No-code workflow builder</strong></td>
+<td>13</td>
+<td>1 P0</td>
+<td>Key differentiator listed in T1 market gaps. Must compete with Salesforce Flow's power but without the complexity</td>
+</tr>
+<tr>
+<td>14</td>
+<td><strong>Slack integration</strong></td>
+<td>13</td>
+<td>2 P0</td>
+<td>Slack is the hub for most SMBs. Salesforce locks this behind Enterprise tier</td>
+</tr>
+<tr>
+<td>15</td>
+<td><strong>Rep activity analytics</strong></td>
+<td>13</td>
+<td>2 P0</td>
+<td>Managers need this for coaching and forecasting. Missing from most SMB CRMs</td>
+</tr>
+<tr>
+<td>16</td>
+<td><strong>Push notifications (mobile)</strong></td>
+<td>13</td>
+<td>3 P0</td>
+<td>Keeps reps and managers in the loop without opening the CRM</td>
+</tr>
+<tr>
+<td>17</td>
+<td><strong>Custom report builder</strong></td>
+<td>13</td>
+<td>0 P0</td>
+<td>Every persona that touches reporting needs customization. Sales Director and Exec need it at P0 equivalent</td>
+</tr>
+<tr>
+<td>18</td>
+<td><strong>AI email drafting</strong></td>
+<td>12</td>
+<td>1 P0</td>
+<td>Time-saver for every persona that sends emails. AI-native positioning</td>
+</tr>
+<tr>
+<td>19</td>
+<td><strong>Deal velocity / time-in-stage</strong></td>
+<td>12</td>
+<td>2 P0</td>
+<td>Managers need to see stalled deals. Missing from basic CRMs</td>
+</tr>
+<tr>
+<td>20</td>
+<td><strong>Multi-stage deal tracking</strong></td>
+<td>12</td>
+<td>5 P0</td>
+<td>Overlaps with pipeline visual but specifically about supporting complex deal stages</td>
+</tr>
+<tr>
+<td>21</td>
+<td><strong>Ticket management</strong></td>
+<td>12</td>
+<td>2 P0</td>
+<td>Core support feature. Needed for all-in-one positioning</td>
+</tr>
+<tr>
+<td>22</td>
+<td><strong>Customer 360 (support + sales)</strong></td>
+<td>12</td>
+<td>1 P0</td>
+<td>All-in-one differentiator — sales and support in one view</td>
+</tr>
+<tr>
+<td>23</td>
+<td><strong>Knowledge base</strong></td>
+<td>12</td>
+<td>1 P0</td>
+<td>Reduces support tickets. Enables self-service portal</td>
+</tr>
+<tr>
+<td>24</td>
+<td><strong>Internal notes / @mentions</strong></td>
+<td>12</td>
+<td>2 P0</td>
+<td>Cross-team collaboration is a gap in many CRMs</td>
+</tr>
+</tbody>
+</table>
+<h2 id="tier-3-competitive-parity-score-8-11">Tier 3: Competitive Parity — Score 8-11</h2>
+<p>Needed in the first 6 months to match competitor baseline features.</p>
+<table>
+<thead>
+<tr>
+<th>Rank</th>
+<th>Feature</th>
+<th>Score</th>
+<th>Personas Rating P0</th>
+<th>Why This Matters</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>25</td>
+<td><strong>Duplicate management</strong></td>
+<td>11</td>
+<td>1 P0</td>
+<td>Data quality is the admin's primary concern. Needed for CRM migration</td>
+</tr>
+<tr>
+<td>26</td>
+<td><strong>Forecast accuracy / comparison</strong></td>
+<td>11</td>
+<td>2 P0</td>
+<td>VP/Exec visibility. Key pain point — "forecasts are always wrong"</td>
+</tr>
+<tr>
+<td>27</td>
+<td><strong>Email templates &amp; sequences</strong></td>
+<td>11</td>
+<td>1 P0</td>
+<td>Sales efficiency. Most CRMs include basic version</td>
+</tr>
+<tr>
+<td>28</td>
+<td><strong>Offline mode (mobile)</strong></td>
+<td>11</td>
+<td>1 P0</td>
+<td>Reps on planes, trade shows, poor connectivity</td>
+</tr>
+<tr>
+<td>29</td>
+<td><strong>List/segment management</strong></td>
+<td>11</td>
+<td>2 P0</td>
+<td>Used by almost every persona for targeted outreach</td>
+</tr>
+<tr>
+<td>30</td>
+<td><strong>Executive summary dashboard</strong></td>
+<td>10</td>
+<td>2 P0</td>
+<td>CEO/CRO visibility. Key to getting contract signed</td>
+</tr>
+<tr>
+<td>31</td>
+<td><strong>Multi-threaded stakeholder maps</strong></td>
+<td>10</td>
+<td>1 P0</td>
+<td>Differentiator for enterprise deals. Complex deal management</td>
+</tr>
+<tr>
+<td>32</td>
+<td><strong>Bulk import/export</strong></td>
+<td>10</td>
+<td>1 P0</td>
+<td>Migration from spreadsheets or old CRM — critical for onboarding</td>
+</tr>
+<tr>
+<td>33</td>
+<td><strong>Role-based access control</strong></td>
+<td>10</td>
+<td>1 P0</td>
+<td>Admin necessity for any team &gt; 10 people</td>
+</tr>
+<tr>
+<td>34</td>
+<td><strong>AI predictive forecasting</strong></td>
+<td>10</td>
+<td>2 P0</td>
+<td>Competitive differentiator vs. manual forecasting in most CRMs</td>
+</tr>
+<tr>
+<td>35</td>
+<td><strong>Lead assignment / routing</strong></td>
+<td>9</td>
+<td>2 P0</td>
+<td>Sales process automation. Especially important for Sam (Biz Owner)</td>
+</tr>
+<tr>
+<td>36</td>
+<td><strong>Deal rooms / shared workspace</strong></td>
+<td>9</td>
+<td>1 P0</td>
+<td>Enterprise sales collaboration. Not found in basic CRMs</td>
+</tr>
+<tr>
+<td>37</td>
+<td><strong>Approval workflows</strong></td>
+<td>9</td>
+<td>2 P0</td>
+<td>Discount approvals, deal stage approval. Manager workflow need</td>
+</tr>
+<tr>
+<td>38</td>
+<td><strong>Auto-tagging / classification</strong></td>
+<td>9</td>
+<td>1 P0</td>
+<td>Reduces manual data entry. Supports reporting accuracy</td>
+</tr>
+<tr>
+<td>39</td>
+<td><strong>Customer health scoring</strong></td>
+<td>9</td>
+<td>2 P0</td>
+<td>Churn prevention. Key exec and support need</td>
+</tr>
+<tr>
+<td>40</td>
+<td><strong>No-code field/form builder</strong></td>
+<td>9</td>
+<td>1 P0</td>
+<td>Admin configuration. Competitor baseline</td>
+</tr>
+<tr>
+<td>41</td>
+<td><strong>Email tracking (opens, clicks)</strong></td>
+<td>9</td>
+<td>0 P0</td>
+<td>Sales enablement. Important for outreach effectiveness</td>
+</tr>
+<tr>
+<td>42</td>
+<td><strong>Contact enrichment (auto)</strong></td>
+<td>9</td>
+<td>0 P0</td>
+<td>Data quality improvement. Gaps in data age out quickly</td>
+</tr>
+<tr>
+<td>43</td>
+<td><strong>Customer portal / self-service</strong></td>
+<td>9</td>
+<td>0 P0</td>
+<td>Market gap: Salesforce charges separately for Experience Cloud</td>
+</tr>
+<tr>
+<td>44</td>
+<td><strong>Document/file sharing</strong></td>
+<td>9</td>
+<td>1 P0</td>
+<td>Deal collaboration basic need</td>
+</tr>
+<tr>
+<td>45</td>
+<td><strong>Audit log</strong></td>
+<td>8</td>
+<td>1 P0</td>
+<td>Compliance and admin visibility</td>
+</tr>
+<tr>
+<td>46</td>
+<td><strong>SLA tracking</strong></td>
+<td>8</td>
+<td>1 P0</td>
+<td>Support team essential</td>
+</tr>
+<tr>
+<td>47</td>
+<td><strong>Sentiment analysis</strong></td>
+<td>7</td>
+<td>0 P0</td>
+<td>Advanced AI feature for managers and support</td>
+</tr>
+<tr>
+<td>48</td>
+<td><strong>User management (provisioning)</strong></td>
+<td>7</td>
+<td>1 P0</td>
+<td>Admin overhead reduction</td>
+</tr>
+<tr>
+<td>49</td>
+<td><strong>Zapier/Make/webhooks</strong></td>
+<td>7</td>
+<td>1 P0</td>
+<td>Integration reach — standard expectation</td>
+</tr>
+<tr>
+<td>50</td>
+<td><strong>Data residency / GDPR</strong></td>
+<td>7</td>
+<td>1 P0</td>
+<td>Privacy positioning. Important for EU market expansion</td>
+</tr>
+</tbody>
+</table>
+<h2 id="tier-4-phase-2-nice-to-have-score-7">Tier 4: Phase 2 / Nice-to-Have — Score &lt; 7</h2>
+<p>Ship after core product is established. These are differentiators or vertical-specific needs.</p>
+<table>
+<thead>
+<tr>
+<th>Rank</th>
+<th>Feature</th>
+<th>Score</th>
+<th>Personas Rating P0</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>51</td>
+<td><strong>Accounting/ERP integration (Stripe, QB, Xero)</strong></td>
+<td>6</td>
+<td>1 P0</td>
+</tr>
+<tr>
+<td>52</td>
+<td><strong>Scheduling / availability sharing</strong></td>
+<td>6</td>
+<td>0 P0</td>
+</tr>
+<tr>
+<td>53</td>
+<td><strong>REST API / GraphQL</strong></td>
+<td>6</td>
+<td>1 P0</td>
+</tr>
+<tr>
+<td>54</td>
+<td><strong>E-commerce (Shopify, etc.)</strong></td>
+<td>5</td>
+<td>0 P0</td>
+</tr>
+<tr>
+<td>55</td>
+<td><strong>Team activity feed</strong></td>
+<td>4</td>
+<td>0 P0</td>
+</tr>
+<tr>
+<td>56</td>
+<td><strong>Deal scoring / next-best-action (overlaps #9/#11)</strong></td>
+<td>—</td>
+<td>(covered above)</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h1 id="part-4-persona-coverage-consolidation-analysis">PART 4: PERSONA COVERAGE &amp; CONSOLIDATION ANALYSIS</h1>
+<h2 id="persona-clusters">Persona Clusters</h2>
+<p>The 8 personas naturally cluster into 4 functional groups that share feature needs:</p>
+<table>
+<thead>
+<tr>
+<th>Cluster</th>
+<th>Personas</th>
+<th>Shared P0 Features</th>
+<th>Design Implication</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Frontline Sellers</strong></td>
+<td>Alex (SMB Rep), Jordan (Ent Rep), Sam (Biz Owner)</td>
+<td>Pipeline, Email sync, Auto-logging, Mobile, AI next-best-action</td>
+<td>Fast, low-click UI. Mobile parity. Zero data entry friction.</td>
+</tr>
+<tr>
+<td><strong>Sales Leadership</strong></td>
+<td>Morgan (Mgr), Riley (Dir/VP), Dana (Exec)</td>
+<td>Dashboards, Forecasting, Activity analytics, Deal velocity</td>
+<td>Insight-forward design. Dashboards, not data entry. Executive summary layer.</td>
+</tr>
+<tr>
+<td><strong>Operations &amp; Admin</strong></td>
+<td>Casey (Admin)</td>
+<td>No-code config, API, RBAC, Import/export, Audit, Integration</td>
+<td>Power tools. Not default UI — accessed via settings/workspace. Backward compatibility.</td>
+</tr>
+<tr>
+<td><strong>Customer Facing</strong></td>
+<td>Taylor (Support), Sam (Biz Owner as support handler)</td>
+<td>Ticket management, Customer 360, Knowledge base, SLA</td>
+<td>Unified sales + support view. Collision detection.</td>
+</tr>
+</tbody>
+</table>
+<h2 id="key-consolidation-decisions">Key Consolidation Decisions</h2>
+<p>Based on cross-persona analysis:</p>
+<ol>
+<li>
+<p><strong>Email sync is the single highest-ROI engineering investment.</strong> Every selling persona rates it P0. Salesforce's weakness here is FrontierCRM's wedge opportunity.</p>
+</li>
+<li>
+<p><strong>Mobile is not optional — it's a fundamental requirement.</strong> 5 of 8 personas rate it P0. Must deliver full feature parity, not a trimmed-down companion.</p>
+</li>
+<li>
+<p><strong>AI must be included, not upsold.</strong> Lead scoring, next-best-action, meeting summaries, and email drafting all score 12+. Gating these behind premium tiers contradicts the transparent-positioning strategy from T1.</p>
+</li>
+<li>
+<p><strong>Support/Service features should ship in the same product, not as a separate SKU.</strong> The all-in-one positioning is a market gap. Taylor and Sam both need customer 360 with ticket management.</p>
+</li>
+<li>
+<p><strong>Admin tools should be powerful but invisible.</strong> Casey (Admin) has P0 needs that no other persona cares about. Build a dedicated admin workspace rather than cluttering the main UI.</p>
+</li>
+<li>
+<p><strong>Territory management and comp planning are Phase 2.</strong> Only Riley and Dana need these. Don't build before core pipeline and reporting are solid.</p>
+</li>
+<li>
+<p><strong>Backward-compatible releases are non-negotiable for admin adoption.</strong> Casey will block adoption if forced migrations are a concern. This is FrontierCRM's answer to Salesforce's #3 user complaint — forced feature retirement and breaking changes.</p>
+</li>
+</ol>
+<hr />
+<h1 id="summary-for-engineering">Summary for Engineering</h1>
+<table>
+<thead>
+<tr>
+<th>Priority Tier</th>
+<th>Features</th>
+<th>Timeframe</th>
+<th>Engineering Strategy</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Tier 1: Core (16+ score)</strong></td>
+<td>8 features: pipeline, email sync, auto-logging, activity history, calendar sync, dashboards, contact view, mobile app</td>
+<td><strong>Ship first</strong></td>
+<td>Build these rock-solid. No shortcuts. These are the table stakes.</td>
+</tr>
+<tr>
+<td><strong>Tier 2: Differentiator (12-15)</strong></td>
+<td>16 features: AI scoring, AI summaries, AI next-best-action, collaboration, workflows, Slack, analytics, push, reporting, email drafting, deal velocity, multi-stage, tickets, customer 360, KB, internal notes</td>
+<td><strong>Ship second</strong></td>
+<td>These are FrontierCRM's moat. Invest in quality — they're why someone switches.</td>
+</tr>
+<tr>
+<td><strong>Tier 3: Parity (8-11)</strong></td>
+<td>20 features: duplicates, forecasting, templates, offline, lists, exec dashboard, stakeholder maps, import/export, RBAC, predictive, lead routing, deal rooms, approvals, auto-tagging, health scoring, field builder, email tracking, enrichment, portal, file sharing</td>
+<td><strong>First 6 months</strong></td>
+<td>Match competitor baseline. Every major CRM has these; FrontierCRM needs to match.</td>
+</tr>
+<tr>
+<td><strong>Tier 4: Phase 2 (&lt; 8)</strong></td>
+<td>6 features: ERP integrations, scheduling, API, e-commerce</td>
+<td><strong>6-12 months</strong></td>
+<td>Expand into vertical needs after core is solid.</td>
+</tr>
+</tbody>
+</table>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Back to top
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "..", "features": ["navigation.sections", "navigation.top", "search.suggest", "search.highlight", "content.code.copy"], "search": "../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="../assets/javascripts/bundle.79ae519e.min.js"></script>
+      
+    
+  </body>
+</html>

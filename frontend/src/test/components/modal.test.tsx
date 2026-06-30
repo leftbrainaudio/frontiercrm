@@ -1,7 +1,7 @@
 import { describe, it, expect, vi } from 'vitest';
 import { render, screen, cleanup } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import { Modal } from '../../components/ui/modal';
+import { Modal } from '../../components/molecules/modal';
 
 describe('Modal', () => {
   const onClose = vi.fn();

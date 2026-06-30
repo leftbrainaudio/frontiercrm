@@ -7,7 +7,7 @@ import {
 } from 'react';
 import { ChevronUp, ChevronDown, ChevronsUpDown } from 'lucide-react';
 import { cn } from '../../lib/utils';
-import { Skeleton } from './skeleton';
+import { Skeleton } from '../atoms/skeleton';
 
 export interface Column<T> {
   /** Column header text */

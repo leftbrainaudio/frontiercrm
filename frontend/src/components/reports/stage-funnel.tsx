@@ -1,4 +1,4 @@
-import { Card } from '../ui/card';
+import { Card } from '../molecules/card';
 import { formatPercent } from './shared';
 
 export interface StageFunnelProps {

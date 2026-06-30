@@ -1,0 +1,1675 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="Project documentation — design system, roadmap, devops, brand, architecture">
+      
+      
+        <meta name="author" content="creative + coach">
+      
+      
+      
+        <link rel="prev" href="ui-design-system.html">
+      
+      
+        <link rel="next" href="06_DATA_ARCHITECTURE.html">
+      
+      
+        
+      
+      
+      <link rel="icon" href="assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.6">
+    
+    
+      
+        <title>Implementation Gaps - FrontierCRM</title>
+      
+    
+    
+      <link rel="stylesheet" href="assets/stylesheets/main.484c7ddc.min.css">
+      
+        
+        <link rel="stylesheet" href="assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="stylesheets/extra.css">
+    
+    <script>__md_scope=new URL(".",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="teal">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#design-system-implementation-gaps" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="." title="FrontierCRM" class="md-header__button md-logo" aria-label="FrontierCRM" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            FrontierCRM
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Implementation Gaps
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+    
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+        <div class="md-search__suggest" data-md-component="search-suggest"></div>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="." title="FrontierCRM" class="md-nav__button md-logo" aria-label="FrontierCRM" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    FrontierCRM
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="index.md" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Home
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="10_ROADMAP.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Roadmap
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--active"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="12_DEVOPS.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    DevOps
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--active"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Brand Guidelines
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_4">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Brand Guidelines
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="08_BRAND_GUIDELINES.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Brand Identity
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--complete"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="ui-design-system.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Design System Overview
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--complete"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Implementation Gaps
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--active"></span>
+  
+
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="design-system-gaps.html" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Implementation Gaps
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--active"></span>
+  
+
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#p0-must-fix-brand-breaking" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        P0 — Must Fix (brand-breaking)
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="P0 — Must Fix (brand-breaking)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1-typography-inter-font-not-loaded" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1. Typography: Inter font not loaded
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2-color-tokens-use-gray-instead-of-slate" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2. Color tokens use gray instead of slate
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3-missing-secondary-teal-and-accent-amber-token-aliases" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3. Missing secondary- (teal) and accent- (amber) token aliases
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#4-dark-mode-defaults-to-light-instead-of-os-preference" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4. Dark mode defaults to 'light' instead of OS preference
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#5-logo-assets-missing-from-sidebar" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5. Logo assets missing from sidebar
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#p1-accessibility-components" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        P1 — Accessibility &amp; Components
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#p2-responsive-layout" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        P2 — Responsive &amp; Layout
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#p3-polish" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        P3 — Polish
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#implementation-priority" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Implementation Priority
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#current-status-sprint-s0" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Current Status (Sprint S0)
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="06_DATA_ARCHITECTURE.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Architecture
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--complete"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="05_TECH_STACK.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Tech Stack
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--complete"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="11_DECISION_LOG.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Decision Log
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--complete"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_8" >
+        
+          
+          <label class="md-nav__link" for="__nav_8" id="__nav_8_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Research
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_8_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_8">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Research
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="01_MARKET_RESEARCH.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Market
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--complete"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="02_FEATURE_MATRIX.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Features
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--complete"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="04_INTEGRATIONS.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Integrations
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--completed"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="04B_EMERGING_TECH.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Emerging Tech
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--complete"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="03_PERSONAS.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Personas
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--complete"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="09_PRICING.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Pricing
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--complete"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="07_UX_WORKFLOWS.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    UX & Workflows
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--complete"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="api-endpoints.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    API
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--complete"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#p0-must-fix-brand-breaking" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        P0 — Must Fix (brand-breaking)
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="P0 — Must Fix (brand-breaking)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1-typography-inter-font-not-loaded" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1. Typography: Inter font not loaded
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2-color-tokens-use-gray-instead-of-slate" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2. Color tokens use gray instead of slate
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3-missing-secondary-teal-and-accent-amber-token-aliases" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3. Missing secondary- (teal) and accent- (amber) token aliases
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#4-dark-mode-defaults-to-light-instead-of-os-preference" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4. Dark mode defaults to 'light' instead of OS preference
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#5-logo-assets-missing-from-sidebar" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5. Logo assets missing from sidebar
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#p1-accessibility-components" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        P1 — Accessibility &amp; Components
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#p2-responsive-layout" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        P2 — Responsive &amp; Layout
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#p3-polish" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        P3 — Polish
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#implementation-priority" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Implementation Priority
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#current-status-sprint-s0" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Current Status (Sprint S0)
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+
+<h1 id="design-system-implementation-gaps">Design System — Implementation Gaps</h1>
+<blockquote>
+<p>Creative audited the wiki specs (1,732 combined lines in <code>08_BRAND_GUIDELINES.md</code> and <code>ui-design-system.md</code>) against the actual frontend code at <code>~/FrontierCRM/frontend/</code>. This page documents every gap found, ordered by priority.</p>
+</blockquote>
+<h2 id="p0-must-fix-brand-breaking">P0 — Must Fix (brand-breaking)</h2>
+<h3 id="1-typography-inter-font-not-loaded">1. Typography: Inter font not loaded</h3>
+<table>
+<thead>
+<tr>
+<th></th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>File</strong></td>
+<td><code>frontend/src/index.css</code>, <code>frontend/package.json</code></td>
+</tr>
+<tr>
+<td><strong>Current</strong></td>
+<td>Uses system font stack (<code>ui-sans-serif, system-ui, sans-serif</code>)</td>
+</tr>
+<tr>
+<td><strong>Spec</strong></td>
+<td>Inter for headings/body, JetBrains Mono for code</td>
+</tr>
+<tr>
+<td><strong>Fix</strong></td>
+<td>Add <code>@fontsource/inter</code> + <code>@fontsource/jetbrains-mono</code> to packages. Import weights 400, 600, 700 in <code>src/main.tsx</code>. Update <code>fontFamily.sans</code> in <code>index.css</code> to <code>Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif</code></td>
+</tr>
+</tbody>
+</table>
+<h3 id="2-color-tokens-use-gray-instead-of-slate">2. Color tokens use gray instead of slate</h3>
+<table>
+<thead>
+<tr>
+<th></th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>File</strong></td>
+<td><code>frontend/src/index.css</code> lines 5-34 (<code>@theme</code> block)</td>
+</tr>
+<tr>
+<td><strong>Current</strong></td>
+<td><code>--color-surface: #ffffff; --color-surface-secondary: #f9fafb; --color-border: #e5e7eb; --color-text-primary: #111827; --color-text-secondary: #6b7280; --dark-surface: #0f172a;</code></td>
+</tr>
+<tr>
+<td><strong>Spec</strong></td>
+<td><code>neutral-50: #F8FAFC</code>, <code>neutral-100: #F1F5F9</code>, <code>neutral-200: #E2E8F0</code>, <code>neutral-800: #1E293B</code>, <code>neutral-600: #475569</code>, <code>neutral-950: #0B1120</code></td>
+</tr>
+<tr>
+<td><strong>Fix</strong></td>
+<td>Re-map all token hex values to match spec §3 of BRAND_GUIDELINES</td>
+</tr>
+</tbody>
+</table>
+<h3 id="3-missing-secondary-teal-and-accent-amber-token-aliases">3. Missing secondary-<em> (teal) and accent-</em> (amber) token aliases</h3>
+<table>
+<thead>
+<tr>
+<th></th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>File</strong></td>
+<td><code>frontend/src/index.css</code></td>
+</tr>
+<tr>
+<td><strong>Current</strong></td>
+<td>Uses Tailwind stock emerald/amber/red/sky for badges and data viz</td>
+</tr>
+<tr>
+<td><strong>Spec</strong></td>
+<td><code>--color-secondary-50</code> through <code>-900</code> (teal #14B8A6 scale) and <code>--color-accent-50</code> through <code>-900</code> (amber #F59E0B scale) — full scales</td>
+</tr>
+<tr>
+<td><strong>Fix</strong></td>
+<td>Add both scales matching spec §3.2 and §3.3</td>
+</tr>
+</tbody>
+</table>
+<h3 id="4-dark-mode-defaults-to-light-instead-of-os-preference">4. Dark mode defaults to 'light' instead of OS preference</h3>
+<table>
+<thead>
+<tr>
+<th></th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>File</strong></td>
+<td><code>frontend/src/store/theme.ts</code> line 12</td>
+</tr>
+<tr>
+<td><strong>Current</strong></td>
+<td><code>theme: (localStorage.getItem('theme') as Theme) || 'light'</code></td>
+</tr>
+<tr>
+<td><strong>Spec</strong></td>
+<td>Should respect <code>prefers-color-scheme</code> OS setting, then fall back to 'light'</td>
+</tr>
+<tr>
+<td><strong>Fix</strong></td>
+<td>Change fallback to <code>window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light'</code></td>
+</tr>
+</tbody>
+</table>
+<h3 id="5-logo-assets-missing-from-sidebar">5. Logo assets missing from sidebar</h3>
+<table>
+<thead>
+<tr>
+<th></th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>File</strong></td>
+<td><code>frontend/src/components/layout/sidebar.tsx</code> lines 43-51</td>
+</tr>
+<tr>
+<td><strong>Current</strong></td>
+<td>Blue <code>F</code> letter icon + text "FrontierCRM"</td>
+</tr>
+<tr>
+<td><strong>Spec</strong></td>
+<td>Logo SVGs at <code>public/logos/logo-mark.svg</code> (collapsed) and <code>public/logos/logo.svg</code> (expanded)</td>
+</tr>
+<tr>
+<td><strong>Fix</strong></td>
+<td>Replace with <code>&lt;img src="/logos/logo-mark.svg"&gt;</code> and full lockup respectively</td>
+</tr>
+<tr>
+<td><strong>Status</strong></td>
+<td>⏸ On hold (logo quality not approved)</td>
+</tr>
+</tbody>
+</table>
+<h2 id="p1-accessibility-components">P1 — Accessibility &amp; Components</h2>
+<table>
+<thead>
+<tr>
+<th>#</th>
+<th>What</th>
+<th>File</th>
+<th>Fix</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>6</td>
+<td>Focus indicators don't match spec</td>
+<td><code>index.css:52-54</code>, <code>button.tsx:68</code></td>
+<td>3px primary-500 outline + 2px white offset ring</td>
+</tr>
+<tr>
+<td>7</td>
+<td>No <code>aria-current="page"</code> on sidebar</td>
+<td><code>sidebar.tsx</code> nav links</td>
+<td><code>aria-current={isActive ? 'page' : undefined}</code></td>
+</tr>
+<tr>
+<td>8</td>
+<td>Dark mode has no CSS transition</td>
+<td><code>theme.ts</code>, <code>index.css</code></td>
+<td>Add <code>transition: background-color 300ms ease, color 300ms ease</code> to <code>body</code></td>
+</tr>
+<tr>
+<td>9</td>
+<td>No <code>prefers-reduced-motion</code></td>
+<td><code>index.css</code></td>
+<td>Add <code>@media (prefers-reduced-motion: reduce)</code> queries substituting opacity for translate</td>
+</tr>
+<tr>
+<td>10</td>
+<td>Button missing xs/xl sizes</td>
+<td><code>button.tsx:18-22</code></td>
+<td>Add <code>xs: h-6 px-2 text-xs</code> and <code>xl: h-14 px-8 text-lg</code></td>
+</tr>
+<tr>
+<td>11</td>
+<td>Button spinner doesn't preserve width</td>
+<td><code>button.tsx</code> loading state</td>
+<td>Set <code>min-width</code> before loading</td>
+</tr>
+<tr>
+<td>12</td>
+<td>Input focus ring wrong</td>
+<td><code>input.tsx:91</code></td>
+<td><code>focus:border-brand-500 focus:ring-[3px] focus:ring-brand-200 focus:ring-offset-2</code></td>
+</tr>
+<tr>
+<td>13</td>
+<td>Input border radius mismatch</td>
+<td><code>input.tsx:89</code></td>
+<td>Change <code>rounded-lg</code> (8px) → <code>rounded-md</code> (6px)</td>
+</tr>
+<tr>
+<td>14</td>
+<td>No standalone Select component</td>
+<td>Inline <code>&lt;select&gt;</code> in <code>pipeline-page.tsx:432-476</code></td>
+<td>Extract using <code>@radix-ui/react-select</code></td>
+</tr>
+<tr>
+<td>15</td>
+<td>Badge uses Tailwind stock colors</td>
+<td><code>badge.tsx</code></td>
+<td>Map to: secondary-100/700 (success), accent-100/700 (warning), error-100/700 (error), primary-100/700 (default)</td>
+</tr>
+<tr>
+<td>16</td>
+<td>Modal footer button alignment</td>
+<td><code>modal.tsx:186</code></td>
+<td>OK (right-aligned per spec) — verify Cancel left, Primary right</td>
+</tr>
+<tr>
+<td>17</td>
+<td>Missing SearchBar component</td>
+<td>Not implemented</td>
+<td>Build per spec §2.15 — 320px default, ⌘K shortcut, results dropdown</td>
+</tr>
+<tr>
+<td>18</td>
+<td>Missing Notification Panel</td>
+<td>Not implemented</td>
+<td>Build per spec §2.16 — bell icon badge, dropdown panel</td>
+</tr>
+</tbody>
+</table>
+<h2 id="p2-responsive-layout">P2 — Responsive &amp; Layout</h2>
+<table>
+<thead>
+<tr>
+<th>#</th>
+<th>What</th>
+<th>File</th>
+<th>Fix</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>19</td>
+<td>Sidebar missing collapsed 60px mode</td>
+<td><code>sidebar.tsx</code></td>
+<td>Icons only + tooltip on hover at 768-1023px</td>
+</tr>
+<tr>
+<td>20</td>
+<td>No custom breakpoints</td>
+<td><code>index.css</code></td>
+<td>Define in <code>@theme</code>: 480, 768, 1024, 1280, 1536</td>
+</tr>
+<tr>
+<td>21</td>
+<td>Table not extracted as component</td>
+<td>Inline across pages</td>
+<td>Extract reusable Table with 52px row, 8px 16px padding, primary-50 selection</td>
+</tr>
+<tr>
+<td>22</td>
+<td>Form label inconsistency</td>
+<td><code>pipeline-page.tsx</code> inline labels</td>
+<td>Fix to above-input pattern</td>
+</tr>
+</tbody>
+</table>
+<h2 id="p3-polish">P3 — Polish</h2>
+<table>
+<thead>
+<tr>
+<th>#</th>
+<th>What</th>
+<th>File</th>
+<th>Fix</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>23</td>
+<td>No motion duration/easing tokens</td>
+<td><code>index.css</code></td>
+<td>Add <code>--duration-*</code> and <code>--ease-*</code> custom properties</td>
+</tr>
+<tr>
+<td>24</td>
+<td>Skeleton shimmer animation</td>
+<td><code>skeleton.tsx</code></td>
+<td>Add translateX(-100%→100%) 1.5s infinite</td>
+</tr>
+<tr>
+<td>25-27</td>
+<td>Card padding, aria-busy, component tree</td>
+<td>Various</td>
+<td>Minor polish items</td>
+</tr>
+</tbody>
+</table>
+<h2 id="implementation-priority">Implementation Priority</h2>
+<table>
+<thead>
+<tr>
+<th>Tier</th>
+<th>Files</th>
+<th>Effort</th>
+<th>Impact</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>P0</strong></td>
+<td><code>index.css</code>, <code>package.json</code>, <code>sidebar.tsx</code>, <code>theme.ts</code></td>
+<td>~2h</td>
+<td>Brand identity, font loading, color correctness</td>
+</tr>
+<tr>
+<td><strong>P1</strong></td>
+<td><code>button.tsx</code>, <code>input.tsx</code>, <code>badge.tsx</code>, <code>modal.tsx</code>, <code>sidebar.tsx</code></td>
+<td>~2h</td>
+<td>Accessibility, component quality</td>
+</tr>
+<tr>
+<td><strong>P2</strong></td>
+<td>New: <code>select.tsx</code>, <code>table.tsx</code>, <code>search-bar.tsx</code>, sidebar responsive</td>
+<td>~3h</td>
+<td>Responsive layout, missing components</td>
+</tr>
+<tr>
+<td><strong>P3</strong></td>
+<td>Motion tokens, shimmer, ARIA attributes</td>
+<td>~1h</td>
+<td>Polish</td>
+</tr>
+</tbody>
+</table>
+<h2 id="current-status-sprint-s0">Current Status (Sprint S0)</h2>
+<ul>
+<li>[ ] P0-1: Inter font — ready to start</li>
+<li>[ ] P0-2: Color tokens — ready to start</li>
+<li>[ ] P0-3: secondary/accent scales — ready to start</li>
+<li>[ ] P0-4: Dark mode OS detection — ready to start</li>
+<li>[ ] P0-5: Logo — ⏸ on hold</li>
+<li>[ ] P1: Accessibility/components — ready after P0</li>
+<li>[ ] P2: Responsive/layout — planned for S1</li>
+<li>[ ] P3: Polish — planned for S2</li>
+</ul>
+
+
+
+
+
+
+
+  
+  
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Back to top
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": ".", "features": ["navigation.sections", "navigation.top", "search.suggest", "search.highlight", "content.code.copy"], "search": "assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="assets/javascripts/bundle.79ae519e.min.js"></script>
+      
+    
+  </body>
+</html>

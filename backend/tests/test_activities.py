@@ -340,3 +340,362 @@ class TestActivityAPI:
             format="json",
         )
         assert resp.status_code == 404
+
+
+# ── Activity Timeline endpoint tests ──────────────────────────────────
+
+
+class TestActivityTimeline:
+    """Timeline endpoint tests — GET /api/activities/timeline/."""
+
+    TIMELINE_URL = "/api/activities/timeline/"
+
+    def _create_activities(self, user, count: int = 3) -> list[Activity]:
+        """Helper: create N activities for the given user's tenant."""
+        activities = []
+        for i in range(count):
+            a = Activity.objects.create(
+                tenant_id=user.tenant_id,
+                activity_type="note" if i % 2 == 0 else "call",
+                entity_type="contact" if i % 2 == 0 else "deal",
+                entity_id=uuid.uuid4(),
+                title=f"Timeline activity {i}",
+                description=f"Description {i}",
+                actor_id=user.id,
+            )
+            activities.append(a)
+        return activities
+
+    # ── Basic functionality ────────────────────────────────────────────
+
+    def test_empty_timeline(self, auth_client, db):
+        resp = auth_client.get(self.TIMELINE_URL)
+        assert resp.status_code == 200
+        data = resp.json()
+        assert data["count"] == 0
+        assert data["results"] == []
+        assert data["page"] == 1
+
+    def test_timeline_returns_activities(self, auth_client, user, db):
+        self._create_activities(user, 3)
+        resp = auth_client.get(self.TIMELINE_URL)
+        assert resp.status_code == 200
+        data = resp.json()
+        assert data["count"] == 3
+        assert len(data["results"]) == 3
+
+    def test_timeline_multi_tenant_isolation(self, auth_client, user, db):
+        """Activities from other tenants should not appear in the timeline."""
+        self._create_activities(user, 2)
+        Activity.objects.create(
+            tenant_id=uuid.uuid4(),
+            activity_type="note",
+            entity_type="contact",
+            entity_id=uuid.uuid4(),
+            title="Other tenant activity",
+        )
+        resp = auth_client.get(self.TIMELINE_URL)
+        assert resp.status_code == 200
+        data = resp.json()
+        assert data["count"] == 2
+
+    def test_timeline_response_shape(self, auth_client, user, db):
+        self._create_activities(user, 1)
+        resp = auth_client.get(self.TIMELINE_URL)
+        data = resp.json()
+        result = data["results"][0]
+        # Check required fields
+        assert "id" in result
+        assert "activity_type" in result
+        assert "title" in result
+        assert "description" in result
+        assert "created_at" in result
+        assert "actor" in result
+        assert "entity" in result
+        assert "metadata" in result
+        # Check nested shapes
+        assert "id" in result["actor"]
+        assert "name" in result["actor"]
+        assert "avatar_url" in result["actor"]
+        assert "type" in result["entity"]
+        assert "id" in result["entity"]
+        assert "name" in result["entity"]
+        assert "url" in result["entity"]
+
+    def test_timeline_ordering_newest_first(self, auth_client, user, db):
+        """Activities should be ordered by created_at descending."""
+        import datetime
+        from django.utils import timezone
+
+        a1 = Activity.objects.create(
+            tenant_id=user.tenant_id,
+            activity_type="note",
+            entity_type="contact",
+            entity_id=uuid.uuid4(),
+            title="Oldest",
+            actor_id=user.id,
+        )
+        # Manually set older timestamp
+        Activity.objects.filter(id=a1.id).update(
+            created_at=timezone.now() - datetime.timedelta(hours=2)
+        )
+        a2 = Activity.objects.create(
+            tenant_id=user.tenant_id,
+            activity_type="call",
+            entity_type="deal",
+            entity_id=uuid.uuid4(),
+            title="Newest",
+            actor_id=user.id,
+        )
+        resp = auth_client.get(self.TIMELINE_URL)
+        data = resp.json()
+        assert data["count"] == 2
+        assert data["results"][0]["title"] == "Newest"
+        assert data["results"][1]["title"] == "Oldest"
+
+    # ── Pagination ─────────────────────────────────────────────────────
+
+    def test_pagination_default_page_size(self, auth_client, user, db):
+        self._create_activities(user, 30)
+        resp = auth_client.get(self.TIMELINE_URL)
+        data = resp.json()
+        assert data["count"] == 30
+        assert len(data["results"]) == 25  # default page_size
+        assert data["page_size"] == 25
+        assert data["total_pages"] == 2
+        assert data["next"] is not None
+        assert data["previous"] is None
+
+    def test_pagination_custom_page_size(self, auth_client, user, db):
+        self._create_activities(user, 10)
+        resp = auth_client.get(f"{self.TIMELINE_URL}?page_size=5")
+        data = resp.json()
+        assert data["count"] == 10
+        assert len(data["results"]) == 5
+        assert data["page_size"] == 5
+        assert data["total_pages"] == 2
+
+    def test_pagination_max_page_size_capped(self, auth_client, user, db):
+        self._create_activities(user, 50)
+        resp = auth_client.get(f"{self.TIMELINE_URL}?page_size=200")
+        data = resp.json()
+        assert data["page_size"] == 100  # max_page_size
+        assert len(data["results"]) == 50
+
+    def test_pagination_second_page(self, auth_client, user, db):
+        self._create_activities(user, 30)
+        resp = auth_client.get(f"{self.TIMELINE_URL}?page=2")
+        data = resp.json()
+        assert data["page"] == 2
+        assert len(data["results"]) == 5  # remaining 5
+        assert data["previous"] is not None
+
+    def test_pagination_page_out_of_range(self, auth_client, user, db):
+        self._create_activities(user, 5)
+        resp = auth_client.get(f"{self.TIMELINE_URL}?page=999")
+        # DRF PageNumberPagination returns 404 for out-of-range pages
+        assert resp.status_code == 404
+
+    # ── Activity type filter ───────────────────────────────────────────
+
+    def test_filter_by_activity_type(self, auth_client, user, db):
+        Activity.objects.create(
+            tenant_id=user.tenant_id,
+            activity_type="note",
+            entity_type="contact",
+            entity_id=uuid.uuid4(),
+            title="A note",
+            actor_id=user.id,
+        )
+        Activity.objects.create(
+            tenant_id=user.tenant_id,
+            activity_type="call",
+            entity_type="deal",
+            entity_id=uuid.uuid4(),
+            title="A call",
+            actor_id=user.id,
+        )
+        resp = auth_client.get(f"{self.TIMELINE_URL}?activity_type=call")
+        data = resp.json()
+        assert data["count"] == 1
+        assert data["results"][0]["title"] == "A call"
+
+    def test_filter_by_activity_type_no_match(self, auth_client, user, db):
+        self._create_activities(user, 2)
+        resp = auth_client.get(f"{self.TIMELINE_URL}?activity_type=meeting")
+        data = resp.json()
+        assert data["count"] == 0
+
+    # ── Date range filter ──────────────────────────────────────────────
+
+    def test_filter_by_start_date(self, auth_client, user, db):
+        import datetime
+        from django.utils import timezone
+
+        # Create one old and one recent activity
+        old = Activity.objects.create(
+            tenant_id=user.tenant_id,
+            activity_type="note",
+            entity_type="contact",
+            entity_id=uuid.uuid4(),
+            title="Old activity",
+            actor_id=user.id,
+        )
+        Activity.objects.filter(id=old.id).update(
+            created_at=timezone.now() - datetime.timedelta(days=10)
+        )
+        Activity.objects.create(
+            tenant_id=user.tenant_id,
+            activity_type="call",
+            entity_type="deal",
+            entity_id=uuid.uuid4(),
+            title="Recent activity",
+            actor_id=user.id,
+        )
+        # Filter to only last 5 days
+        cutoff = (timezone.now() - datetime.timedelta(days=5)).date()
+        resp = auth_client.get(f"{self.TIMELINE_URL}?start_date={cutoff}")
+        data = resp.json()
+        assert data["count"] == 1
+        assert data["results"][0]["title"] == "Recent activity"
+
+    def test_filter_by_end_date(self, auth_client, user, db):
+        import datetime
+        from django.utils import timezone
+
+        old = Activity.objects.create(
+            tenant_id=user.tenant_id,
+            activity_type="note",
+            entity_type="contact",
+            entity_id=uuid.uuid4(),
+            title="Old activity",
+            actor_id=user.id,
+        )
+        Activity.objects.filter(id=old.id).update(
+            created_at=timezone.now() - datetime.timedelta(days=10)
+        )
+        recent = Activity.objects.create(
+            tenant_id=user.tenant_id,
+            activity_type="call",
+            entity_type="deal",
+            entity_id=uuid.uuid4(),
+            title="Recent activity",
+            actor_id=user.id,
+        )
+        Activity.objects.filter(id=recent.id).update(
+            created_at=timezone.now() - datetime.timedelta(days=2)
+        )
+        # Only activities before 5 days ago
+        cutoff = (timezone.now() - datetime.timedelta(days=4)).date()
+        resp = auth_client.get(f"{self.TIMELINE_URL}?end_date={cutoff}")
+        data = resp.json()
+        assert data["count"] == 1
+        assert data["results"][0]["title"] == "Old activity"
+
+    def test_filter_by_date_range(self, auth_client, user, db):
+        import datetime
+        from django.utils import timezone
+
+        # Activity outside range (too old)
+        old = Activity.objects.create(
+            tenant_id=user.tenant_id,
+            activity_type="note",
+            entity_type="contact",
+            entity_id=uuid.uuid4(),
+            title="Too old",
+            actor_id=user.id,
+        )
+        Activity.objects.filter(id=old.id).update(
+            created_at=timezone.now() - datetime.timedelta(days=20)
+        )
+        # Activity inside range
+        mid = Activity.objects.create(
+            tenant_id=user.tenant_id,
+            activity_type="call",
+            entity_type="deal",
+            entity_id=uuid.uuid4(),
+            title="In range",
+            actor_id=user.id,
+        )
+        Activity.objects.filter(id=mid.id).update(
+            created_at=timezone.now() - datetime.timedelta(days=5)
+        )
+        # Activity outside range (too recent) — actually "too recent" won't
+        # be excluded by end_date since both reference now; skip that case.
+
+        start = (timezone.now() - datetime.timedelta(days=10)).date()
+        end = (timezone.now() - datetime.timedelta(days=1)).date()
+        resp = auth_client.get(f"{self.TIMELINE_URL}?start_date={start}&end_date={end}")
+        data = resp.json()
+        assert data["count"] == 1
+        assert data["results"][0]["title"] == "In range"
+
+    # ── Actor filter ───────────────────────────────────────────────────
+
+    def test_filter_by_actor_id(self, auth_client, user, db):
+        self._create_activities(user, 3)
+        resp = auth_client.get(f"{self.TIMELINE_URL}?actor_id={user.id}")
+        data = resp.json()
+        assert data["count"] == 3
+
+    def test_filter_by_actor_id_no_match(self, auth_client, user, db):
+        self._create_activities(user, 2)
+        resp = auth_client.get(f"{self.TIMELINE_URL}?actor_id={uuid.uuid4()}")
+        data = resp.json()
+        assert data["count"] == 0
+
+    def test_filter_by_entity_type(self, auth_client, user, db):
+        Activity.objects.create(
+            tenant_id=user.tenant_id,
+            activity_type="note",
+            entity_type="contact",
+            entity_id=uuid.uuid4(),
+            title="Contact activity",
+            actor_id=user.id,
+        )
+        Activity.objects.create(
+            tenant_id=user.tenant_id,
+            activity_type="call",
+            entity_type="deal",
+            entity_id=uuid.uuid4(),
+            title="Deal activity",
+            actor_id=user.id,
+        )
+        resp = auth_client.get(f"{self.TIMELINE_URL}?entity_type=deal")
+        data = resp.json()
+        assert data["count"] == 1
+        assert data["results"][0]["entity"]["type"] == "deal"
+
+    # ── Error handling ─────────────────────────────────────────────────
+
+    def test_invalid_filter_returns_400(self, auth_client, db):
+        """Invalid filter values should return 400, not 500."""
+        resp = auth_client.get(f"{self.TIMELINE_URL}?start_date=not-a-date")
+        assert resp.status_code == 400
+
+    def test_actor_resolution(self, auth_client, user, db):
+        """Actor name should be resolved from the User model."""
+        self._create_activities(user, 1)
+        resp = auth_client.get(self.TIMELINE_URL)
+        data = resp.json()
+        result = data["results"][0]
+        assert result["actor"]["name"] != ""
+        assert isinstance(result["actor"]["id"], str) or result["actor"]["id"] is not None
+
+    def test_entity_route_mapping(self, auth_client, user, db):
+        """Entity URLs should map to meaningful frontend routes."""
+        Activity.objects.create(
+            tenant_id=user.tenant_id,
+            activity_type="deal_stage_change",
+            entity_type="deal",
+            entity_id=uuid.uuid4(),
+            title="Deal moved",
+            actor_id=user.id,
+        )
+        resp = auth_client.get(self.TIMELINE_URL)
+        data = resp.json()
+        # The URL maps to /pipeline for deals, even though no actual Deal
+        # object exists (entity.name will be empty but url is set)
+        result = data["results"][0]
+        assert result["entity"]["type"] == "deal"
+        assert result["entity"]["url"] == "/pipeline"

@@ -58,6 +58,28 @@ CLEANUP_SCHEDULE = {
     },
 }
 
+# ── Calendar Sync ─────────────────────────────────────────────────────────────
+# Sync Google Calendar events for all connected users.
+# 15-minute interval balances freshness with Google API quota.
+CALENDAR_SYNC_SCHEDULE = {
+    "sync-all-calendars": {
+        "task": "apps.sync.tasks_calendar.sync_all_calendars",
+        "schedule": timedelta(minutes=15),
+        "options": {"expires": 300},  # Drop if previous run still active
+    },
+}
+
+# ── Calendar Watch Channel Renewal ────────────────────────────────────────────
+# Renew Google Calendar watch channels expiring within 24 hours.
+# Runs every 6 hours (within the 24-hour grace window).
+CALENDAR_WATCH_RENEWAL = {
+    "renew-calendar-watch-channels": {
+        "task": "apps.sync.tasks_calendar.renew_calendar_watch_channels",
+        "schedule": timedelta(hours=6),
+        "options": {"expires": 3600},
+    },
+}
+
 # ── Monitoring Pings ──────────────────────────────────────────────────────────
 # Heartbeat to uptime monitoring service (Better Uptime / Healthchecks.io).
 HEARTBEAT_SCHEDULE = {
@@ -75,4 +97,6 @@ BEAT_SCHEDULE.update(EMAIL_SYNC_SCHEDULE)
 BEAT_SCHEDULE.update(GMAIL_DELTA_SYNC_SCHEDULE)
 BEAT_SCHEDULE.update(BACKUP_SCHEDULE)
 BEAT_SCHEDULE.update(CLEANUP_SCHEDULE)
+BEAT_SCHEDULE.update(CALENDAR_SYNC_SCHEDULE)
+BEAT_SCHEDULE.update(CALENDAR_WATCH_RENEWAL)
 BEAT_SCHEDULE.update(HEARTBEAT_SCHEDULE)

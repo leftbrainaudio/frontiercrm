@@ -1,0 +1,5236 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="Project documentation — design system, roadmap, devops, brand, architecture">
+      
+      
+        <meta name="author" content="atlas">
+      
+      
+      
+        <link rel="prev" href="07_UX_WORKFLOWS.html">
+      
+      
+      
+        
+      
+      
+      <link rel="icon" href="assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.6">
+    
+    
+      
+        <title>API - FrontierCRM</title>
+      
+    
+    
+      <link rel="stylesheet" href="assets/stylesheets/main.484c7ddc.min.css">
+      
+        
+        <link rel="stylesheet" href="assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="stylesheets/extra.css">
+    
+    <script>__md_scope=new URL(".",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="teal">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#frontiercrm-full-api-endpoints" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="." title="FrontierCRM" class="md-header__button md-logo" aria-label="FrontierCRM" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            FrontierCRM
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              API
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+    
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+        <div class="md-search__suggest" data-md-component="search-suggest"></div>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="." title="FrontierCRM" class="md-nav__button md-logo" aria-label="FrontierCRM" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    FrontierCRM
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="index.md" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Home
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="10_ROADMAP.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Roadmap
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--active"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="12_DEVOPS.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    DevOps
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--active"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4" >
+        
+          
+          <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Brand Guidelines
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Brand Guidelines
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="08_BRAND_GUIDELINES.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Brand Identity
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--complete"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="ui-design-system.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Design System Overview
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--complete"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="design-system-gaps.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Implementation Gaps
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--active"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="06_DATA_ARCHITECTURE.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Architecture
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--complete"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="05_TECH_STACK.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Tech Stack
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--complete"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="11_DECISION_LOG.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Decision Log
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--complete"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_8" >
+        
+          
+          <label class="md-nav__link" for="__nav_8" id="__nav_8_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Research
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_8_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_8">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Research
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="01_MARKET_RESEARCH.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Market
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--complete"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="02_FEATURE_MATRIX.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Features
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--complete"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="04_INTEGRATIONS.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Integrations
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--completed"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="04B_EMERGING_TECH.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Emerging Tech
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--complete"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="03_PERSONAS.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Personas
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--complete"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="09_PRICING.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Pricing
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--complete"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="07_UX_WORKFLOWS.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    UX & Workflows
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--complete"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    API
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--complete"></span>
+  
+
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="api-endpoints.html" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    API
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--complete"></span>
+  
+
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#table-of-contents" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Table of Contents
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#1-api-conventions" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1. API Conventions
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="1. API Conventions">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#standard-response-envelope" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Standard Response Envelope
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2-authentication-headers" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2. Authentication &amp; Headers
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="2. Authentication &amp; Headers">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#required-headers" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Required Headers
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#auth-flow" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Auth Flow
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#rbac-check" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        RBAC Check
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#3-standard-query-parameters" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3. Standard Query Parameters
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#4-pagination" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4. Pagination
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="4. Pagination">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#default-cursor-based-recommended" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Default: Cursor-Based (Recommended)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#alternative-offset-based-admin-endpoints-only" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Alternative: Offset-Based (Admin Endpoints Only)
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#5-filtering-sorting" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5. Filtering &amp; Sorting
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="5. Filtering &amp; Sorting">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#filter-syntax" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Filter Syntax
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#sort-syntax" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Sort Syntax
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#6-sparse-fieldsets-includes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6. Sparse Fieldsets &amp; Includes
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="6. Sparse Fieldsets &amp; Includes">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#sparse-fieldsets" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Sparse Fieldsets
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#compound-documents-includes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Compound Documents (Includes)
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#7-error-responses" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        7. Error Responses
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="7. Error Responses">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#standard-error-envelope" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Standard Error Envelope
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#http-status-code-map" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        HTTP Status Code Map
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#8-rate-limiting" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        8. Rate Limiting
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="8. Rate Limiting">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#strategy-redis-sliding-window" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Strategy: Redis Sliding Window
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#headers" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Headers
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#tiers" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Tiers
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#429-response" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        429 Response
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#9-idempotency" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        9. Idempotency
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#10-core-crm-endpoints" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        10. Core CRM Endpoints
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="10. Core CRM Endpoints">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#101-contacts" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        10.1 Contacts
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#102-accounts" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        10.2 Accounts
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#103-users" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        10.3 Users
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#104-teams" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        10.4 Teams
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#11-activity-communication-endpoints" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        11. Activity &amp; Communication Endpoints
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="11. Activity &amp; Communication Endpoints">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#111-activities-timeline" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        11.1 Activities (Timeline)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#112-notes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        11.2 Notes
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#113-tasks" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        11.3 Tasks
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#114-emails" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        11.4 Emails
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#115-events-calendar" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        11.5 Events (Calendar)
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#12-pipeline-deal-endpoints" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        12. Pipeline &amp; Deal Endpoints
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="12. Pipeline &amp; Deal Endpoints">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#121-pipelines" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        12.1 Pipelines
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#122-stages" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        12.2 Stages
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#123-deals" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        12.3 Deals
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#124-deal-stage-transitions" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        12.4 Deal Stage Transitions
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#125-pipeline-kanban-board" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        12.5 Pipeline Kanban Board
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#13-integration-sync-endpoints" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        13. Integration &amp; Sync Endpoints
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="13. Integration &amp; Sync Endpoints">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#131-sync-connections" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        13.1 Sync Connections
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#132-oauth-flow" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        13.2 OAuth Flow
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#133-sync-operations" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        13.3 Sync Operations
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#134-email-send-via-integration" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        13.4 Email Send (via Integration)
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#14-auth-user-management-endpoints" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        14. Auth &amp; User Management Endpoints
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="14. Auth &amp; User Management Endpoints">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#141-auth-clerk-proxy" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        14.1 Auth (Clerk Proxy)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#142-roles" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        14.2 Roles
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#143-user-role-assignment" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        14.3 User Role Assignment
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#15-file-attachment-endpoints" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        15. File &amp; Attachment Endpoints
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#16-search-endpoints" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        16. Search Endpoints
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="16. Search Endpoints">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#faceted-filters" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Faceted Filters
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#search-indexes-meilisearch" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Search Indexes (Meilisearch)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#search-architecture" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Search Architecture
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#17-webhooks" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        17. Webhooks
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="17. Webhooks">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#171-outbound-webhooks" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        17.1 Outbound Webhooks
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#172-webhook-endpoints" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        17.2 Webhook Endpoints
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#173-webhook-delivery" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        17.3 Webhook Delivery
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#18-admin-settings-endpoints" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        18. Admin &amp; Settings Endpoints
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="18. Admin &amp; Settings Endpoints">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#181-tenant-settings" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        18.1 Tenant Settings
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#182-custom-fields" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        18.2 Custom Fields
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#183-reports-analytics" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        18.3 Reports &amp; Analytics
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#184-admin-endpoints" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        18.4 Admin Endpoints
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#19-rate-limit-reference" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        19. Rate Limit Reference
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#appendix-a-endpoint-count-summary" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Appendix A: Endpoint Count Summary
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#table-of-contents" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Table of Contents
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#1-api-conventions" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1. API Conventions
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="1. API Conventions">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#standard-response-envelope" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Standard Response Envelope
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2-authentication-headers" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2. Authentication &amp; Headers
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="2. Authentication &amp; Headers">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#required-headers" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Required Headers
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#auth-flow" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Auth Flow
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#rbac-check" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        RBAC Check
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#3-standard-query-parameters" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3. Standard Query Parameters
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#4-pagination" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4. Pagination
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="4. Pagination">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#default-cursor-based-recommended" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Default: Cursor-Based (Recommended)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#alternative-offset-based-admin-endpoints-only" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Alternative: Offset-Based (Admin Endpoints Only)
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#5-filtering-sorting" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5. Filtering &amp; Sorting
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="5. Filtering &amp; Sorting">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#filter-syntax" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Filter Syntax
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#sort-syntax" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Sort Syntax
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#6-sparse-fieldsets-includes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6. Sparse Fieldsets &amp; Includes
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="6. Sparse Fieldsets &amp; Includes">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#sparse-fieldsets" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Sparse Fieldsets
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#compound-documents-includes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Compound Documents (Includes)
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#7-error-responses" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        7. Error Responses
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="7. Error Responses">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#standard-error-envelope" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Standard Error Envelope
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#http-status-code-map" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        HTTP Status Code Map
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#8-rate-limiting" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        8. Rate Limiting
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="8. Rate Limiting">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#strategy-redis-sliding-window" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Strategy: Redis Sliding Window
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#headers" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Headers
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#tiers" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Tiers
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#429-response" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        429 Response
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#9-idempotency" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        9. Idempotency
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#10-core-crm-endpoints" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        10. Core CRM Endpoints
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="10. Core CRM Endpoints">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#101-contacts" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        10.1 Contacts
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#102-accounts" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        10.2 Accounts
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#103-users" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        10.3 Users
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#104-teams" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        10.4 Teams
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#11-activity-communication-endpoints" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        11. Activity &amp; Communication Endpoints
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="11. Activity &amp; Communication Endpoints">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#111-activities-timeline" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        11.1 Activities (Timeline)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#112-notes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        11.2 Notes
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#113-tasks" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        11.3 Tasks
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#114-emails" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        11.4 Emails
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#115-events-calendar" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        11.5 Events (Calendar)
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#12-pipeline-deal-endpoints" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        12. Pipeline &amp; Deal Endpoints
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="12. Pipeline &amp; Deal Endpoints">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#121-pipelines" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        12.1 Pipelines
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#122-stages" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        12.2 Stages
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#123-deals" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        12.3 Deals
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#124-deal-stage-transitions" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        12.4 Deal Stage Transitions
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#125-pipeline-kanban-board" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        12.5 Pipeline Kanban Board
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#13-integration-sync-endpoints" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        13. Integration &amp; Sync Endpoints
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="13. Integration &amp; Sync Endpoints">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#131-sync-connections" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        13.1 Sync Connections
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#132-oauth-flow" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        13.2 OAuth Flow
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#133-sync-operations" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        13.3 Sync Operations
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#134-email-send-via-integration" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        13.4 Email Send (via Integration)
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#14-auth-user-management-endpoints" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        14. Auth &amp; User Management Endpoints
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="14. Auth &amp; User Management Endpoints">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#141-auth-clerk-proxy" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        14.1 Auth (Clerk Proxy)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#142-roles" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        14.2 Roles
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#143-user-role-assignment" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        14.3 User Role Assignment
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#15-file-attachment-endpoints" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        15. File &amp; Attachment Endpoints
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#16-search-endpoints" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        16. Search Endpoints
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="16. Search Endpoints">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#faceted-filters" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Faceted Filters
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#search-indexes-meilisearch" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Search Indexes (Meilisearch)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#search-architecture" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Search Architecture
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#17-webhooks" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        17. Webhooks
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="17. Webhooks">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#171-outbound-webhooks" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        17.1 Outbound Webhooks
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#172-webhook-endpoints" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        17.2 Webhook Endpoints
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#173-webhook-delivery" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        17.3 Webhook Delivery
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#18-admin-settings-endpoints" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        18. Admin &amp; Settings Endpoints
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="18. Admin &amp; Settings Endpoints">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#181-tenant-settings" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        18.1 Tenant Settings
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#182-custom-fields" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        18.2 Custom Fields
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#183-reports-analytics" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        18.3 Reports &amp; Analytics
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#184-admin-endpoints" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        18.4 Admin Endpoints
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#19-rate-limit-reference" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        19. Rate Limit Reference
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#appendix-a-endpoint-count-summary" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Appendix A: Endpoint Count Summary
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+
+<h1 id="frontiercrm-full-api-endpoints">FrontierCRM — Full API Endpoints</h1>
+<blockquote>
+<p>REST API surface for FrontierCRM
+Paradigm: REST-first with JSON:API-inspired conventions
+Base URL: <code>/api/v1</code>
+Target: React SPA, PWA mobile, 3rd-party integrations, webhook consumers
+Dated: 2026-06-28</p>
+</blockquote>
+<hr />
+<h2 id="table-of-contents">Table of Contents</h2>
+<ol>
+<li><a href="#1-api-conventions">API Conventions</a></li>
+<li><a href="#2-authentication--headers">Authentication &amp; Headers</a></li>
+<li><a href="#3-standard-query-parameters">Standard Query Parameters</a></li>
+<li><a href="#4-pagination">Pagination</a></li>
+<li><a href="#5-filtering--sorting">Filtering &amp; Sorting</a></li>
+<li><a href="#6-sparse-fieldsets--includes">Sparse Fieldsets &amp; Includes</a></li>
+<li><a href="#7-error-responses">Error Responses</a></li>
+<li><a href="#8-rate-limiting">Rate Limiting</a></li>
+<li><a href="#9-idempotency">Idempotency</a></li>
+<li><a href="#10-core-crm-endpoints">Core CRM Endpoints</a></li>
+<li><a href="#11-activity--communication-endpoints">Activity &amp; Communication Endpoints</a></li>
+<li><a href="#12-pipeline--deal-endpoints">Pipeline &amp; Deal Endpoints</a></li>
+<li><a href="#13-integration--sync-endpoints">Integration &amp; Sync Endpoints</a></li>
+<li><a href="#14-auth--user-management-endpoints">Auth &amp; User Management Endpoints</a></li>
+<li><a href="#15-file--attachment-endpoints">File &amp; Attachment Endpoints</a></li>
+<li><a href="#16-search-endpoints">Search Endpoints</a></li>
+<li><a href="#17-webhooks">Webhooks</a></li>
+<li><a href="#18-admin--settings-endpoints">Admin &amp; Settings Endpoints</a></li>
+<li><a href="#19-rate-limit-reference">Rate Limit Reference</a></li>
+</ol>
+<hr />
+<h2 id="1-api-conventions">1. API Conventions</h2>
+<table>
+<thead>
+<tr>
+<th>Convention</th>
+<th>Rule</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Base path</td>
+<td><code>/api/v1/</code></td>
+</tr>
+<tr>
+<td>Protocol</td>
+<td>HTTPS only</td>
+</tr>
+<tr>
+<td>Content-Type</td>
+<td><code>application/json</code> (request), <code>application/json</code> (response)</td>
+</tr>
+<tr>
+<td>Accept</td>
+<td><code>application/json</code></td>
+</tr>
+<tr>
+<td>Date format</td>
+<td>ISO 8601 with timezone: <code>2026-06-28T14:30:00Z</code></td>
+</tr>
+<tr>
+<td>IDs</td>
+<td>UUID v4 (string format)</td>
+</tr>
+<tr>
+<td>Case</td>
+<td><code>snake_case</code> for properties, <code>kebab-case</code> for URL paths</td>
+</tr>
+<tr>
+<td>Versioning</td>
+<td>URL prefix (<code>/api/v1/</code>). Breaking changes increment version.</td>
+</tr>
+<tr>
+<td>Bulk operations</td>
+<td>Not yet — use individual mutations. Future: <code>/api/v1/batch</code></td>
+</tr>
+</tbody>
+</table>
+<h3 id="standard-response-envelope">Standard Response Envelope</h3>
+<div class="highlight"><pre><span></span><code><span class="p">{</span>
+<span class="w">  </span><span class="nt">&quot;data&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="err">...</span><span class="w"> </span><span class="p">},</span><span class="w">            </span><span class="c1">// Single resource or array of resources</span>
+<span class="w">  </span><span class="nt">&quot;meta&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="nt">&quot;page&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="err">...</span><span class="w"> </span><span class="p">},</span><span class="w">          </span><span class="c1">// Pagination info (for list endpoints)</span>
+<span class="w">    </span><span class="nt">&quot;request_id&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;req_abc123&quot;</span><span class="w"> </span><span class="c1">// Traceable request ID</span>
+<span class="w">  </span><span class="p">},</span>
+<span class="w">  </span><span class="nt">&quot;included&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w"> </span><span class="err">...</span><span class="w"> </span><span class="p">]</span><span class="w">         </span><span class="c1">// Related resources (when ?include= is used)</span>
+<span class="p">}</span>
+</code></pre></div>
+<hr />
+<h2 id="2-authentication-headers">2. Authentication &amp; Headers</h2>
+<h3 id="required-headers">Required Headers</h3>
+<table>
+<thead>
+<tr>
+<th>Header</th>
+<th>Required</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>Authorization: Bearer &lt;clerk_jwt&gt;</code></td>
+<td>Yes</td>
+<td>Clerk-issued JWT (verified against Clerk JWKS endpoint)</td>
+</tr>
+<tr>
+<td><code>Content-Type: application/json</code></td>
+<td>For mutations</td>
+<td>Request body format</td>
+</tr>
+<tr>
+<td><code>Idempotency-Key</code></td>
+<td>For mutations</td>
+<td>UUID — prevents duplicate processing (see Section 9)</td>
+</tr>
+<tr>
+<td><code>Accept-Language</code></td>
+<td>No</td>
+<td>Locale preference (default: <code>en-US</code>)</td>
+</tr>
+<tr>
+<td><code>User-Agent</code></td>
+<td>Yes</td>
+<td>Client identifier for API analytics</td>
+</tr>
+</tbody>
+</table>
+<h3 id="auth-flow">Auth Flow</h3>
+<div class="highlight"><pre><span></span><code>Client → Clerk sign-in → Clerk JWT issued → JWT sent in Authorization header
+  → FastAPI middleware verifies JWT (Clerk JWKS) →
+    Extract org_id → SET app.current_tenant_id →
+    Extract user_id → SET app.current_user_id →
+    RBAC check → Route to handler
+</code></pre></div>
+<h3 id="rbac-check">RBAC Check</h3>
+<p>The middleware extracts the user role from the JWT (Clerk org metadata) and checks against the permission matrix. Endpoints document the minimum required permission.</p>
+<p>Permission levels per resource:
+- <code>admin</code> — full CRUD + manage (tenant-wide)
+- <code>write</code> — create + update + delete (own or team-scoped)
+- <code>read</code> — view only
+- <code>none</code> — no access</p>
+<hr />
+<h2 id="3-standard-query-parameters">3. Standard Query Parameters</h2>
+<p>These parameters work on <strong>every</strong> list endpoint unless noted otherwise.</p>
+<table>
+<thead>
+<tr>
+<th>Parameter</th>
+<th>Type</th>
+<th>Description</th>
+<th>Default</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>page[size]</code></td>
+<td>integer</td>
+<td>Items per page</td>
+<td>25 (max: 100)</td>
+</tr>
+<tr>
+<td><code>page[cursor]</code></td>
+<td>string</td>
+<td>Cursor for cursor-based pagination</td>
+<td>—</td>
+</tr>
+<tr>
+<td><code>page[number]</code></td>
+<td>integer</td>
+<td>Page number (offset-based, admin only)</td>
+<td>1</td>
+</tr>
+<tr>
+<td><code>sort</code></td>
+<td>string</td>
+<td>Sort field(s), - prefix = descending</td>
+<td><code>-created_at</code></td>
+</tr>
+<tr>
+<td><code>filter[field]</code></td>
+<td>varies</td>
+<td>Filter by field value</td>
+<td>—</td>
+</tr>
+<tr>
+<td><code>include</code></td>
+<td>string</td>
+<td>Comma-separated related resources</td>
+<td>—</td>
+</tr>
+<tr>
+<td><code>fields[entity]</code></td>
+<td>string</td>
+<td>Comma-separated field subset</td>
+<td>—</td>
+</tr>
+<tr>
+<td><code>q</code></td>
+<td>string</td>
+<td>Quick search (text search across key fields)</td>
+<td>—</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="4-pagination">4. Pagination</h2>
+<h3 id="default-cursor-based-recommended">Default: Cursor-Based (Recommended)</h3>
+<p>Cursor-based pagination is used for all list endpoints. It is stable (no duplicates if rows are inserted) and efficient (no OFFSET).</p>
+<p><strong>Request:</strong>
+<div class="highlight"><pre><span></span><code>GET /api/v1/contacts?page[size]=50&amp;page[cursor]=eyJpZCI6IjEyMyJ9
+</code></pre></div></p>
+<p><strong>Response (paginated list):</strong>
+<div class="highlight"><pre><span></span><code><span class="p">{</span>
+<span class="w">  </span><span class="nt">&quot;data&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w"> </span><span class="err">...</span><span class="w"> </span><span class="p">],</span>
+<span class="w">  </span><span class="nt">&quot;meta&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="nt">&quot;page&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">      </span><span class="nt">&quot;size&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">50</span><span class="p">,</span>
+<span class="w">      </span><span class="nt">&quot;next_cursor&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;eyJpZCI6IjEyMyJ9&quot;</span><span class="p">,</span>
+<span class="w">      </span><span class="nt">&quot;has_more&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="w">  </span><span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div></p>
+<p><strong>How it works:</strong>
+- <code>next_cursor</code> is a base64-encoded JSON object containing the sort key of the last item.
+- Client passes <code>page[cursor]</code> from the previous response's <code>next_cursor</code>.
+- When <code>has_more</code> is <code>false</code>, the client has reached the end.
+- Sort order must be stable. Default sort includes <code>id</code> as tiebreaker.</p>
+<h3 id="alternative-offset-based-admin-endpoints-only">Alternative: Offset-Based (Admin Endpoints Only)</h3>
+<p>For admin panels where jumping to specific pages is needed:</p>
+<div class="highlight"><pre><span></span><code>GET /api/v1/tenants?page[number]=3&amp;page[size]=25
+</code></pre></div>
+<p><strong>Response:</strong>
+<div class="highlight"><pre><span></span><code><span class="p">{</span>
+<span class="w">  </span><span class="nt">&quot;data&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w"> </span><span class="err">...</span><span class="w"> </span><span class="p">],</span>
+<span class="w">  </span><span class="nt">&quot;meta&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="nt">&quot;page&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">      </span><span class="nt">&quot;number&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">3</span><span class="p">,</span>
+<span class="w">      </span><span class="nt">&quot;size&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">25</span><span class="p">,</span>
+<span class="w">      </span><span class="nt">&quot;total_pages&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">42</span><span class="p">,</span>
+<span class="w">      </span><span class="nt">&quot;total_count&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">1042</span><span class="p">,</span>
+<span class="w">      </span><span class="nt">&quot;has_more&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="w">  </span><span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div></p>
+<hr />
+<h2 id="5-filtering-sorting">5. Filtering &amp; Sorting</h2>
+<h3 id="filter-syntax">Filter Syntax</h3>
+<div class="highlight"><pre><span></span><code>GET /api/v1/deals?filter[status]=open&amp;filter[owner_id]=uuid&amp;filter[value][gte]=10000
+</code></pre></div>
+<table>
+<thead>
+<tr>
+<th>Operator</th>
+<th>Syntax</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Equals</td>
+<td><code>filter[field]=value</code></td>
+<td>Exact match</td>
+</tr>
+<tr>
+<td>Greater than</td>
+<td><code>filter[field][gt]=value</code></td>
+<td>Numerical/date &gt;</td>
+</tr>
+<tr>
+<td>Greater or equal</td>
+<td><code>filter[field][gte]=value</code></td>
+<td>&gt;=</td>
+</tr>
+<tr>
+<td>Less than</td>
+<td><code>filter[field][lt]=value</code></td>
+<td>&lt;</td>
+</tr>
+<tr>
+<td>Less or equal</td>
+<td><code>filter[field][lte]=value</code></td>
+<td>&lt;=</td>
+</tr>
+<tr>
+<td>In</td>
+<td><code>filter[field][in]=a,b,c</code></td>
+<td>In list</td>
+</tr>
+<tr>
+<td>Not in</td>
+<td><code>filter[field][not_in]=a,b</code></td>
+<td>Not in list</td>
+</tr>
+<tr>
+<td>Contains</td>
+<td><code>filter[field][contains]=text</code></td>
+<td>Substring (text fields)</td>
+</tr>
+<tr>
+<td>Is null</td>
+<td><code>filter[field][is_null]=true</code></td>
+<td>NULL check</td>
+</tr>
+<tr>
+<td>Date range</td>
+<td><code>filter[created_at][gte]=2026-01-01&amp;filter[created_at][lte]=2026-06-30</code></td>
+<td>Range</td>
+</tr>
+<tr>
+<td>Custom field</td>
+<td><code>filter[custom_fields][field_key]=value</code></td>
+<td>JSONB custom field filter</td>
+</tr>
+</tbody>
+</table>
+<h3 id="sort-syntax">Sort Syntax</h3>
+<div class="highlight"><pre><span></span><code>GET /api/v1/deals?sort=value,-created_at
+</code></pre></div>
+<ul>
+<li>Ascending: <code>sort=field_name</code></li>
+<li>Descending: <code>sort=-field_name</code></li>
+<li>Multiple fields: comma-separated</li>
+<li>Default: <code>sort=-created_at</code> (most recent first)</li>
+</ul>
+<p>Supported sort fields per endpoint are documented in the endpoint tables below.</p>
+<hr />
+<h2 id="6-sparse-fieldsets-includes">6. Sparse Fieldsets &amp; Includes</h2>
+<h3 id="sparse-fieldsets">Sparse Fieldsets</h3>
+<p>Client requests only the fields it needs:</p>
+<div class="highlight"><pre><span></span><code>GET /api/v1/contacts?fields[contact]=id,first_name,last_name,email,company
+</code></pre></div>
+<p>Returns only the requested fields:</p>
+<div class="highlight"><pre><span></span><code><span class="p">{</span>
+<span class="w">  </span><span class="nt">&quot;data&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="nt">&quot;id&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;uuid&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;first_name&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Jane&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;last_name&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Doe&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;email&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;...&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;company&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Acme Corp&quot;</span>
+<span class="w">  </span><span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div>
+<h3 id="compound-documents-includes">Compound Documents (Includes)</h3>
+<p>Client requests related resources in the same response:</p>
+<div class="highlight"><pre><span></span><code>GET /api/v1/contacts?include=deals,account
+GET /api/v1/deals?include=contact,stage,pipeline,activities
+</code></pre></div>
+<p>Response includes an <code>included</code> array with the related resources:</p>
+<div class="highlight"><pre><span></span><code><span class="p">{</span>
+<span class="w">  </span><span class="nt">&quot;data&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="nt">&quot;id&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;uuid&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;name&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Big Deal&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;contact_id&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;uuid&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;pipeline_id&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;uuid&quot;</span>
+<span class="w">  </span><span class="p">},</span>
+<span class="w">  </span><span class="nt">&quot;included&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+<span class="w">    </span><span class="p">{</span><span class="w"> </span><span class="nt">&quot;id&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;uuid&quot;</span><span class="p">,</span><span class="w"> </span><span class="nt">&quot;type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;contact&quot;</span><span class="p">,</span><span class="w"> </span><span class="nt">&quot;first_name&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Jane&quot;</span><span class="p">,</span><span class="w"> </span><span class="err">...</span><span class="w"> </span><span class="p">},</span>
+<span class="w">    </span><span class="p">{</span><span class="w"> </span><span class="nt">&quot;id&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;uuid&quot;</span><span class="p">,</span><span class="w"> </span><span class="nt">&quot;type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;pipeline&quot;</span><span class="p">,</span><span class="w"> </span><span class="nt">&quot;name&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Sales Pipeline&quot;</span><span class="p">,</span><span class="w"> </span><span class="err">...</span><span class="w"> </span><span class="p">}</span>
+<span class="w">  </span><span class="p">]</span>
+<span class="p">}</span>
+</code></pre></div>
+<p>Maximum include depth: 2 levels (e.g., <code>?include=contact.deals</code> is not supported for performance).</p>
+<hr />
+<h2 id="7-error-responses">7. Error Responses</h2>
+<h3 id="standard-error-envelope">Standard Error Envelope</h3>
+<div class="highlight"><pre><span></span><code><span class="p">{</span>
+<span class="w">  </span><span class="nt">&quot;error&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="nt">&quot;code&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;validation_error&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;message&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Validation failed&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;details&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+<span class="w">      </span><span class="p">{</span>
+<span class="w">        </span><span class="nt">&quot;field&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;email&quot;</span><span class="p">,</span>
+<span class="w">        </span><span class="nt">&quot;code&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;invalid_format&quot;</span><span class="p">,</span>
+<span class="w">        </span><span class="nt">&quot;message&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Must be a valid email address&quot;</span>
+<span class="w">      </span><span class="p">}</span>
+<span class="w">    </span><span class="p">],</span>
+<span class="w">    </span><span class="nt">&quot;request_id&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;req_abc123&quot;</span>
+<span class="w">  </span><span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div>
+<h3 id="http-status-code-map">HTTP Status Code Map</h3>
+<table>
+<thead>
+<tr>
+<th>Code</th>
+<th>Meaning</th>
+<th>When</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>200</td>
+<td>Success</td>
+<td>GET, PATCH, DELETE</td>
+</tr>
+<tr>
+<td>201</td>
+<td>Created</td>
+<td>POST (resource created)</td>
+</tr>
+<tr>
+<td>202</td>
+<td>Accepted</td>
+<td>Async operation accepted (sync job started)</td>
+</tr>
+<tr>
+<td>204</td>
+<td>No Content</td>
+<td>DELETE (success, no body)</td>
+</tr>
+<tr>
+<td>400</td>
+<td>Bad Request</td>
+<td>Invalid JSON, missing required field, validation error</td>
+</tr>
+<tr>
+<td>401</td>
+<td>Unauthorized</td>
+<td>Missing/invalid JWT</td>
+</tr>
+<tr>
+<td>403</td>
+<td>Forbidden</td>
+<td>JWT valid but insufficient permissions (RBAC)</td>
+</tr>
+<tr>
+<td>404</td>
+<td>Not Found</td>
+<td>Resource doesn't exist (or tenant-isolated)</td>
+</tr>
+<tr>
+<td>409</td>
+<td>Conflict</td>
+<td>Idempotency key replayed, version conflict, unique constraint</td>
+</tr>
+<tr>
+<td>410</td>
+<td>Gone</td>
+<td>Previous resource version deleted (delta token expired)</td>
+</tr>
+<tr>
+<td>422</td>
+<td>Unprocessable</td>
+<td>Business logic error (e.g., can't move deal to won without contact)</td>
+</tr>
+<tr>
+<td>429</td>
+<td>Too Many Requests</td>
+<td>Rate limit exceeded (see Retry-After header)</td>
+</tr>
+<tr>
+<td>500</td>
+<td>Internal Error</td>
+<td>Unexpected server error</td>
+</tr>
+<tr>
+<td>502</td>
+<td>Bad Gateway</td>
+<td>Upstream provider error (Gmail API down, Resend down)</td>
+</tr>
+<tr>
+<td>503</td>
+<td>Service Unavailable</td>
+<td>Server under maintenance or overload</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="8-rate-limiting">8. Rate Limiting</h2>
+<h3 id="strategy-redis-sliding-window">Strategy: Redis Sliding Window</h3>
+<ul>
+<li>Key: <code>rate_limit:{tenant_id}:{endpoint_group}:{window}</code></li>
+<li>Window: 60 seconds</li>
+<li>Refill: per-window reset</li>
+<li>Enforcement: Redis INCR + EXPIRE atomic operation</li>
+</ul>
+<h3 id="headers">Headers</h3>
+<p>Every response includes rate limit headers:</p>
+<div class="highlight"><pre><span></span><code>X-RateLimit-Limit: 100
+X-RateLimit-Remaining: 87
+X-RateLimit-Reset: 1687996800
+Retry-After: 12          ← Only on 429 responses
+</code></pre></div>
+<h3 id="tiers">Tiers</h3>
+<table>
+<thead>
+<tr>
+<th>Tier</th>
+<th>Requests/minute</th>
+<th>Burst</th>
+<th>Applied To</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Free</td>
+<td>60</td>
+<td>10</td>
+<td>Unauthenticated, free plan tenants</td>
+</tr>
+<tr>
+<td>Starter</td>
+<td>300</td>
+<td>50</td>
+<td>Starter plan tenants</td>
+</tr>
+<tr>
+<td>Growth</td>
+<td>1,000</td>
+<td>200</td>
+<td>Growth plan tenants</td>
+</tr>
+<tr>
+<td>Enterprise</td>
+<td>5,000</td>
+<td>1,000</td>
+<td>Enterprise plan tenants</td>
+</tr>
+<tr>
+<td>Webhook</td>
+<td>5,000</td>
+<td>—</td>
+<td>Webhook delivery (internal)</td>
+</tr>
+<tr>
+<td>Admin</td>
+<td>10,000</td>
+<td>—</td>
+<td>Internal admin endpoints</td>
+</tr>
+</tbody>
+</table>
+<p>Rate limits are <strong>per-tenant</strong>, not per-user. A single tenant hitting the limit affects all their users.</p>
+<h3 id="429-response">429 Response</h3>
+<div class="highlight"><pre><span></span><code>Retry-After: 12
+Content-Type: application/json
+
+{
+  &quot;error&quot;: {
+    &quot;code&quot;: &quot;rate_limit_exceeded&quot;,
+    &quot;message&quot;: &quot;API rate limit exceeded. Retry after 12 seconds.&quot;,
+    &quot;retry_after_seconds&quot;: 12
+  }
+}
+</code></pre></div>
+<hr />
+<h2 id="9-idempotency">9. Idempotency</h2>
+<p>All mutation endpoints (POST, PATCH, DELETE) support idempotency via the <code>Idempotency-Key</code> header.</p>
+<p><strong>Request:</strong>
+<div class="highlight"><pre><span></span><code>POST /api/v1/deals
+Idempotency-Key: 7c6b5a4e-3d2f-1a0b-9c8d-7e6f5a4b3c2d
+</code></pre></div></p>
+<p><strong>How it works:</strong></p>
+<ol>
+<li>FastAPI middleware checks <code>Idempotency-Key</code> header.</li>
+<li>If key is new → process request, store result in Redis (TTL: 24h).</li>
+<li>If key exists → return cached response (same status code + body).</li>
+<li>Key is scoped to the requesting user (different users with the same key are processed independently).</li>
+</ol>
+<p><strong>Idempotency window:</strong> 24 hours. After that, a previously-used key is treated as new.</p>
+<hr />
+<h2 id="10-core-crm-endpoints">10. Core CRM Endpoints</h2>
+<h3 id="101-contacts">10.1 Contacts</h3>
+<table>
+<thead>
+<tr>
+<th>Method</th>
+<th>Path</th>
+<th>Description</th>
+<th>Permission</th>
+<th>Sortable Fields</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>GET</code></td>
+<td><code>/api/v1/contacts</code></td>
+<td>List contacts (paginated)</td>
+<td>read</td>
+<td><code>created_at</code>, <code>updated_at</code>, <code>first_name</code>, <code>last_name</code>, <code>company</code>, <code>lifecycle_stage</code></td>
+</tr>
+<tr>
+<td><code>POST</code></td>
+<td><code>/api/v1/contacts</code></td>
+<td>Create contact</td>
+<td>write</td>
+<td>—</td>
+</tr>
+<tr>
+<td><code>GET</code></td>
+<td><code>/api/v1/contacts/{id}</code></td>
+<td>Get contact detail</td>
+<td>read</td>
+<td>—</td>
+</tr>
+<tr>
+<td><code>PATCH</code></td>
+<td><code>/api/v1/contacts/{id}</code></td>
+<td>Update contact</td>
+<td>write</td>
+<td>—</td>
+</tr>
+<tr>
+<td><code>DELETE</code></td>
+<td><code>/api/v1/contacts/{id}</code></td>
+<td>Soft-delete contact</td>
+<td>write</td>
+<td>—</td>
+</tr>
+<tr>
+<td><code>GET</code></td>
+<td><code>/api/v1/contacts/{id}/deals</code></td>
+<td>Contact's deals</td>
+<td>read</td>
+<td>—</td>
+</tr>
+<tr>
+<td><code>GET</code></td>
+<td><code>/api/v1/contacts/{id}/activities</code></td>
+<td>Contact's activity timeline</td>
+<td>read</td>
+<td>—</td>
+</tr>
+<tr>
+<td><code>GET</code></td>
+<td><code>/api/v1/contacts/{id}/emails</code></td>
+<td>Contact's emails</td>
+<td>read</td>
+<td>—</td>
+</tr>
+<tr>
+<td><code>GET</code></td>
+<td><code>/api/v1/contacts/{id}/events</code></td>
+<td>Contact's events</td>
+<td>read</td>
+<td>—</td>
+</tr>
+<tr>
+<td><code>GET</code></td>
+<td><code>/api/v1/contacts/{id}/files</code></td>
+<td>Contact's files</td>
+<td>read</td>
+<td>—</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Filters:</strong>
+<code>filter[lifecycle_stage]</code>, <code>filter[owner_id]</code>, <code>filter[account_id]</code>, <code>filter[tags][contains]=value</code>, <code>filter[created_at][gte]</code>, <code>filter[custom_fields][field_key]</code></p>
+<p><strong>Includes:</strong>
+<code>account</code>, <code>owner</code>, <code>deals</code></p>
+<h3 id="102-accounts">10.2 Accounts</h3>
+<table>
+<thead>
+<tr>
+<th>Method</th>
+<th>Path</th>
+<th>Description</th>
+<th>Permission</th>
+<th>Sortable Fields</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>GET</code></td>
+<td><code>/api/v1/accounts</code></td>
+<td>List accounts</td>
+<td>read</td>
+<td><code>name</code>, <code>created_at</code>, <code>annual_revenue</code>, <code>account_tier</code></td>
+</tr>
+<tr>
+<td><code>POST</code></td>
+<td><code>/api/v1/accounts</code></td>
+<td>Create account</td>
+<td>write</td>
+<td>—</td>
+</tr>
+<tr>
+<td><code>GET</code></td>
+<td><code>/api/v1/accounts/{id}</code></td>
+<td>Get account detail</td>
+<td>read</td>
+<td>—</td>
+</tr>
+<tr>
+<td><code>PATCH</code></td>
+<td><code>/api/v1/accounts/{id}</code></td>
+<td>Update account</td>
+<td>write</td>
+<td>—</td>
+</tr>
+<tr>
+<td><code>DELETE</code></td>
+<td><code>/api/v1/accounts/{id}</code></td>
+<td>Soft-delete account</td>
+<td>write</td>
+<td>—</td>
+</tr>
+<tr>
+<td><code>GET</code></td>
+<td><code>/api/v1/accounts/{id}/contacts</code></td>
+<td>Account's contacts</td>
+<td>read</td>
+<td>—</td>
+</tr>
+<tr>
+<td><code>GET</code></td>
+<td><code>/api/v1/accounts/{id}/deals</code></td>
+<td>Account's deals</td>
+<td>read</td>
+<td>—</td>
+</tr>
+<tr>
+<td><code>GET</code></td>
+<td><code>/api/v1/accounts/{id}/activities</code></td>
+<td>Account's activity timeline</td>
+<td>read</td>
+<td>—</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Filters:</strong>
+<code>filter[industry]</code>, <code>filter[account_tier]</code>, <code>filter[account_type]</code>, <code>filter[owner_id]</code>, <code>filter[tags][contains]</code></p>
+<p><strong>Includes:</strong>
+<code>owner</code>, <code>contacts</code>, <code>parent_account</code></p>
+<h3 id="103-users">10.3 Users</h3>
+<table>
+<thead>
+<tr>
+<th>Method</th>
+<th>Path</th>
+<th>Description</th>
+<th>Permission</th>
+<th>Sortable Fields</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>GET</code></td>
+<td><code>/api/v1/users</code></td>
+<td>List users in tenant</td>
+<td>read</td>
+<td><code>first_name</code>, <code>last_name</code>, <code>email</code>, <code>created_at</code></td>
+</tr>
+<tr>
+<td><code>GET</code></td>
+<td><code>/api/v1/users/{id}</code></td>
+<td>Get user detail</td>
+<td>read</td>
+<td>—</td>
+</tr>
+<tr>
+<td><code>PATCH</code></td>
+<td><code>/api/v1/users/{id}</code></td>
+<td>Update user (self or admin)</td>
+<td>write</td>
+<td>—</td>
+</tr>
+<tr>
+<td><code>GET</code></td>
+<td><code>/api/v1/users/{id}/tasks</code></td>
+<td>User's assigned tasks</td>
+<td>read</td>
+<td>—</td>
+</tr>
+<tr>
+<td><code>GET</code></td>
+<td><code>/api/v1/users/{id}/activities</code></td>
+<td>User's activity log</td>
+<td>read</td>
+<td>—</td>
+</tr>
+<tr>
+<td><code>GET</code></td>
+<td><code>/api/v1/users/me</code></td>
+<td>Current user profile</td>
+<td>read</td>
+<td>—</td>
+</tr>
+<tr>
+<td><code>PATCH</code></td>
+<td><code>/api/v1/users/me</code></td>
+<td>Update own profile</td>
+<td>write</td>
+<td>—</td>
+</tr>
+<tr>
+<td><code>GET</code></td>
+<td><code>/api/v1/users/me/settings</code></td>
+<td>User settings</td>
+<td>read</td>
+<td>—</td>
+</tr>
+<tr>
+<td><code>PATCH</code></td>
+<td><code>/api/v1/users/me/settings</code></td>
+<td>Update user settings</td>
+<td>write</td>
+<td>—</td>
+</tr>
+</tbody>
+</table>
+<h3 id="104-teams">10.4 Teams</h3>
+<table>
+<thead>
+<tr>
+<th>Method</th>
+<th>Path</th>
+<th>Description</th>
+<th>Permission</th>
+<th>Sortable Fields</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>GET</code></td>
+<td><code>/api/v1/teams</code></td>
+<td>List teams</td>
+<td>read</td>
+<td><code>name</code>, <code>created_at</code></td>
+</tr>
+<tr>
+<td><code>POST</code></td>
+<td><code>/api/v1/teams</code></td>
+<td>Create team</td>
+<td>admin</td>
+<td>—</td>
+</tr>
+<tr>
+<td><code>GET</code></td>
+<td><code>/api/v1/teams/{id}</code></td>
+<td>Get team detail</td>
+<td>read</td>
+<td>—</td>
+</tr>
+<tr>
+<td><code>PATCH</code></td>
+<td><code>/api/v1/teams/{id}</code></td>
+<td>Update team</td>
+<td>admin</td>
+<td>—</td>
+</tr>
+<tr>
+<td><code>DELETE</code></td>
+<td><code>/api/v1/teams/{id}</code></td>
+<td>Delete team</td>
+<td>admin</td>
+<td>—</td>
+</tr>
+<tr>
+<td><code>GET</code></td>
+<td><code>/api/v1/teams/{id}/members</code></td>
+<td>Team members</td>
+<td>read</td>
+<td>—</td>
+</tr>
+<tr>
+<td><code>POST</code></td>
+<td><code>/api/v1/teams/{id}/members</code></td>
+<td>Add member</td>
+<td>admin</td>
+<td>—</td>
+</tr>
+<tr>
+<td><code>DELETE</code></td>
+<td><code>/api/v1/teams/{id}/members/{user_id}</code></td>
+<td>Remove member</td>
+<td>admin</td>
+<td>—</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="11-activity-communication-endpoints">11. Activity &amp; Communication Endpoints</h2>
+<h3 id="111-activities-timeline">11.1 Activities (Timeline)</h3>
+<table>
+<thead>
+<tr>
+<th>Method</th>
+<th>Path</th>
+<th>Description</th>
+<th>Permission</th>
+<th>Sortable Fields</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>GET</code></td>
+<td><code>/api/v1/activities</code></td>
+<td>List activities (global timeline)</td>
+<td>read</td>
+<td><code>occurred_at</code>, <code>created_at</code></td>
+</tr>
+<tr>
+<td><code>GET</code></td>
+<td><code>/api/v1/activities/{id}</code></td>
+<td>Get activity detail</td>
+<td>read</td>
+<td>—</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Filters:</strong>
+<code>filter[source_type]</code>, <code>filter[action]</code>, <code>filter[contact_id]</code>, <code>filter[deal_id]</code>, <code>filter[user_id]</code>, <code>filter[occurred_at][gte]</code>, <code>filter[occurred_at][lte]</code></p>
+<p><strong>Note:</strong> Activities are created <strong>implicitly</strong> by the system in response to mutations on other entities. There is no <code>POST /activities</code> — the activity timeline is append-only from the server side.</p>
+<h3 id="112-notes">11.2 Notes</h3>
+<table>
+<thead>
+<tr>
+<th>Method</th>
+<th>Path</th>
+<th>Description</th>
+<th>Permission</th>
+<th>Sortable Fields</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>GET</code></td>
+<td><code>/api/v1/notes</code></td>
+<td>List notes</td>
+<td>read</td>
+<td><code>created_at</code>, <code>updated_at</code></td>
+</tr>
+<tr>
+<td><code>POST</code></td>
+<td><code>/api/v1/notes</code></td>
+<td>Create note</td>
+<td>write</td>
+<td>—</td>
+</tr>
+<tr>
+<td><code>GET</code></td>
+<td><code>/api/v1/notes/{id}</code></td>
+<td>Get note detail</td>
+<td>read</td>
+<td>—</td>
+</tr>
+<tr>
+<td><code>PATCH</code></td>
+<td><code>/api/v1/notes/{id}</code></td>
+<td>Update note</td>
+<td>write</td>
+<td>—</td>
+</tr>
+<tr>
+<td><code>DELETE</code></td>
+<td><code>/api/v1/notes/{id}</code></td>
+<td>Soft-delete note</td>
+<td>write</td>
+<td>—</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Filters:</strong>
+<code>filter[contact_id]</code>, <code>filter[deal_id]</code>, <code>filter[account_id]</code>, <code>filter[user_id]</code>, <code>filter[visibility]</code>, <code>filter[is_pinned]</code></p>
+<p><strong>Includes:</strong>
+<code>user</code>, <code>contact</code>, <code>deal</code></p>
+<h3 id="113-tasks">11.3 Tasks</h3>
+<table>
+<thead>
+<tr>
+<th>Method</th>
+<th>Path</th>
+<th>Description</th>
+<th>Permission</th>
+<th>Sortable Fields</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>GET</code></td>
+<td><code>/api/v1/tasks</code></td>
+<td>List tasks</td>
+<td>read</td>
+<td><code>due_at</code>, <code>created_at</code>, <code>priority</code>, <code>status</code></td>
+</tr>
+<tr>
+<td><code>POST</code></td>
+<td><code>/api/v1/tasks</code></td>
+<td>Create task</td>
+<td>write</td>
+<td>—</td>
+</tr>
+<tr>
+<td><code>GET</code></td>
+<td><code>/api/v1/tasks/{id}</code></td>
+<td>Get task detail</td>
+<td>read</td>
+<td>—</td>
+</tr>
+<tr>
+<td><code>PATCH</code></td>
+<td><code>/api/v1/tasks/{id}</code></td>
+<td>Update task</td>
+<td>write</td>
+<td>—</td>
+</tr>
+<tr>
+<td><code>DELETE</code></td>
+<td><code>/api/v1/tasks/{id}</code></td>
+<td>Soft-delete task</td>
+<td>write</td>
+<td>—</td>
+</tr>
+<tr>
+<td><code>POST</code></td>
+<td><code>/api/v1/tasks/{id}/complete</code></td>
+<td>Mark task complete</td>
+<td>write</td>
+<td>—</td>
+</tr>
+<tr>
+<td><code>POST</code></td>
+<td><code>/api/v1/tasks/{id}/reopen</code></td>
+<td>Reopen completed task</td>
+<td>write</td>
+<td>—</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Filters:</strong>
+<code>filter[assignee_id]</code>, <code>filter[status]</code>, <code>filter[priority]</code>, <code>filter[contact_id]</code>, <code>filter[deal_id]</code>, <code>filter[due_at][lte]</code> (overdue), <code>filter[due_at][gte]</code></p>
+<p><strong>Includes:</strong>
+<code>assignee</code>, <code>user</code>, <code>contact</code>, <code>deal</code></p>
+<h3 id="114-emails">11.4 Emails</h3>
+<table>
+<thead>
+<tr>
+<th>Method</th>
+<th>Path</th>
+<th>Description</th>
+<th>Permission</th>
+<th>Sortable Fields</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>GET</code></td>
+<td><code>/api/v1/emails</code></td>
+<td>List emails</td>
+<td>read</td>
+<td><code>sent_at</code>, <code>created_at</code>, <code>received_at</code></td>
+</tr>
+<tr>
+<td><code>GET</code></td>
+<td><code>/api/v1/emails/{id}</code></td>
+<td>Get email detail</td>
+<td>read</td>
+<td>—</td>
+</tr>
+<tr>
+<td><code>POST</code></td>
+<td><code>/api/v1/emails/{id}/mark_read</code></td>
+<td>Mark as read</td>
+<td>write</td>
+<td>—</td>
+</tr>
+<tr>
+<td><code>POST</code></td>
+<td><code>/api/v1/emails/{id}/mark_unread</code></td>
+<td>Mark as unread</td>
+<td>write</td>
+<td>—</td>
+</tr>
+<tr>
+<td><code>POST</code></td>
+<td><code>/api/v1/emails/{id}/star</code></td>
+<td>Star email</td>
+<td>write</td>
+<td>—</td>
+</tr>
+<tr>
+<td><code>POST</code></td>
+<td><code>/api/v1/emails/{id}/unstar</code></td>
+<td>Unstar email</td>
+<td>write</td>
+<td>—</td>
+</tr>
+<tr>
+<td><code>GET</code></td>
+<td><code>/api/v1/email-threads</code></td>
+<td>List email threads</td>
+<td>read</td>
+<td><code>last_email_at</code>, <code>email_count</code></td>
+</tr>
+<tr>
+<td><code>GET</code></td>
+<td><code>/api/v1/email-threads/{id}</code></td>
+<td>Get thread with all emails</td>
+<td>read</td>
+<td>—</td>
+</tr>
+<tr>
+<td><code>PATCH</code></td>
+<td><code>/api/v1/email-threads/{id}</code></td>
+<td>Update thread metadata (link to deal)</td>
+<td>write</td>
+<td>—</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Filters:</strong>
+<code>filter[direction]</code>, <code>filter[contact_id]</code>, <code>filter[deal_id]</code>, <code>filter[is_read]</code>, <code>filter[from_address]</code>, <code>filter[sent_at][gte]</code>, <code>filter[labels][contains]</code></p>
+<p><strong>Note:</strong> Emails are synced from external providers (Gmail, Graph) — they are not created via the API. The <code>POST /api/v1/emails</code> endpoint is intentionally absent. Email <strong>sending</strong> happens through the sync system (see Section 13).</p>
+<h3 id="115-events-calendar">11.5 Events (Calendar)</h3>
+<table>
+<thead>
+<tr>
+<th>Method</th>
+<th>Path</th>
+<th>Description</th>
+<th>Permission</th>
+<th>Sortable Fields</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>GET</code></td>
+<td><code>/api/v1/events</code></td>
+<td>List events</td>
+<td>read</td>
+<td><code>start_at</code>, <code>end_at</code>, <code>created_at</code></td>
+</tr>
+<tr>
+<td><code>POST</code></td>
+<td><code>/api/v1/events</code></td>
+<td>Create CRM event</td>
+<td>write</td>
+<td>—</td>
+</tr>
+<tr>
+<td><code>GET</code></td>
+<td><code>/api/v1/events/{id}</code></td>
+<td>Get event detail</td>
+<td>read</td>
+<td>—</td>
+</tr>
+<tr>
+<td><code>PATCH</code></td>
+<td><code>/api/v1/events/{id}</code></td>
+<td>Update event</td>
+<td>write</td>
+<td>—</td>
+</tr>
+<tr>
+<td><code>DELETE</code></td>
+<td><code>/api/v1/events/{id}</code></td>
+<td>Soft-delete event</td>
+<td>write</td>
+<td>—</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Filters:</strong>
+<code>filter[start_at][gte]</code>, <code>filter[end_at][lte]</code>, <code>filter[contact_id]</code>, <code>filter[deal_id]</code>, <code>filter[status]</code>, <code>filter[is_all_day]</code></p>
+<p><strong>Includes:</strong>
+<code>user</code>, <code>contact</code>, <code>deal</code></p>
+<hr />
+<h2 id="12-pipeline-deal-endpoints">12. Pipeline &amp; Deal Endpoints</h2>
+<h3 id="121-pipelines">12.1 Pipelines</h3>
+<table>
+<thead>
+<tr>
+<th>Method</th>
+<th>Path</th>
+<th>Description</th>
+<th>Permission</th>
+<th>Sortable Fields</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>GET</code></td>
+<td><code>/api/v1/pipelines</code></td>
+<td>List pipelines with stages</td>
+<td>read</td>
+<td><code>name</code>, <code>created_at</code></td>
+</tr>
+<tr>
+<td><code>POST</code></td>
+<td><code>/api/v1/pipelines</code></td>
+<td>Create pipeline</td>
+<td>admin</td>
+<td>—</td>
+</tr>
+<tr>
+<td><code>GET</code></td>
+<td><code>/api/v1/pipelines/{id}</code></td>
+<td>Get pipeline with stages</td>
+<td>read</td>
+<td>—</td>
+</tr>
+<tr>
+<td><code>PATCH</code></td>
+<td><code>/api/v1/pipelines/{id}</code></td>
+<td>Update pipeline</td>
+<td>admin</td>
+<td>—</td>
+</tr>
+<tr>
+<td><code>DELETE</code></td>
+<td><code>/api/v1/pipelines/{id}</code></td>
+<td>Delete pipeline (cascade stages, reassign deals)</td>
+<td>admin</td>
+<td>—</td>
+</tr>
+<tr>
+<td><code>GET</code></td>
+<td><code>/api/v1/pipelines/{id}/stages</code></td>
+<td>List stages in pipeline</td>
+<td>read</td>
+<td><code>display_order</code></td>
+</tr>
+</tbody>
+</table>
+<h3 id="122-stages">12.2 Stages</h3>
+<table>
+<thead>
+<tr>
+<th>Method</th>
+<th>Path</th>
+<th>Description</th>
+<th>Permission</th>
+<th>Sortable Fields</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>POST</code></td>
+<td><code>/api/v1/pipelines/{pipe_id}/stages</code></td>
+<td>Create stage</td>
+<td>admin</td>
+<td>—</td>
+</tr>
+<tr>
+<td><code>PATCH</code></td>
+<td><code>/api/v1/pipelines/{pipe_id}/stages/{id}</code></td>
+<td>Update stage</td>
+<td>admin</td>
+<td>—</td>
+</tr>
+<tr>
+<td><code>DELETE</code></td>
+<td><code>/api/v1/pipelines/{pipe_id}/stages/{id}</code></td>
+<td>Delete stage</td>
+<td>admin</td>
+<td>—</td>
+</tr>
+<tr>
+<td><code>POST</code></td>
+<td><code>/api/v1/pipelines/{pipe_id}/stages/reorder</code></td>
+<td>Reorder stages (batch)</td>
+<td>admin</td>
+<td>—</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Reorder request:</strong>
+<div class="highlight"><pre><span></span><code><span class="p">{</span>
+<span class="w">  </span><span class="nt">&quot;stage_ids&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="s2">&quot;uuid-1&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;uuid-2&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;uuid-3&quot;</span><span class="p">]</span>
+<span class="p">}</span>
+</code></pre></div></p>
+<h3 id="123-deals">12.3 Deals</h3>
+<table>
+<thead>
+<tr>
+<th>Method</th>
+<th>Path</th>
+<th>Description</th>
+<th>Permission</th>
+<th>Sortable Fields</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>GET</code></td>
+<td><code>/api/v1/deals</code></td>
+<td>List deals (paginated)</td>
+<td>read</td>
+<td><code>value</code>, <code>created_at</code>, <code>expected_close_at</code>, <code>probability</code>, <code>name</code></td>
+</tr>
+<tr>
+<td><code>POST</code></td>
+<td><code>/api/v1/deals</code></td>
+<td>Create deal</td>
+<td>write</td>
+<td>—</td>
+</tr>
+<tr>
+<td><code>GET</code></td>
+<td><code>/api/v1/deals/{id}</code></td>
+<td>Get deal detail</td>
+<td>read</td>
+<td>—</td>
+</tr>
+<tr>
+<td><code>PATCH</code></td>
+<td><code>/api/v1/deals/{id}</code></td>
+<td>Update deal</td>
+<td>write</td>
+<td>—</td>
+</tr>
+<tr>
+<td><code>DELETE</code></td>
+<td><code>/api/v1/deals/{id}</code></td>
+<td>Soft-delete deal</td>
+<td>write</td>
+<td>—</td>
+</tr>
+<tr>
+<td><code>GET</code></td>
+<td><code>/api/v1/deals/{id}/activities</code></td>
+<td>Deal's activity timeline</td>
+<td>read</td>
+<td>—</td>
+</tr>
+<tr>
+<td><code>GET</code></td>
+<td><code>/api/v1/deals/{id}/emails</code></td>
+<td>Deal's emails</td>
+<td>read</td>
+<td>—</td>
+</tr>
+<tr>
+<td><code>GET</code></td>
+<td><code>/api/v1/deals/{id}/notes</code></td>
+<td>Deal's notes</td>
+<td>read</td>
+<td>—</td>
+</tr>
+<tr>
+<td><code>GET</code></td>
+<td><code>/api/v1/deals/{id}/stages/history</code></td>
+<td>Deal stage history</td>
+<td>read</td>
+<td><code>entered_at</code></td>
+</tr>
+</tbody>
+</table>
+<h3 id="124-deal-stage-transitions">12.4 Deal Stage Transitions</h3>
+<table>
+<thead>
+<tr>
+<th>Method</th>
+<th>Path</th>
+<th>Description</th>
+<th>Permission</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>POST</code></td>
+<td><code>/api/v1/deals/{id}/move</code></td>
+<td>Move deal to another stage</td>
+<td>write</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Move request:</strong>
+<div class="highlight"><pre><span></span><code><span class="p">{</span>
+<span class="w">  </span><span class="nt">&quot;stage_id&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;uuid&quot;</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">&quot;probability&quot;</span><span class="p">:</span><span class="w"> </span><span class="mf">60.0</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">&quot;note&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Presentation went well, moving to negotiation&quot;</span>
+<span class="p">}</span>
+</code></pre></div></p>
+<p><strong>Move response:</strong>
+<div class="highlight"><pre><span></span><code><span class="p">{</span>
+<span class="w">  </span><span class="nt">&quot;data&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="nt">&quot;id&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;uuid&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;stage_id&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;uuid&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;stage_entered_at&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;2026-06-28T14:30:00Z&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;previous_stage_id&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;uuid&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;dwell_seconds&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">604800</span>
+<span class="w">  </span><span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div></p>
+<p>The system automatically:
+1. Updates <code>stage_id</code> and <code>stage_entered_at</code>
+2. Records the transition in <code>deal_stage_history</code> (hypertable)
+3. Creates an activity entry for the timeline
+4. Broadcasts the change via WebSocket (see Real-Time Architecture)</p>
+<h3 id="125-pipeline-kanban-board">12.5 Pipeline Kanban Board</h3>
+<table>
+<thead>
+<tr>
+<th>Method</th>
+<th>Path</th>
+<th>Description</th>
+<th>Permission</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>GET</code></td>
+<td><code>/api/v1/pipelines/{id}/board</code></td>
+<td>Kanban board data</td>
+<td>read</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Response:</strong>
+<div class="highlight"><pre><span></span><code><span class="p">{</span>
+<span class="w">  </span><span class="nt">&quot;data&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="nt">&quot;pipeline&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nt">&quot;id&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;uuid&quot;</span><span class="p">,</span><span class="w"> </span><span class="nt">&quot;name&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Sales Pipeline&quot;</span><span class="w"> </span><span class="p">},</span>
+<span class="w">    </span><span class="nt">&quot;stages&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+<span class="w">      </span><span class="p">{</span>
+<span class="w">        </span><span class="nt">&quot;id&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;uuid&quot;</span><span class="p">,</span>
+<span class="w">        </span><span class="nt">&quot;name&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Lead&quot;</span><span class="p">,</span>
+<span class="w">        </span><span class="nt">&quot;display_order&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span>
+<span class="w">        </span><span class="nt">&quot;deals&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+<span class="w">          </span><span class="p">{</span>
+<span class="w">            </span><span class="nt">&quot;id&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;uuid&quot;</span><span class="p">,</span>
+<span class="w">            </span><span class="nt">&quot;name&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Acme Corp Deal&quot;</span><span class="p">,</span>
+<span class="w">            </span><span class="nt">&quot;value&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">50000</span><span class="p">,</span>
+<span class="w">            </span><span class="nt">&quot;probability&quot;</span><span class="p">:</span><span class="w"> </span><span class="mf">20.0</span><span class="p">,</span>
+<span class="w">            </span><span class="nt">&quot;contact&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nt">&quot;id&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;uuid&quot;</span><span class="p">,</span><span class="w"> </span><span class="nt">&quot;first_name&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Jane&quot;</span><span class="p">,</span><span class="w"> </span><span class="nt">&quot;last_name&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Doe&quot;</span><span class="w"> </span><span class="p">}</span>
+<span class="w">          </span><span class="p">}</span>
+<span class="w">        </span><span class="p">],</span>
+<span class="w">        </span><span class="nt">&quot;deal_count&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">12</span><span class="p">,</span>
+<span class="w">        </span><span class="nt">&quot;total_value&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">600000</span>
+<span class="w">      </span><span class="p">}</span>
+<span class="w">    </span><span class="p">],</span>
+<span class="w">    </span><span class="nt">&quot;summary&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">      </span><span class="nt">&quot;total_deals&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">42</span><span class="p">,</span>
+<span class="w">      </span><span class="nt">&quot;total_value&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">2500000</span><span class="p">,</span>
+<span class="w">      </span><span class="nt">&quot;weighted_value&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">1250000</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="w">  </span><span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div></p>
+<p>This endpoint is optimized for real-time kanban display. Each stage includes its deals (capped at 200 per stage for rendering performance).</p>
+<hr />
+<h2 id="13-integration-sync-endpoints">13. Integration &amp; Sync Endpoints</h2>
+<h3 id="131-sync-connections">13.1 Sync Connections</h3>
+<table>
+<thead>
+<tr>
+<th>Method</th>
+<th>Path</th>
+<th>Description</th>
+<th>Permission</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>GET</code></td>
+<td><code>/api/v1/sync/connections</code></td>
+<td>List user's sync connections</td>
+<td>read</td>
+</tr>
+<tr>
+<td><code>POST</code></td>
+<td><code>/api/v1/sync/connections</code></td>
+<td>Create sync connection (initiate OAuth)</td>
+<td>write</td>
+</tr>
+<tr>
+<td><code>DELETE</code></td>
+<td><code>/api/v1/sync/connections/{id}</code></td>
+<td>Remove connection</td>
+<td>write</td>
+</tr>
+<tr>
+<td><code>PATCH</code></td>
+<td><code>/api/v1/sync/connections/{id}</code></td>
+<td>Update connection config</td>
+<td>write</td>
+</tr>
+<tr>
+<td><code>GET</code></td>
+<td><code>/api/v1/sync/connections/{id}</code></td>
+<td>Get connection detail &amp; status</td>
+<td>read</td>
+</tr>
+</tbody>
+</table>
+<h3 id="132-oauth-flow">13.2 OAuth Flow</h3>
+<table>
+<thead>
+<tr>
+<th>Method</th>
+<th>Path</th>
+<th>Description</th>
+<th>Permission</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>GET</code></td>
+<td><code>/api/v1/sync/auth/gmail/url</code></td>
+<td>Get Gmail OAuth URL</td>
+<td>write</td>
+</tr>
+<tr>
+<td><code>GET</code></td>
+<td><code>/api/v1/sync/auth/outlook/url</code></td>
+<td>Get Outlook OAuth URL</td>
+<td>write</td>
+</tr>
+<tr>
+<td><code>GET</code></td>
+<td><code>/api/v1/sync/auth/google-calendar/url</code></td>
+<td>Get Google Calendar OAuth URL</td>
+<td>write</td>
+</tr>
+<tr>
+<td><code>GET</code></td>
+<td><code>/api/v1/sync/auth/outlook-calendar/url</code></td>
+<td>Get Outlook Calendar OAuth URL</td>
+<td>write</td>
+</tr>
+<tr>
+<td><code>POST</code></td>
+<td><code>/api/v1/sync/auth/callback</code></td>
+<td>OAuth callback handler</td>
+<td>write</td>
+</tr>
+</tbody>
+</table>
+<h3 id="133-sync-operations">13.3 Sync Operations</h3>
+<table>
+<thead>
+<tr>
+<th>Method</th>
+<th>Path</th>
+<th>Description</th>
+<th>Permission</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>POST</code></td>
+<td><code>/api/v1/sync/trigger</code></td>
+<td>Trigger immediate sync</td>
+<td>write</td>
+</tr>
+<tr>
+<td><code>GET</code></td>
+<td><code>/api/v1/sync/status</code></td>
+<td>Get sync status for all connections</td>
+<td>read</td>
+</tr>
+<tr>
+<td><code>GET</code></td>
+<td><code>/api/v1/sync/history</code></td>
+<td>Sync activity log</td>
+<td>read</td>
+</tr>
+<tr>
+<td><code>GET</code></td>
+<td><code>/api/v1/sync/connections/{id}/state</code></td>
+<td>Get sync state (cursors, last sync)</td>
+<td>read</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Trigger sync request:</strong>
+<div class="highlight"><pre><span></span><code><span class="p">{</span>
+<span class="w">  </span><span class="nt">&quot;connection_id&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;uuid&quot;</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">&quot;sync_types&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="s2">&quot;email&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;calendar_event&quot;</span><span class="p">]</span>
+<span class="p">}</span>
+</code></pre></div></p>
+<h3 id="134-email-send-via-integration">13.4 Email Send (via Integration)</h3>
+<table>
+<thead>
+<tr>
+<th>Method</th>
+<th>Path</th>
+<th>Description</th>
+<th>Permission</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>POST</code></td>
+<td><code>/api/v1/emails/send</code></td>
+<td>Send email (via connected provider)</td>
+<td>write</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Send request:</strong>
+<div class="highlight"><pre><span></span><code><span class="p">{</span>
+<span class="w">  </span><span class="nt">&quot;to&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="s2">&quot;jane@acme.com&quot;</span><span class="p">],</span>
+<span class="w">  </span><span class="nt">&quot;cc&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[],</span>
+<span class="w">  </span><span class="nt">&quot;bcc&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[],</span>
+<span class="w">  </span><span class="nt">&quot;subject&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Proposal follow-up&quot;</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">&quot;body_html&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;&lt;p&gt;Hi Jane,&lt;/p&gt;&lt;p&gt;Here&#39;s the proposal...&lt;/p&gt;&quot;</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">&quot;connection_id&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;uuid&quot;</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">&quot;deal_id&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;uuid&quot;</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">&quot;thread_id&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;uuid&quot;</span>
+<span class="p">}</span>
+</code></pre></div></p>
+<p>The system:
+1. Builds the MIME message
+2. Sends via the connected provider's API (Gmail send, Graph sendMail)
+3. Records the sent email in the <code>emails</code> table
+4. Links to the deal and thread
+5. Creates an activity entry</p>
+<hr />
+<h2 id="14-auth-user-management-endpoints">14. Auth &amp; User Management Endpoints</h2>
+<h3 id="141-auth-clerk-proxy">14.1 Auth (Clerk Proxy)</h3>
+<table>
+<thead>
+<tr>
+<th>Method</th>
+<th>Path</th>
+<th>Description</th>
+<th>Permission</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>POST</code></td>
+<td><code>/api/v1/auth/sso/{provider}</code></td>
+<td>Initiate SSO for email/calendar</td>
+<td>write</td>
+</tr>
+<tr>
+<td><code>POST</code></td>
+<td><code>/api/v1/auth/webhook</code></td>
+<td>Clerk webhook receiver</td>
+<td>public (signed)</td>
+</tr>
+</tbody>
+</table>
+<h3 id="142-roles">14.2 Roles</h3>
+<table>
+<thead>
+<tr>
+<th>Method</th>
+<th>Path</th>
+<th>Description</th>
+<th>Permission</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>GET</code></td>
+<td><code>/api/v1/roles</code></td>
+<td>List roles</td>
+<td>admin</td>
+</tr>
+<tr>
+<td><code>GET</code></td>
+<td><code>/api/v1/roles/{id}</code></td>
+<td>Get role with permissions</td>
+<td>admin</td>
+</tr>
+<tr>
+<td><code>POST</code></td>
+<td><code>/api/v1/roles</code></td>
+<td>Create custom role</td>
+<td>admin</td>
+</tr>
+<tr>
+<td><code>PATCH</code></td>
+<td><code>/api/v1/roles/{id}</code></td>
+<td>Update role</td>
+<td>admin</td>
+</tr>
+<tr>
+<td><code>DELETE</code></td>
+<td><code>/api/v1/roles/{id}</code></td>
+<td>Delete custom role</td>
+<td>admin</td>
+</tr>
+</tbody>
+</table>
+<h3 id="143-user-role-assignment">14.3 User Role Assignment</h3>
+<table>
+<thead>
+<tr>
+<th>Method</th>
+<th>Path</th>
+<th>Description</th>
+<th>Permission</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>GET</code></td>
+<td><code>/api/v1/users/{id}/roles</code></td>
+<td>Get user's roles</td>
+<td>admin</td>
+</tr>
+<tr>
+<td><code>POST</code></td>
+<td><code>/api/v1/users/{id}/roles</code></td>
+<td>Assign role to user</td>
+<td>admin</td>
+</tr>
+<tr>
+<td><code>DELETE</code></td>
+<td><code>/api/v1/users/{id}/roles/{role_id}</code></td>
+<td>Remove role from user</td>
+<td>admin</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="15-file-attachment-endpoints">15. File &amp; Attachment Endpoints</h2>
+<table>
+<thead>
+<tr>
+<th>Method</th>
+<th>Path</th>
+<th>Description</th>
+<th>Permission</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>GET</code></td>
+<td><code>/api/v1/files</code></td>
+<td>List files</td>
+<td>read</td>
+</tr>
+<tr>
+<td><code>POST</code></td>
+<td><code>/api/v1/files/upload</code></td>
+<td>Upload file (multipart/form-data)</td>
+<td>write</td>
+</tr>
+<tr>
+<td><code>GET</code></td>
+<td><code>/api/v1/files/{id}</code></td>
+<td>Get file metadata</td>
+<td>read</td>
+</tr>
+<tr>
+<td><code>DELETE</code></td>
+<td><code>/api/v1/files/{id}</code></td>
+<td>Soft-delete file</td>
+<td>write</td>
+</tr>
+<tr>
+<td><code>GET</code></td>
+<td><code>/api/v1/files/{id}/download</code></td>
+<td>Get signed download URL</td>
+<td>read</td>
+</tr>
+<tr>
+<td><code>GET</code></td>
+<td><code>/api/v1/files/{id}/preview</code></td>
+<td>Get preview (thumbnail/image)</td>
+<td>read</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Upload response:</strong>
+<div class="highlight"><pre><span></span><code><span class="p">{</span>
+<span class="w">  </span><span class="nt">&quot;data&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="nt">&quot;id&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;uuid&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;original_filename&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;proposal.pdf&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;file_size&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">2048576</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;mime_type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;application/pdf&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;signed_url&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;https://r2.cloudflare.com/.../proposal.pdf?signature=...&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;signed_url_expires_at&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;2026-06-28T15:00:00Z&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;processing_status&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;pending&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;thumbnail_url&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span>
+<span class="w">  </span><span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div></p>
+<p><strong>File upload flow:</strong></p>
+<div class="highlight"><pre><span></span><code>Client uploads via multipart/form-data
+  → FastAPI receives file (stream to temp location)
+  → File metadata written to `files` table
+  → Celery task queued:
+    1. Upload file to R2
+    2. Generate thumbnail (image files) → upload to R2
+    3. Virus scan
+    4. Update processing_status = &#39;ready&#39;
+  → Response returns immediately with file metadata + signed upload URL (direct-to-R2 for large files)
+</code></pre></div>
+<p>For files &gt;10MB, use <strong>direct-to-R2 upload</strong> flow:
+<div class="highlight"><pre><span></span><code>POST /api/v1/files/upload-url   → Returns pre-signed R2 upload URL
+PUT &lt;r2-upload-url&gt;             → Client uploads directly to R2
+POST /api/v1/files/confirm      → Confirms upload, triggers processing
+</code></pre></div></p>
+<hr />
+<h2 id="16-search-endpoints">16. Search Endpoints</h2>
+<table>
+<thead>
+<tr>
+<th>Method</th>
+<th>Path</th>
+<th>Description</th>
+<th>Permission</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>GET</code></td>
+<td><code>/api/v1/search</code></td>
+<td>Global search across all entities</td>
+<td>read</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Search request:</strong>
+<div class="highlight"><pre><span></span><code>GET /api/v1/search?q=acme&amp;filter[entity]=contact,deal&amp;filter[stage]=won&amp;page[size]=20
+</code></pre></div></p>
+<p><strong>Search response:</strong>
+<div class="highlight"><pre><span></span><code><span class="p">{</span>
+<span class="w">  </span><span class="nt">&quot;data&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+<span class="w">    </span><span class="p">{</span>
+<span class="w">      </span><span class="nt">&quot;id&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;uuid&quot;</span><span class="p">,</span>
+<span class="w">      </span><span class="nt">&quot;type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;contact&quot;</span><span class="p">,</span>
+<span class="w">      </span><span class="nt">&quot;score&quot;</span><span class="p">:</span><span class="w"> </span><span class="mf">0.95</span><span class="p">,</span>
+<span class="w">      </span><span class="nt">&quot;title&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Jane Doe&quot;</span><span class="p">,</span>
+<span class="w">      </span><span class="nt">&quot;subtitle&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Acme Corp&quot;</span><span class="p">,</span>
+<span class="w">      </span><span class="nt">&quot;url&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;/contacts/uuid&quot;</span><span class="p">,</span>
+<span class="w">      </span><span class="nt">&quot;highlights&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="nt">&quot;name&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="s2">&quot;Jane &lt;em&gt;Doe&lt;/em&gt;&quot;</span><span class="p">],</span>
+<span class="w">        </span><span class="nt">&quot;company&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="s2">&quot;&lt;em&gt;Acme&lt;/em&gt; Corp&quot;</span><span class="p">]</span>
+<span class="w">      </span><span class="p">}</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="w">  </span><span class="p">],</span>
+<span class="w">  </span><span class="nt">&quot;meta&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="nt">&quot;page&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nt">&quot;size&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">20</span><span class="p">,</span><span class="w"> </span><span class="nt">&quot;has_more&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">false</span><span class="w"> </span><span class="p">},</span>
+<span class="w">    </span><span class="nt">&quot;facets&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">      </span><span class="nt">&quot;entity&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nt">&quot;contact&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">15</span><span class="p">,</span><span class="w"> </span><span class="nt">&quot;deal&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">8</span><span class="p">,</span><span class="w"> </span><span class="nt">&quot;email&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">4</span><span class="w"> </span><span class="p">},</span>
+<span class="w">      </span><span class="nt">&quot;stage&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nt">&quot;won&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">3</span><span class="p">,</span><span class="w"> </span><span class="nt">&quot;open&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">5</span><span class="w"> </span><span class="p">},</span>
+<span class="w">      </span><span class="nt">&quot;owner&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nt">&quot;uuid-1&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nt">&quot;name&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Alice&quot;</span><span class="p">,</span><span class="w"> </span><span class="nt">&quot;count&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">7</span><span class="w"> </span><span class="p">}</span><span class="w"> </span><span class="p">}</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="w">  </span><span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div></p>
+<h3 id="faceted-filters">Faceted Filters</h3>
+<table>
+<thead>
+<tr>
+<th>Parameter</th>
+<th>Description</th>
+<th>Values</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>filter[entity]</code></td>
+<td>Entity type filter</td>
+<td><code>contact</code>, <code>deal</code>, <code>email</code>, <code>note</code>, <code>account</code></td>
+</tr>
+<tr>
+<td><code>filter[stage]</code></td>
+<td>Pipeline stage filter</td>
+<td>Stage name or ID</td>
+</tr>
+<tr>
+<td><code>filter[owner_id]</code></td>
+<td>Owner filter</td>
+<td>User UUID</td>
+</tr>
+<tr>
+<td><code>filter[date_range][gte]</code></td>
+<td>Minimum date</td>
+<td>ISO datetime</td>
+</tr>
+<tr>
+<td><code>filter[date_range][lte]</code></td>
+<td>Maximum date</td>
+<td>ISO datetime</td>
+</tr>
+<tr>
+<td><code>filter[tags]</code></td>
+<td>Tag filter</td>
+<td>Tag name</td>
+</tr>
+</tbody>
+</table>
+<h3 id="search-indexes-meilisearch">Search Indexes (Meilisearch)</h3>
+<table>
+<thead>
+<tr>
+<th>Index</th>
+<th>Document Fields</th>
+<th>Filterable Attributes</th>
+<th>Sortable Attributes</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>contacts</code></td>
+<td>id, tenant_id, first_name, last_name, company, email, phone, tags, lifecycle_stage, owner_id, created_at</td>
+<td>tenant_id, lifecycle_stage, owner_id, tags</td>
+<td>created_at, last_name</td>
+</tr>
+<tr>
+<td><code>deals</code></td>
+<td>id, tenant_id, name, value, stage, pipeline, owner_id, tags, contact_name, account_name, expected_close_at</td>
+<td>tenant_id, stage_id, owner_id, pipeline_id, tags</td>
+<td>value, expected_close_at, created_at</td>
+</tr>
+<tr>
+<td><code>emails</code></td>
+<td>id, tenant_id, subject, from, to, snippet, contact_name, deal_name, sent_at</td>
+<td>tenant_id, contact_id, deal_id, direction, is_read</td>
+<td>sent_at</td>
+</tr>
+<tr>
+<td><code>notes</code></td>
+<td>id, tenant_id, title, body, entity_type, entity_id, created_at</td>
+<td>tenant_id, entity_type, entity_id</td>
+<td>created_at</td>
+</tr>
+</tbody>
+</table>
+<h3 id="search-architecture">Search Architecture</h3>
+<div class="highlight"><pre><span></span><code>User types query → FastAPI search endpoint
+  → Clerk JWT auth (extracts tenant_id)
+  → Proxy to Meilisearch with tenant token filter
+  → Meilisearch returns results + facets
+  → FastAPI enriches results (adds URLs, user names)
+  → Returns to client (cached for 10s in Redis for identical queries)
+</code></pre></div>
+<p>Search is <strong>at-most-30-seconds stale</strong>. Meilisearch indexes are updated via Celery tasks on entity create/update/delete. Redis caches identical queries for 10 seconds to handle rapid typing.</p>
+<hr />
+<h2 id="17-webhooks">17. Webhooks</h2>
+<h3 id="171-outbound-webhooks">17.1 Outbound Webhooks</h3>
+<p>FrontierCRM can send webhook notifications to external services when CRM events occur.</p>
+<p><strong>Webhook event types:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Event</th>
+<th>Triggered When</th>
+<th>Payload Includes</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>deal.created</code></td>
+<td>New deal created</td>
+<td>Full deal object</td>
+</tr>
+<tr>
+<td><code>deal.updated</code></td>
+<td>Deal updated</td>
+<td>Deal diff (old/new values)</td>
+</tr>
+<tr>
+<td><code>deal.stage_changed</code></td>
+<td>Deal moved between stages</td>
+<td>Previous + new stage, dwell time</td>
+</tr>
+<tr>
+<td><code>deal.deleted</code></td>
+<td>Deal soft-deleted</td>
+<td>Deal ID</td>
+</tr>
+<tr>
+<td><code>contact.created</code></td>
+<td>New contact created</td>
+<td>Full contact object</td>
+</tr>
+<tr>
+<td><code>contact.updated</code></td>
+<td>Contact updated</td>
+<td>Contact diff</td>
+</tr>
+<tr>
+<td><code>contact.deleted</code></td>
+<td>Contact soft-deleted</td>
+<td>Contact ID</td>
+</tr>
+<tr>
+<td><code>activity.created</code></td>
+<td>New activity logged</td>
+<td>Activity object + source entity</td>
+</tr>
+<tr>
+<td><code>note.created</code></td>
+<td>New note added</td>
+<td>Note object</td>
+</tr>
+</tbody>
+</table>
+<h3 id="172-webhook-endpoints">17.2 Webhook Endpoints</h3>
+<table>
+<thead>
+<tr>
+<th>Method</th>
+<th>Path</th>
+<th>Description</th>
+<th>Permission</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>GET</code></td>
+<td><code>/api/v1/webhooks</code></td>
+<td>List webhook endpoints</td>
+<td>admin</td>
+</tr>
+<tr>
+<td><code>POST</code></td>
+<td><code>/api/v1/webhooks</code></td>
+<td>Create webhook</td>
+<td>admin</td>
+</tr>
+<tr>
+<td><code>GET</code></td>
+<td><code>/api/v1/webhooks/{id}</code></td>
+<td>Get webhook detail</td>
+<td>admin</td>
+</tr>
+<tr>
+<td><code>PATCH</code></td>
+<td><code>/api/v1/webhooks/{id}</code></td>
+<td>Update webhook</td>
+<td>admin</td>
+</tr>
+<tr>
+<td><code>DELETE</code></td>
+<td><code>/api/v1/webhooks/{id}</code></td>
+<td>Delete webhook</td>
+<td>admin</td>
+</tr>
+<tr>
+<td><code>GET</code></td>
+<td><code>/api/v1/webhooks/{id}/deliveries</code></td>
+<td>List delivery attempts</td>
+<td>admin</td>
+</tr>
+</tbody>
+</table>
+<h3 id="173-webhook-delivery">17.3 Webhook Delivery</h3>
+<p><strong>Delivery flow:</strong></p>
+<div class="highlight"><pre><span></span><code>Event occurs (e.g., deal.stage_changed)
+  → Event published to Redis pub/sub channel: &#39;webhook:outbound&#39;
+  → Celery task picks up the event
+  → For each matching webhook endpoint:
+     → POST to endpoint URL with HMAC-SHA256 signature header
+     → Expect 2xx response within 5 seconds
+     → On failure: retry with exponential backoff (1s, 5s, 30s, 5m, 30m, 6h)
+     → After 6 failed attempts: mark webhook as &#39;failing&#39;, notify tenant admin
+</code></pre></div>
+<p><strong>Webhook payload:</strong>
+<div class="highlight"><pre><span></span><code><span class="err">POST</span><span class="w"> </span><span class="err">h</span><span class="kc">tt</span><span class="err">ps</span><span class="p">:</span><span class="c1">//customer-app.com/webhooks/crm</span>
+<span class="err">Co</span><span class="kc">ntent</span><span class="mi">-</span><span class="err">Type</span><span class="p">:</span><span class="w"> </span><span class="err">applica</span><span class="kc">t</span><span class="err">io</span><span class="kc">n</span><span class="err">/jso</span><span class="kc">n</span>
+<span class="err">X</span><span class="mi">-</span><span class="err">Fro</span><span class="kc">nt</span><span class="err">ierCRM</span><span class="mi">-</span><span class="err">Sig</span><span class="kc">nature</span><span class="p">:</span><span class="w"> </span><span class="err">sha</span><span class="mi">256</span><span class="err">=abc</span><span class="mi">123</span><span class="err">de</span><span class="kc">f</span><span class="mi">456</span>
+<span class="err">X</span><span class="mi">-</span><span class="err">Fro</span><span class="kc">nt</span><span class="err">ierCRM</span><span class="mf">-E</span><span class="err">ve</span><span class="kc">nt</span><span class="p">:</span><span class="w"> </span><span class="err">deal.s</span><span class="kc">ta</span><span class="err">ge_cha</span><span class="kc">n</span><span class="err">ged</span>
+<span class="err">X</span><span class="mi">-</span><span class="err">Fro</span><span class="kc">nt</span><span class="err">ierCRM</span><span class="mi">-</span><span class="err">Delivery</span><span class="mi">-</span><span class="err">Id</span><span class="p">:</span><span class="w"> </span><span class="err">del_abc</span><span class="mi">123</span>
+
+<span class="p">{</span>
+<span class="w">  </span><span class="nt">&quot;event&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;deal.stage_changed&quot;</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">&quot;created_at&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;2026-06-28T14:30:00Z&quot;</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">&quot;data&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="nt">&quot;id&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;uuid&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;name&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Acme Corp Deal&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;previous_stage_id&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;uuid&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;new_stage_id&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;uuid&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;dwell_seconds&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">604800</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;owner_id&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;uuid&quot;</span>
+<span class="w">  </span><span class="p">},</span>
+<span class="w">  </span><span class="nt">&quot;previous_values&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="nt">&quot;stage_id&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;old-uuid&quot;</span>
+<span class="w">  </span><span class="p">},</span>
+<span class="w">  </span><span class="nt">&quot;new_values&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="nt">&quot;stage_id&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;new-uuid&quot;</span>
+<span class="w">  </span><span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div></p>
+<hr />
+<h2 id="18-admin-settings-endpoints">18. Admin &amp; Settings Endpoints</h2>
+<h3 id="181-tenant-settings">18.1 Tenant Settings</h3>
+<table>
+<thead>
+<tr>
+<th>Method</th>
+<th>Path</th>
+<th>Description</th>
+<th>Permission</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>GET</code></td>
+<td><code>/api/v1/settings</code></td>
+<td>Get tenant settings</td>
+<td>read</td>
+</tr>
+<tr>
+<td><code>PATCH</code></td>
+<td><code>/api/v1/settings</code></td>
+<td>Update tenant settings</td>
+<td>admin</td>
+</tr>
+<tr>
+<td><code>GET</code></td>
+<td><code>/api/v1/settings/integrations</code></td>
+<td>Integration config</td>
+<td>admin</td>
+</tr>
+<tr>
+<td><code>PATCH</code></td>
+<td><code>/api/v1/settings/integrations</code></td>
+<td>Update integration config</td>
+<td>admin</td>
+</tr>
+</tbody>
+</table>
+<h3 id="182-custom-fields">18.2 Custom Fields</h3>
+<table>
+<thead>
+<tr>
+<th>Method</th>
+<th>Path</th>
+<th>Description</th>
+<th>Permission</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>GET</code></td>
+<td><code>/api/v1/custom-fields</code></td>
+<td>List custom field definitions</td>
+<td>read</td>
+</tr>
+<tr>
+<td><code>POST</code></td>
+<td><code>/api/v1/custom-fields</code></td>
+<td>Create custom field definition</td>
+<td>admin</td>
+</tr>
+<tr>
+<td><code>GET</code></td>
+<td><code>/api/v1/custom-fields/{id}</code></td>
+<td>Get definition</td>
+<td>read</td>
+</tr>
+<tr>
+<td><code>PATCH</code></td>
+<td><code>/api/v1/custom-fields/{id}</code></td>
+<td>Update definition</td>
+<td>admin</td>
+</tr>
+<tr>
+<td><code>DELETE</code></td>
+<td><code>/api/v1/custom-fields/{id}</code></td>
+<td>Soft-delete definition</td>
+<td>admin</td>
+</tr>
+</tbody>
+</table>
+<h3 id="183-reports-analytics">18.3 Reports &amp; Analytics</h3>
+<table>
+<thead>
+<tr>
+<th>Method</th>
+<th>Path</th>
+<th>Description</th>
+<th>Permission</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>GET</code></td>
+<td><code>/api/v1/reports/pipeline-summary</code></td>
+<td>Pipeline overview</td>
+<td>read</td>
+</tr>
+<tr>
+<td><code>GET</code></td>
+<td><code>/api/v1/reports/team-performance</code></td>
+<td>Team metrics</td>
+<td>read</td>
+</tr>
+<tr>
+<td><code>GET</code></td>
+<td><code>/api/v1/reports/activity-summary</code></td>
+<td>Activity metrics</td>
+<td>read</td>
+</tr>
+<tr>
+<td><code>GET</code></td>
+<td><code>/api/v1/reports/forecast</code></td>
+<td>Revenue forecast</td>
+<td>read</td>
+</tr>
+<tr>
+<td><code>POST</code></td>
+<td><code>/api/v1/reports/generate</code></td>
+<td>Generate custom report (async)</td>
+<td>write</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Pipeline summary response:</strong>
+<div class="highlight"><pre><span></span><code><span class="p">{</span>
+<span class="w">  </span><span class="nt">&quot;data&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="nt">&quot;open_deals&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">42</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;total_value&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">2500000</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;weighted_value&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">1250000</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;won_this_month&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nt">&quot;count&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">8</span><span class="p">,</span><span class="w"> </span><span class="nt">&quot;value&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">500000</span><span class="w"> </span><span class="p">},</span>
+<span class="w">    </span><span class="nt">&quot;lost_this_month&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nt">&quot;count&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">3</span><span class="p">,</span><span class="w"> </span><span class="nt">&quot;value&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">150000</span><span class="w"> </span><span class="p">},</span>
+<span class="w">    </span><span class="nt">&quot;avg_deal_size&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">59523</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;avg_sales_cycle_days&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">45</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;by_stage&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+<span class="w">      </span><span class="p">{</span><span class="w"> </span><span class="nt">&quot;stage_id&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;uuid&quot;</span><span class="p">,</span><span class="w"> </span><span class="nt">&quot;stage_name&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Lead&quot;</span><span class="p">,</span><span class="w"> </span><span class="nt">&quot;count&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">15</span><span class="p">,</span><span class="w"> </span><span class="nt">&quot;value&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">750000</span><span class="w"> </span><span class="p">}</span>
+<span class="w">    </span><span class="p">],</span>
+<span class="w">    </span><span class="nt">&quot;forecast&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">      </span><span class="nt">&quot;this_quarter&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nt">&quot;commit&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">800000</span><span class="p">,</span><span class="w"> </span><span class="nt">&quot;best_case&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">1200000</span><span class="p">,</span><span class="w"> </span><span class="nt">&quot;pipeline&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">2500000</span><span class="w"> </span><span class="p">}</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="w">  </span><span class="p">},</span>
+<span class="w">  </span><span class="nt">&quot;meta&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="nt">&quot;generated_at&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;2026-06-28T14:30:00Z&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;source&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;cache&quot;</span><span class="w">  </span><span class="c1">// or &quot;live&quot; or &quot;async&quot;</span>
+<span class="w">  </span><span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div></p>
+<h3 id="184-admin-endpoints">18.4 Admin Endpoints</h3>
+<table>
+<thead>
+<tr>
+<th>Method</th>
+<th>Path</th>
+<th>Description</th>
+<th>Permission</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>GET</code></td>
+<td><code>/api/v1/admin/usage</code></td>
+<td>API usage stats</td>
+<td>admin</td>
+</tr>
+<tr>
+<td><code>GET</code></td>
+<td><code>/api/v1/admin/sync-health</code></td>
+<td>Sync health dashboard</td>
+<td>admin</td>
+</tr>
+<tr>
+<td><code>GET</code></td>
+<td><code>/api/v1/admin/tenants</code></td>
+<td>List tenants (offset paginated)</td>
+<td>superadmin</td>
+</tr>
+<tr>
+<td><code>GET</code></td>
+<td><code>/api/v1/admin/tenants/{id}</code></td>
+<td>Tenant detail</td>
+<td>superadmin</td>
+</tr>
+<tr>
+<td><code>PATCH</code></td>
+<td><code>/api/v1/admin/tenants/{id}</code></td>
+<td>Update tenant</td>
+<td>superadmin</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="19-rate-limit-reference">19. Rate Limit Reference</h2>
+<table>
+<thead>
+<tr>
+<th>Endpoint Group</th>
+<th>Rate (Starter)</th>
+<th>Rate (Growth)</th>
+<th>Rate (Enterprise)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>/api/v1/contacts</code></td>
+<td>300/min</td>
+<td>1,000/min</td>
+<td>5,000/min</td>
+</tr>
+<tr>
+<td><code>/api/v1/deals</code></td>
+<td>300/min</td>
+<td>1,000/min</td>
+<td>5,000/min</td>
+</tr>
+<tr>
+<td><code>/api/v1/accounts</code></td>
+<td>150/min</td>
+<td>500/min</td>
+<td>2,000/min</td>
+</tr>
+<tr>
+<td><code>/api/v1/activities</code></td>
+<td>300/min</td>
+<td>1,000/min</td>
+<td>5,000/min</td>
+</tr>
+<tr>
+<td><code>/api/v1/emails</code></td>
+<td>150/min</td>
+<td>500/min</td>
+<td>2,000/min</td>
+</tr>
+<tr>
+<td><code>/api/v1/events</code></td>
+<td>150/min</td>
+<td>500/min</td>
+<td>2,000/min</td>
+</tr>
+<tr>
+<td><code>/api/v1/notes</code></td>
+<td>300/min</td>
+<td>1,000/min</td>
+<td>5,000/min</td>
+</tr>
+<tr>
+<td><code>/api/v1/tasks</code></td>
+<td>300/min</td>
+<td>1,000/min</td>
+<td>5,000/min</td>
+</tr>
+<tr>
+<td><code>/api/v1/search</code></td>
+<td>100/min</td>
+<td>300/min</td>
+<td>1,000/min</td>
+</tr>
+<tr>
+<td><code>/api/v1/sync/*</code></td>
+<td>30/min</td>
+<td>60/min</td>
+<td>300/min</td>
+</tr>
+<tr>
+<td><code>/api/v1/files/*</code></td>
+<td>100/min</td>
+<td>300/min</td>
+<td>1,000/min</td>
+</tr>
+<tr>
+<td><code>/api/v1/webhooks</code></td>
+<td>30/min</td>
+<td>60/min</td>
+<td>200/min</td>
+</tr>
+<tr>
+<td><code>/api/v1/reports/*</code></td>
+<td>30/min</td>
+<td>60/min</td>
+<td>200/min</td>
+</tr>
+<tr>
+<td><code>/api/v1/admin/*</code></td>
+<td>—</td>
+<td>—</td>
+<td>1,000/min</td>
+</tr>
+<tr>
+<td>Webhook delivery</td>
+<td>5,000/min (internal)</td>
+<td>5,000/min</td>
+<td>5,000/min</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="appendix-a-endpoint-count-summary">Appendix A: Endpoint Count Summary</h2>
+<table>
+<thead>
+<tr>
+<th>Module</th>
+<th>Endpoints</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Contacts</td>
+<td>9</td>
+</tr>
+<tr>
+<td>Accounts</td>
+<td>7</td>
+</tr>
+<tr>
+<td>Users</td>
+<td>9</td>
+</tr>
+<tr>
+<td>Teams</td>
+<td>8</td>
+</tr>
+<tr>
+<td>Activities</td>
+<td>2</td>
+</tr>
+<tr>
+<td>Notes</td>
+<td>5</td>
+</tr>
+<tr>
+<td>Tasks</td>
+<td>7</td>
+</tr>
+<tr>
+<td>Emails</td>
+<td>8</td>
+</tr>
+<tr>
+<td>Email Threads</td>
+<td>3</td>
+</tr>
+<tr>
+<td>Events</td>
+<td>5</td>
+</tr>
+<tr>
+<td>Pipelines</td>
+<td>6</td>
+</tr>
+<tr>
+<td>Stages</td>
+<td>4</td>
+</tr>
+<tr>
+<td>Deals</td>
+<td>8</td>
+</tr>
+<tr>
+<td>Deal Moves</td>
+<td>1</td>
+</tr>
+<tr>
+<td>Pipeline Board</td>
+<td>1</td>
+</tr>
+<tr>
+<td>Sync Connections</td>
+<td>5</td>
+</tr>
+<tr>
+<td>Sync OAuth</td>
+<td>4</td>
+</tr>
+<tr>
+<td>Sync Operations</td>
+<td>5</td>
+</tr>
+<tr>
+<td>Email Send</td>
+<td>1</td>
+</tr>
+<tr>
+<td>Auth/SSO</td>
+<td>2</td>
+</tr>
+<tr>
+<td>Roles</td>
+<td>5</td>
+</tr>
+<tr>
+<td>User Roles</td>
+<td>3</td>
+</tr>
+<tr>
+<td>Files</td>
+<td>6</td>
+</tr>
+<tr>
+<td>Search</td>
+<td>1</td>
+</tr>
+<tr>
+<td>Webhooks</td>
+<td>7</td>
+</tr>
+<tr>
+<td>Settings</td>
+<td>4</td>
+</tr>
+<tr>
+<td>Custom Fields</td>
+<td>5</td>
+</tr>
+<tr>
+<td>Reports</td>
+<td>6</td>
+</tr>
+<tr>
+<td>Admin</td>
+<td>5</td>
+</tr>
+<tr>
+<td><strong>Total</strong></td>
+<td><strong>~140</strong></td>
+</tr>
+</tbody>
+</table>
+
+
+
+
+
+
+
+  
+  
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Back to top
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": ".", "features": ["navigation.sections", "navigation.top", "search.suggest", "search.highlight", "content.code.copy"], "search": "assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="assets/javascripts/bundle.79ae519e.min.js"></script>
+      
+    
+  </body>
+</html>

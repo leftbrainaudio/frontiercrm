@@ -1,12 +1,13 @@
 import { useState, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Search, Plus, UserPlus, AlertCircle, RefreshCw } from 'lucide-react';
-import { Input } from '../../components/ui/input';
-import { Button } from '../../components/ui/button';
-import { Card } from '../../components/ui/card';
-import { Badge } from '../../components/ui/badge';
-import { Avatar } from '../../components/ui/avatar';
-import { Skeleton } from '../../components/ui/skeleton';
+import { Search, Plus, UserPlus, AlertCircle, RefreshCw, Download } from 'lucide-react';
+import { Input } from '../../components/atoms/input';
+import { Button } from '../../components/atoms/button';
+import { Card } from '../../components/molecules/card';
+import { Badge } from '../../components/atoms/badge';
+import { Avatar } from '../../components/atoms/avatar';
+import { Skeleton } from '../../components/atoms/skeleton';
+import { ExportButton } from '../../components/ui/export-button';
 import { cn } from '../../lib/utils';
 import { useContacts } from '../../api/contacts';
 import type { Contact } from '../../types';
@@ -146,7 +147,10 @@ export function ContactListPage() {
             Manage your contacts and relationships.
           </p>
         </div>
-        <Button icon={<Plus className="h-4 w-4" />}>Add Contact</Button>
+        <div className="flex items-center gap-2">
+          <ExportButton url="/contacts/export/csv/" filename="contacts.csv" label="Export CSV" variant="secondary" size="sm" />
+          <Button icon={<Plus className="h-4 w-4" />}>Add Contact</Button>
+        </div>
       </div>
 
       {/* Search */}

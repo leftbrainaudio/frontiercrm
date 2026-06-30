@@ -206,28 +206,33 @@ def sync_gmail_history(self, user_id: str, history_id: str) -> dict[str, Any]:
     return {"synced": synced, "history_entries": len(histories)}
 
 
+from apps.activities.models import Activity
+
+
 @shared_task(bind=True, max_retries=2)
 def send_gmail_message(
     self,
     user_id: str,
-    to: list[str],
-    subject: str,
-    body_text: str,
-    body_html: str = "",
+    email_id: str,
 ) -> dict[str, Any]:
-    """Send an email via Gmail API."""
+    """Send an email via Gmail API, updating the existing EmailMessage record."""
     try:
         user = User.objects.get(id=user_id)
     except User.DoesNotExist:
         return {"error": "User not found"}
 
-    # Build RFC-2822 message
+    try:
+        email_msg = EmailMessage.objects.get(id=email_id, tenant_id=user.tenant_id)
+    except EmailMessage.DoesNotExist:
+        return {"error": "EmailMessage not found"}
+
+    # Build RFC-2822 message from the stored fields
     msg = email.message.EmailMessage()
-    msg.set_content(body_text)
-    if body_html:
-        msg.add_alternative(body_html, subtype="html")
-    msg["To"] = ", ".join(to)
-    msg["Subject"] = subject
+    msg.set_content(email_msg.body_text)
+    if email_msg.body_html:
+        msg.add_alternative(email_msg.body_html, subtype="html")
+    msg["To"] = ", ".join(email_msg.to_emails)
+    msg["Subject"] = email_msg.subject
     msg["From"] = user.email
 
     raw = base64.urlsafe_b64encode(msg.as_bytes()).decode("ascii")
@@ -250,20 +255,60 @@ def send_gmail_message(
         )
 
     if resp.status_code != 200:
-        return {"error": f"Send failed: {resp.text}"}
+        email_msg.status = EmailMessage.EmailStatus.FAILED
+        email_msg.error_message = f"Send failed: {resp.text[:2000]}"
+        email_msg.save(update_fields=["status", "error_message", "updated_at"])
+
+        # Create failure activity entry
+        Activity.objects.create(
+            tenant_id=user.tenant_id,
+            activity_type=Activity.ActivityType.EMAIL,
+            title=f"Email send failed: {email_msg.subject[:80] or '(no subject)'}",
+            description=(email_msg.error_message or "")[:500],
+            entity_type="email",
+            entity_id=email_msg.id,
+            actor_id=user.id,
+            metadata={
+                "status": "failed",
+                "error": email_msg.error_message,
+                "to": email_msg.to_emails,
+                "subject": email_msg.subject,
+            },
+        )
+
+        return {"status": "failed", "error": email_msg.error_message}
 
     sent_data = resp.json()
-    EmailMessage.objects.create(
+    gmail_id = sent_data.get("id", "")
+    thread_id = sent_data.get("threadId", "")
+
+    # Update the existing record
+    email_msg.status = EmailMessage.EmailStatus.SENT
+    email_msg.message_id = gmail_id
+    email_msg.external_id = gmail_id
+    email_msg.thread_id = thread_id
+    email_msg.is_read = True
+    email_msg.sent_at = timezone.now()
+    email_msg.save(update_fields=[
+        "status", "message_id", "external_id", "thread_id",
+        "is_read", "sent_at", "updated_at",
+    ])
+
+    # Create Activity entry
+    Activity.objects.create(
         tenant_id=user.tenant_id,
-        message_id=sent_data.get("id", ""),
-        thread_id=sent_data.get("threadId", ""),
-        direction=EmailMessage.EmailDirection.OUTBOUND,
-        from_email=user.email,
-        to_emails=to,
-        subject=subject,
-        body_text=body_text,
-        body_html=body_html,
-        sent_at=timezone.now(),
-        is_read=True,
+        activity_type=Activity.ActivityType.EMAIL,
+        title=f"Email sent: {email_msg.subject[:100]}" if email_msg.subject else "Email sent",
+        description=f"Sent email to {', '.join(email_msg.to_emails)[:200]}",
+        entity_type="email",
+        entity_id=email_msg.id,
+        actor_id=user.id,
+        metadata={
+            "status": "sent",
+            "subject": email_msg.subject,
+            "to": email_msg.to_emails,
+            "message_id": gmail_id,
+        },
     )
-    return {"status": "sent", "message_id": sent_data.get("id", "")}
+
+    return {"status": "sent", "message_id": gmail_id}

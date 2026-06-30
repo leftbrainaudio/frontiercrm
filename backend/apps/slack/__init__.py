@@ -1,0 +1,1 @@
+"""Slack notifications app — send CRM events to Slack via incoming webhooks."""

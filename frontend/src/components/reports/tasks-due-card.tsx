@@ -1,5 +1,5 @@
-import { Card } from '../ui/card';
-import { Badge } from '../ui/badge';
+import { Card } from '../molecules/card';
+import { Badge } from '../atoms/badge';
 
 export interface TasksDueCardProps {
   totalDue: number;

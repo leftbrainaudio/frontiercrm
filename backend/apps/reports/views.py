@@ -27,9 +27,12 @@ from django.db.models import (
     When,
 )
 from django.db.models.functions import Coalesce, TruncDate
+from django.http import HttpResponse
 from django.utils import timezone
 from rest_framework import status
 from rest_framework.permissions import IsAuthenticated
+
+from apps.core.permissions import RolePermission, TenantAwarePermission
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
@@ -112,6 +115,22 @@ def _filter_deals_queryset(qs, tenant_id, start_date, end_date, pipeline_id):
         Q_(status="open") | Q_(closed_at__date__gte=start_date)
     )
     return qs.filter(filters)
+
+
+def _duration_to_days(value):
+    """Convert backend-agnostic duration value to days.
+
+    Django's DurationField aggregations return microseconds on PostgreSQL
+    and seconds on SQLite.  This helper detects the unit by magnitude and
+    normalises to days so callers never need to know the backend.
+    """
+    if value is None:
+        return 0.0
+    value = float(value)
+    # PostgreSQL microseconds ≈ 8.64e10/day, SQLite seconds ≈ 86400/day
+    if abs(value) > 1_000_000_000:   # past the 1e9 boundary → microseconds
+        return value / 86_400_000_000
+    return value / 86_400
 
 
 def _compute_summary(deals_qs, prev_deals_qs):
@@ -229,7 +248,7 @@ def _compute_summary(deals_qs, prev_deals_qs):
         "avg_deal_value_change": pct_change(
             float(agg["avg_deal_value"] or 0), float(prev_agg["prev_avg_deal_value"] or 0)
         ),
-        "avg_days_to_close": round(float(avg_days_agg.get("avg_days", 0) or 0) / 86400_000_000, 1),
+        "avg_days_to_close": round(_duration_to_days(avg_days_agg.get("avg_days", 0)), 1),
         "weighted_pipeline": float(weighted_agg.get("weighted") or 0),
     }
 
@@ -354,7 +373,7 @@ def _compute_deal_velocity(qs):
     return [
         {
             "stage_name": v["stage_name"],
-            "avg_days": round(v["avg_days"], 1),
+            "avg_days": round(_duration_to_days(v["avg_days"]), 1),
             "deals_in_stage": v["deals_in_stage"],
         }
         for v in velocities
@@ -540,7 +559,8 @@ class DashboardReportView(APIView):
       &group_by=owner
     """
 
-    permission_classes = [IsAuthenticated]
+    permission_classes = [TenantAwarePermission, RolePermission]
+    required_permission = 'reports.view'
 
     def get(self, request):
         tenant_id = request.user.tenant_id
@@ -593,6 +613,399 @@ class DashboardReportView(APIView):
         return Response(result)
 
 
+# ── Forecasting helpers ────────────────────────────────────────────────────
+
+
+def _parse_quarter(quarter_str: str | None) -> tuple[date, date]:
+    """Convert a quarter string (e.g. "2026-Q3", "current") to (start_date, end_date)."""
+    today = timezone.now().date()
+    if not quarter_str or quarter_str == "current":
+        quarter_str = f"{today.year}-Q{(today.month - 1) // 3 + 1}"
+
+    try:
+        year_str, q_str = quarter_str.split("-Q")
+        year = int(year_str)
+        q = int(q_str)
+    except (ValueError, IndexError):
+        # Fall back to current quarter
+        q = (today.month - 1) // 3 + 1
+        year = today.year
+
+    start_month = 3 * (q - 1) + 1
+    end_month = 3 * q
+
+    start_date = date(year, start_month, 1)
+
+    if end_month == 12:
+        end_date = date(year, 12, 31)
+    else:
+        end_date = date(year, end_month + 1, 1) - timedelta(days=1)
+
+    return start_date, end_date
+
+
+def _compute_simple_weighted_forecast(deals_qs):
+    """Simple weighted projection: Σ(open_deal.value × stage.probability).
+
+    Reuses the same logic as _compute_summary's weighted_pipeline.
+    Returns projected revenue, deal count, and total pipeline value.
+    """
+    open_deals = deals_qs.filter(status="open")
+    total_pipeline = open_deals.aggregate(
+        total=Coalesce(Sum("value"), Value(Decimal("0.00")))
+    )["total"]
+
+    weighted_qs = open_deals.annotate(
+        deal_weight=ExpressionWrapper(
+            F("value") * F("stage__probability"),
+            output_field=FloatField(),
+        )
+    )
+    weighted_agg = weighted_qs.aggregate(
+        projected=Coalesce(Sum("deal_weight"), Value(0.0, output_field=FloatField()))
+    )
+
+    return {
+        "projected_revenue": round(float(weighted_agg["projected"]), 2),
+        "deals_in_pipeline": open_deals.count(),
+        "total_pipeline_value": float(total_pipeline),
+        "description": "Sum of deal.value × stage.probability for all open deals",
+    }
+
+
+def _compute_win_rate_adjusted(weighted_value: float, tenant_id: str, start_date: date, end_date: date) -> dict:
+    """Win-rate adjusted projection: weighted_pipeline × historical_win_rate.
+
+    Historical win rate = won / (won + lost) across all deals in the last 12 months.
+    """
+    twelve_months_ago = start_date - timedelta(days=365)
+
+    closed_deals = Deal.objects.filter(
+        tenant_id=tenant_id,
+        status__in=["won", "lost"],
+        closed_at__date__gte=twelve_months_ago,
+        closed_at__date__lte=end_date,
+    )
+    closed_agg = closed_deals.aggregate(
+        won_count=Count("id", filter=Q(status="won")),
+        lost_count=Count("id", filter=Q(status="lost")),
+    )
+    won = closed_agg["won_count"] or 0
+    lost = closed_agg["lost_count"] or 0
+    total_closed = won + lost
+    historical_win_rate = round(won / total_closed, 4) if total_closed > 0 else 0.0
+
+    return {
+        "projected_revenue": round(float(weighted_value) * historical_win_rate, 2),
+        "historical_win_rate": historical_win_rate,
+        "adjustment_factor": historical_win_rate,
+        "description": "Weighted pipeline × historical win rate",
+    }
+
+
+def _compute_velocity_forecast(deals_qs, tenant_id) -> dict:
+    """Velocity-based projection with monthly breakdown.
+
+    For each open deal, estimate the close date using expected_close_date or
+    entered_stage_at + avg_days_in_stage from deal_velocity data.
+    Group by month and sum projected values.
+    """
+    from decimal import Decimal
+
+    open_deals = list(
+        deals_qs.filter(status="open").select_related("stage")
+    )
+
+    # Build stage velocity map: stage_name → avg_days
+    velocity_data = _compute_deal_velocity(
+        Deal.objects.filter(tenant_id=tenant_id)
+    )
+    stage_velocity = {v["stage_name"]: v["avg_days"] for v in velocity_data}
+
+    now = timezone.now()
+    monthly: dict[str, dict] = {}
+    deals_with_dates = 0
+    total_projected = Decimal("0.00")
+    total_expected_close_count = 0
+
+    for deal in open_deals:
+        # Effective projection = deal.value × win_probability
+        projected_value = deal.value * deal.win_probability
+
+        # Estimate close date
+        est_close = deal.expected_close_date
+        if est_close is None and deal.entered_stage_at:
+            # Use velocity: entered_stage_at + avg_days_in_stage
+            avg_days = stage_velocity.get(deal.stage.name, 45)
+            est_close = (deal.entered_stage_at + timedelta(days=int(avg_days))).date()
+
+        if est_close is not None:
+            deals_with_dates += 1
+            if est_close >= now.date():
+                total_expected_close_count += 1
+
+            month_key = est_close.strftime("%Y-%m")
+            if month_key not in monthly:
+                monthly[month_key] = {"projected_value": Decimal("0.00"), "expected_deals": 0}
+            monthly[month_key]["projected_value"] += projected_value
+            monthly[month_key]["expected_deals"] += 1
+
+        total_projected += projected_value
+
+    # Determine quarter boundaries from the deals (use earliest relevant month)
+    if monthly:
+        months_sorted = sorted(monthly.keys())
+        avg_days_list = [v["avg_days"] for v in velocity_data if v["avg_days"] > 0]
+        avg_days_to_close = round(
+            sum(avg_days_list) / len(avg_days_list), 1
+        ) if avg_days_list else 0.0
+    else:
+        avg_days_to_close = 0.0
+
+    monthly_breakdown = [
+        {
+            "month": m,
+            "projected_value": round(float(v["projected_value"]), 2),
+            "expected_deals": v["expected_deals"],
+        }
+        for m, v in sorted(monthly.items())
+    ]
+
+    return {
+        "projected_revenue": float(total_projected),
+        "expected_close_count": total_expected_close_count,
+        "deals_with_expected_dates": deals_with_dates,
+        "avg_days_to_close": avg_days_to_close,
+        "monthly_breakdown": monthly_breakdown,
+    }
+
+
+def _parse_forecast_range(
+    quarter_str: str | None,
+    range_str: str | None,
+) -> tuple[str, date, date]:
+    """Parse quarter and/or range params, returning (label, start, end).
+
+    ``quarter`` takes priority (exact quarter spec like '2026-Q3').
+    ``range`` is used when quarter is not provided: 'quarter' (3mo),
+    'half-year' (6mo), 'year' (12mo).  Defaults to current quarter.
+    """
+    if quarter_str and quarter_str != "current":
+        start, end = _parse_quarter(quarter_str)
+        return quarter_str, start, end
+
+    today = timezone.now().date()
+    range_map = {
+        "quarter": 90,
+        "half-year": 180,
+        "year": 365,
+    }
+    days = range_map.get(range_str or "quarter", 90)
+    start = today
+    end = today + timedelta(days=days)
+
+    # Trim to month ends for consistent boundaries
+    # start = first of current month
+    start = date(today.year, today.month, 1)
+    label = (
+        "Next 3 Months" if days == 90
+        else "Next 6 Months" if days == 180
+        else "Next 12 Months"
+    )
+    return label, start, end
+
+
+def _compute_deal_forecasts(deals_qs, tenant_id) -> list[dict]:
+    """Per-deal forecast breakdown with projected close info.
+
+    Returns a list of open deals with estimated close dates,
+    probability weights, and projected revenue.
+    """
+    open_deals = list(
+        deals_qs.filter(status="open").select_related("stage", "pipeline")
+    )
+
+    velocity_data = _compute_deal_velocity(
+        Deal.objects.filter(tenant_id=tenant_id)
+    )
+    stage_velocity = {v["stage_name"]: v["avg_days"] for v in velocity_data}
+    now = timezone.now()
+
+    results = []
+    for deal in open_deals:
+        est_close = deal.expected_close_date
+        if est_close is None and deal.entered_stage_at:
+            avg_days = stage_velocity.get(deal.stage.name, 45)
+            est_close = (deal.entered_stage_at + timedelta(days=int(avg_days))).date()
+
+        prob_weight = float(deal.win_probability)
+        projected = float(deal.value) * prob_weight
+
+        results.append({
+            "deal_id": str(deal.id),
+            "deal_name": deal.name,
+            "deal_value": float(deal.value),
+            "stage_name": deal.stage.name if deal.stage else "",
+            "stage_probability": float(deal.stage.probability) if deal.stage else 0.0,
+            "probability_weight": prob_weight,
+            "projected_value": round(projected, 2),
+            "estimated_close_date": est_close.isoformat() if est_close else None,
+            "pipeline_name": deal.pipeline.name if deal.pipeline else "",
+            "has_expected_date": deal.expected_close_date is not None,
+        })
+
+    results.sort(
+        key=lambda r: r["estimated_close_date"] or "9999-12-31"
+    )
+    return results
+
+
+def _compute_what_if(deals_qs, tenant_id, scenario_stage_name: str, scenario_close_rate: float) -> dict | None:
+    """What-if scenario projection.
+
+    current_value_in_stage × (scenario_close_rate / current_stage_probability)
+    Shows delta between current projection and scenario projection.
+    """
+    from decimal import Decimal
+
+    stage = Stage.objects.filter(
+        name__iexact=scenario_stage_name,
+        pipeline__tenant_id=tenant_id,
+    ).first()
+    if not stage:
+        return None
+
+    stage_deals = list(deals_qs.filter(status="open", stage=stage).select_related("stage"))
+
+    current_probability = float(stage.probability)
+    total_value_in_stage = Decimal("0.00")
+    current_projected = Decimal("0.00")
+
+    for deal in stage_deals:
+        total_value_in_stage += deal.value
+        current_projected += deal.value * deal.win_probability
+
+    scenario_projected = total_value_in_stage * Decimal(str(scenario_close_rate / current_probability)) if current_probability > 0 else Decimal("0.00")
+
+    return {
+        "stage_name": stage.name,
+        "current_close_rate": current_probability,
+        "scenario_close_rate": scenario_close_rate,
+        "deals_affected": len(stage_deals),
+        "current_projected_value": round(float(current_projected), 2),
+        "scenario_projected_value": round(float(scenario_projected), 2),
+        "upside": round(float(scenario_projected - current_projected), 2),
+    }
+
+
+class ForecastView(APIView):
+    """Pipeline forecasting endpoint with multiple projection models.
+
+    GET /api/reports/forecast/
+      ?pipeline_id=<uuid>
+      &quarter=2026-Q3
+      &range=quarter|half-year|year
+      &scenario_stage=Negotiation
+      &scenario_close_rate=0.80
+      &confidence_level=conservative|medium|optimistic
+    """
+
+    permission_classes = [TenantAwarePermission, RolePermission]
+    required_permission = "forecast.view"
+
+    def get(self, request):
+        tenant_id = request.user.tenant_id
+        pipeline_id = request.query_params.get("pipeline_id")
+        quarter_str = request.query_params.get("quarter")
+        range_str = request.query_params.get("range", "quarter")
+        scenario_stage = request.query_params.get("scenario_stage")
+        scenario_close_rate_str = request.query_params.get("scenario_close_rate")
+        confidence_level = request.query_params.get("confidence_level", "medium")
+
+        # Parse forecast range → date range
+        period_label, start_date, end_date = _parse_forecast_range(quarter_str, range_str)
+
+        # Validate pipeline_id
+        if pipeline_id:
+            try:
+                _UUID(pipeline_id)
+            except (ValueError, TypeError, AttributeError):
+                pipeline_id = None
+
+        # Parse scenario_close_rate
+        scenario_close_rate = None
+        if scenario_close_rate_str:
+            try:
+                scenario_close_rate = float(scenario_close_rate_str)
+            except (ValueError, TypeError):
+                scenario_close_rate = None
+
+        # Base queryset — all open deals for the current pipeline scope
+        deals_qs = _filter_deals_queryset(
+            Deal.objects.select_related("stage", "pipeline").all(),
+            tenant_id,
+            start_date,
+            end_date,
+            pipeline_id,
+        )
+
+        # Confidence level multipliers
+        confidence_multipliers = {
+            "conservative": 0.8,
+            "medium": 1.0,
+            "optimistic": 1.15,
+        }
+        multiplier = confidence_multipliers.get(confidence_level, 1.0)
+
+        # 1. Simple weighted projection
+        simple = _compute_simple_weighted_forecast(deals_qs)
+        simple["projected_revenue"] = round(simple["projected_revenue"] * multiplier, 2)
+
+        # 2. Win-rate adjusted
+        win_rate_adj = _compute_win_rate_adjusted(
+            simple["projected_revenue"], tenant_id, start_date, end_date
+        )
+        win_rate_adj["projected_revenue"] = round(
+            win_rate_adj["projected_revenue"] * multiplier, 2
+        )
+
+        # 3. Velocity-based
+        velocity = _compute_velocity_forecast(deals_qs, tenant_id)
+
+        # 4. What-if scenario
+        what_if = None
+        if scenario_stage and scenario_close_rate is not None:
+            what_if = _compute_what_if(deals_qs, tenant_id, scenario_stage, scenario_close_rate)
+
+        # 5. Per-deal breakdown
+        deal_forecasts = _compute_deal_forecasts(deals_qs, tenant_id)
+
+        return Response(
+            {
+                "period": {
+                    "quarter": quarter_str if quarter_str else period_label,
+                    "start_date": start_date.isoformat(),
+                    "end_date": end_date.isoformat(),
+                    "label": period_label,
+                },
+                "projections": {
+                    "simple_weighted": simple,
+                    "win_rate_adjusted": win_rate_adj,
+                    "velocity_based": velocity,
+                },
+                "scenario": {
+                    "stage_name": scenario_stage,
+                    "close_rate": scenario_close_rate,
+                    "confidence_level": confidence_level,
+                }
+                if scenario_stage
+                else None,
+                "what_if": what_if,
+                "deal_forecasts": deal_forecasts,
+            }
+        )
+
+
 class StaleDealsView(APIView):
     """Returns deals that need attention — stalled, no activity, past expected close date.
 
@@ -602,7 +1015,8 @@ class StaleDealsView(APIView):
       &limit=20
     """
 
-    permission_classes = [IsAuthenticated]
+    permission_classes = [TenantAwarePermission, RolePermission]
+    required_permission = "reports.view"
 
     def get(self, request):
         tenant_id = request.user.tenant_id
@@ -701,3 +1115,169 @@ class StaleDealsView(APIView):
                 r["owner_name"] = user_map.get(owner_uuid, "Unassigned")
 
         return Response({"stale_deals": results})
+
+
+class ReportExportView(APIView):
+    """Export report data as CSV or printable HTML.
+
+    GET /api/reports/export/csv/  — key-value CSV of dashboard metrics
+    GET /api/reports/export/html/ — printable HTML page of report data
+    """
+
+    permission_classes = [TenantAwarePermission, RolePermission]
+    required_permission = "reports.export"
+
+    def _get_report_data(self, request):
+        """Reuse dashboard computation to generate report data."""
+        tenant_id = request.user.tenant_id
+        start_date, end_date, pipeline_id, group_by, period_label = _parse_date_params(request)
+        prev_start, prev_end = _previous_period_range(start_date, end_date)
+
+        deals_qs = _filter_deals_queryset(
+            Deal.objects.select_related("stage", "pipeline").all(),
+            tenant_id, start_date, end_date, pipeline_id,
+        )
+        prev_deals_qs = _filter_deals_queryset(
+            Deal.objects.all(), tenant_id, prev_start, prev_end, pipeline_id,
+        )
+
+        return {
+            "period": {"start_date": start_date.isoformat(), "end_date": end_date.isoformat(), "label": period_label},
+            "summary": _compute_summary(deals_qs, prev_deals_qs),
+            "deals_by_stage": _compute_deals_by_stage(deals_qs),
+            "deal_velocity": _compute_deal_velocity(deals_qs),
+            "activity_metrics": _compute_activity_metrics(tenant_id, start_date, end_date, pipeline_id),
+            "tasks_summary": _compute_tasks_summary(tenant_id, start_date, end_date),
+        }
+
+    def get(self, request):
+        export_format = request.resolver_match.url_name
+        if export_format == "reports-export-csv":
+            return self._export_csv(request)
+        return self._export_html(request)
+
+    def _export_csv(self, request):
+        """Flatten report data into key-value CSV rows."""
+        from django.http import StreamingHttpResponse
+
+        data = self._get_report_data(request)
+
+        def stream():
+            import csv, io
+            buf = io.StringIO()
+            writer = csv.writer(buf)
+
+            # Section: Summary
+            writer.writerow(["Section", "Metric", "Value"])
+            summary = data["summary"]
+            for key, val in summary.items():
+                writer.writerow(["Summary", key.replace("_", " ").title(), str(val)])
+
+            # Section: Deals by stage
+            for s in data.get("deals_by_stage", []):
+                writer.writerow(["Deals by Stage", s["stage_name"], f"Count: {s['count']}, Value: {s['value']}"])
+
+            # Section: Deal velocity
+            for v in data.get("deal_velocity", []):
+                writer.writerow(["Deal Velocity", v["stage_name"], f"Avg days: {v['avg_days']}, Deals: {v['deals_in_stage']}"])
+
+            # Section: Activity
+            am = data.get("activity_metrics", {})
+            writer.writerow(["Activity", "Total", str(am.get("total", 0))])
+            for t in am.get("by_type", []):
+                writer.writerow(["Activity by Type", t["label"], str(t["count"])])
+
+            # Section: Tasks
+            ts = data.get("tasks_summary", {})
+            writer.writerow(["Tasks", "Total Due", str(ts.get("total_due", 0))])
+            writer.writerow(["Tasks", "Overdue", str(ts.get("overdue", 0))])
+
+            buf.seek(0)
+            yield buf.read()
+
+        response = StreamingHttpResponse(stream(), content_type="text/csv")
+        response["Content-Disposition"] = 'attachment; filename="report.csv"'
+        return response
+
+    def _export_html(self, request):
+        """Generate a printable HTML page of report data."""
+        data = self._get_report_data(request)
+        summary = data["summary"]
+        period = data["period"]
+
+        def _fmt(v):
+            if isinstance(v, float):
+                if abs(v) >= 1_000_000:
+                    return f"${v:,.2f}"
+                if abs(v) >= 1_000:
+                    return f"${v:,.0f}"
+                return f"{v:,.2f}"
+            return str(v)
+
+        deals_stage_rows = "".join(
+            f"<tr><td>{s['stage_name']}</td><td>{s['count']}</td><td>{_fmt(s['value'])}</td></tr>"
+            for s in data.get("deals_by_stage", [])
+        )
+        velocity_rows = "".join(
+            f"<tr><td>{v['stage_name']}</td><td>{v['avg_days']}</td><td>{v['deals_in_stage']}</td></tr>"
+            for v in data.get("deal_velocity", [])
+        )
+        activity_rows = "".join(
+            f"<tr><td>{t['label']}</td><td>{t['count']}</td></tr>"
+            for t in data.get("activity_metrics", {}).get("by_type", [])
+        )
+
+        html = f"""<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>FrontierCRM Report — {period['label']}</title>
+<style>
+  body {{ font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; margin: 40px; color: #111; }}
+  h1 {{ font-size: 24px; margin-bottom: 4px; }}
+  h2 {{ font-size: 18px; margin-top: 32px; border-bottom: 1px solid #ddd; padding-bottom: 6px; }}
+  .period {{ color: #666; font-size: 14px; margin-bottom: 24px; }}
+  table {{ border-collapse: collapse; width: 100%; margin: 12px 0; }}
+  th, td {{ text-align: left; padding: 8px 12px; border-bottom: 1px solid #eee; font-size: 14px; }}
+  th {{ background: #f5f5f5; font-weight: 600; }}
+  .summary-grid {{ display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 16px; margin: 16px 0; }}
+  .summary-card {{ background: #f9f9f9; border-radius: 8px; padding: 16px; }}
+  .summary-card .label {{ font-size: 12px; color: #666; text-transform: uppercase; letter-spacing: 0.5px; }}
+  .summary-card .value {{ font-size: 22px; font-weight: 700; margin-top: 4px; }}
+  @media print {{ body {{ margin: 20px; }} .no-print {{ display: none; }} }}
+</style>
+</head>
+<body>
+<h1>FrontierCRM Report</h1>
+<p class="period">{period['label']} ({period['start_date']} – {period['end_date']})</p>
+
+<div class="summary-grid">
+  <div class="summary-card"><div class="label">Pipeline Value</div><div class="value">{_fmt(summary['total_pipeline_value'])}</div></div>
+  <div class="summary-card"><div class="label">Won Value</div><div class="value">{_fmt(summary['won_value'])}</div></div>
+  <div class="summary-card"><div class="label">Win Rate</div><div class="value">{summary['win_rate']*100:.1f}%</div></div>
+  <div class="summary-card"><div class="label">Active Deals</div><div class="value">{summary['active_deals']}</div></div>
+  <div class="summary-card"><div class="label">Avg Days to Close</div><div class="value">{summary['avg_days_to_close']}d</div></div>
+  <div class="summary-card"><div class="label">Weighted Pipeline</div><div class="value">{_fmt(summary['weighted_pipeline'])}</div></div>
+</div>
+
+<h2>Deals by Stage</h2>
+<table><thead><tr><th>Stage</th><th>Count</th><th>Value</th></tr></thead><tbody>{deals_stage_rows}</tbody></table>
+
+<h2>Deal Velocity</h2>
+<table><thead><tr><th>Stage</th><th>Avg Days</th><th>Deals</th></tr></thead><tbody>{velocity_rows}</tbody></table>
+
+<h2>Activity</h2>
+<table><thead><tr><th>Type</th><th>Count</th></tr></thead><tbody>{activity_rows}</tbody></table>
+<p><em>Total: {data.get('activity_metrics', {}).get('total', 0)} activities</em></p>
+
+<h2>Tasks</h2>
+<table><thead><tr><th>Status</th><th>Count</th></tr></thead><tbody>
+<tr><td>Total Due</td><td>{data.get('tasks_summary', {}).get('total_due', 0)}</td></tr>
+<tr><td>Overdue</td><td>{data.get('tasks_summary', {}).get('overdue', 0)}</td></tr>
+<tr><td>Due Today</td><td>{data.get('tasks_summary', {}).get('due_today', 0)}</td></tr>
+</tbody></table>
+
+<p class="no-print" style="margin-top: 32px; color: #888; font-size: 13px;">Generated by FrontierCRM on {__import__('datetime').datetime.now().strftime('%B %d, %Y at %H:%M')}</p>
+</body>
+</html>"""
+        return HttpResponse(html, content_type="text/html; charset=utf-8")

@@ -1,0 +1,3447 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="Project documentation — design system, roadmap, devops, brand, architecture">
+      
+      
+        <meta name="author" content="scout">
+      
+      
+      
+      
+      
+        
+      
+      
+      <link rel="icon" href="assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.6">
+    
+    
+      
+        <title>CRM Communication & Telephony Integration Specifications - FrontierCRM</title>
+      
+    
+    
+      <link rel="stylesheet" href="assets/stylesheets/main.484c7ddc.min.css">
+      
+        
+        <link rel="stylesheet" href="assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="stylesheets/extra.css">
+    
+    <script>__md_scope=new URL(".",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="teal">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#crm-communication-telephony-integration-specifications" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="." title="FrontierCRM" class="md-header__button md-logo" aria-label="FrontierCRM" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            FrontierCRM
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              CRM Communication &amp; Telephony Integration Specifications
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+    
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+        <div class="md-search__suggest" data-md-component="search-suggest"></div>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="." title="FrontierCRM" class="md-nav__button md-logo" aria-label="FrontierCRM" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    FrontierCRM
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="index.md" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Home
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="10_ROADMAP.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Roadmap
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--active"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="12_DEVOPS.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    DevOps
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--active"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4" >
+        
+          
+          <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Brand Guidelines
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Brand Guidelines
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="08_BRAND_GUIDELINES.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Brand Identity
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--complete"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="ui-design-system.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Design System Overview
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--complete"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="design-system-gaps.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Implementation Gaps
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--active"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="06_DATA_ARCHITECTURE.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Architecture
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--complete"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="05_TECH_STACK.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Tech Stack
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--complete"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="11_DECISION_LOG.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Decision Log
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--complete"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_8" >
+        
+          
+          <label class="md-nav__link" for="__nav_8" id="__nav_8_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Research
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_8_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_8">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Research
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="01_MARKET_RESEARCH.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Market
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--complete"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="02_FEATURE_MATRIX.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Features
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--complete"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="04_INTEGRATIONS.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Integrations
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--completed"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="04B_EMERGING_TECH.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Emerging Tech
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--complete"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="03_PERSONAS.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Personas
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--complete"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="09_PRICING.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Pricing
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--complete"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="07_UX_WORKFLOWS.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    UX & Workflows
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--complete"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="api-endpoints.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    API
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--complete"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#executive-summary" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Executive Summary
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#1-slack-api" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1. Slack API
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="1. Slack API">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#11-integration-pattern" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1.1 Integration Pattern
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#12-authentication-and-oauth-20" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1.2 Authentication and OAuth 2.0
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#13-rest-api-capabilities" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1.3 REST API Capabilities
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#14-message-formatting" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1.4 Message Formatting
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#15-events-api-real-time-webhooks" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1.5 Events API (Real-time Webhooks)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#16-socket-mode" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1.6 Socket Mode
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#17-rate-limits-per-workspace-tiering" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1.7 Rate Limits (Per Workspace Tiering)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#18-slack-connect-considerations" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1.8 Slack Connect Considerations
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#19-common-pain-points" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1.9 Common Pain Points
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#110-strategic-recommendations-smb-crm" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1.10 Strategic Recommendations (SMB CRM)
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2-microsoft-teams" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2. Microsoft Teams
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="2. Microsoft Teams">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#21-integration-pattern" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.1 Integration Pattern
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#22-oauth-scopes-microsoft-graph" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.2 OAuth Scopes (Microsoft Graph)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#23-graph-api-capabilities" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.3 Graph API Capabilities
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#24-bot-framework-integration" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.4 Bot Framework Integration
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#25-webhooks-for-notifications" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.5 Webhooks for Notifications
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#26-rate-limits" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.6 Rate Limits
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#27-challenges-tenant-admin-consent" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.7 Challenges (Tenant Admin Consent)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#28-common-pain-points" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.8 Common Pain Points
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#29-strategic-recommendations-smb-crm" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.9 Strategic Recommendations (SMB CRM)
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#3-zoom-api" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3. Zoom API
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="3. Zoom API">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#31-integration-pattern" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.1 Integration Pattern
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#32-authentication" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.2 Authentication
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#33-rest-api-capabilities" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.3 REST API Capabilities
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#34-webhooks-real-time-events" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.4 Webhooks (Real-time Events)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#35-rate-limits" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.5 Rate Limits
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#36-common-pain-points" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.6 Common Pain Points
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#37-strategic-recommendations-smb-crm" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.7 Strategic Recommendations (SMB CRM)
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#4-ringcentral-api" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4. RingCentral API
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="4. RingCentral API">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#41-integration-pattern" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.1 Integration Pattern
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#42-authentication" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.2 Authentication
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#43-rest-api-capabilities" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.3 REST API Capabilities
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#44-webhooks-event-notifications" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.4 Webhooks (Event Notifications)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#45-rate-limits" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.5 Rate Limits
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#46-common-pain-points" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.6 Common Pain Points
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#47-strategic-recommendations-smb-crm" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.7 Strategic Recommendations (SMB CRM)
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#5-twilio" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5. Twilio
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="5. Twilio">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#51-integration-pattern" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5.1 Integration Pattern
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#52-authentication" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5.2 Authentication
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#53-phone-number-management" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5.3 Phone Number Management
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#54-sms-messaging" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5.4 SMS / Messaging
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#55-voice-calls" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5.5 Voice Calls
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#56-twiml-twilio-markup-language" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5.6 TwiML (Twilio Markup Language)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#57-real-time-events-webhooks-status-callbacks" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5.7 Real-time Events (Webhooks / Status Callbacks)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#58-rate-limits" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5.8 Rate Limits
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#59-pricing-model" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5.9 Pricing Model
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#510-common-pain-points" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5.10 Common Pain Points
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#511-strategic-recommendations-smb-crm" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5.11 Strategic Recommendations (SMB CRM)
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#6-aircall" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6. Aircall
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="6. Aircall">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#61-integration-pattern" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6.1 Integration Pattern
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#62-authentication" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6.2 Authentication
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#63-rest-api-capabilities" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6.3 REST API Capabilities
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#64-webhooks" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6.4 Webhooks
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#65-rate-limits" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6.5 Rate Limits
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#66-common-pain-points" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6.6 Common Pain Points
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#67-strategic-recommendations-smb-crm" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6.7 Strategic Recommendations (SMB CRM)
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#cross-platform-comparison-matrix" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Cross-Platform Comparison Matrix
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#smb-crm-integration-priority-ranking" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        SMB CRM Integration Priority Ranking
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#recommended-architecture-approach" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Recommended Architecture Approach
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+
+<h1 id="crm-communication-telephony-integration-specifications">CRM Communication &amp; Telephony Integration Specifications</h1>
+<blockquote>
+<p><strong>Target Audience:</strong> SMB CRM (10-200 employees)
+<strong>Last Updated:</strong> June 2026</p>
+</blockquote>
+<hr />
+<h2 id="executive-summary">Executive Summary</h2>
+<p>This document provides structured integration specifications for six communication and telephony platforms critical to a modern CRM. Each section covers: integration pattern, authentication, capabilities, rate limits, sync complexity, common pain points, and strategic recommendations for an SMB-focused CRM (10-200 employees).</p>
+<hr />
+<h2 id="1-slack-api">1. Slack API</h2>
+<h3 id="11-integration-pattern">1.1 Integration Pattern</h3>
+<table>
+<thead>
+<tr>
+<th>Property</th>
+<th>Detail</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Primary Interface</td>
+<td>REST API (api.slack.com)</td>
+</tr>
+<tr>
+<td>Real-time</td>
+<td>Events API (webhooks) or Socket Mode (WebSocket)</td>
+</tr>
+<tr>
+<td>SDKs</td>
+<td>Bolt (JS/Python/Java), Slack SDK (Python/JS/Java/Go/.NET)</td>
+</tr>
+<tr>
+<td>Legacy</td>
+<td>RTM API (deprecated), Incoming Webhooks (stable)</td>
+</tr>
+</tbody>
+</table>
+<h3 id="12-authentication-and-oauth-20">1.2 Authentication and OAuth 2.0</h3>
+<table>
+<thead>
+<tr>
+<th>Token Type</th>
+<th>Description</th>
+<th>Use Case</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Bot Token (xoxb-)</td>
+<td>Represents the bot user, scoped per workspace</td>
+<td>Sending messages, reading channels</td>
+</tr>
+<tr>
+<td>User Token (xoxp-)</td>
+<td>Represents an installing user</td>
+<td>User-level actions (profile, DMs)</td>
+</tr>
+<tr>
+<td>App Token (xapp-)</td>
+<td>Used for Socket Mode auth</td>
+<td>Socket Mode connections</td>
+</tr>
+<tr>
+<td>Incoming Webhook URL</td>
+<td>Pre-configured URL for posting to single channel</td>
+<td>Simple notifications</td>
+</tr>
+</tbody>
+</table>
+<p><strong>OAuth Flow:</strong>
+1. User clicks "Add to Slack" -&gt; redirected to Slack OAuth consent page
+2. User approves requested scopes (e.g., channels:read, chat:write, users:read)
+3. Slack redirects back with a temporary code
+4. Server exchanges code for an access token at oauth.v2.access
+5. Token stored per workspace; used for all subsequent API calls</p>
+<p><strong>Key Scopes for CRM:</strong>
+- channels:read / channels:history -- List channels, read message history
+- chat:write / chat:write.customize -- Send messages with custom sender name/icon
+- users:read / users:read.email -- Read user profiles and emails
+- reactions:read -- Read message reactions
+- files:read -- Access shared files
+- links:read / links:write -- Link preview management
+- im:read / im:history -- Direct messages</p>
+<h3 id="13-rest-api-capabilities">1.3 REST API Capabilities</h3>
+<table>
+<thead>
+<tr>
+<th>Category</th>
+<th>Key Endpoints</th>
+<th>Notes</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Channels</td>
+<td>conversations.list, conversations.info, conversations.create, conversations.invite</td>
+<td>Use Conversations API (not legacy channels.*)</td>
+</tr>
+<tr>
+<td>Messages</td>
+<td>chat.postMessage, chat.update, chat.delete, chat.scheduleMessage</td>
+<td>Block Kit for rich formatting</td>
+</tr>
+<tr>
+<td>Threads</td>
+<td>chat.postMessage with thread_ts</td>
+<td>Replies linked via thread timestamp</td>
+</tr>
+<tr>
+<td>Files</td>
+<td>files.upload, files.info, files.list</td>
+<td>Upload up to 1GB</td>
+</tr>
+<tr>
+<td>Users</td>
+<td>users.list, users.info, users.lookupByEmail</td>
+<td>Paginated; use cursor-based</td>
+</tr>
+<tr>
+<td>Search</td>
+<td>search.messages, search.files</td>
+<td>Requires search:read scope</td>
+</tr>
+</tbody>
+</table>
+<h3 id="14-message-formatting">1.4 Message Formatting</h3>
+<table>
+<thead>
+<tr>
+<th>Format</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Plain text</td>
+<td>Simple text field</td>
+</tr>
+<tr>
+<td>mrkdwn</td>
+<td>Lightweight markup: <em>bold</em>, <em>italic</em>, ~strikethrough~, <code>code</code>,</td>
+</tr>
+<tr>
+<td>Block Kit</td>
+<td>JSON-based structured blocks: section, header, divider, image, actions, input, context</td>
+</tr>
+<tr>
+<td>Block Kit Builder</td>
+<td>Visual tool at app.slack.com/block-kit-builder</td>
+</tr>
+</tbody>
+</table>
+<h3 id="15-events-api-real-time-webhooks">1.5 Events API (Real-time Webhooks)</h3>
+<ul>
+<li>Subscribe to events like message.channels, message.im, channel_created, member_joined_channel</li>
+<li>Events are POSTed to a public HTTPS endpoint</li>
+<li>Must respond with HTTP 200 within 3 seconds (otherwise retried)</li>
+<li>URL verification challenge on setup</li>
+<li>Rate limit: 30,000 event deliveries per workspace/app per 60 minutes</li>
+<li>Retry: Exponential backoff (3 attempts), then dropped</li>
+</ul>
+<h3 id="16-socket-mode">1.6 Socket Mode</h3>
+<ul>
+<li>Alternative to public webhook endpoint -- establish persistent WebSocket connection</li>
+<li>No need for public-facing HTTPS URL</li>
+<li>Required for apps in development or behind firewalls</li>
+<li>Uses App Token (xapp-) with connections:write scope</li>
+<li>Subscribe to same events as Events API</li>
+</ul>
+<h3 id="17-rate-limits-per-workspace-tiering">1.7 Rate Limits (Per Workspace Tiering)</h3>
+<table>
+<thead>
+<tr>
+<th>Tier</th>
+<th>Limit</th>
+<th>Example Methods</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Tier 1</td>
+<td>~1-5 per minute</td>
+<td>admin.*, users.profile.set</td>
+</tr>
+<tr>
+<td>Tier 2</td>
+<td>20+ per minute</td>
+<td>conversations.info, users.info</td>
+</tr>
+<tr>
+<td>Tier 3</td>
+<td>50+ per minute</td>
+<td>conversations.list, users.list (with pagination)</td>
+</tr>
+<tr>
+<td>Tier 4</td>
+<td>100+ per minute</td>
+<td>Bulk operations</td>
+</tr>
+<tr>
+<td>Special</td>
+<td>Varies</td>
+<td>chat.postMessage (~1/s per channel + workspace-wide)</td>
+</tr>
+<tr>
+<td>Events API</td>
+<td>30,000 per workspace/app/60min</td>
+<td>Event deliveries</td>
+</tr>
+</tbody>
+</table>
+<h3 id="18-slack-connect-considerations">1.8 Slack Connect Considerations</h3>
+<ul>
+<li>Shared Channels that span multiple workspaces/organizations</li>
+<li>Channel ID changes: When a private channel becomes shared, ID prefix may change from G to C</li>
+<li>External members: User objects from external teams have is_stranger: true flag and limited profile data</li>
+<li>Bot DMs: A bot can DM users on all connected workspaces if in a shared channel together</li>
+<li>Events: Subscribe to channel_shared / channel_unshared to track sharing state</li>
+<li>Conversations API: Must use conversations.* methods -- legacy APIs don't work with shared channels</li>
+</ul>
+<h3 id="19-common-pain-points">1.9 Common Pain Points</h3>
+<table>
+<thead>
+<tr>
+<th>Pain Point</th>
+<th>Impact</th>
+<th>Mitigation</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Rate limits hit during bulk operations</td>
+<td>Failed messages, 429 errors</td>
+<td>Implement exponential backoff; batch writes across channels</td>
+</tr>
+<tr>
+<td>Token management per workspace</td>
+<td>State complexity</td>
+<td>Use a token store (DB/kv) keyed by team_id</td>
+</tr>
+<tr>
+<td>Event duplicate delivery</td>
+<td>Duplicate CRM activity logs</td>
+<td>Idempotency keys / dedup on event_ts</td>
+</tr>
+<tr>
+<td>Slack Connect external user data</td>
+<td>Incomplete profiles</td>
+<td>Handle is_stranger gracefully; don't require locale</td>
+</tr>
+<tr>
+<td>Block Kit complexity</td>
+<td>Steep learning curve</td>
+<td>Use templates; build a UI component for Block Kit composition</td>
+</tr>
+</tbody>
+</table>
+<h3 id="110-strategic-recommendations-smb-crm">1.10 Strategic Recommendations (SMB CRM)</h3>
+<ul>
+<li>Priority: High. Slack is the #1 communication tool for SMBs. Deep integration is table stakes.</li>
+<li>Start with: Bot token + Events API. Send deal updates, activity notifications, and @mentions from CRM.</li>
+<li>Message patterns: In-channel notifications for team deals; DM notifications for personal tasks/reminders.</li>
+<li>Avoid: Full message sync (fetching all history) -- use search API sparingly.</li>
+<li>Recommended SDK: Bolt (JS/Python) -- handles event routing, acknowledgments, and retries.</li>
+<li>Testing: Use Slack's app-manifest.yaml for repeatable app setup across dev/staging/prod.</li>
+</ul>
+<hr />
+<h2 id="2-microsoft-teams">2. Microsoft Teams</h2>
+<h3 id="21-integration-pattern">2.1 Integration Pattern</h3>
+<table>
+<thead>
+<tr>
+<th>Property</th>
+<th>Detail</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Primary Interface</td>
+<td>Microsoft Graph API (graph.microsoft.com)</td>
+</tr>
+<tr>
+<td>Real-time</td>
+<td>Graph change notifications (webhooks) + Bot Framework</td>
+</tr>
+<tr>
+<td>SDKs</td>
+<td>Microsoft Graph SDK (.NET/JS/Python/Java/Go), Bot Framework SDK</td>
+</tr>
+<tr>
+<td>Auth</td>
+<td>OAuth 2.0 via Azure AD (Microsoft Entra ID)</td>
+</tr>
+</tbody>
+</table>
+<h3 id="22-oauth-scopes-microsoft-graph">2.2 OAuth Scopes (Microsoft Graph)</h3>
+<table>
+<thead>
+<tr>
+<th>Scope</th>
+<th>Permission</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Channel.ReadBasic.All</td>
+<td>Delegated</td>
+<td>Read channel names and descriptions</td>
+</tr>
+<tr>
+<td>ChannelMessage.Read.All</td>
+<td>Application</td>
+<td>Read all channel messages</td>
+</tr>
+<tr>
+<td>ChannelMessage.Send</td>
+<td>Application</td>
+<td>Send channel messages</td>
+</tr>
+<tr>
+<td>Chat.ReadWrite.All</td>
+<td>Application</td>
+<td>Read/write 1:1 and group chats</td>
+</tr>
+<tr>
+<td>TeamsTab.ReadWriteAll</td>
+<td>Application</td>
+<td>Manage tabs in channels</td>
+</tr>
+<tr>
+<td>OnlineMeetings.ReadWrite.All</td>
+<td>Application</td>
+<td>Create/read meetings</td>
+</tr>
+<tr>
+<td>User.Read.All</td>
+<td>Delegated</td>
+<td>Read user profiles</td>
+</tr>
+<tr>
+<td>Presence.Read.All</td>
+<td>Application</td>
+<td>Read user presence</td>
+</tr>
+</tbody>
+</table>
+<h3 id="23-graph-api-capabilities">2.3 Graph API Capabilities</h3>
+<table>
+<thead>
+<tr>
+<th>Category</th>
+<th>Endpoint</th>
+<th>Notes</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Teams</td>
+<td>/teams/{id}</td>
+<td>List, get, create teams</td>
+</tr>
+<tr>
+<td>Channels</td>
+<td>/teams/{id}/channels</td>
+<td>CRUD channels; standard vs private channels</td>
+</tr>
+<tr>
+<td>Messages</td>
+<td>/teams/{id}/channels/{id}/messages</td>
+<td>Send/reply; supports rich HTML content</td>
+</tr>
+<tr>
+<td>Chats</td>
+<td>/chats/{id}/messages</td>
+<td>1:1 and group chat messages</td>
+</tr>
+<tr>
+<td>Tabs</td>
+<td>/teams/{id}/channels/{id}/tabs</td>
+<td>Add tabs (apps/web content) to channels</td>
+</tr>
+<tr>
+<td>Meetings</td>
+<td>/users/{id}/onlineMeetings</td>
+<td>Create/update/list online meetings</td>
+</tr>
+<tr>
+<td>Calendar</td>
+<td>/users/{id}/events</td>
+<td>Calendar integration</td>
+</tr>
+<tr>
+<td>Presence</td>
+<td>/users/{id}/presence</td>
+<td>Real-time availability</td>
+</tr>
+</tbody>
+</table>
+<h3 id="24-bot-framework-integration">2.4 Bot Framework Integration</h3>
+<ul>
+<li>Microsoft Bot Framework SDK -- Build conversational bots that work in Teams, Slack, Web, etc.</li>
+<li>Teams Activity Handler -- Extends Bot Framework for Teams-specific features</li>
+<li>App Manifest (manifest.json): Defines bot identity, scopes (personal/team/groupChat), commands, static tabs</li>
+<li>Deployment: Bots must be hosted on a public HTTPS endpoint; use Bot Framework's connector service</li>
+</ul>
+<h3 id="25-webhooks-for-notifications">2.5 Webhooks for Notifications</h3>
+<table>
+<thead>
+<tr>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Change Notifications (webhooks)</td>
+<td>Subscribe to resource changes (messages, members) via /subscriptions</td>
+</tr>
+<tr>
+<td>Outgoing Webhooks</td>
+<td>Simple POST-to-URL when @mentioned in a channel</td>
+</tr>
+<tr>
+<td>Connectors</td>
+<td>Legacy; POST to Teams channel via webhook URL</td>
+</tr>
+</tbody>
+</table>
+<h3 id="26-rate-limits">2.6 Rate Limits</h3>
+<table>
+<thead>
+<tr>
+<th>Limit</th>
+<th>Scope</th>
+<th>Value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Requests per 10 seconds</td>
+<td>Per app per tenant</td>
+<td>Varies by API (typically 1300-4000)</td>
+</tr>
+<tr>
+<td>Requests per 10 seconds</td>
+<td>Per app per resource</td>
+<td>300-1000</td>
+</tr>
+<tr>
+<td>Read throttling</td>
+<td>messages endpoint</td>
+<td>5 requests per second per channel</td>
+</tr>
+<tr>
+<td>Subscription renewal</td>
+<td>subscriptions</td>
+<td>Max 3 day lifetime; must renew</td>
+</tr>
+</tbody>
+</table>
+<h3 id="27-challenges-tenant-admin-consent">2.7 Challenges (Tenant Admin Consent)</h3>
+<table>
+<thead>
+<tr>
+<th>Challenge</th>
+<th>Impact</th>
+<th>Mitigation</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Admin consent required</td>
+<td>App fails if tenant admin hasn't pre-approved</td>
+<td>Implement admin consent URL</td>
+</tr>
+<tr>
+<td>Permission delegation</td>
+<td>Users can't self-approve app-level permissions</td>
+<td>Design around delegated permissions where possible</td>
+</tr>
+<tr>
+<td>Multi-tenant considerations</td>
+<td>App must be multi-tenant registered for ISV</td>
+<td>Register in Azure AD as multi-tenant app</td>
+</tr>
+<tr>
+<td>Conditional Access policies</td>
+<td>Enterprise customers may block scopes</td>
+<td>Handle auth failures gracefully</td>
+</tr>
+<tr>
+<td>Graph API changes</td>
+<td>Breaking changes on beta endpoints</td>
+<td>Use v1.0 for production</td>
+</tr>
+</tbody>
+</table>
+<h3 id="28-common-pain-points">2.8 Common Pain Points</h3>
+<table>
+<thead>
+<tr>
+<th>Pain Point</th>
+<th>Impact</th>
+<th>Mitigation</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Admin consent friction</td>
+<td>High drop-off during onboarding</td>
+<td>Provide clear admin consent step-by-step guide</td>
+</tr>
+<tr>
+<td>Complex auth flow</td>
+<td>Developer confusion</td>
+<td>Use MSAL libraries; implement token caching</td>
+</tr>
+<tr>
+<td>Private channel restrictions</td>
+<td>App can't read private channels without explicit membership</td>
+<td>Note in docs that private channels are limited</td>
+</tr>
+<tr>
+<td>Change notification 3-day expiry</td>
+<td>Requires cron job to renew subscriptions</td>
+<td>Implement auto-renewal loop</td>
+</tr>
+<tr>
+<td>Rate limits on message reads</td>
+<td>Slow channel history sync</td>
+<td>Batch reads into smaller time windows</td>
+</tr>
+<tr>
+<td>Bot Framework complexity</td>
+<td>Steeper learning curve</td>
+<td>Start with outgoing webhooks for simple CRM alerts</td>
+</tr>
+</tbody>
+</table>
+<h3 id="29-strategic-recommendations-smb-crm">2.9 Strategic Recommendations (SMB CRM)</h3>
+<ul>
+<li>Priority: Medium-High. Teams adoption is growing in SMB, but admin consent is a barrier for self-serve onboarding.</li>
+<li>Start with: Outgoing webhooks / Office 365 Connectors for CRM notifications (deal updates, task assignments). These require no admin consent.</li>
+<li>Later: Bot Framework for interactive features (slash commands, message actions). This requires admin consent.</li>
+<li>Avoid: Full bidirectional message sync -- overly complex. Focus on CRM -&gt; Teams notifications first.</li>
+<li>Auth approach: Offer both delegated (user signs in) AND app-only (admin pre-consents) registration paths.</li>
+<li>Pricing: Requires Microsoft 365 Business Basic/Standard/Premium -- your SMB customers likely have this.</li>
+<li>Graph SDK: Use Microsoft Graph SDK for JS/Python -- handles auth, pagination, retries.</li>
+</ul>
+<hr />
+<h2 id="3-zoom-api">3. Zoom API</h2>
+<h3 id="31-integration-pattern">3.1 Integration Pattern</h3>
+<table>
+<thead>
+<tr>
+<th>Property</th>
+<th>Detail</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Primary Interface</td>
+<td>Zoom REST API (api.zoom.us/v2)</td>
+</tr>
+<tr>
+<td>Real-time</td>
+<td>Zoom Webhooks (Event Subscriptions)</td>
+</tr>
+<tr>
+<td>SDKs</td>
+<td>Zoom SDK (JS/Android/iOS), Zoom Meeting SDK, Zoom Video SDK</td>
+</tr>
+<tr>
+<td>Auth</td>
+<td>OAuth 2.0 (Server-to-Server OAuth or Account-Level), JWT (legacy)</td>
+</tr>
+</tbody>
+</table>
+<h3 id="32-authentication">3.2 Authentication</h3>
+<table>
+<thead>
+<tr>
+<th>Auth Type</th>
+<th>Tokens</th>
+<th>Use Case</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>OAuth 2.0 (Server-to-Server)</td>
+<td>Access token (valid 1 hour)</td>
+<td>Server-side app; no user interaction</td>
+</tr>
+<tr>
+<td>OAuth 2.0 (Account-Level)</td>
+<td>Access + Refresh tokens</td>
+<td>App installed by Zoom account admin</td>
+</tr>
+<tr>
+<td>OAuth 2.0 (User-Level)</td>
+<td>Access + Refresh tokens</td>
+<td>App installed by individual Zoom user</td>
+</tr>
+<tr>
+<td>JWT (Legacy)</td>
+<td>Self-generated JWT</td>
+<td>Deprecated; avoid new builds</td>
+</tr>
+</tbody>
+</table>
+<h3 id="33-rest-api-capabilities">3.3 REST API Capabilities</h3>
+<table>
+<thead>
+<tr>
+<th>Category</th>
+<th>Endpoints</th>
+<th>Notes</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Users</td>
+<td>GET /users, GET /users/{id}, PATCH /users/{id}</td>
+<td>List, get, update users</td>
+</tr>
+<tr>
+<td>Meetings</td>
+<td>POST /users/{id}/meetings, GET /meetings/{id}, PATCH /meetings/{id}, DELETE /meetings/{id}</td>
+<td>Full CRUD; supports recurring meetings</td>
+</tr>
+<tr>
+<td>Meeting Registrants</td>
+<td>GET /meetings/{id}/registrants, POST /meetings/{id}/registrants</td>
+<td>Registration for webinars/meetings</td>
+</tr>
+<tr>
+<td>Webinars</td>
+<td>POST /users/{id}/webinars, GET /webinars/{id}</td>
+<td>Requires webinar license</td>
+</tr>
+<tr>
+<td>Recordings</td>
+<td>GET /users/{id}/recordings, GET /meetings/{id}/recordings, DELETE /meetings/{id}/recordings</td>
+<td>List, download, delete cloud recordings</td>
+</tr>
+<tr>
+<td>Reports</td>
+<td>GET /report/meetings/{id}, GET /report/users/{id}/meetings</td>
+<td>Meeting reports, participant details</td>
+</tr>
+</tbody>
+</table>
+<h3 id="34-webhooks-real-time-events">3.4 Webhooks (Real-time Events)</h3>
+<table>
+<thead>
+<tr>
+<th>Event Category</th>
+<th>Events</th>
+<th>Notes</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Meeting</td>
+<td>meeting.started, meeting.ended, meeting.registration_created</td>
+<td>Core lifecycle events</td>
+</tr>
+<tr>
+<td>Participant</td>
+<td>meeting.participant_joined, meeting.participant_left</td>
+<td>Track attendance</td>
+</tr>
+<tr>
+<td>Recording</td>
+<td>recording.completed, recording.transcript_completed</td>
+<td>Recording ready notification</td>
+</tr>
+<tr>
+<td>Webinar</td>
+<td>webinar.started, webinar.ended, webinar.registration_created</td>
+<td>Webinar lifecycle</td>
+</tr>
+<tr>
+<td>User</td>
+<td>user.created, user.updated, user.activated</td>
+<td>User lifecycle</td>
+</tr>
+</tbody>
+</table>
+<h3 id="35-rate-limits">3.5 Rate Limits</h3>
+<table>
+<thead>
+<tr>
+<th>Plan / API</th>
+<th>Limit</th>
+<th>Notes</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Free/Basic</td>
+<td>1 req/sec per dashboard</td>
+<td>Heavily restricted</td>
+</tr>
+<tr>
+<td>Pro/Business/Enterprise</td>
+<td>~10-30 req/sec per dashboard</td>
+<td>Varies by account tier</td>
+</tr>
+<tr>
+<td>OAuth token generation</td>
+<td>10 requests per minute</td>
+<td>Across all apps for an account</td>
+</tr>
+<tr>
+<td>Concurrent webhook deliveries</td>
+<td>~50/second</td>
+<td>Queued if exceeded</td>
+</tr>
+</tbody>
+</table>
+<h3 id="36-common-pain-points">3.6 Common Pain Points</h3>
+<table>
+<thead>
+<tr>
+<th>Pain Point</th>
+<th>Impact</th>
+<th>Mitigation</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Zoom license requirements</td>
+<td>Can't create meetings for users without paid license</td>
+<td>Check license status; offer fallback (send join link only)</td>
+</tr>
+<tr>
+<td>OAuth token expiry (1 hour)</td>
+<td>Stale tokens cause API failures</td>
+<td>Implement robust token refresh with retry</td>
+</tr>
+<tr>
+<td>Rate limits on free tier</td>
+<td>Unusable for CRM at scale</td>
+<td>Recommend customers have Pro+ licenses</td>
+</tr>
+<tr>
+<td>Webhook verification</td>
+<td>Security risk</td>
+<td>Always verify Zoom-Verification-Token header</td>
+</tr>
+<tr>
+<td>Timezone handling</td>
+<td>Meeting times display incorrectly</td>
+<td>Store UTC + IANA timezone</td>
+</tr>
+<tr>
+<td>Recording download auth</td>
+<td>Recordings need auth to download</td>
+<td>Use OAuth token in URL; manage download queue</td>
+</tr>
+</tbody>
+</table>
+<h3 id="37-strategic-recommendations-smb-crm">3.7 Strategic Recommendations (SMB CRM)</h3>
+<ul>
+<li>Priority: Medium. Zoom is widely used, but most CRM meeting needs can be met by link-sharing without full API integration.</li>
+<li>Start with: Read-only integration: list upcoming meetings, show join_url in CRM records.</li>
+<li>Auto-schedule meetings: CRUD meetings from CRM. Store Zoom meeting ID + join URL on contact/lead/deal records.</li>
+<li>Attendance tracking: Use meeting.participant_joined and meeting.ended webhooks to log call activity in CRM.</li>
+<li>Avoid: Real-time video streaming inside CRM. Leave that to the Zoom client.</li>
+<li>OAuth choice: Use Server-to-Server OAuth (simplest for CRM backend).</li>
+<li>Licensing check: Always verify the Zoom user has a Pro+ license before creating meetings via API.</li>
+</ul>
+<hr />
+<h2 id="4-ringcentral-api">4. RingCentral API</h2>
+<h3 id="41-integration-pattern">4.1 Integration Pattern</h3>
+<table>
+<thead>
+<tr>
+<th>Property</th>
+<th>Detail</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Primary Interface</td>
+<td>RingCentral REST API (platform.ringcentral.com)</td>
+</tr>
+<tr>
+<td>Real-time</td>
+<td>PubNub-based event notifications + Webhooks</td>
+</tr>
+<tr>
+<td>SDKs</td>
+<td>RingCentral SDK (.NET/JS/PHP/Python/Ruby/Java)</td>
+</tr>
+<tr>
+<td>Auth</td>
+<td>OAuth 2.0 (Authorization Code + JWT)</td>
+</tr>
+</tbody>
+</table>
+<h3 id="42-authentication">4.2 Authentication</h3>
+<table>
+<thead>
+<tr>
+<th>Auth Flow</th>
+<th>Description</th>
+<th>Use Case</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Authorization Code</td>
+<td>3-legged OAuth. User logs in, approves scopes, gets code -&gt; token</td>
+<td>App installed per-user</td>
+</tr>
+<tr>
+<td>JWT Bearer</td>
+<td>Server-to-server with a JWT issued by RingCentral</td>
+<td>Backend integration; no user interaction</td>
+</tr>
+<tr>
+<td>Legacy (password)</td>
+<td>Resource Owner Password Grant</td>
+<td>Deprecated</td>
+</tr>
+</tbody>
+</table>
+<h3 id="43-rest-api-capabilities">4.3 REST API Capabilities</h3>
+<table>
+<thead>
+<tr>
+<th>Category</th>
+<th>Key Endpoints</th>
+<th>Notes</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Call Log</td>
+<td>GET /account/{id}/call-log, GET /account/{id}/extension/{id}/call-log</td>
+<td>Paginated; filter by date, type (voice/sms/fax)</td>
+</tr>
+<tr>
+<td>SMS</td>
+<td>POST /account/{id}/extension/{id}/sms</td>
+<td>Send SMS; requires outbound SMS permissions</td>
+</tr>
+<tr>
+<td>Presence</td>
+<td>GET /account/{id}/extension/{id}/presence</td>
+<td>User presence (Available/Busy/DND/Offline)</td>
+</tr>
+<tr>
+<td>Call Recordings</td>
+<td>GET /account/{id}/recording/{id}</td>
+<td>Download call recordings</td>
+</tr>
+<tr>
+<td>Voicemail</td>
+<td>GET /account/{id}/extension/{id}/voicemail</td>
+<td>List/retrieve voicemail messages</td>
+</tr>
+<tr>
+<td>Contacts</td>
+<td>GET /account/{id}/extension/{id}/address-book/contact, POST/PUT/DELETE</td>
+<td>Sync contacts</td>
+</tr>
+<tr>
+<td>Extensions (Users)</td>
+<td>GET /account/{id}/extension, GET /account/{id}/extension/{id}</td>
+<td>List users/extensions</td>
+</tr>
+<tr>
+<td>Call Queues</td>
+<td>GET /account/{id}/call-queues</td>
+<td>Manage call queues</td>
+</tr>
+<tr>
+<td>Call Forwarding</td>
+<td>PUT /account/{id}/extension/{id}/forwarding-number</td>
+<td>Manage call forwarding rules</td>
+</tr>
+</tbody>
+</table>
+<h3 id="44-webhooks-event-notifications">4.4 Webhooks (Event Notifications)</h3>
+<p>RingCentral uses two delivery mechanisms:</p>
+<table>
+<thead>
+<tr>
+<th>Method</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>PubNub (legacy)</td>
+<td>Real-time via PubNub channels; one channel per extension</td>
+</tr>
+<tr>
+<td>Webhooks (recommended)</td>
+<td>POST to HTTPS endpoint; set up via Subscription API</td>
+</tr>
+</tbody>
+</table>
+<h3 id="45-rate-limits">4.5 Rate Limits</h3>
+<table>
+<thead>
+<tr>
+<th>Limit</th>
+<th>Scope</th>
+<th>Value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>API requests</td>
+<td>Per app per account</td>
+<td>40 requests per second (standard); 150+ (enterprise)</td>
+</tr>
+<tr>
+<td>SMS sending</td>
+<td>Per extension</td>
+<td>30 SMS per minute per user</td>
+</tr>
+<tr>
+<td>Subscriptions</td>
+<td>Per app per extension</td>
+<td>Max 20 active subscriptions</td>
+</tr>
+<tr>
+<td>Subscription duration</td>
+<td>Per subscription</td>
+<td>Max 23 hours (must renew)</td>
+</tr>
+</tbody>
+</table>
+<h3 id="46-common-pain-points">4.6 Common Pain Points</h3>
+<table>
+<thead>
+<tr>
+<th>Pain Point</th>
+<th>Impact</th>
+<th>Mitigation</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Subscription renewal frequency (23hr)</td>
+<td>Requires cron job</td>
+<td>Implement auto-renewal loop in background worker</td>
+</tr>
+<tr>
+<td>Phone system complexity</td>
+<td>Many config options overwhelm devs</td>
+<td>Abstract with simplified CRM models</td>
+</tr>
+<tr>
+<td>Legacy PubNub vs. Webhook confusion</td>
+<td>Wrong architecture choice</td>
+<td>Use webhooks; avoid PubNub for new builds</td>
+</tr>
+<tr>
+<td>Call recording download auth</td>
+<td>Recordings need auth token in URL</td>
+<td>Implement secure download proxy</td>
+</tr>
+<tr>
+<td>Presence data granularity</td>
+<td>DND vs. OnCall confusion</td>
+<td>Map to simpler CRM availability states</td>
+</tr>
+<tr>
+<td>Extension vs. User model</td>
+<td>Different structures per account</td>
+<td>Normalize to CRM's user model</td>
+</tr>
+</tbody>
+</table>
+<h3 id="47-strategic-recommendations-smb-crm">4.7 Strategic Recommendations (SMB CRM)</h3>
+<ul>
+<li>Priority: Medium. RingCentral is a solid VoIP provider but less common than Twilio in SMB (more common in mid-market).</li>
+<li>Start with: Call log sync (inbound/outbound calls to CRM activity records), SMS sending from CRM, and click-to-dial.</li>
+<li>Webhook-first: Use webhooks for real-time SMS/call alerts in CRM.</li>
+<li>Avoid: Full presence webhook streaming (too noisy). Poll presence only when needed.</li>
+<li>JWT auth: Prefer JWT bearer over Authorization Code -- simpler for backend CRM integration.</li>
+<li>Contact sync: Offer one-way (RingCentral -&gt; CRM) with address book API.</li>
+<li>Pricing: Requires RingCentral Office/Pro licenses. Worth offering as an add-on, not core.</li>
+</ul>
+<hr />
+<h2 id="5-twilio">5. Twilio</h2>
+<h3 id="51-integration-pattern">5.1 Integration Pattern</h3>
+<table>
+<thead>
+<tr>
+<th>Property</th>
+<th>Detail</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Primary Interface</td>
+<td>Twilio REST API (api.twilio.com)</td>
+</tr>
+<tr>
+<td>Real-time</td>
+<td>Webhooks (Status Callbacks, Incoming Webhooks)</td>
+</tr>
+<tr>
+<td>SDKs</td>
+<td>Twilio Helper Libraries (Python/JS/Java/C#/PHP/Ruby/Go/Node)</td>
+</tr>
+<tr>
+<td>Auth</td>
+<td>HTTP Basic Auth (Account SID + Auth Token) + API Keys</td>
+</tr>
+</tbody>
+</table>
+<h3 id="52-authentication">5.2 Authentication</h3>
+<table>
+<thead>
+<tr>
+<th>Method</th>
+<th>Details</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Account SID + Auth Token</td>
+<td>Primary auth. Sent as HTTP Basic Auth on every request.</td>
+</tr>
+<tr>
+<td>API Keys</td>
+<td>Create via Console. Fine-grained permissions (Main/Restricted).</td>
+</tr>
+<tr>
+<td>API Key + Secret</td>
+<td>Recommended for production -- easier to rotate and scope per integration.</td>
+</tr>
+</tbody>
+</table>
+<h3 id="53-phone-number-management">5.3 Phone Number Management</h3>
+<table>
+<thead>
+<tr>
+<th>Operation</th>
+<th>Endpoint</th>
+<th>Details</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Search available numbers</td>
+<td>GET /2010-04-01/Accounts/{sid}/AvailablePhoneNumbers/{country}/Local.json</td>
+<td>Filter by area code, capabilities</td>
+</tr>
+<tr>
+<td>Purchase number</td>
+<td>POST /2010-04-01/Accounts/{sid}/IncomingPhoneNumbers.json</td>
+<td>Auto-assign available number</td>
+</tr>
+<tr>
+<td>List owned numbers</td>
+<td>GET /2010-04-01/Accounts/{sid}/IncomingPhoneNumbers.json</td>
+<td>Paginated; filter by phone number</td>
+</tr>
+<tr>
+<td>Release number</td>
+<td>DELETE /2010-04-01/Accounts/{sid}/IncomingPhoneNumbers/{sid}.json</td>
+<td>Releases number back to pool</td>
+</tr>
+<tr>
+<td>Configure number</td>
+<td>POST /2010-04-01/Accounts/{sid}/IncomingPhoneNumbers/{sid}.json</td>
+<td>Set voice/SMS URLs, friendly name</td>
+</tr>
+</tbody>
+</table>
+<h3 id="54-sms-messaging">5.4 SMS / Messaging</h3>
+<table>
+<thead>
+<tr>
+<th>Operation</th>
+<th>Endpoint</th>
+<th>Details</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Send SMS</td>
+<td>POST /2010-04-01/Accounts/{sid}/Messages.json</td>
+<td>From (Twilio number), To, Body; supports MediaUrl for MMS</td>
+</tr>
+<tr>
+<td>Send to multiple</td>
+<td>POST /2010-04-01/Accounts/{sid}/Messages.json (per recipient)</td>
+<td>Notify service for batch messaging</td>
+</tr>
+<tr>
+<td>List messages</td>
+<td>GET /2010-04-01/Accounts/{sid}/Messages.json</td>
+<td>Date-sorted; paginated</td>
+</tr>
+<tr>
+<td>Get message</td>
+<td>GET /2010-04-01/Accounts/{sid}/Messages/{sid}.json</td>
+<td>Status, direction, price, error code</td>
+</tr>
+<tr>
+<td>WhatsApp</td>
+<td>Same endpoint, From with whatsapp:+number</td>
+<td>Requires WhatsApp Business Account</td>
+</tr>
+<tr>
+<td>Conversations API</td>
+<td>v1/Conversations, v1/Conversations/Messages</td>
+<td>Multi-channel conversations model</td>
+</tr>
+</tbody>
+</table>
+<h3 id="55-voice-calls">5.5 Voice Calls</h3>
+<table>
+<thead>
+<tr>
+<th>Operation</th>
+<th>Endpoint</th>
+<th>Details</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Make call</td>
+<td>POST /2010-04-01/Accounts/{sid}/Calls.json</td>
+<td>From, To, Url (TwiML endpoint) or Twiml (inline)</td>
+</tr>
+<tr>
+<td>List calls</td>
+<td>GET /2010-04-01/Accounts/{sid}/Calls.json</td>
+<td>Filter by status, date, direction</td>
+</tr>
+<tr>
+<td>Call recordings</td>
+<td>GET /2010-04-01/Accounts/{sid}/Recordings.json</td>
+<td>WAV/MP3 files; linked to calls via CallSid</td>
+</tr>
+<tr>
+<td>Call transcriptions</td>
+<td>POST /2010-04-01/Accounts/{sid}/Recordings/{sid}/Transcriptions.json</td>
+<td>Async transcription; callback on completion</td>
+</tr>
+<tr>
+<td>Conference calls</td>
+<td>POST /2010-04-01/Accounts/{sid}/Conferences.json</td>
+<td>Conference TwiML verb</td>
+</tr>
+</tbody>
+</table>
+<h3 id="56-twiml-twilio-markup-language">5.6 TwiML (Twilio Markup Language)</h3>
+<ul>
+<li>XML-based instructions for Twilio's servers</li>
+<li>Key verbs: Say (text-to-speech), Play (audio file), Gather (collect DTMF), Record (record call), Dial (connect to number), Conference (multi-party), Redirect, Hangup, Message (SMS during voice call)</li>
+<li>TwiML Bins: Host simple TwiML without a server (for prototyping)</li>
+</ul>
+<h3 id="57-real-time-events-webhooks-status-callbacks">5.7 Real-time Events (Webhooks / Status Callbacks)</h3>
+<table>
+<thead>
+<tr>
+<th>Event Type</th>
+<th>Triggered When</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Incoming voice</td>
+<td>Twilio receives incoming call to your number</td>
+</tr>
+<tr>
+<td>Incoming SMS</td>
+<td>Twilio receives incoming text</td>
+</tr>
+<tr>
+<td>Call status</td>
+<td>queued, ringing, in-progress, completed, busy, failed, no-answer, canceled</td>
+</tr>
+<tr>
+<td>Recording</td>
+<td>Recording completed + available for download</td>
+</tr>
+<tr>
+<td>Transcription</td>
+<td>Transcription completed</td>
+</tr>
+<tr>
+<td>Messaging</td>
+<td>SMS delivered, failed, read (read receipts)</td>
+</tr>
+</tbody>
+</table>
+<h3 id="58-rate-limits">5.8 Rate Limits</h3>
+<table>
+<thead>
+<tr>
+<th>Product</th>
+<th>Limit</th>
+<th>Details</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>API Requests</td>
+<td>60 requests per second per account (default)</td>
+<td>Can request increase via support</td>
+</tr>
+<tr>
+<td>SMS Messaging</td>
+<td>1 message per second per number</td>
+<td>Segment for high volume; use messaging service</td>
+</tr>
+<tr>
+<td>Voice Calls</td>
+<td>1 call per second per number</td>
+<td>Queue calls if needed</td>
+</tr>
+<tr>
+<td>Phone Number Search</td>
+<td>20 requests per minute</td>
+<td>Avoid polling aggressively</td>
+</tr>
+</tbody>
+</table>
+<h3 id="59-pricing-model">5.9 Pricing Model</h3>
+<table>
+<thead>
+<tr>
+<th>Service</th>
+<th>Pricing (Approx)</th>
+<th>Notes</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Phone Numbers</td>
+<td>$1-$15/month per number</td>
+<td>Depends on country/type</td>
+</tr>
+<tr>
+<td>SMS (US)</td>
+<td>$0.0079 per message outbound</td>
+<td>Inbound is free; varies by carrier</td>
+</tr>
+<tr>
+<td>Voice (US)</td>
+<td>$0.013 per minute inbound; $0.014 outbound</td>
+<td>Per-minute billing</td>
+</tr>
+<tr>
+<td>Recordings</td>
+<td>$0.002 per minute (storage) + $0.01/min (transcription)</td>
+<td></td>
+</tr>
+<tr>
+<td>WhatsApp</td>
+<td>$0.005-$0.08 per conversation</td>
+<td>Conversation-based (24-hour session)</td>
+</tr>
+<tr>
+<td>Free Trial</td>
+<td>$15 credit</td>
+<td>Enough to build + test integration</td>
+</tr>
+</tbody>
+</table>
+<h3 id="510-common-pain-points">5.10 Common Pain Points</h3>
+<table>
+<thead>
+<tr>
+<th>Pain Point</th>
+<th>Impact</th>
+<th>Mitigation</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Per-number rate limits</td>
+<td>High-volume customers hit limits</td>
+<td>Use Messaging Service with multiple sender pools</td>
+</tr>
+<tr>
+<td>TwiML latency</td>
+<td>Voice quality suffers if response is slow</td>
+<td>Host TwiML endpoint close to Twilio's AWS regions</td>
+</tr>
+<tr>
+<td>Carrier filtering</td>
+<td>SMS to VoIP/landline fails</td>
+<td>Handle undelivered status; provide error messaging</td>
+</tr>
+<tr>
+<td>Regulatory (10DLC, A2P)</td>
+<td>SMS registration required for US A2P 10DLC</td>
+<td>Help customers register brand and campaign</td>
+</tr>
+<tr>
+<td>Price unpredictability</td>
+<td>Per-message/minute billing scares SMB</td>
+<td>Offer usage tracking in CRM dashboard</td>
+</tr>
+<tr>
+<td>Webhook signature validation</td>
+<td>Security vulnerability</td>
+<td>Make validation mandatory</td>
+</tr>
+<tr>
+<td>International numbers</td>
+<td>Different compliance per country</td>
+<td>Use Twilio's Compliance API</td>
+</tr>
+</tbody>
+</table>
+<h3 id="511-strategic-recommendations-smb-crm">5.11 Strategic Recommendations (SMB CRM)</h3>
+<ul>
+<li>Priority: Highest. Twilio is the de facto telephony platform for modern CRMs.</li>
+<li>Core features: Click-to-dial, SMS from CRM, call logging with recordings, phone number provisioning, IVR routing</li>
+<li>Pricing strategy: Pass through Twilio costs with small markup, or bundle into CRM subscription tier</li>
+<li>Simplification: Provide pre-built TwiML endpoints hosted by your CRM backend</li>
+<li>Compliance: Build 10DLC registration into the onboarding flow for US customers</li>
+<li>SDK choice: Use Twilio Python or Node SDK in backend; Twilio Client JS SDK for browser click-to-dial</li>
+<li>Avoid: Building your own SIP infrastructure. Twilio's Elastic SIP Trunking is the right abstraction</li>
+</ul>
+<hr />
+<h2 id="6-aircall">6. Aircall</h2>
+<h3 id="61-integration-pattern">6.1 Integration Pattern</h3>
+<table>
+<thead>
+<tr>
+<th>Property</th>
+<th>Detail</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Primary Interface</td>
+<td>Aircall REST API (api.aircall.io/v1)</td>
+</tr>
+<tr>
+<td>Real-time</td>
+<td>Webhooks (Event-driven notifications)</td>
+</tr>
+<tr>
+<td>SDKs</td>
+<td>Community-driven (no official SDK; use HTTP request libraries)</td>
+</tr>
+<tr>
+<td>Auth</td>
+<td>API Key (Basic Auth with api_token as username)</td>
+</tr>
+</tbody>
+</table>
+<h3 id="62-authentication">6.2 Authentication</h3>
+<ul>
+<li>Every request: Authorization: Basic base64(api_id:api_token)</li>
+<li>No OAuth, no token refresh. Static credentials.</li>
+<li>Security note: Aircall uses a single static token per account. Token rotation requires manual dashboard update.</li>
+</ul>
+<h3 id="63-rest-api-capabilities">6.3 REST API Capabilities</h3>
+<table>
+<thead>
+<tr>
+<th>Category</th>
+<th>Endpoints</th>
+<th>Notes</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Calls</td>
+<td>GET /calls, GET /calls/{id}, POST /calls</td>
+<td>List calls with filters, get details, create records</td>
+</tr>
+<tr>
+<td>Comments</td>
+<td>POST /calls/{id}/comments</td>
+<td>Add internal notes to calls</td>
+</tr>
+<tr>
+<td>Tags</td>
+<td>POST /calls/{id}/tags, DELETE /calls/{id}/tags/{tag_id}</td>
+<td>Tag calls for categorization</td>
+</tr>
+<tr>
+<td>Contacts</td>
+<td>GET /contacts, POST/PUT/DELETE</td>
+<td>Sync CRM contacts with Aircall directory</td>
+</tr>
+<tr>
+<td>Numbers</td>
+<td>GET /numbers, PUT /numbers/{id}</td>
+<td>List/update phone numbers</td>
+</tr>
+<tr>
+<td>Users</td>
+<td>GET /users, GET /users/{id}</td>
+<td>List/update Aircall users (agents)</td>
+</tr>
+<tr>
+<td>Teams</td>
+<td>GET /teams</td>
+<td>List Aircall teams</td>
+</tr>
+<tr>
+<td>Call Recordings</td>
+<td>GET /calls/{id}/recording</td>
+<td>Download call recording</td>
+</tr>
+<tr>
+<td>IVR</td>
+<td>GET /ivrs, PUT /ivrs/{id}</td>
+<td>Manage IVR menus (auto-attendant)</td>
+</tr>
+<tr>
+<td>Analytics</td>
+<td>GET /analytics/groups, GET /analytics/users</td>
+<td>Call volume, duration stats</td>
+</tr>
+</tbody>
+</table>
+<h3 id="64-webhooks">6.4 Webhooks</h3>
+<table>
+<thead>
+<tr>
+<th>Event</th>
+<th>Triggered When</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>call.created</td>
+<td>New inbound/outbound call starts</td>
+</tr>
+<tr>
+<td>call.ringing_on_agent</td>
+<td>Call assigned to agent</td>
+</tr>
+<tr>
+<td>call.answered</td>
+<td>Agent answers the call</td>
+</tr>
+<tr>
+<td>call.ended</td>
+<td>Call ends (includes duration, recording URL, tags, comments)</td>
+</tr>
+<tr>
+<td>call.comment.created</td>
+<td>Comment added to call</td>
+</tr>
+<tr>
+<td>call.tag.created</td>
+<td>Tag added to call</td>
+</tr>
+<tr>
+<td>contact.created</td>
+<td>New contact added to Aircall</td>
+</tr>
+<tr>
+<td>contact.updated</td>
+<td>Contact updated in Aircall</td>
+</tr>
+<tr>
+<td>user.created</td>
+<td>New user added to Aircall</td>
+</tr>
+<tr>
+<td>user.updated</td>
+<td>User status/availability changes</td>
+</tr>
+</tbody>
+</table>
+<h3 id="65-rate-limits">6.5 Rate Limits</h3>
+<table>
+<thead>
+<tr>
+<th>Limit</th>
+<th>Value</th>
+<th>Notes</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>API requests</td>
+<td>10 requests per second per account</td>
+<td>Hard limit across all endpoints</td>
+</tr>
+<tr>
+<td>Burst</td>
+<td>30 requests in 3 seconds</td>
+<td>Exceeding triggers 429</td>
+</tr>
+<tr>
+<td>Pagination</td>
+<td>Max 50 per page (cursor-based)</td>
+<td>Use next_page_link</td>
+</tr>
+</tbody>
+</table>
+<h3 id="66-common-pain-points">6.6 Common Pain Points</h3>
+<table>
+<thead>
+<tr>
+<th>Pain Point</th>
+<th>Impact</th>
+<th>Mitigation</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>No official SDK</td>
+<td>More boilerplate code</td>
+<td>Use generic HTTP client; create internal SDK wrapper</td>
+</tr>
+<tr>
+<td>Static API token</td>
+<td>Cannot rotate without downtime</td>
+<td>Implement token rotation workflow</td>
+</tr>
+<tr>
+<td>No webhook signature</td>
+<td>Can't verify payload origin</td>
+<td>Implement IP whitelisting + shared secret</td>
+</tr>
+<tr>
+<td>Low rate limit (10 req/s)</td>
+<td>Blocks bulk operations</td>
+<td>Batch reads; implement request queuing</td>
+</tr>
+<tr>
+<td>Limited analytics API</td>
+<td>Can't build advanced dashboards</td>
+<td>Pull raw call data; aggregate in CRM</td>
+</tr>
+<tr>
+<td>Contact sync complexity</td>
+<td>Two-way sync challenges</td>
+<td>Use webhook for Aircall-&gt;CRM; API for CRM-&gt;Aircall</td>
+</tr>
+<tr>
+<td>No IVR creation via API</td>
+<td>IVR configured in dashboard only</td>
+<td>Document as limitation</td>
+</tr>
+</tbody>
+</table>
+<h3 id="67-strategic-recommendations-smb-crm">6.7 Strategic Recommendations (SMB CRM)</h3>
+<ul>
+<li>Priority: Medium. Aircall is purpose-built for sales/customer-facing teams.</li>
+<li>Core features: Click-to-dial, call activity sync via call.ended webhook, contact sync, recording/transcription storage, screen pop/CTI</li>
+<li>Why choose Aircall over Twilio: Aircall is a managed phone system, not an API. For turnkey cloud phone with CRM integration, Aircall wins. For custom telephony features, Twilio wins.</li>
+<li>Build a dedicated Aircall service layer in backend with caching and rate-limit management.</li>
+<li>Offer Aircall as a premium integration (requires Aircall subscription). Make Twilio the default embedded telephony option.</li>
+</ul>
+<hr />
+<h2 id="cross-platform-comparison-matrix">Cross-Platform Comparison Matrix</h2>
+<table>
+<thead>
+<tr>
+<th>Feature</th>
+<th>Slack</th>
+<th>Teams</th>
+<th>Zoom</th>
+<th>RingCentral</th>
+<th>Twilio</th>
+<th>Aircall</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Type</td>
+<td>Messaging</td>
+<td>Messaging</td>
+<td>Video/Webinar</td>
+<td>Telephony</td>
+<td>Telephony</td>
+<td>Telephony</td>
+</tr>
+<tr>
+<td>API</td>
+<td>REST+Events+Socket</td>
+<td>Graph REST+Bot</td>
+<td>REST+Webhooks</td>
+<td>REST+Webhooks</td>
+<td>REST+TwiML+Webhooks</td>
+<td>REST+Webhooks</td>
+</tr>
+<tr>
+<td>Auth</td>
+<td>OAuth 2.0</td>
+<td>OAuth 2.0 (Azure AD)</td>
+<td>OAuth 2.0 (S2S)</td>
+<td>OAuth 2.0 / JWT</td>
+<td>HTTP Basic (API Key)</td>
+<td>HTTP Basic</td>
+</tr>
+<tr>
+<td>SDK Quality</td>
+<td>Excellent</td>
+<td>Very Good</td>
+<td>Good</td>
+<td>Very Good</td>
+<td>Excellent</td>
+<td>None</td>
+</tr>
+<tr>
+<td>Rate Limits</td>
+<td>Tiered 1-100+/min</td>
+<td>1300-4000/10s</td>
+<td>10-50 QPS</td>
+<td>40-150 req/s</td>
+<td>60 req/s</td>
+<td>10 req/s</td>
+</tr>
+<tr>
+<td>Webhooks</td>
+<td>Events API</td>
+<td>Change Notifications</td>
+<td>Event Subscriptions</td>
+<td>Subscription API</td>
+<td>Status Callbacks</td>
+<td>Event Webhooks</td>
+</tr>
+<tr>
+<td>SMB Friendliness</td>
+<td>5/5</td>
+<td>3/5</td>
+<td>4/5</td>
+<td>3/5</td>
+<td>5/5</td>
+<td>4/5</td>
+</tr>
+<tr>
+<td>Implementation</td>
+<td>Medium</td>
+<td>High</td>
+<td>Medium</td>
+<td>Medium</td>
+<td>High</td>
+<td>Low</td>
+</tr>
+<tr>
+<td>Admin Consent?</td>
+<td>No</td>
+<td>Yes</td>
+<td>No</td>
+<td>No</td>
+<td>No</td>
+<td>No</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="smb-crm-integration-priority-ranking">SMB CRM Integration Priority Ranking</h2>
+<table>
+<thead>
+<tr>
+<th>Rank</th>
+<th>Platform</th>
+<th>Rationale</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1 (Must-have)</td>
+<td>Slack</td>
+<td>SMBs live in Slack. CRM notifications + collaboration is table stakes.</td>
+</tr>
+<tr>
+<td>1 (Must-have)</td>
+<td>Twilio</td>
+<td>Provide embedded telephony (SMS + Voice) without forcing separate phone system vendor.</td>
+</tr>
+<tr>
+<td>3 (High)</td>
+<td>Zoom</td>
+<td>Meeting scheduling and attendance tracking. Most relevant for B2B sales CRMs.</td>
+</tr>
+<tr>
+<td>4 (Medium)</td>
+<td>Microsoft Teams</td>
+<td>Important for Microsoft-first SMBs. Start with webhooks; defer bot framework.</td>
+</tr>
+<tr>
+<td>4 (Medium)</td>
+<td>Aircall</td>
+<td>Good for phone-centric sales teams. Offer as premium add-on.</td>
+</tr>
+<tr>
+<td>4 (Medium)</td>
+<td>RingCentral</td>
+<td>Overlaps with Twilio. Focus on Twilio first. Add RingCentral per customer request.</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="recommended-architecture-approach">Recommended Architecture Approach</h2>
+<div class="highlight"><pre><span></span><code>+--------------------------------------------------------------+
+|                     Your CRM Backend                          |
+|                                                              |
+|  +---------------+  +---------------+  +--------------------+  |
+|  | Integration    |  | Webhook       |  | Telephony          |  |
+|  | Service        |  | Handler       |  | Service (Twilio)   |  |
+|  | (Slack, Zoom)  |  | (Teams, Airc) |  | (SMS, Voice, Num)  |  |
+|  +-------+--------+  +-------+-------+  +----------+---------+  |
+|          |                   |                      |          |
+|          +-------------------+----------------------+          |
+|                              |                                |
+|                    +---------+---------+                     |
+|                    |  Event Bus / Queue |                     |
+|                    +---------+---------+                     |
+|                              |                                |
+|                    +---------+---------+                     |
+|                    |  CRM Activity Log  |                     |
+|                    +-------------------+                     |
++--------------------------------------------------------------+
+</code></pre></div>
+<p><strong>Key Design Principles:</strong>
+1. Async-first: All external API calls go through a queue.
+2. Webhook -&gt; Event -&gt; Activity: Normalized internal event -&gt; CRM activity record.
+3. Rate-limit aware: Each integration service has a retry/backoff layer.
+4. Multi-tenant isolation: Tokens stored per-account, never shared.
+5. Graceful degradation: Never break CRM core if external service is down.</p>
+
+
+
+
+
+
+
+  
+  
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Back to top
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": ".", "features": ["navigation.sections", "navigation.top", "search.suggest", "search.highlight", "content.code.copy"], "search": "assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="assets/javascripts/bundle.79ae519e.min.js"></script>
+      
+    
+  </body>
+</html>

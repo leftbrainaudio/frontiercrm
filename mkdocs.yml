@@ -1,0 +1,54 @@
+site_name: FrontierCRM
+site_description: Project documentation — design system, roadmap, devops, brand, architecture
+site_url: ""
+use_directory_urls: false
+repo_url: ""
+edit_uri: ""
+docs_dir: /Users/chriskilloran/wiki/frontiercrm
+site_dir: documentation
+
+theme:
+  name: material
+  palette:
+    primary: indigo
+    accent: teal
+  features:
+    - navigation.sections
+    - navigation.top
+    - search.suggest
+    - search.highlight
+    - content.code.copy
+
+markdown_extensions:
+  - attr_list
+  - md_in_html
+  - tables
+  - admonition
+  - pymdownx.details
+  - pymdownx.superfences
+  - pymdownx.tabbed
+  - pymdownx.highlight
+
+nav:
+  - Home: index.md
+  - Roadmap: 10_ROADMAP.md
+  - DevOps: 12_DEVOPS.md
+  - Brand Guidelines:
+    - Brand Identity: 08_BRAND_GUIDELINES.md
+    - Design System Overview: ui-design-system.md
+    - Implementation Gaps: design-system-gaps.md
+  - Architecture: 06_DATA_ARCHITECTURE.md
+  - Tech Stack: 05_TECH_STACK.md
+  - Decision Log: 11_DECISION_LOG.md
+  - Research:
+    - Market: 01_MARKET_RESEARCH.md
+    - Features: 02_FEATURE_MATRIX.md
+    - Integrations: 04_INTEGRATIONS.md
+    - Emerging Tech: 04B_EMERGING_TECH.md
+    - Personas: 03_PERSONAS.md
+    - Pricing: 09_PRICING.md
+  - UX & Workflows: 07_UX_WORKFLOWS.md
+  - API: api-endpoints.md
+
+extra_css:
+  - stylesheets/extra.css

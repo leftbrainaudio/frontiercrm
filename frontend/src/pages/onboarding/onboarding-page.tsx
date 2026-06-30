@@ -1,9 +1,9 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../../hooks/useAuth';
-import { Button } from '../../components/ui/button';
-import { Input } from '../../components/ui/input';
-import { Card } from '../../components/ui/card';
+import { Button } from '../../components/atoms/button';
+import { Input } from '../../components/atoms/input';
+import { Card } from '../../components/molecules/card';
 import { Building2, Users, Rocket, ArrowRight, ArrowLeft, Check } from 'lucide-react';
 import apiClient from '../../api/client';
 

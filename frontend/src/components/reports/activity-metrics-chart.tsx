@@ -7,7 +7,7 @@ import {
   ResponsiveContainer,
   CartesianGrid,
 } from 'recharts';
-import { Card } from '../ui/card';
+import { Card } from '../molecules/card';
 import { CHART_COLORS } from './shared';
 
 export interface ActivityMetricsChartProps {

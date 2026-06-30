@@ -1,0 +1,2185 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="Project documentation — design system, roadmap, devops, brand, architecture">
+      
+      
+        <meta name="author" content="scout">
+      
+      
+      
+      
+      
+        
+      
+      
+      <link rel="icon" href="assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.6">
+    
+    
+      
+        <title>FrontierCRM — Social & Analytics Integration Specifications - FrontierCRM</title>
+      
+    
+    
+      <link rel="stylesheet" href="assets/stylesheets/main.484c7ddc.min.css">
+      
+        
+        <link rel="stylesheet" href="assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="stylesheets/extra.css">
+    
+    <script>__md_scope=new URL(".",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="teal">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#frontiercrm-social-analytics-integration-specifications" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="." title="FrontierCRM" class="md-header__button md-logo" aria-label="FrontierCRM" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            FrontierCRM
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              FrontierCRM — Social &amp; Analytics Integration Specifications
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+    
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+        <div class="md-search__suggest" data-md-component="search-suggest"></div>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="." title="FrontierCRM" class="md-nav__button md-logo" aria-label="FrontierCRM" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    FrontierCRM
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="index.md" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Home
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="10_ROADMAP.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Roadmap
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--active"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="12_DEVOPS.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    DevOps
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--active"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4" >
+        
+          
+          <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Brand Guidelines
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Brand Guidelines
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="08_BRAND_GUIDELINES.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Brand Identity
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--complete"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="ui-design-system.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Design System Overview
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--complete"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="design-system-gaps.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Implementation Gaps
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--active"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="06_DATA_ARCHITECTURE.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Architecture
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--complete"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="05_TECH_STACK.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Tech Stack
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--complete"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="11_DECISION_LOG.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Decision Log
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--complete"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_8" >
+        
+          
+          <label class="md-nav__link" for="__nav_8" id="__nav_8_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Research
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_8_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_8">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Research
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="01_MARKET_RESEARCH.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Market
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--complete"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="02_FEATURE_MATRIX.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Features
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--complete"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="04_INTEGRATIONS.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Integrations
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--completed"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="04B_EMERGING_TECH.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Emerging Tech
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--complete"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="03_PERSONAS.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Personas
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--complete"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="09_PRICING.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Pricing
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--complete"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="07_UX_WORKFLOWS.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    UX & Workflows
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--complete"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="api-endpoints.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    API
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--complete"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+
+<h1 id="frontiercrm-social-analytics-integration-specifications">FrontierCRM — Social &amp; Analytics Integration Specifications</h1>
+<blockquote>
+<p><strong>Target market:</strong> SMBs, 10–200 employees<br />
+<strong>Scope:</strong> Social APIs (LinkedIn, Twitter/X, Meta), Workflow Automation (Zapier, Make), Analytics (GA4, Mixpanel, Tableau)<br />
+<strong>Format per entry:</strong> Integration pattern | Auth type | Sync complexity | Common pain points | Strategic recommendation for FrontierCRM</p>
+</blockquote>
+<hr />
+<h1 id="1-linkedin-api">1. LinkedIn API</h1>
+<h2 id="overview">Overview</h2>
+<p>LinkedIn API v2 is heavily restricted. Post-2015 changes gutted most profile-access endpoints; what remains is oriented toward <strong>marketing, advertising, and verified "Community" access</strong>. For a CRM, LinkedIn is useful for <strong>social posting, company page analytics, and lead-gen forms</strong>, but <strong>not</strong> for profile enrichment or prospecting at scale.</p>
+<h2 id="key-details">Key Details</h2>
+<table>
+<thead>
+<tr>
+<th>Aspect</th>
+<th>Detail</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>API Version</strong></td>
+<td>v2 (granular REST endpoints, no monolithic GraphQL)</td>
+</tr>
+<tr>
+<td><strong>Base URL</strong></td>
+<td><code>https://api.linkedin.com/v2/</code></td>
+</tr>
+<tr>
+<td><strong>Auth</strong></td>
+<td>OAuth 2.0 (Authorization Code flow)</td>
+</tr>
+<tr>
+<td><strong>Token Expiry</strong></td>
+<td>Access tokens: 2h (short-lived); Refresh tokens: available via <code>offline_access</code> scope, duration set by LinkedIn</td>
+</tr>
+<tr>
+<td><strong>Rate Limits</strong></td>
+<td>100 calls/day per user per app (very restrictive for most endpoints). Marketing API is higher but requires contract.</td>
+</tr>
+</tbody>
+</table>
+<h2 id="available-scopes-realistic">Available Scopes (Realistic)</h2>
+<table>
+<thead>
+<tr>
+<th>Scope</th>
+<th>What It Actually Does</th>
+<th>CRM Usefulness</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>openid</code></td>
+<td>Sub (member ID), name</td>
+<td>✅ Identity linking</td>
+</tr>
+<tr>
+<td><code>profile</code></td>
+<td>Given name, family name, vanity name (not email, not photo)</td>
+<td>⚠️ Limited</td>
+</tr>
+<tr>
+<td><code>email</code></td>
+<td>Verified email address</td>
+<td>✅ Critical for CRM</td>
+</tr>
+<tr>
+<td><code>w_member_social</code></td>
+<td>Post as the authenticated user</td>
+<td>✅ Social publishing</td>
+</tr>
+<tr>
+<td><code>r_organization_social</code></td>
+<td>Read org posts + analytics</td>
+<td>✅ Company page analytics</td>
+</tr>
+<tr>
+<td><code>w_organization_social</code></td>
+<td>Post as a company page</td>
+<td>✅ Social publishing</td>
+</tr>
+<tr>
+<td><code>rw_organization_admin</code></td>
+<td>Manage company pages (requires Business tier)</td>
+<td>⚠️ Paid gate</td>
+</tr>
+<tr>
+<td><code>r_ads_leadgen</code></td>
+<td>Read lead-gen form submissions</td>
+<td>✅ Lead capture</td>
+</tr>
+</tbody>
+</table>
+<h2 id="whats-actually-available-for-crm">What's Actually Available for CRM</h2>
+<ul>
+<li><strong>Basic Profile</strong> — name, vanity URL, headline. <strong>No</strong> email (separate scope), <strong>no</strong> full work history (requires Legacy API), <strong>no</strong> profile photo URL, <strong>no</strong> list of connections.</li>
+<li><strong>Share Content</strong> — post text/image/video as user or company page. Works well.</li>
+<li><strong>Company Page Analytics</strong> — impressions, clicks, engagement metrics. Requires <code>r_organization_social</code>.</li>
+<li><strong>Lead Gen Forms</strong> — read form submissions from LinkedIn ads. High-value for CRM.</li>
+<li><strong>Conversations/Messaging</strong> — <strong>NOT available</strong> via public API for non-Messaging Partner apps.</li>
+</ul>
+<h2 id="common-pain-points">Common Pain Points</h2>
+<ol>
+<li><strong>No profile photo</strong> - <code>profile</code> scope returns only text fields; photos require Marketing Developer Platform approval (rare).</li>
+<li><strong>No connection list</strong> - eliminated in 2015; CRM cannot show mutual connections or 2nd-degree networks.</li>
+<li><strong>No full work history</strong> - <code>r_fullprofile</code> was removed. Only current position + headline.</li>
+<li><strong>Share API requires manual scope grant</strong> - users must accept <code>w_member_social</code> scope. Cannot auto-publish without explicit authorization via OAuth popup.</li>
+<li><strong>Company page posting requires admin approval</strong> - the page admin must grant the app access via page settings.</li>
+<li><strong>Rate limits are brutal</strong> - 100 calls/day/user for most v2 endpoints; effectively limits any polling/recurring sync.</li>
+<li><strong>API changes with little notice</strong> - LinkedIn deprecates endpoints frequently; community developer forums report sudden 403 errors.</li>
+<li><strong>App Review required for almost everything</strong> - Marketing Developer Platform application can take weeks.</li>
+</ol>
+<h2 id="integration-pattern">Integration Pattern</h2>
+<div class="highlight"><pre><span></span><code>[FrontierCRM] &lt;- OAuth 2.0 -&gt; [LinkedIn API v2]
+       |
+  [User consents scopes via OAuth popup]
+  [Manual page admin grant for company posting]
+</code></pre></div>
+<p><strong>Sync Complexity:</strong> Low (read-only profile/analytics) to Medium (social posting with media upload)
+<strong>Sync Type:</strong> On-demand + polling (subject to rate limit)
+<strong>Webhooks:</strong> No public webhooks available</p>
+<h2 id="strategic-recommendation-for-frontiercrm">Strategic Recommendation for FrontierCRM</h2>
+<table>
+<thead>
+<tr>
+<th>Use Case</th>
+<th>Recommend?</th>
+<th>Why</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Social posting to LinkedIn</td>
+<td>Yes</td>
+<td>Straightforward, high value for SMB marketing.</td>
+</tr>
+<tr>
+<td>Company page analytics display</td>
+<td>Yes</td>
+<td>Data is useful (impressions, clicks, followers).</td>
+</tr>
+<tr>
+<td>Lead-gen form capture</td>
+<td>Yes</td>
+<td>Good lead source automation.</td>
+</tr>
+<tr>
+<td>Profile enrichment (photo, history, connections)</td>
+<td>No</td>
+<td>Not technically possible.</td>
+</tr>
+<tr>
+<td>Automated contact matching/linking</td>
+<td>Limited</td>
+<td>Can match via email + LinkedIn sub id only.</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Strategy:</strong> Offer LinkedIn as a <strong>social publishing + lead capture</strong> integration only. Do NOT market it as a profile enrichment or prospecting tool. Use email scope for identity reconciliation. Keep sync frequency low (daily instead of real-time) to stay within rate limit guardrails.</p>
+<hr />
+<h1 id="2-twitterx-api">2. Twitter/X API</h1>
+<h2 id="overview_1">Overview</h2>
+<p>Twitter API v2 (launched 2020, deprecated v1.1 in 2023) is the current standard. It's <strong>project-based</strong> with tiered access (Free, Basic, Pro, Enterprise). OAuth 2.0 is now the recommended auth path for most endpoints, though OAuth 1.0a remains for user-context write operations.</p>
+<h2 id="key-details_1">Key Details</h2>
+<table>
+<thead>
+<tr>
+<th>Aspect</th>
+<th>Detail</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>API Version</strong></td>
+<td>v2 (v1.1 deprecated April 2023)</td>
+</tr>
+<tr>
+<td><strong>Base URL</strong></td>
+<td><code>https://api.twitter.com/2/</code></td>
+</tr>
+<tr>
+<td><strong>Auth</strong></td>
+<td>OAuth 2.0 (PKCE for read), OAuth 1.0a (user write actions)</td>
+</tr>
+<tr>
+<td><strong>Token Expiry</strong></td>
+<td>OAuth 2.0: 2h access + refresh tokens; OAuth 1.0a: doesn't expire</td>
+</tr>
+<tr>
+<td><strong>Pricing</strong></td>
+<td>Free: 500 posts/mo, Basic: $100/mo (3K posts, 10K tweets read), Pro: $5K/mo (300K posts, 1M tweets read), Enterprise: custom</td>
+</tr>
+</tbody>
+</table>
+<h2 id="available-endpoints-relevant-to-crm">Available Endpoints (Relevant to CRM)</h2>
+<table>
+<thead>
+<tr>
+<th>Endpoint</th>
+<th>v2 Path</th>
+<th>CRM Use</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>User lookup</strong></td>
+<td><code>/users/:id</code> / <code>/users/by/username/:username</code></td>
+<td>Identity matching</td>
+</tr>
+<tr>
+<td><strong>Tweet lookup</strong></td>
+<td><code>/tweets/:id</code></td>
+<td>Read individual posts</td>
+</tr>
+<tr>
+<td><strong>Timeline</strong></td>
+<td><code>/users/:id/tweets</code> / <code>/users/:id/mentions</code></td>
+<td>Monitor user activity</td>
+</tr>
+<tr>
+<td><strong>Search</strong></td>
+<td><code>/tweets/search/recent</code> (last 7d) / <code>/tweets/search/all</code> (full archive, Enterprise)</td>
+<td>Social listening</td>
+</tr>
+<tr>
+<td><strong>Post tweet</strong></td>
+<td><code>/tweets</code> (OAuth 1.0a)</td>
+<td>Social publishing</td>
+</tr>
+<tr>
+<td><strong>Media upload</strong></td>
+<td><code>https://upload.twitter.com/1.1/media/upload.json</code> (still v1.1)</td>
+<td>Image/video attach</td>
+</tr>
+<tr>
+<td><strong>DM endpoints</strong></td>
+<td><code>/dm_conversations/...</code></td>
+<td>Messaging -- requires <strong>separate approval</strong></td>
+</tr>
+<tr>
+<td><strong>Filtered stream</strong></td>
+<td><code>/tweets/search/stream</code> / <code>/tweets/search/stream/rules</code></td>
+<td>Real-time monitoring</td>
+</tr>
+<tr>
+<td><strong>Compliance</strong></td>
+<td><code>/tweets/compliance/stream</code></td>
+<td>Data deletion compliance</td>
+</tr>
+</tbody>
+</table>
+<h2 id="rate-limits-per-15-min-window">Rate Limits (Per 15-min Window)</h2>
+<table>
+<thead>
+<tr>
+<th>Plan</th>
+<th>Posts</th>
+<th>Reads (tweets)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Free</td>
+<td>50</td>
+<td>100</td>
+</tr>
+<tr>
+<td>Basic ($100/mo)</td>
+<td>200</td>
+<td>300</td>
+</tr>
+<tr>
+<td>Pro ($5K/mo)</td>
+<td>1,500</td>
+<td>3,000</td>
+</tr>
+<tr>
+<td>Enterprise</td>
+<td>Custom</td>
+<td>Custom</td>
+</tr>
+</tbody>
+</table>
+<h2 id="common-pain-points_1">Common Pain Points</h2>
+<ol>
+<li><strong>Rate limits are aggressively tight</strong> - Free tier (100 tweets/15min) is unusable for any batch sync. Even Basic (300/15min) limits multi-user CRM workflows.</li>
+<li><strong>DM endpoints require additional approval</strong> - separate application process, approved only for "use cases that enhance the conversation experience."</li>
+<li><strong>OAuth 1.0a still required for write</strong> - OAuth 2.0 only supports read operations for user context. Write (posting) still needs the older OAuth 1.0a flow.</li>
+<li><strong>Media upload still on v1.1</strong> - No v2 media endpoint exists. Must call deprecated v1.1 endpoint with OAuth 1.0a.</li>
+<li><strong>Filtered stream complexity</strong> - Rules syntax (punctuation, group/operator precedence) is error-prone.</li>
+<li><strong>Pricing jumped dramatically</strong> - In 2023, Twitter went from free to $100/mo (Basic) minimum for any useful access.</li>
+<li><strong>API documentation churn</strong> - Post-acquisition documentation has been inconsistent.</li>
+<li><strong>Search recency window</strong> - Standard search is last 7 days only. Full archive requires Enterprise.</li>
+</ol>
+<h2 id="integration-pattern_1">Integration Pattern</h2>
+<div class="highlight"><pre><span></span><code>[FrontierCRM] &lt;- OAuth 2.0 (read) + OAuth 1.0a (write) -&gt; [Twitter API v2]
+       |
+  [OAuth 1.0a tokens don&#39;t expire]
+  [OAuth 2.0 PKCE for read-only user context]
+</code></pre></div>
+<p><strong>Sync Complexity:</strong> Low-Medium
+<strong>Sync Type:</strong> Polling for tweets/timelines; streaming connection for filtered stream
+<strong>Webhooks:</strong> No webhooks</p>
+<h2 id="strategic-recommendation-for-frontiercrm_1">Strategic Recommendation for FrontierCRM</h2>
+<table>
+<thead>
+<tr>
+<th>Use Case</th>
+<th>Recommend?</th>
+<th>Why</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Social posting (tweet scheduling)</td>
+<td>Yes</td>
+<td>Core CRM social feature, straightforward.</td>
+</tr>
+<tr>
+<td>Social listening (keyword search)</td>
+<td>Basic plan only</td>
+<td>Useful but $100/mo minimum for any real volume.</td>
+</tr>
+<tr>
+<td>DM automation / chatbot</td>
+<td>No</td>
+<td>DM approval is hard to get.</td>
+</tr>
+<tr>
+<td>Profile enrichment</td>
+<td>No</td>
+<td>Limited data; Twitter bios are unstructured.</td>
+</tr>
+<tr>
+<td>Real-time monitoring</td>
+<td>Pro plan+</td>
+<td>Only for highest-tier customers.</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Strategy:</strong> Offer Twitter/X as a <strong>social publishing</strong> integration only, with tiered access reflecting API pricing. Bundle Basic plan cost ($100/mo) into a premium tier. Use OAuth 1.0a for write to avoid token refresh complexity.</p>
+<hr />
+<h1 id="3-facebook-instagram-meta-graph-api">3. Facebook &amp; Instagram (Meta Graph API)</h1>
+<h2 id="overview_2">Overview</h2>
+<p>The Meta Graph API v19+ provides access to Facebook Pages, Instagram Business accounts, lead ads, and messaging. It is <strong>the most powerful social integration for CRM</strong> due to <strong>Lead Ads</strong> -- users submit info inside FB/IG without leaving the platform, and webhooks deliver it to your CRM.</p>
+<h2 id="key-details_2">Key Details</h2>
+<table>
+<thead>
+<tr>
+<th>Aspect</th>
+<th>Detail</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>API Version</strong></td>
+<td>Graph API v19+ (v20 current)</td>
+</tr>
+<tr>
+<td><strong>Base URL</strong></td>
+<td><code>https://graph.facebook.com/v20.0/</code></td>
+</tr>
+<tr>
+<td><strong>Auth</strong></td>
+<td>OAuth 2.0 (FB Login, Page Access Tokens, App Access Tokens, System User Tokens)</td>
+</tr>
+<tr>
+<td><strong>Token Expiry</strong></td>
+<td>User tokens: 60d; Page tokens: 60d (auto-extendable); App tokens: never</td>
+</tr>
+<tr>
+<td><strong>Rate Limits</strong></td>
+<td>200 calls/user/hour, 4800 calls/app/day. Dynamic (based on past usage).</td>
+</tr>
+</tbody>
+</table>
+<h2 id="critical-endpoints-for-crm">Critical Endpoints for CRM</h2>
+<table>
+<thead>
+<tr>
+<th>Endpoint</th>
+<th>Graph Path</th>
+<th>CRM Value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Page info</strong></td>
+<td><code>/{page-id}?fields=name,picture,link,followers_count</code></td>
+<td>Basic page data</td>
+</tr>
+<tr>
+<td><strong>Page posts</strong></td>
+<td><code>/{page-id}/posts</code></td>
+<td>Read/schedule posts</td>
+</tr>
+<tr>
+<td><strong>Page feed</strong></td>
+<td><code>/{page-id}/feed</code></td>
+<td>Full activity stream</td>
+</tr>
+<tr>
+<td><strong>Conversations</strong></td>
+<td><code>/{page-id}/conversations</code></td>
+<td>Page inbox messages</td>
+</tr>
+<tr>
+<td><strong>Messages</strong></td>
+<td><code>/{conversation-id}/messages</code></td>
+<td>Individual messages</td>
+</tr>
+<tr>
+<td><strong>Lead ads</strong></td>
+<td><code>/{page-id}/leadgen_forms</code></td>
+<td><strong>CRITICAL</strong></td>
+</tr>
+<tr>
+<td><strong>Lead data</strong></td>
+<td><code>/{leadgen-id}/</code></td>
+<td>Individual lead submission data</td>
+</tr>
+<tr>
+<td><strong>Webhook</strong></td>
+<td><code>/{app-id}/subscriptions</code></td>
+<td>Real-time lead delivery</td>
+</tr>
+<tr>
+<td><strong>Instagram</strong></td>
+<td><code>/{ig-user-id}/media</code></td>
+<td>Instagram media/posts</td>
+</tr>
+<tr>
+<td><strong>Instagram messaging</strong></td>
+<td><code>/{ig-user-id}/conversations</code></td>
+<td>IG DMs</td>
+</tr>
+</tbody>
+</table>
+<h2 id="app-review-requirements">App Review Requirements</h2>
+<table>
+<thead>
+<tr>
+<th>Feature</th>
+<th>Review Required?</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Page read</strong></td>
+<td>No (Public)</td>
+</tr>
+<tr>
+<td><strong>Page manage</strong></td>
+<td>Yes</td>
+</tr>
+<tr>
+<td><strong>Lead ads read</strong></td>
+<td>Yes</td>
+</tr>
+<tr>
+<td><strong>Messaging</strong></td>
+<td>Yes</td>
+</tr>
+<tr>
+<td><strong>Instagram Basic</strong></td>
+<td>Yes</td>
+</tr>
+<tr>
+<td><strong>Ads Management</strong></td>
+<td>Yes</td>
+</tr>
+<tr>
+<td><strong>Webhooks</strong></td>
+<td>No (for subscribed fields)</td>
+</tr>
+</tbody>
+</table>
+<h2 id="lead-ads-crm-killer-feature">Lead Ads (CRM Killer Feature)</h2>
+<div class="highlight"><pre><span></span><code>User fills lead form in FB/IG
+       |
+Meta sends POST to CRM webhook URL
+       |
+CRM receives: name, email, phone, custom questions
+       |
+CRM creates or updates contact record
+</code></pre></div>
+<h2 id="common-pain-points_2">Common Pain Points</h2>
+<ol>
+<li><strong>App Review gate is real</strong> - Video screencast, privacy policy, business justification required. Review takes days to weeks.</li>
+<li><strong>Token expiry management</strong> - User/Page tokens last 60 days. Auto-extend by calling endpoint before expiry.</li>
+<li><strong>Page-scoped IDs (PSIDs)</strong> - Different user IDs per page. Cross-page dedup requires email/phone matching.</li>
+<li><strong>App-scoped IDs (ASID)</strong> - Every app gets its own namespace of user IDs.</li>
+<li><strong>Rate limits are opaque</strong> - Dynamic rate limits from past 24h usage. Monitor X-Business-Use-Case-Usage header.</li>
+<li><strong>Lead ad duplicates</strong> - Meta may resend; CRM must deduplicate on lead ID.</li>
+<li><strong>Instagram Basic Display API vs Graph API</strong> - Two different APIs, confusing.</li>
+<li><strong>Platform policy changes</strong> - Auto-commenting, auto-liking are forbidden.</li>
+</ol>
+<h2 id="integration-pattern_2">Integration Pattern</h2>
+<div class="highlight"><pre><span></span><code>[FrontierCRM] &lt;- OAuth 2.0 -&gt; [Meta Graph API v20]
+       |                   |
+  [Page Token]       [Webhook endpoint]
+       |                   |
+  [Read/write]       [Receive leads in real-time]
+</code></pre></div>
+<p><strong>Sync Complexity:</strong> Medium
+<strong>Sync Type:</strong> Polling (posts, conversations) + Webhooks (lead ads)
+<strong>Webhooks:</strong> CRITICAL - Lead Ads webhook is the primary path</p>
+<h2 id="strategic-recommendation-for-frontiercrm_2">Strategic Recommendation for FrontierCRM</h2>
+<table>
+<thead>
+<tr>
+<th>Use Case</th>
+<th>Recommend?</th>
+<th>Why</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Lead Ads capture</td>
+<td><strong>Critical</strong></td>
+<td>Best lead source for SMBs. Top priority.</td>
+</tr>
+<tr>
+<td>Page conversation inbox</td>
+<td>Yes</td>
+<td>Unifies Facebook messages in CRM.</td>
+</tr>
+<tr>
+<td>Social posting (page)</td>
+<td>Yes</td>
+<td>Schedule/publish to Facebook + Instagram.</td>
+</tr>
+<tr>
+<td>Instagram lead capture</td>
+<td>Yes</td>
+<td>Same lead ads system.</td>
+</tr>
+<tr>
+<td>Ads management</td>
+<td>Niche</td>
+<td>Only for SMBs running ads through CRM.</td>
+</tr>
+<tr>
+<td>Profile enrichment</td>
+<td>No</td>
+<td>PSID/ASID fragmentation blocks this.</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Strategy:</strong> Make Lead Ads the <strong>headline integration</strong>. Invest in: App Review readiness, token auto-refresh every 50 days, lead deduplication on leadgen_id + ad_id, webhook reliability with exponential backoff. Budget <strong>2-4 weeks</strong> for initial approval.</p>
+<hr />
+<h1 id="4-zapier">4. Zapier</h1>
+<h2 id="overview_3">Overview</h2>
+<p>Zapier connects 7,000+ apps via Zaps. For CRM targeting SMBs, Zapier integration is <strong>table stakes</strong>. Zapier handles auth, polling, rate limiting, error handling; FrontierCRM just needs a <strong>REST API + webhooks</strong>.</p>
+<h2 id="key-details_3">Key Details</h2>
+<table>
+<thead>
+<tr>
+<th>Aspect</th>
+<th>Detail</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Platform</strong></td>
+<td>zapier.com</td>
+</tr>
+<tr>
+<td><strong>Integration Model</strong></td>
+<td>Zapier Platform (private or public integration)</td>
+</tr>
+<tr>
+<td><strong>Integration Types</strong></td>
+<td>Trigger (polling/REST hook), Action (REST write), Search (REST read)</td>
+</tr>
+<tr>
+<td><strong>Auth Supported</strong></td>
+<td>API Key, Basic Auth, OAuth 2.0, Digest Auth, Session Auth</td>
+</tr>
+<tr>
+<td><strong>Rate Limits</strong></td>
+<td>~3 req/s per integration</td>
+</tr>
+<tr>
+<td><strong>Partner Pricing</strong></td>
+<td>Free to build; rev share to publish</td>
+</tr>
+</tbody>
+</table>
+<h2 id="how-triggers-actions-work">How Triggers &amp; Actions Work</h2>
+<h3 id="polling-triggers">Polling Triggers</h3>
+<p><code>GET /api/zapier/triggers/new-contact?since={ISO_timestamp}</code> returns items sorted by created_at desc.</p>
+<h3 id="rest-hook-triggers-preferred">REST Hook Triggers (Preferred)</h3>
+<p>FrontierCRM posts to Zapier webhook URL when events occur. Requires subscription registry.</p>
+<h3 id="actions">Actions</h3>
+<p><code>POST /api/zapier/actions/create-contact</code> - CRUD against FrontierCRM API.</p>
+<h2 id="when-zapier-is-enough-vs-native-integration">When Zapier Is Enough vs. Native Integration</h2>
+<table>
+<thead>
+<tr>
+<th>Scenario</th>
+<th>Zapier</th>
+<th>Native</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Connect 2+ apps</td>
+<td>Perfect</td>
+<td>Overkill</td>
+</tr>
+<tr>
+<td>High-volume sync (1000s/hr)</td>
+<td>Latency too high</td>
+<td>Yes</td>
+</tr>
+<tr>
+<td>Real-time sub-second</td>
+<td>1-15min polling</td>
+<td>Webhooks</td>
+</tr>
+<tr>
+<td>Complex multi-step logic</td>
+<td>Paid plan needed</td>
+<td>Custom code</td>
+</tr>
+<tr>
+<td>Bi-directional sync</td>
+<td>No</td>
+<td>Full sync engine</td>
+</tr>
+<tr>
+<td>Cost-conscious SMB</td>
+<td>$19.99+/mo extra</td>
+<td>Included</td>
+</tr>
+</tbody>
+</table>
+<h2 id="common-pain-points_3">Common Pain Points</h2>
+<ol>
+<li><strong>Latency</strong> - Polling every 1-15 minutes.</li>
+<li><strong>Cost at scale</strong> - 10 Zaps = $200-2000/mo for customer.</li>
+<li><strong>Basic error handling</strong> - 8 retries over 5h, then pause.</li>
+<li><strong>Limited data transformation</strong> - Formatter only does basic ops.</li>
+<li><strong>Rate limit collisions</strong> - All Zaps from same IP pool.</li>
+<li><strong>No bidirectional sync</strong> - Requires 2 Zaps, risk of loops.</li>
+<li><strong>Painful debugging</strong> - Generic error messages.</li>
+<li><strong>Manual field mapping</strong> - Clunky UI.</li>
+<li><strong>OAuth token refresh</strong> - Must handle correctly or Zaps break silently.</li>
+</ol>
+<h2 id="integration-pattern_3">Integration Pattern</h2>
+<div class="highlight"><pre><span></span><code>[FrontierCRM REST API] &lt;-&gt; [Zapier Platform]
+</code></pre></div>
+<p><strong>Sync Complexity:</strong> Low
+<strong>Sync Type:</strong> Polling or Webhook (preferred)
+<strong>Webhooks:</strong> FrontierCRM sends events to Zapier</p>
+<h2 id="strategic-recommendation">Strategic Recommendation</h2>
+<p><strong>Build Zapier integration on day 1.</strong> Implementation:
+1. REST API foundation (CRUD, paginated, timestamp-filtered)
+2. Triggers: New Contact, New Deal, New Activity, Updated Contact/Deal
+3. Actions: Create Contact/Deal/Task/Note, Update Contact/Deal, Find Contact by Email
+4. Webhook support: POST /api/zapier/hooks
+5. OAuth 2.0 with PKCE + refresh tokens</p>
+<p><strong>Do not</strong> replace native integrations with Zapier for high-value connectors (Mailchimp, QuickBooks).</p>
+<hr />
+<h1 id="5-make-formerly-integromat">5. Make (formerly Integromat)</h1>
+<h2 id="overview_4">Overview</h2>
+<p>Make is Zapier's competitor with more power for less money. Visual scenario builder with multi-step workflows, data transformation, router logic. Same integration model as Zapier - expose REST API + webhooks.</p>
+<h2 id="key-details_4">Key Details</h2>
+<table>
+<thead>
+<tr>
+<th>Aspect</th>
+<th>Detail</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Former Name</strong></td>
+<td>Integromat</td>
+</tr>
+<tr>
+<td><strong>Platform</strong></td>
+<td>make.com</td>
+</tr>
+<tr>
+<td><strong>Auth Supported</strong></td>
+<td>API Key, Basic Auth, OAuth 2.0, Digest Auth</td>
+</tr>
+<tr>
+<td><strong>Data Transformation</strong></td>
+<td>Built-in JSON/XML/text parse, regex, iterators, data store</td>
+</tr>
+<tr>
+<td><strong>Pricing</strong></td>
+<td>Free (1K ops/mo) -&gt; $9/mo (10K) -&gt; $16/mo (15K) -&gt; $29/mo (25K)</td>
+</tr>
+</tbody>
+</table>
+<h2 id="make-vs-zapier">Make vs. Zapier</h2>
+<table>
+<thead>
+<tr>
+<th>Feature</th>
+<th>Zapier</th>
+<th>Make</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Visual editor</strong></td>
+<td>Linear chain</td>
+<td>Canvas with branching, merging, loops</td>
+</tr>
+<tr>
+<td><strong>Data transformation</strong></td>
+<td>Formatter (basic)</td>
+<td>Aggregate, array, text parser, router</td>
+</tr>
+<tr>
+<td><strong>Error handling</strong></td>
+<td>8 retries, pause</td>
+<td>Per-module handler, continue/rollback</td>
+</tr>
+<tr>
+<td><strong>Webhooks</strong></td>
+<td>REST hook trigger</td>
+<td>Dedicated module + custom JSON</td>
+</tr>
+<tr>
+<td><strong>Data stores</strong></td>
+<td>Not available</td>
+<td>Built-in key-value</td>
+</tr>
+<tr>
+<td><strong>HTTP module</strong></td>
+<td>Only via Webhooks</td>
+<td>Custom HTTP requests</td>
+</tr>
+<tr>
+<td><strong>Price 10K ops</strong></td>
+<td>$19.99/mo</td>
+<td>$9/mo</td>
+</tr>
+<tr>
+<td><strong>App directory</strong></td>
+<td>7,000+</td>
+<td>~2,000+</td>
+</tr>
+</tbody>
+</table>
+<h2 id="common-pain-points_4">Common Pain Points</h2>
+<ol>
+<li><strong>Learning curve</strong> - Canvases intimidate less-technical users.</li>
+<li><strong>Debugging complex scenarios</strong> - Hard to troubleshoot multi-branch.</li>
+<li><strong>Data store limits</strong> - 5-100MB per plan.</li>
+<li><strong>Fewer apps</strong> than Zapier (~2K vs 7K).</li>
+<li><strong>Execution timeouts</strong> - 40 min default.</li>
+<li><strong>Webhook payload</strong> - 5MB max on standard plans.</li>
+<li><strong>Operations counting</strong> - Complex scenarios burn through ops.</li>
+</ol>
+<h2 id="integration-pattern_4">Integration Pattern</h2>
+<div class="highlight"><pre><span></span><code>[FrontierCRM REST API] &lt;-&gt; [Make Platform]
+</code></pre></div>
+<p><strong>Sync Complexity:</strong> Low (same API as Zapier)
+<strong>Webhooks:</strong> Make's webhook module is excellent</p>
+<h2 id="strategic-recommendation_1">Strategic Recommendation</h2>
+<p><strong>Launch Zapier and Make simultaneously</strong> - they consume the same REST API. Write Make-specific docs with scenario examples (routers, iterators, data stores). Message: "Connect to 7K+ apps via Zapier" (masses) vs "Build sophisticated automation with Make" (power users).</p>
+<hr />
+<h1 id="6-google-analytics-4-ga4">6. Google Analytics 4 (GA4)</h1>
+<h2 id="overview_5">Overview</h2>
+<p>GA4 uses an event-based data model (vs UA's session/pageview). More complex for programmatic access but more powerful for custom reporting.</p>
+<h2 id="key-details_5">Key Details</h2>
+<table>
+<thead>
+<tr>
+<th>Aspect</th>
+<th>Detail</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>API Version</strong></td>
+<td>Data API v1, Admin API v1, Real-time API v1</td>
+</tr>
+<tr>
+<td><strong>Base URL</strong></td>
+<td><code>https://analyticsdata.googleapis.com/v1beta/</code></td>
+</tr>
+<tr>
+<td><strong>Auth</strong></td>
+<td>OAuth 2.0 or <strong>Service Account</strong> (recommended)</td>
+</tr>
+<tr>
+<td><strong>Rate Limits</strong></td>
+<td>50K req/day/property (free). Real-time: 300 req/60s.</td>
+</tr>
+</tbody>
+</table>
+<h2 id="key-differences-from-ua">Key Differences from UA</h2>
+<table>
+<thead>
+<tr>
+<th>Aspect</th>
+<th>UA</th>
+<th>GA4</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Data model</strong></td>
+<td>Session+Pageview</td>
+<td>Events+Parameters</td>
+</tr>
+<tr>
+<td><strong>Property structure</strong></td>
+<td>Account-&gt;Property-&gt;View</td>
+<td>Account-&gt;Property (no views)</td>
+</tr>
+<tr>
+<td><strong>Custom dimensions</strong></td>
+<td>Index-based</td>
+<td>Named parameters</td>
+</tr>
+<tr>
+<td><strong>Sampling</strong></td>
+<td>Heavily sampled</td>
+<td>No sampling</td>
+</tr>
+<tr>
+<td><strong>PII exposure</strong></td>
+<td>Possible</td>
+<td>Strictly prohibited</td>
+</tr>
+<tr>
+<td><strong>Real-time</strong></td>
+<td>Last 5 min</td>
+<td>Up to 30 min</td>
+</tr>
+</tbody>
+</table>
+<h2 id="common-pain-points_5">Common Pain Points</h2>
+<ol>
+<li><strong>Complexity vs UA</strong> - Full rewrite. Protobuf-style JSON with Metric/Dimension objects.</li>
+<li><strong>No cross-property queries</strong> - Must query each property separately.</li>
+<li><strong>No PII</strong> - Cannot join GA4 events to CRM contacts on identity.</li>
+<li><strong>Daily quotas hit fast</strong> - &lt; 35 reports/min hits 50K cap.</li>
+<li><strong>Manual dimension mapping</strong> - Users must map event parameters to CRM fields.</li>
+<li><strong>Service Account setup is multi-step</strong> - Confusing for SMBs.</li>
+<li><strong>Data freshness</strong> - Standard reports have ~1-2h latency.</li>
+</ol>
+<h2 id="integration-pattern_5">Integration Pattern</h2>
+<div class="highlight"><pre><span></span><code>[FrontierCRM] &lt;- Service Account (JWT) -&gt; [GA4 Data API v1]
+</code></pre></div>
+<p><strong>Sync Complexity:</strong> Medium
+<strong>Webhooks:</strong> No webhooks</p>
+<h2 id="strategic-recommendation_2">Strategic Recommendation</h2>
+<p>GA4 is table stakes but <strong>not a differentiator</strong>. Use Service Account auth. Focus on aggregate campaign/UTM analytics in CRM dashboards. Don't try to match GA4 users to CRM contacts - embed FrontierCRM's own event tracking for behavioral data. Implement schema caching from GA4 metadata endpoint.</p>
+<hr />
+<h1 id="7-mixpanel">7. Mixpanel</h1>
+<h2 id="overview_6">Overview</h2>
+<p>Mixpanel is product analytics for <strong>event-based user behavior</strong>. Enables lead scoring, product usage insights, and cohort analysis. JQL is powerful but has a learning curve.</p>
+<h2 id="key-details_6">Key Details</h2>
+<table>
+<thead>
+<tr>
+<th>Aspect</th>
+<th>Detail</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>API Version</strong></td>
+<td>v2 (REST) + JQL</td>
+</tr>
+<tr>
+<td><strong>Base URLs</strong></td>
+<td>REST: <code>https://mixpanel.com/api/2/</code>; Engage: <code>https://api.mixpanel.com/engage</code></td>
+</tr>
+<tr>
+<td><strong>Auth</strong></td>
+<td><strong>Service Token</strong> (API Secret, never expires) - preferred</td>
+</tr>
+<tr>
+<td><strong>Rate Limits</strong></td>
+<td>REST: 10-50 req/s; Export: 2 req/s; JQL: 2 concurrent</td>
+</tr>
+</tbody>
+</table>
+<h2 id="available-endpoints">Available Endpoints</h2>
+<table>
+<thead>
+<tr>
+<th>Endpoint</th>
+<th>Path</th>
+<th>CRM Use</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Events (query)</td>
+<td><code>/api/2/events/</code></td>
+<td>Event metadata</td>
+</tr>
+<tr>
+<td>Events (export)</td>
+<td><code>/api/mixpanel.com/export</code></td>
+<td>Raw event data</td>
+</tr>
+<tr>
+<td>Insights</td>
+<td><code>/api/2/insights/</code></td>
+<td>Saved insights</td>
+</tr>
+<tr>
+<td>Engage (People)</td>
+<td><code>/api/2/engage</code></td>
+<td>User profiles</td>
+</tr>
+<tr>
+<td>Create profile</td>
+<td><code>/api/mixpanel.com/engage#profile-set</code></td>
+<td>Upsert profiles</td>
+</tr>
+<tr>
+<td>Cohorts</td>
+<td><code>/api/2/cohorts/</code></td>
+<td>List cohorts</td>
+</tr>
+<tr>
+<td>Cohort members</td>
+<td><code>/api/2/cohorts/:id/members</code></td>
+<td>Members</td>
+</tr>
+<tr>
+<td>Funnels</td>
+<td><code>/api/2/funnels/</code></td>
+<td>Funnel analysis</td>
+</tr>
+<tr>
+<td>JQL Query</td>
+<td><code>/api/2.0/jql</code></td>
+<td>Custom queries</td>
+</tr>
+</tbody>
+</table>
+<h2 id="common-pain-points_6">Common Pain Points</h2>
+<ol>
+<li><strong>JQL learning curve</strong> - Unique syntax. No SQL familiarity helps.</li>
+<li><strong>Two APIs</strong> - REST for reports, JQL for custom queries.</li>
+<li><strong>Engage API is separate</strong> - Different base URL and auth nuances.</li>
+<li><strong>Upsert, not sync</strong> - Mixpanel profiles are event-driven; CRM manages consistency.</li>
+<li><strong>Low rate limits for batch</strong> - Export 2 req/s. JQL 2 concurrent.</li>
+<li><strong>No event webhooks</strong> - No real-time event stream.</li>
+<li><strong>Retention varies by plan</strong> - Free: 5yr; Growth/Enterprise: unlimited.</li>
+<li><strong>Cohort queries are slow</strong> - Large cohorts take 10+ seconds.</li>
+<li><strong>Distinct ID management</strong> - Must map distinct_id to CRM contact ID.</li>
+<li><strong>Historical import schema validation</strong> - Rejects unknown properties.</li>
+</ol>
+<h2 id="integration-pattern_6">Integration Pattern</h2>
+<div class="highlight"><pre><span></span><code>[FrontierCRM] &lt;- Service Token -&gt; [Mixpanel REST API v2 + JQL]
+</code></pre></div>
+<p><strong>Sync Complexity:</strong> Medium-High
+<strong>Webhooks:</strong> Limited (alerts only)</p>
+<h2 id="strategic-recommendation_3">Strategic Recommendation</h2>
+<p>Mixpanel is a <strong>differentiator</strong> for FrontierCRM. While GA4 is generic website analytics, Mixpanel provides product usage signals for lead scoring and health monitoring.</p>
+<ol>
+<li>Service Token auth - simplest integration path</li>
+<li>REST API for common queries, JQL for power users</li>
+<li>Periodic cohort sync - tag CRM contacts as cohort members</li>
+<li>Store distinct_id as custom field on contacts</li>
+<li>Cache results for 1-6 hours</li>
+<li>Document JQL examples for common SMB use cases</li>
+</ol>
+<p>Position FrontierCRM as more sophisticated for product-led growth SMBs (SaaS, marketplace, e-commerce).</p>
+<hr />
+<h1 id="8-tableau">8. Tableau</h1>
+<h2 id="overview_7">Overview</h2>
+<p>Tableau is enterprise BI. For SMBs 10-200 employees, deep Tableau integration is <strong>low value</strong> - expensive ($75/user/mo), complex, most don't use it.</p>
+<h2 id="key-details_7">Key Details</h2>
+<table>
+<thead>
+<tr>
+<th>Aspect</th>
+<th>Detail</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>API Version</strong></td>
+<td>REST API v3.16+</td>
+</tr>
+<tr>
+<td><strong>Auth</strong></td>
+<td>PAT (Personal Access Token) - recommended</td>
+</tr>
+<tr>
+<td><strong>Token Expiry</strong></td>
+<td>PAT: never; Session: 120 min</td>
+</tr>
+<tr>
+<td><strong>Rate Limits</strong></td>
+<td>No hard limits; ~5 req/s recommended</td>
+</tr>
+<tr>
+<td><strong>On-prem vs Cloud</strong></td>
+<td>Different base URLs, same REST API</td>
+</tr>
+</tbody>
+</table>
+<h2 id="available-endpoints_1">Available Endpoints</h2>
+<table>
+<thead>
+<tr>
+<th>Endpoint</th>
+<th>Path</th>
+<th>CRM Use</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Workbooks</td>
+<td><code>/sites/{id}/workbooks</code></td>
+<td>List/publish</td>
+</tr>
+<tr>
+<td>Views</td>
+<td><code>/sites/{id}/views</code></td>
+<td>List dashboards</td>
+</tr>
+<tr>
+<td>Subscriptions</td>
+<td><code>/sites/{id}/subscriptions</code></td>
+<td>Schedule emails</td>
+</tr>
+<tr>
+<td>Webhooks</td>
+<td><code>/sites/{id}/webhooks</code></td>
+<td>Event listeners</td>
+</tr>
+<tr>
+<td>Users/Groups</td>
+<td><code>/sites/{id}/users</code></td>
+<td>User management</td>
+</tr>
+</tbody>
+</table>
+<h2 id="auth-flow-pat">Auth Flow (PAT)</h2>
+<ol>
+<li>User generates PAT in Tableau UI</li>
+<li>User enters PAT name+secret into FrontierCRM</li>
+<li>POST /auth/signin with PAT -&gt; session token</li>
+<li>Session token in X-Tableau-Auth header</li>
+<li>Re-authenticate when session expires (~120 min)</li>
+</ol>
+<h2 id="common-pain-points_7">Common Pain Points</h2>
+<ol>
+<li><strong>Enterprise-focused</strong> - AD/LDAP, SAML, Kerberos expected.</li>
+<li><strong>Heavy auth setup</strong> - 2-step warmup for every API chain.</li>
+<li><strong>Expensive</strong> - Creator $75/user/mo. Most SMBs can't justify.</li>
+<li><strong>Self-hosted vs Cloud divergence</strong> - CRM must handle both.</li>
+<li><strong>Multiple ID types</strong> - Content URL, repo URL, API ID.</li>
+<li><strong>Site ID required</strong> - Must discover and store.</li>
+<li><strong>GraphQL experimental</strong> - REST only for production.</li>
+<li><strong>Admin-configured rate limits</strong> - No warning until 429.</li>
+<li><strong>Embed complexity</strong> - iframe + signed ticket via Trusted Authentication.</li>
+<li><strong>pageNumber/pageSize pagination</strong> - Slow for large sets.</li>
+</ol>
+<h2 id="integration-pattern_7">Integration Pattern</h2>
+<div class="highlight"><pre><span></span><code>[FrontierCRM] &lt;- PAT -&gt; [Tableau REST API v3.16+]
+</code></pre></div>
+<p><strong>Sync Complexity:</strong> High
+<strong>Webhooks:</strong> Available</p>
+<h2 id="strategic-recommendation_4">Strategic Recommendation</h2>
+<p><strong>Do NOT invest heavily in Tableau.</strong> Fewer than 5% of SMBs 10-200 use it. Prioritize Power BI instead (included in M365 Business Premium, reaches 10-20x more SMBs).</p>
+<p>Minimum viable: PAT auth only, view list + iframe embed, webhook for workbook changes. Don't build subscriptions, data sources, or user management.</p>
+<hr />
+<h1 id="summary-comparison-matrix">Summary Comparison Matrix</h1>
+<table>
+<thead>
+<tr>
+<th>Integration</th>
+<th>Auth</th>
+<th>Complexity</th>
+<th>Webhooks</th>
+<th>Key CRM Value</th>
+<th>SMB Fit</th>
+<th>Priority</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>LinkedIn</strong></td>
+<td>OAuth 2.0</td>
+<td>Low-Med</td>
+<td>No</td>
+<td>Social posting, lead-gen</td>
+<td>Good</td>
+<td>High</td>
+</tr>
+<tr>
+<td><strong>Twitter/X</strong></td>
+<td>OAuth 1.0a+2.0</td>
+<td>Low-Med</td>
+<td>No (stream)</td>
+<td>Scheduling, listening</td>
+<td>Cost barrier</td>
+<td>Medium</td>
+</tr>
+<tr>
+<td><strong>Meta (FB/IG)</strong></td>
+<td>OAuth 2.0</td>
+<td>Medium</td>
+<td>Lead Ads</td>
+<td>Lead capture, inbox</td>
+<td>Critical</td>
+<td><strong>Highest</strong></td>
+</tr>
+<tr>
+<td><strong>Zapier</strong></td>
+<td>OAuth 2.0</td>
+<td>Low</td>
+<td>Consumer</td>
+<td>7K+ app connectivity</td>
+<td>Table stakes</td>
+<td><strong>Critical</strong></td>
+</tr>
+<tr>
+<td><strong>Make</strong></td>
+<td>OAuth 2.0</td>
+<td>Low</td>
+<td>Consumer</td>
+<td>Advanced automation</td>
+<td>Good</td>
+<td>High (with Zapier)</td>
+</tr>
+<tr>
+<td><strong>GA4</strong></td>
+<td>Service Account</td>
+<td>Medium</td>
+<td>No</td>
+<td>Website analytics</td>
+<td>Expected</td>
+<td>High</td>
+</tr>
+<tr>
+<td><strong>Mixpanel</strong></td>
+<td>API Secret</td>
+<td>Med-High</td>
+<td>Limited</td>
+<td>Product usage scoring</td>
+<td>Differentiator</td>
+<td>Medium</td>
+</tr>
+<tr>
+<td><strong>Tableau</strong></td>
+<td>PAT</td>
+<td>High</td>
+<td>Available</td>
+<td>Embedded analytics</td>
+<td>Very low</td>
+<td>Low</td>
+</tr>
+</tbody>
+</table>
+<h1 id="strategic-roadmap">Strategic Roadmap</h1>
+<h2 id="phase-1-mvp-ship-immediately">Phase 1 - MVP (Ship immediately)</h2>
+<ol>
+<li><strong>Meta Graph API</strong> - Lead Ads + page posting</li>
+<li><strong>Zapier</strong> - Triggers + actions + REST hook</li>
+<li><strong>Make</strong> - Same API as Zapier</li>
+</ol>
+<h2 id="phase-2-core-first-90-days">Phase 2 - Core (First 90 days)</h2>
+<ol>
+<li><strong>GA4</strong> - Dashboard widgets, campaign analytics</li>
+<li><strong>LinkedIn</strong> - Social publishing, lead-gen forms</li>
+<li><strong>Mixpanel</strong> - Product usage scoring, cohort sync</li>
+</ol>
+<h2 id="phase-3-niche-future-6-months">Phase 3 - Niche / Future (6+ months)</h2>
+<ol>
+<li><strong>Twitter/X</strong> - Posting, listening (requires paid tier)</li>
+<li><strong>Tableau</strong> - Only if demand; prioritize Power BI</li>
+</ol>
+
+
+
+
+
+
+
+  
+  
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Back to top
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": ".", "features": ["navigation.sections", "navigation.top", "search.suggest", "search.highlight", "content.code.copy"], "search": "assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="assets/javascripts/bundle.79ae519e.min.js"></script>
+      
+    
+  </body>
+</html>

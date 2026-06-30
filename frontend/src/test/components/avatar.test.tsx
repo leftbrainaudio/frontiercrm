@@ -1,6 +1,6 @@
 import { describe, it, expect } from 'vitest';
 import { render, screen } from '@testing-library/react';
-import { Avatar } from '../../components/ui/avatar';
+import { Avatar } from '../../components/atoms/avatar';
 
 describe('Avatar', () => {
   it('renders fallback initials when no src', () => {

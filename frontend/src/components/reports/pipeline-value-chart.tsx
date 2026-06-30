@@ -7,7 +7,7 @@ import {
   ResponsiveContainer,
   CartesianGrid,
 } from 'recharts';
-import { Card } from '../ui/card';
+import { Card } from '../molecules/card';
 import { formatCurrency } from './shared';
 
 export interface PipelineValueChartProps {

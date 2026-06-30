@@ -1,7 +1,9 @@
-import { useState } from 'react';
+import { useState, useCallback } from 'react';
 import { useParams, useNavigate, Link } from 'react-router-dom';
+import toast from 'react-hot-toast';
 import {
   ChevronRight,
+  ArrowLeft,
   Mail,
   Phone,
   MapPin,
@@ -19,21 +21,27 @@ import {
   AlertCircle,
   RefreshCw,
   Briefcase,
+  Check,
+  X,
+  Save,
 } from 'lucide-react';
-import { Card } from '../../components/ui/card';
-import { Avatar } from '../../components/ui/avatar';
-import { Badge } from '../../components/ui/badge';
-import { Button } from '../../components/ui/button';
-import { Skeleton } from '../../components/ui/skeleton';
+import { Card } from '../../components/molecules/card';
+import { Avatar } from '../../components/atoms/avatar';
+import { Badge } from '../../components/atoms/badge';
+import { Button } from '../../components/atoms/button';
+import { Skeleton } from '../../components/atoms/skeleton';
+import { Input } from '../../components/atoms/input';
 import { cn } from '../../lib/utils';
-import { useContact } from '../../api/contacts';
+import { useContact, useUpdateContact, useDeleteContact } from '../../api/contacts';
+import { useCustomFieldDefs } from '../../api/custom-fields';
 import { useDeals } from '../../api/deals';
 import { useActivities } from '../../api/activities';
-import type { Activity, Deal } from '../../types';
+import { useEmails } from '../../api/emails';
+import type { Activity, Deal, EmailMessage } from '../../types';
 
 // ── Tab Configuration ──
 
-type TabId = 'overview' | 'activity' | 'deals' | 'notes';
+type TabId = 'overview' | 'activity' | 'deals' | 'notes' | 'emails';
 
 interface Tab {
   id: TabId;
@@ -46,6 +54,7 @@ const TABS: Tab[] = [
   { id: 'activity', label: 'Activity', icon: <ActivityIconLucide className="h-4 w-4" /> },
   { id: 'deals', label: 'Deals', icon: <Briefcase className="h-4 w-4" /> },
   { id: 'notes', label: 'Notes', icon: <FileText className="h-4 w-4" /> },
+  { id: 'emails', label: 'Emails', icon: <Mail className="h-4 w-4" /> },
 ];
 
 // ── Helper Components ──
@@ -218,84 +227,215 @@ function DetailSkeleton() {
   );
 }
 
-// ── Tab Content Components ──
+/* ── Custom Fields Section ── */
 
-function OverviewTab({ contact }: { contact: NonNullable<ReturnType<typeof useContact>['data']> }) {
+function CustomFieldsSection({
+  customFields,
+}: {
+  customFields: Record<string, unknown>;
+}) {
+  const { data: defs } = useCustomFieldDefs('contacts');
+
+  if (!defs || defs.length === 0) return null;
+
+  const activeDefs = defs.filter((d) => d.is_active);
+
+  // Only show fields that have actual values
+  const entries = activeDefs
+    .map((def) => ({
+      def,
+      value: customFields[def.id],
+    }))
+    .filter((e) => e.value !== undefined && e.value !== null && e.value !== '');
+
+  if (entries.length === 0) return null;
+
+  return (
+    <Card title="Custom Fields">
+      <div className="space-y-1">
+        {entries.map(({ def, value }) => (
+          <DetailRow
+            key={def.id}
+            icon={<Tag className="h-4 w-4" />}
+            label={def.name}
+            value={String(value)}
+          />
+        ))}
+      </div>
+    </Card>
+  );
+}
+
+/* ── Tab Content Components ── */
+
+function OverviewTab({
+  contact,
+  isEditing,
+  formData,
+  onFieldChange,
+}: {
+  contact: NonNullable<ReturnType<typeof useContact>['data']>;
+  isEditing: boolean;
+  formData: Record<string, string>;
+  onFieldChange: (field: string, value: string) => void;
+}) {
   return (
     <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
       <Card title="Contact Information" className="md:col-span-2">
         <div className="grid grid-cols-1 gap-x-8 gap-y-1 sm:grid-cols-2">
-          <DetailRow
-            icon={<Mail className="h-4 w-4" />}
-            label="Email"
-            value={
-              <a
-                href={`mailto:${contact.email}`}
-                className="text-brand-600 hover:text-brand-700 dark:text-brand-400 dark:hover:text-brand-300"
-              >
-                {contact.email}
-              </a>
-            }
-          />
-          <DetailRow
-            icon={<Phone className="h-4 w-4" />}
-            label="Phone"
-            value={contact.phone || contact.mobile || 'Not set'}
-          />
-          <DetailRow
-            icon={<MapPin className="h-4 w-4" />}
-            label="Address"
-            value={
-              [contact.street, contact.city, contact.state, contact.country]
-                .filter(Boolean)
-                .join(', ') || 'Not set'
-            }
-          />
-          <DetailRow
-            icon={<Building2 className="h-4 w-4" />}
-            label="Account"
-            value={
-              contact.account_name ? (
-                <Badge variant="neutral" size="sm">
-                  {contact.account_name}
-                </Badge>
-              ) : (
-                'Not set'
-              )
-            }
-          />
-          <DetailRow
-            icon={<Tag className="h-4 w-4" />}
-            label="Tags"
-            value={
-              contact.tags.length > 0 ? (
-                <div className="flex flex-wrap gap-1.5">
-                  {contact.tags.map((tag) => (
-                    <Badge key={tag} variant="default" size="sm">
-                      {tag}
+          {isEditing ? (
+            <>
+              <div className="py-2">
+                <Input
+                  label="Email"
+                  value={formData.email}
+                  onChange={(e) => onFieldChange('email', e.target.value)}
+                  size="sm"
+                />
+              </div>
+              <div className="py-2">
+                <Input
+                  label="Phone"
+                  value={formData.phone}
+                  onChange={(e) => onFieldChange('phone', e.target.value)}
+                  size="sm"
+                />
+              </div>
+              <div className="py-2">
+                <Input
+                  label="Mobile"
+                  value={formData.mobile}
+                  onChange={(e) => onFieldChange('mobile', e.target.value)}
+                  size="sm"
+                />
+              </div>
+              <div className="py-2">
+                <Input
+                  label="Job Title"
+                  value={formData.job_title}
+                  onChange={(e) => onFieldChange('job_title', e.target.value)}
+                  size="sm"
+                />
+              </div>
+              <div className="py-2">
+                <Input
+                  label="Department"
+                  value={formData.department}
+                  onChange={(e) => onFieldChange('department', e.target.value)}
+                  size="sm"
+                />
+              </div>
+              <div className="py-2">
+                <Input label="Account" value={contact.account_name || ''} size="sm" readOnly />
+              </div>
+              <div className="py-2">
+                <Input
+                  label="Street"
+                  value={formData.street}
+                  onChange={(e) => onFieldChange('street', e.target.value)}
+                  size="sm"
+                />
+              </div>
+              <div className="py-2">
+                <Input
+                  label="City"
+                  value={formData.city}
+                  onChange={(e) => onFieldChange('city', e.target.value)}
+                  size="sm"
+                />
+              </div>
+              <div className="py-2">
+                <Input
+                  label="State"
+                  value={formData.state}
+                  onChange={(e) => onFieldChange('state', e.target.value)}
+                  size="sm"
+                />
+              </div>
+              <div className="py-2">
+                <Input
+                  label="Country"
+                  value={formData.country}
+                  onChange={(e) => onFieldChange('country', e.target.value)}
+                  size="sm"
+                />
+              </div>
+            </>
+          ) : (
+            <>
+              <DetailRow
+                icon={<Mail className="h-4 w-4" />}
+                label="Email"
+                value={
+                  <a
+                    href={`mailto:${contact.email}`}
+                    className="text-brand-600 hover:text-brand-700 dark:text-brand-400 dark:hover:text-brand-300"
+                  >
+                    {contact.email}
+                  </a>
+                }
+              />
+              <DetailRow
+                icon={<Phone className="h-4 w-4" />}
+                label="Phone"
+                value={contact.phone || contact.mobile || 'Not set'}
+              />
+              <DetailRow
+                icon={<MapPin className="h-4 w-4" />}
+                label="Address"
+                value={
+                  [contact.street, contact.city, contact.state, contact.country]
+                    .filter(Boolean)
+                    .join(', ') || 'Not set'
+                }
+              />
+              <DetailRow
+                icon={<Building2 className="h-4 w-4" />}
+                label="Account"
+                value={
+                  contact.account_name ? (
+                    <Badge variant="neutral" size="sm">
+                      {contact.account_name}
                     </Badge>
-                  ))}
-                </div>
-              ) : (
-                'None'
-              )
-            }
-          />
-          <DetailRow
-            icon={<User className="h-4 w-4" />}
-            label="Owner"
-            value={contact.owner_id || 'Unassigned'}
-          />
-          <DetailRow
-            icon={<Globe className="h-4 w-4" />}
-            label="Source"
-            value={contact.source || 'Unknown'}
-          />
-          <DetailRow
-            icon={<Calendar className="h-4 w-4" />}
-            label="Created"
-            value={formatDate(contact.created_at)}
-          />
+                  ) : (
+                    'Not set'
+                  )
+                }
+              />
+              <DetailRow
+                icon={<Tag className="h-4 w-4" />}
+                label="Tags"
+                value={
+                  contact.tags.length > 0 ? (
+                    <div className="flex flex-wrap gap-1.5">
+                      {contact.tags.map((tag) => (
+                        <Badge key={tag} variant="default" size="sm">
+                          {tag}
+                        </Badge>
+                      ))}
+                    </div>
+                  ) : (
+                    'None'
+                  )
+                }
+              />
+              <DetailRow
+                icon={<User className="h-4 w-4" />}
+                label="Owner"
+                value={contact.owner_id || 'Unassigned'}
+              />
+              <DetailRow
+                icon={<Globe className="h-4 w-4" />}
+                label="Source"
+                value={contact.source || 'Unknown'}
+              />
+              <DetailRow
+                icon={<Calendar className="h-4 w-4" />}
+                label="Created"
+                value={formatDate(contact.created_at)}
+              />
+            </>
+          )}
         </div>
       </Card>
 
@@ -341,11 +481,14 @@ function OverviewTab({ contact }: { contact: NonNullable<ReturnType<typeof useCo
           />
         </div>
       </Card>
+
+      <CustomFieldsSection customFields={contact.custom_fields} />
     </div>
   );
 }
 
 function ActivityTab({ contactId }: { contactId: string }) {
+  const navigate = useNavigate();
   const { data, isLoading, isError, refetch } = useActivities({
     entity_type: 'contacts',
     entity_id: contactId,
@@ -423,6 +566,17 @@ function ActivityTab({ contactId }: { contactId: string }) {
           ))}
         </div>
       </div>
+      {activities.length > 0 && (
+        <div className="border-t border-border dark:border-dark-border pt-3 text-center">
+          <Button
+            variant="ghost"
+            size="sm"
+            onClick={() => navigate(`/timeline?actor_id=${contactId}`)}
+          >
+            View full timeline →
+          </Button>
+        </div>
+      )}
     </Card>
   );
 }
@@ -607,12 +761,123 @@ function NotesTab({ contactId }: { contactId: string }) {
   );
 }
 
+// ── Email Tab ──
+
+function EmailsTab({ contactId, contactEmail }: { contactId: string; contactEmail: string }) {
+  const { data, isLoading, isError, refetch } = useEmails({
+    entity_type: 'contacts',
+    entity_id: contactId,
+    page_size: '30',
+  });
+
+  if (isLoading) {
+    return (
+      <Card>
+        <div className="space-y-4">
+          {Array.from({ length: 5 }).map((_, i) => (
+            <div key={i} className="flex items-start gap-3">
+              <Skeleton variant="circular" width={32} height={32} />
+              <div className="flex-1 space-y-1.5">
+                <Skeleton variant="text" width="60%" />
+                <Skeleton variant="text" width="40%" />
+                <Skeleton variant="text" width="20%" />
+              </div>
+            </div>
+          ))}
+        </div>
+      </Card>
+    );
+  }
+
+  if (isError) {
+    return (
+      <Card>
+        <ErrorState message="Failed to load emails" onRetry={() => refetch()} />
+      </Card>
+    );
+  }
+
+  const emails = data?.results ?? [];
+
+  if (emails.length === 0) {
+    return (
+      <Card>
+        <div className="flex flex-col items-center justify-center py-12 text-center">
+          <div className="mb-3 flex h-12 w-12 items-center justify-center rounded-full bg-surface-secondary dark:bg-dark-surface-secondary">
+            <Mail className="h-6 w-6 text-text-tertiary dark:text-dark-text-tertiary" />
+          </div>
+          <p className="text-sm text-text-tertiary dark:text-dark-text-tertiary">
+            No emails found for this contact.
+          </p>
+          {contactEmail && (
+            <a
+              href={`mailto:${contactEmail}`}
+              className="mt-2 text-sm text-brand-600 hover:text-brand-700 dark:text-brand-400"
+            >
+              Send an email to {contactEmail}
+            </a>
+          )}
+        </div>
+      </Card>
+    );
+  }
+
+  return (
+    <Card className="overflow-hidden p-0">
+      <div className="divide-y divide-border dark:divide-dark-border">
+        {emails.map((email) => (
+          <div
+            key={email.id}
+            className="flex items-start gap-3 px-4 py-3 transition-colors hover:bg-surface-tertiary dark:hover:bg-dark-surface-tertiary"
+          >
+            <div className="mt-1 flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-purple-100 text-purple-600 dark:bg-purple-900/30 dark:text-purple-400">
+              <Mail className="h-4 w-4" />
+            </div>
+            <div className="min-w-0 flex-1">
+              <div className="flex items-center justify-between gap-2">
+                <p className="truncate text-sm font-medium text-text-primary dark:text-dark-text-primary">
+                  {email.subject || '(No subject)'}
+                </p>
+                <Badge
+                  variant={email.direction === 'inbound' ? 'default' : 'neutral'}
+                  size="sm"
+                >
+                  {email.direction === 'inbound' ? 'Received' : 'Sent'}
+                </Badge>
+              </div>
+              {email.body_text && (
+                <p className="mt-0.5 line-clamp-2 text-sm text-text-secondary dark:text-dark-text-secondary">
+                  {email.body_text}
+                </p>
+              )}
+              <p className="mt-1 text-xs text-text-tertiary dark:text-dark-text-tertiary">
+                {email.direction === 'inbound'
+                  ? `From: ${email.from_email}`
+                  : `To: ${email.to_emails?.join(', ')}`}
+                {' · '}
+                {formatRelativeTime(email.sent_at || email.created_at)}
+              </p>
+            </div>
+          </div>
+        ))}
+      </div>
+    </Card>
+  );
+}
+
 // ── Main Component ──
 
 export function ContactDetailPage() {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
   const [activeTab, setActiveTab] = useState<TabId>('overview');
+  const [isEditing, setIsEditing] = useState(false);
+
+  // Form state for editing
+  const [formData, setFormData] = useState<Record<string, string>>({});
+
+  const updateContact = useUpdateContact();
+  const deleteContact = useDeleteContact();
 
   const {
     data: contact,
@@ -620,6 +885,52 @@ export function ContactDetailPage() {
     isError,
     refetch,
   } = useContact(id);
+
+  // Initialize form data when contact loads or edit mode opens
+  const startEditing = useCallback(() => {
+    if (!contact) return;
+    setFormData({
+      first_name: contact.first_name || '',
+      last_name: contact.last_name || '',
+      email: contact.email || '',
+      phone: contact.phone || '',
+      mobile: contact.mobile || '',
+      job_title: contact.job_title || '',
+      department: contact.department || '',
+      street: contact.street || '',
+      city: contact.city || '',
+      state: contact.state || '',
+      country: contact.country || '',
+      linkedin_url: contact.linkedin_url || '',
+      twitter_handle: contact.twitter_handle || '',
+    });
+    setIsEditing(true);
+  }, [contact]);
+
+  const cancelEditing = useCallback(() => {
+    setIsEditing(false);
+    setFormData({});
+  }, []);
+
+  const handleFieldChange = useCallback(
+    (field: string, value: string) => {
+      setFormData((prev) => ({ ...prev, [field]: value }));
+    },
+    [],
+  );
+
+  const saveContact = useCallback(async () => {
+    if (!id) return;
+    try {
+      await updateContact.mutateAsync({ id, ...formData });
+      toast.success('Contact updated successfully');
+      setIsEditing(false);
+      setFormData({});
+      refetch();
+    } catch (err) {
+      toast.error('Failed to update contact');
+    }
+  }, [id, formData, updateContact, refetch]);
 
   if (isLoading) {
     return <DetailSkeleton />;
@@ -650,28 +961,42 @@ export function ContactDetailPage() {
     );
   }
 
-  const handleDelete = () => {
-    if (window.confirm(`Are you sure you want to delete ${contact.full_name}?`)) {
-      // Delete logic would go here
+  const handleDelete = async () => {
+    if (!window.confirm(`Are you sure you want to delete ${contact.full_name}?`)) return;
+    if (!id) return;
+    try {
+      await deleteContact.mutateAsync(id);
+      toast.success('Contact deleted successfully');
       navigate('/contacts');
+    } catch {
+      toast.error('Failed to delete contact');
     }
   };
 
   return (
     <div className="space-y-6">
-      {/* Breadcrumb */}
-      <nav className="flex items-center gap-2 text-sm text-text-secondary dark:text-dark-text-secondary">
-        <Link
-          to="/contacts"
-          className="hover:text-text-primary dark:hover:text-dark-text-primary transition-colors"
-        >
-          Contacts
-        </Link>
-        <ChevronRight className="h-4 w-4" />
-        <span className="text-text-primary dark:text-dark-text-primary font-medium truncate max-w-[200px]">
-          {contact.full_name}
-        </span>
-      </nav>
+      {/* Back button + Breadcrumb */}
+      <div className="flex items-center gap-3">
+        <Button
+          variant="ghost"
+          size="sm"
+          icon={<ArrowLeft className="h-4 w-4" />}
+          onClick={() => navigate('/contacts')}
+          aria-label="Back to contacts"
+        />
+        <nav className="flex items-center gap-2 text-sm text-text-secondary dark:text-dark-text-secondary">
+          <Link
+            to="/contacts"
+            className="hover:text-text-primary dark:hover:text-dark-text-primary transition-colors"
+          >
+            Contacts
+          </Link>
+          <ChevronRight className="h-4 w-4" />
+          <span className="text-text-primary dark:text-dark-text-primary font-medium truncate max-w-[200px]">
+            {contact.full_name}
+          </span>
+        </nav>
+      </div>
 
       {/* Contact Header */}
       <Card>
@@ -682,31 +1007,100 @@ export function ContactDetailPage() {
             size="xl"
           />
           <div className="flex-1 text-center sm:text-left">
-            <h2 className="text-xl font-bold text-text-primary dark:text-dark-text-primary">
-              {contact.full_name}
-            </h2>
-            <p className="mt-0.5 text-sm text-text-secondary dark:text-dark-text-secondary">
-              {contact.job_title || 'No title'}
-              {contact.account_name && (
-                <>
-                  {' '}at{' '}
-                  <span className="font-medium">{contact.account_name}</span>
-                </>
-              )}
-            </p>
+            {isEditing ? (
+              <div className="flex flex-wrap gap-3">
+                <div className="w-40">
+                  <Input
+                    label="First Name"
+                    value={formData.first_name}
+                    onChange={(e) => handleFieldChange('first_name', e.target.value)}
+                    size="sm"
+                  />
+                </div>
+                <div className="w-40">
+                  <Input
+                    label="Last Name"
+                    value={formData.last_name}
+                    onChange={(e) => handleFieldChange('last_name', e.target.value)}
+                    size="sm"
+                  />
+                </div>
+                <div className="w-56">
+                  <Input
+                    label="Job Title"
+                    value={formData.job_title}
+                    onChange={(e) => handleFieldChange('job_title', e.target.value)}
+                    size="sm"
+                  />
+                </div>
+                <div className="w-48">
+                  <Input
+                    label="Company"
+                    value={contact.account_name || ''}
+                    size="sm"
+                    readOnly
+                  />
+                </div>
+              </div>
+            ) : (
+              <>
+                <h2 className="text-xl font-bold text-text-primary dark:text-dark-text-primary">
+                  {contact.full_name}
+                </h2>
+                <p className="mt-0.5 text-sm text-text-secondary dark:text-dark-text-secondary">
+                  {contact.job_title || 'No title'}
+                  {contact.account_name && (
+                    <>
+                      {' '}at{' '}
+                      <span className="font-medium">{contact.account_name}</span>
+                    </>
+                  )}
+                </p>
+              </>
+            )}
           </div>
           <div className="flex gap-2">
-            <Button variant="secondary" size="sm" icon={<Edit className="h-4 w-4" />}>
-              Edit
-            </Button>
-            <Button
-              variant="danger"
-              size="sm"
-              icon={<Trash2 className="h-4 w-4" />}
-              onClick={handleDelete}
-            >
-              Delete
-            </Button>
+            {isEditing ? (
+              <>
+                <Button
+                  variant="secondary"
+                  size="sm"
+                  icon={<Check className="h-4 w-4" />}
+                  onClick={saveContact}
+                  loading={updateContact.isPending}
+                >
+                  Save
+                </Button>
+                <Button
+                  variant="outline"
+                  size="sm"
+                  icon={<X className="h-4 w-4" />}
+                  onClick={cancelEditing}
+                  disabled={updateContact.isPending}
+                >
+                  Cancel
+                </Button>
+              </>
+            ) : (
+              <>
+                <Button
+                  variant="secondary"
+                  size="sm"
+                  icon={<Edit className="h-4 w-4" />}
+                  onClick={startEditing}
+                >
+                  Edit
+                </Button>
+                <Button
+                  variant="danger"
+                  size="sm"
+                  icon={<Trash2 className="h-4 w-4" />}
+                  onClick={handleDelete}
+                >
+                  Delete
+                </Button>
+              </>
+            )}
           </div>
         </div>
       </Card>
@@ -736,10 +1130,20 @@ export function ContactDetailPage() {
 
       {/* Tab Content */}
       <div role="tabpanel" aria-label={activeTab}>
-        {activeTab === 'overview' && <OverviewTab contact={contact} />}
+        {activeTab === 'overview' && (
+          <OverviewTab
+            contact={contact}
+            isEditing={isEditing}
+            formData={formData}
+            onFieldChange={handleFieldChange}
+          />
+        )}
         {activeTab === 'activity' && <ActivityTab contactId={contact.id} />}
         {activeTab === 'deals' && <DealsTab contactId={contact.id} />}
         {activeTab === 'notes' && <NotesTab contactId={contact.id} />}
+        {activeTab === 'emails' && (
+          <EmailsTab contactId={contact.id} contactEmail={contact.email} />
+        )}
       </div>
     </div>
   );

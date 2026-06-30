@@ -1,7 +1,7 @@
 import { describe, it, expect, vi } from 'vitest';
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import { Badge } from '../../components/ui/badge';
+import { Badge } from '../../components/atoms/badge';
 
 describe('Badge', () => {
   it('renders badge with children', () => {

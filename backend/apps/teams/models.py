@@ -15,6 +15,7 @@ class Tenant(models.Model):
     subdomain = models.CharField(max_length=100, unique=True, blank=True, null=True)
     logo_url = models.URLField(max_length=500, blank=True, default="")
     settings = models.JSONField(default=dict, blank=True)
+    industry = models.CharField(max_length=100, blank=True, default="")
     max_users = models.IntegerField(default=50)
     is_active = models.BooleanField(default=True)
     created_at = models.DateTimeField(auto_now_add=True)
@@ -60,6 +61,10 @@ class Role(models.Model):
     description = models.TextField(blank=True, default="")
     permissions = models.JSONField(default=dict, blank=True)
     is_admin = models.BooleanField(default=False)
+    inherits_from = models.ForeignKey(
+        "self", on_delete=models.SET_NULL, null=True, blank=True,
+        related_name="inheriting_roles",
+    )
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
@@ -72,6 +77,15 @@ class Role(models.Model):
 
     def __str__(self) -> str:
         return f"{self.tenant.name} / {self.name}"
+
+    @property
+    def resolved_permissions(self) -> dict:
+        """Merge inherited + own permissions (own wins)."""
+        base: dict = {}
+        if self.inherits_from:
+            base = dict(self.inherits_from.resolved_permissions)
+        base.update(self.permissions)
+        return base
 
 
 class Membership(models.Model):

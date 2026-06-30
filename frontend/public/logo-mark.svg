@@ -1,0 +1,25 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 120" fill="none">
+  <!-- Compass-forward arrow mark -->
+  <g transform="translate(60, 60)">
+    <!-- Outer compass circle -->
+    <circle cx="0" cy="0" r="48" stroke="#2563EB" stroke-width="2.5" fill="none" opacity="0.15"/>
+    
+    <!-- North arrow (extended, arrowhead shape) -->
+    <polygon points="0,-48 12,-18 4,-18 4,-8 -4,-8 -4,-18 -12,-18" fill="#2563EB"/>
+    
+    <!-- South point -->
+    <polygon points="0,30 10,10 -10,10" fill="#2563EB" opacity="0.5"/>
+    
+    <!-- East point -->
+    <polygon points="30,0 10,10 10,-10" fill="#2563EB" opacity="0.7"/>
+    
+    <!-- West point -->
+    <polygon points="-30,0 -10,10 -10,-10" fill="#2563EB" opacity="0.7"/>
+    
+    <!-- Center diamond -->
+    <rect x="-6" y="-6" width="12" height="12" rx="2" fill="#2563EB" transform="rotate(45)"/>
+    
+    <!-- Inner accent teal dot -->
+    <circle cx="0" cy="0" r="3" fill="#14B8A6"/>
+  </g>
+</svg>

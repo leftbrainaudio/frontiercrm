@@ -4,9 +4,9 @@ import os
 from datetime import timedelta
 from pathlib import Path
 
-import dj_database_url
+from celery.schedules import crontab
 
-# ── Build paths ──────────────────────────────────────────────────────────────
+# ── Build paths
 BASE_DIR = Path(__file__).resolve().parent.parent.parent
 
 # ── Security ─────────────────────────────────────────────────────────────────
@@ -28,6 +28,7 @@ INSTALLED_APPS = [
     "rest_framework_simplejwt",
     "corsheaders",
     "django_filters",
+    "drf_spectacular",
     # Internal apps
     "apps.core",
     "apps.accounts",
@@ -44,8 +45,14 @@ INSTALLED_APPS = [
     "apps.search",
     "apps.imports",
     "apps.reports",
+    # Export
+    "apps.export",
     # Sync engine
     "apps.sync",
+    # Slack notifications
+    "apps.slack",
+    # API Keys
+    "apps.apikeys",
 ]
 
 MIDDLEWARE = [
@@ -83,17 +90,22 @@ WSGI_APPLICATION = "config.wsgi.application"
 ASGI_APPLICATION = "config.asgi.application"
 
 # ── Database ─────────────────────────────────────────────────────────────────
-DATABASE_URL = os.environ.get(
-    "DATABASE_URL",
-    "postgresql://postgres:postgres@localhost:5432/frontiercrm",
-)
-DATABASES = {"default": dj_database_url.config(default=DATABASE_URL, conn_max_age=600)}
+# Default is SQLite so the project works out of the box without Postgres.
+# Override with DATABASE_URL env var for production (Supabase, Fly Postgres, etc.).
+# Development settings (settings/development.py) also set SQLite explicitly.
+DATABASES = {
+    "default": {
+        "ENGINE": "django.db.backends.sqlite3",
+        "NAME": BASE_DIR / "db.sqlite3",
+    }
+}
 
 # ── Auth & JWT ───────────────────────────────────────────────────────────────
 AUTH_USER_MODEL = "accounts.User"
 
 REST_FRAMEWORK = {
     "DEFAULT_AUTHENTICATION_CLASSES": (
+        "apps.apikeys.auth.APIKeyAuthentication",  # checked first — handles fcrm_ prefix
         "rest_framework_simplejwt.authentication.JWTAuthentication",
         "rest_framework.authentication.SessionAuthentication",
     ),
@@ -109,7 +121,7 @@ REST_FRAMEWORK = {
         "rest_framework.renderers.JSONRenderer",
         "rest_framework.renderers.BrowsableAPIRenderer",
     ],
-    "DEFAULT_SCHEMA_CLASS": "rest_framework.schemas.openapi.AutoSchema",
+    "DEFAULT_SCHEMA_CLASS": "drf_spectacular.openapi.AutoSchema",
     "DEFAULT_THROTTLE_CLASSES": [
         "rest_framework.throttling.AnonRateThrottle",
         "rest_framework.throttling.UserRateThrottle",
@@ -129,6 +141,37 @@ SIMPLE_JWT = {
     "AUTH_TOKEN_CLASSES": ("rest_framework_simplejwt.tokens.AccessToken",),
 }
 
+# ── OpenAPI / Swagger ────────────────────────────────────────────────────
+SPECTACULAR_SETTINGS = {
+    "TITLE": "FrontierCRM API",
+    "DESCRIPTION": "API for FrontierCRM — the modern CRM platform",
+    "VERSION": "1.0.0",
+    "SERVE_INCLUDE_SCHEMA": False,
+    "SWAGGER_UI_SETTINGS": {
+        "deepLinking": True,
+        "persistAuthorization": True,
+        "displayRequestDuration": True,
+    },
+    "COMPONENT_SPLIT_REQUEST": True,
+    "TAGS": [
+        {"name": "Auth", "description": "Authentication and authorization"},
+        {"name": "Accounts", "description": "User accounts and profile management"},
+        {"name": "Contacts", "description": "Contact management"},
+        {"name": "Deals", "description": "Pipeline deal management"},
+        {"name": "Activities", "description": "Activity timeline and logging"},
+        {"name": "Email", "description": "Email sync and outbound"},
+        {"name": "Notes", "description": "Notes and attachments"},
+        {"name": "Tasks", "description": "Task management"},
+        {"name": "Teams", "description": "Team and member management"},
+        {"name": "Files", "description": "File upload and storage"},
+        {"name": "Search", "description": "Global search"},
+        {"name": "Reports", "description": "Dashboards and reporting"},
+        {"name": "Export", "description": "Data export"},
+        {"name": "Sync", "description": "Data sync engine"},
+        {"name": "Webhooks", "description": "Webhook subscriptions"},
+    ],
+}
+
 # ── CORS ─────────────────────────────────────────────────────────────────────
 CORS_ALLOWED_ORIGINS = os.environ.get(
     "CORS_ALLOWED_ORIGINS",
@@ -145,6 +188,18 @@ CELERY_RESULT_SERIALIZER = "json"
 CELERY_TIMEZONE = "UTC"
 CELERY_TASK_TRACK_STARTED = True
 CELERY_TASK_TIME_LIMIT = 30 * 60  # 30 minutes
+CELERY_BEAT_SCHEDULE = {
+    "retry-stale-webhooks": {
+        "task": "apps.webhooks.tasks.retry_stale_webhooks",
+        "schedule": 300.0,  # every 5 minutes
+        "options": {"expires": 240.0},
+    },
+    "prune-old-dead-webhook-events": {
+        "task": "apps.webhooks.tasks.prune_dead_events",
+        "schedule": crontab(hour=3, minute=0),  # daily at 03:00 UTC
+        "options": {"expires": 3600},
+    },
+}
 
 # ── Redis (cache) ────────────────────────────────────────────────────────────
 # Production uses Redis via django-redis. Falls back to LocMem if no REDIS_URL.
@@ -199,8 +254,38 @@ DEFAULT_FROM_EMAIL = os.environ.get("DEFAULT_FROM_EMAIL", "noreply@frontiercrm.c
 GOOGLE_CLIENT_ID = os.environ.get("GOOGLE_CLIENT_ID", "")
 GOOGLE_CLIENT_SECRET = os.environ.get("GOOGLE_CLIENT_SECRET", "")
 GOOGLE_OAUTH_REDIRECT_URI = os.environ.get(
-    "GOOGLE_OAUTH_REDIRECT_URI", "http://localhost:8000/api/auth/google/callback/"
+    "GOOGLE_OAUTH_REDIRECT_URI", "http://localhost:5173/auth/callback"
 )
+
+# ── Microsoft OAuth (login) ───────────────────────────────────────────────────
+MICROSOFT_CLIENT_ID = os.environ.get("MICROSOFT_CLIENT_ID", "")
+MICROSOFT_CLIENT_SECRET = os.environ.get("MICROSOFT_CLIENT_SECRET", "")
+MICROSOFT_TENANT = os.environ.get("MICROSOFT_TENANT", "common")
+MICROSOFT_OAUTH_REDIRECT_URI = os.environ.get(
+    "MICROSOFT_OAUTH_REDIRECT_URI", "http://localhost:5173/auth/callback"
+)
+
+# ── Google Calendar Event Creation & Push ─────────────────────────────────────
+GOOGLE_CALENDAR_SCOPES = [
+    "https://www.googleapis.com/auth/calendar.events",
+]
+CALENDAR_WEBHOOK_URL = os.environ.get(
+    "CALENDAR_WEBHOOK_URL",
+    "https://api.frontiercrm.com/api/sync/calendar/webhook/",
+)
+CALENDAR_WATCH_TTL_SECONDS = int(os.environ.get(
+    "CALENDAR_WATCH_TTL_SECONDS",
+    7 * 24 * 3600,  # 7 days (max allowed)
+))
+CALENDAR_WATCH_EXPIRY_GRACE_HOURS = int(os.environ.get(
+    "CALENDAR_WATCH_EXPIRY_GRACE_HOURS",
+    24,  # Renew channels within 24 hours of expiry
+))
+CRM_EXTENDED_PROPERTIES_PREFIX = "frontiercrm"
+CALENDAR_WRITE_SCOPE_REQUIRED = True
+
+# ── SAML ──────────────────────────────────────────────────────────────────
+SAML_BASE_URL = os.environ.get("SAML_BASE_URL", "http://localhost:8000")
 
 # ── Meilisearch ──────────────────────────────────────────────────────────────
 MEILISEARCH_URL = os.environ.get("MEILISEARCH_URL", "http://localhost:7700")

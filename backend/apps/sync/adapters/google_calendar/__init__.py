@@ -1,0 +1,1 @@
+"""Google Calendar sync adapter package."""

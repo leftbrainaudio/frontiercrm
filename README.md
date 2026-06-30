@@ -6,14 +6,16 @@ Manage contacts, deals, pipelines, email, tasks, and activities — all in one p
 
 ## Quick links
 
-| What | Link |
-|------|------|
-| Production app | https://app.frontiercrm.com |
-| Production API | https://api.frontiercrm.com |
-| API health | https://api.frontiercrm.com/api/health/ |
-| API schema | https://api.frontiercrm.com/api/schema/ |
-| **Documentation** | `docs/README.md` |
-| **One-page onboarding** | `docs/ONBOARDING.md` |
+|| What | Link |
+||------|------|
+|| Production app | https://app.frontiercrm.com |
+|| Production API | https://api.frontiercrm.com |
+|| API health | https://api.frontiercrm.com/api/health/ |
+|| API schema (OpenAPI) | https://api.frontiercrm.com/api/docs/schema/ |
+|| Swagger UI | https://api.frontiercrm.com/api/docs/swagger/ |
+|| ReDoc | https://api.frontiercrm.com/api/docs/redoc/ |
+|| **Documentation** | `docs/README.md` |
+|| **One-page onboarding** | `docs/ONBOARDING.md` |
 
 ## Start here
 

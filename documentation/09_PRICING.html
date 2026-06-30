@@ -1,0 +1,4217 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="Project documentation — design system, roadmap, devops, brand, architecture">
+      
+      
+        <meta name="author" content="scout">
+      
+      
+      
+        <link rel="prev" href="03_PERSONAS.html">
+      
+      
+        <link rel="next" href="07_UX_WORKFLOWS.html">
+      
+      
+        
+      
+      
+      <link rel="icon" href="assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.6">
+    
+    
+      
+        <title>Pricing - FrontierCRM</title>
+      
+    
+    
+      <link rel="stylesheet" href="assets/stylesheets/main.484c7ddc.min.css">
+      
+        
+        <link rel="stylesheet" href="assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="stylesheets/extra.css">
+    
+    <script>__md_scope=new URL(".",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="teal">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#frontiercrm-pricing-tier-analysis-revenue-strategy" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="." title="FrontierCRM" class="md-header__button md-logo" aria-label="FrontierCRM" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            FrontierCRM
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Pricing
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+    
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+        <div class="md-search__suggest" data-md-component="search-suggest"></div>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="." title="FrontierCRM" class="md-nav__button md-logo" aria-label="FrontierCRM" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    FrontierCRM
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="index.md" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Home
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="10_ROADMAP.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Roadmap
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--active"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="12_DEVOPS.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    DevOps
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--active"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4" >
+        
+          
+          <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Brand Guidelines
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Brand Guidelines
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="08_BRAND_GUIDELINES.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Brand Identity
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--complete"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="ui-design-system.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Design System Overview
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--complete"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="design-system-gaps.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Implementation Gaps
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--active"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="06_DATA_ARCHITECTURE.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Architecture
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--complete"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="05_TECH_STACK.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Tech Stack
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--complete"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="11_DECISION_LOG.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Decision Log
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--complete"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_8" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_8" id="__nav_8_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Research
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_8_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_8">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Research
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="01_MARKET_RESEARCH.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Market
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--complete"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="02_FEATURE_MATRIX.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Features
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--complete"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="04_INTEGRATIONS.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Integrations
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--completed"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="04B_EMERGING_TECH.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Emerging Tech
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--complete"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="03_PERSONAS.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Personas
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--complete"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Pricing
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--complete"></span>
+  
+
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="09_PRICING.html" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Pricing
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--complete"></span>
+  
+
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#tldr" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        TL;DR
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#1-pricing-philosophy-positioning" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1. Pricing Philosophy &amp; Positioning
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="1. Pricing Philosophy &amp; Positioning">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#11-core-principles" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1.1 Core Principles
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#12-competitive-positioning-map" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1.2 Competitive Positioning Map
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2-pricing-tiers" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2. Pricing Tiers
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="2. Pricing Tiers">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#21-tier-overview" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.1 Tier Overview
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#22-detailed-tier-comparison" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.2 Detailed Tier Comparison
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="2.2 Detailed Tier Comparison">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#free-tier-0-up-to-2-users" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Free Tier — $0 (up to 2 users)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#starter-tier-19usermo-billed-monthly" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Starter Tier — $19/user/mo (billed monthly)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#growth-tier-49usermo-billed-monthly" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Growth Tier — $49/user/mo (billed monthly)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#pro-tier-99usermo-billed-monthly" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Pro Tier — $99/user/mo (billed monthly)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#enterprise-tier-custom-pricing" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Enterprise Tier — Custom pricing
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#3-feature-gating-strategy" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3. Feature Gating Strategy
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="3. Feature Gating Strategy">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#31-core-differentiator-ai-is-included" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.1 Core Differentiator: AI Is Included
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#32-feature-gating-summary" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.2 Feature Gating Summary
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#33-what-we-do-not-gate-competitor-pain-points-we-avoid" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.3 What We DO NOT Gate (Competitor Pain Points We Avoid)
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#4-usage-based-add-ons" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4. Usage-Based Add-Ons
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="4. Usage-Based Add-Ons">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#41-add-on-pricing" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.1 Add-On Pricing
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#42-marketplace-apps" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.2 Marketplace Apps
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#43-ai-credits-detailed-mechanics" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.3 AI Credits — Detailed Mechanics
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#5-annual-vs-monthly-discount-analysis" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5. Annual vs. Monthly Discount Analysis
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="5. Annual vs. Monthly Discount Analysis">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#51-discount-structure" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5.1 Discount Structure
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#52-projected-billing-mix" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5.2 Projected Billing Mix
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#6-revenue-projections" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6. Revenue Projections
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="6. Revenue Projections">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#61-adoption-model-conservative-scenario" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6.1 Adoption Model — Conservative Scenario
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="6.1 Adoption Model — Conservative Scenario">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#year-1-2027-launch-year" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Year 1 (2027) — Launch Year
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#year-2-2028-growth-year" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Year 2 (2028) — Growth Year
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#year-3-2029-scale-year" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Year 3 (2029) — Scale Year
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#62-revenue-breakdown-by-tier-y3-annualized" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6.2 Revenue Breakdown by Tier (Y3 Annualized)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#63-unit-economics" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6.3 Unit Economics
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#64-sensitivity-analysis" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6.4 Sensitivity Analysis
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#7-competitive-positioning-strategy" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        7. Competitive Positioning Strategy
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="7. Competitive Positioning Strategy">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#71-price-performance-comparison-10-person-team" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        7.1 Price-Performance Comparison (10-person team)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#72-positioning-by-buyer-persona" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        7.2 Positioning by Buyer Persona
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#8-go-to-market-pricing-tactics" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        8. Go-to-Market Pricing Tactics
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="8. Go-to-Market Pricing Tactics">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#81-launch-pricing-strategy" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        8.1 Launch Pricing Strategy
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#82-price-increase-strategy" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        8.2 Price Increase Strategy
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#83-discount-policy" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        8.3 Discount Policy
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#9-risk-analysis-mitigation" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        9. Risk Analysis &amp; Mitigation
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#10-recommendations" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        10. Recommendations
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="10. Recommendations">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#101-immediate-actions-pre-launch" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        10.1 Immediate Actions (Pre-Launch)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#102-medium-term-6-12-months-post-launch" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        10.2 Medium-Term (6-12 Months Post-Launch)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#103-key-metrics-to-track" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        10.3 Key Metrics to Track
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#appendix-a-full-pricing-reference-card" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Appendix A: Full Pricing Reference Card
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Appendix A: Full Pricing Reference Card">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#monthly-pricing" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Monthly Pricing
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#annual-pricing" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Annual Pricing
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="07_UX_WORKFLOWS.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    UX & Workflows
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--complete"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="api-endpoints.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    API
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--complete"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#tldr" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        TL;DR
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#1-pricing-philosophy-positioning" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1. Pricing Philosophy &amp; Positioning
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="1. Pricing Philosophy &amp; Positioning">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#11-core-principles" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1.1 Core Principles
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#12-competitive-positioning-map" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1.2 Competitive Positioning Map
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2-pricing-tiers" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2. Pricing Tiers
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="2. Pricing Tiers">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#21-tier-overview" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.1 Tier Overview
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#22-detailed-tier-comparison" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.2 Detailed Tier Comparison
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="2.2 Detailed Tier Comparison">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#free-tier-0-up-to-2-users" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Free Tier — $0 (up to 2 users)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#starter-tier-19usermo-billed-monthly" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Starter Tier — $19/user/mo (billed monthly)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#growth-tier-49usermo-billed-monthly" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Growth Tier — $49/user/mo (billed monthly)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#pro-tier-99usermo-billed-monthly" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Pro Tier — $99/user/mo (billed monthly)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#enterprise-tier-custom-pricing" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Enterprise Tier — Custom pricing
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#3-feature-gating-strategy" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3. Feature Gating Strategy
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="3. Feature Gating Strategy">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#31-core-differentiator-ai-is-included" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.1 Core Differentiator: AI Is Included
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#32-feature-gating-summary" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.2 Feature Gating Summary
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#33-what-we-do-not-gate-competitor-pain-points-we-avoid" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.3 What We DO NOT Gate (Competitor Pain Points We Avoid)
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#4-usage-based-add-ons" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4. Usage-Based Add-Ons
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="4. Usage-Based Add-Ons">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#41-add-on-pricing" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.1 Add-On Pricing
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#42-marketplace-apps" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.2 Marketplace Apps
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#43-ai-credits-detailed-mechanics" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.3 AI Credits — Detailed Mechanics
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#5-annual-vs-monthly-discount-analysis" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5. Annual vs. Monthly Discount Analysis
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="5. Annual vs. Monthly Discount Analysis">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#51-discount-structure" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5.1 Discount Structure
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#52-projected-billing-mix" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5.2 Projected Billing Mix
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#6-revenue-projections" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6. Revenue Projections
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="6. Revenue Projections">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#61-adoption-model-conservative-scenario" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6.1 Adoption Model — Conservative Scenario
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="6.1 Adoption Model — Conservative Scenario">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#year-1-2027-launch-year" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Year 1 (2027) — Launch Year
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#year-2-2028-growth-year" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Year 2 (2028) — Growth Year
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#year-3-2029-scale-year" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Year 3 (2029) — Scale Year
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#62-revenue-breakdown-by-tier-y3-annualized" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6.2 Revenue Breakdown by Tier (Y3 Annualized)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#63-unit-economics" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6.3 Unit Economics
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#64-sensitivity-analysis" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6.4 Sensitivity Analysis
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#7-competitive-positioning-strategy" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        7. Competitive Positioning Strategy
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="7. Competitive Positioning Strategy">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#71-price-performance-comparison-10-person-team" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        7.1 Price-Performance Comparison (10-person team)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#72-positioning-by-buyer-persona" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        7.2 Positioning by Buyer Persona
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#8-go-to-market-pricing-tactics" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        8. Go-to-Market Pricing Tactics
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="8. Go-to-Market Pricing Tactics">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#81-launch-pricing-strategy" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        8.1 Launch Pricing Strategy
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#82-price-increase-strategy" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        8.2 Price Increase Strategy
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#83-discount-policy" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        8.3 Discount Policy
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#9-risk-analysis-mitigation" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        9. Risk Analysis &amp; Mitigation
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#10-recommendations" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        10. Recommendations
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="10. Recommendations">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#101-immediate-actions-pre-launch" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        10.1 Immediate Actions (Pre-Launch)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#102-medium-term-6-12-months-post-launch" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        10.2 Medium-Term (6-12 Months Post-Launch)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#103-key-metrics-to-track" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        10.3 Key Metrics to Track
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#appendix-a-full-pricing-reference-card" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Appendix A: Full Pricing Reference Card
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Appendix A: Full Pricing Reference Card">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#monthly-pricing" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Monthly Pricing
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#annual-pricing" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Annual Pricing
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+
+<h1 id="frontiercrm-pricing-tier-analysis-revenue-strategy">FrontierCRM — Pricing Tier Analysis &amp; Revenue Strategy</h1>
+<p><strong>Author:</strong> Pricing Analyst (T9 — derived from T1 market research + T2 feature analysis)
+<strong>Date:</strong> 2026-06-28
+<strong>Status:</strong> Complete</p>
+<hr />
+<h2 id="tldr">TL;DR</h2>
+<ul>
+<li><strong>5 tiers</strong> designed: Free, Starter, Growth, Pro, Enterprise — with a clear upgrade path</li>
+<li><strong>All-inclusive pricing philosophy</strong>: every paid tier includes ALL core features + AI capabilities. No feature gates, no hidden SKUs, no consumption-billing surprises</li>
+<li><strong>Pricing range</strong>: $0 (Free) → $19 → $49 → $99 → Custom (Enterprise)</li>
+<li><strong>Annual discount</strong>: 18% — competitive with industry norms (15-20%)</li>
+<li><strong>3-year ARR projection</strong>: $0.9M (Y1) → $8.2M (Y2) → $34.5M (Y3) at realistic adoption rates</li>
+<li><strong>Key differentiator vs. market</strong>: AI-native features included at every paid tier (competitors gate AI behind +$50/user/mo add-ons)</li>
+</ul>
+<p><img alt="Pricing Tier Comparison" src="assets/diagrams/pricing-tier-comparison.png" />
+<img alt="Pricing Comparison" src="assets/visuals/03-pricing-comparison.png" /></p>
+<hr />
+<h2 id="1-pricing-philosophy-positioning">1. Pricing Philosophy &amp; Positioning</h2>
+<h3 id="11-core-principles">1.1 Core Principles</h3>
+<table>
+<thead>
+<tr>
+<th>#</th>
+<th>Principle</th>
+<th>Rationale</th>
+<th>Evidence</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td><strong>All features included in every paid tier</strong></td>
+<td>No feature gates, no hidden SKUs. The #1 complaint across every CRM competitor is pricing opacity and upselling basic features.</td>
+<td>T1 research: "Transparent pricing" identified as Gap #3 across 10 competitors. Salesforce users report base price is 30% of actual total. HubSpot's multi-hub pricing forces $1,600+/mo for basic features.</td>
+</tr>
+<tr>
+<td>2</td>
+<td><strong>AI-native, not AI-bolted-on</strong></td>
+<td>AI (lead scoring, email drafting, meeting summaries, predictive forecasting) is included at every paid tier, not upsold.</td>
+<td>T2 research: Gap #2 — "AI features are add-ons, not core." Salesforce Einstein costs $50+/user/mo extra. HubSpot Breeze AI requires Professional tier minimum ($800+/mo).</td>
+</tr>
+<tr>
+<td>3</td>
+<td><strong>Transparent, predictable pricing</strong></td>
+<td>Single per-user price. No consumption credits, no data cloud metering, no surprise overages.</td>
+<td>T2 research: "Pricing transparency" identified as the highest-ROI innovation opportunity. Salesforce's Data Cloud credits called "impossible to forecast and impossible to cap" by users.</td>
+</tr>
+<tr>
+<td>4</td>
+<td><strong>Unified platform — one product</strong></td>
+<td>Don't unbundle into Sales/Marketing/Service hubs. One product, one price, all modules included.</td>
+<td>T1 research: Gap #5 — "unified all-in-one product." HubSpot's multi-hub model is the #2 user complaint.</td>
+</tr>
+<tr>
+<td>5</td>
+<td><strong>Setup in 10 minutes</strong></td>
+<td>The CRM should be usable on day 1 with minimal configuration. No consultant needed.</td>
+<td>T1 research: "Onboarding time" is a key differentiator. Salesforce takes 6-12 months for proficiency. Pipedrive/Copper win on fast setup.</td>
+</tr>
+</tbody>
+</table>
+<h3 id="12-competitive-positioning-map">1.2 Competitive Positioning Map</h3>
+<div class="highlight"><pre><span></span><code>                PREMIUM ($80-150+/user/mo)
+                    │
+                    │   Salesforce Pro/Ent    HubSpot Pro/Ent
+                    │         │                     │
+                    │         │                     │
+    COMPLEX ◄───────┼─────────┼─────────────────────┼───────► SIMPLE
+                    │         │                     │
+                    │   Zoho Ent     │  FrontierCRM Pro ($99)
+                    │               │  FrontierCRM Growth ($49)
+                    │   Freshsales  │  FrontierCRM Starter ($19)
+                    │               │
+                    │   Zoho Std    │  Pipedrive    Freshsales Free
+                    │               │  Copper       Zoho Free
+                    │               │
+                    │               
+                BUDGET ($0-30/user/mo)
+</code></pre></div>
+<p><strong>FrontierCRM positioning:</strong> The sweet spot — premium-feeling at an accessible price. Not as cheap as Zoho/Freshsales, but more capable and beautiful. Much simpler than Salesforce, more transparent than HubSpot.</p>
+<hr />
+<h2 id="2-pricing-tiers">2. Pricing Tiers</h2>
+<h3 id="21-tier-overview">2.1 Tier Overview</h3>
+<table>
+<thead>
+<tr>
+<th>Tier</th>
+<th>Price (Monthly)</th>
+<th>Price (Annual)</th>
+<th>Est. Monthly Cost/User</th>
+<th>Users Included</th>
+<th>Target Customer Size</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Free</strong></td>
+<td>$0</td>
+<td>$0</td>
+<td>$0</td>
+<td>Up to 2</td>
+<td>1-2 person businesses, evaluators</td>
+</tr>
+<tr>
+<td><strong>Starter</strong></td>
+<td>$19/user/mo</td>
+<td>$15.58/user/mo</td>
+<td>$19/mo</td>
+<td>Unlimited</td>
+<td>2-25 employees</td>
+</tr>
+<tr>
+<td><strong>Growth</strong></td>
+<td>$49/user/mo</td>
+<td>$40.18/user/mo</td>
+<td>$49/mo</td>
+<td>Unlimited</td>
+<td>10-100 employees</td>
+</tr>
+<tr>
+<td><strong>Pro</strong></td>
+<td>$99/user/mo</td>
+<td>$81.18/user/mo</td>
+<td>$99/mo</td>
+<td>Unlimited</td>
+<td>50-500 employees</td>
+</tr>
+<tr>
+<td><strong>Enterprise</strong></td>
+<td>Custom</td>
+<td>Custom</td>
+<td>Custom</td>
+<td>Unlimited</td>
+<td>500+ employees</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Annual Pricing:</strong> 18% discount on monthly price (paid annually)
+- Starter annual: $187/user/yr (vs. $228 billed monthly)
+- Growth annual: $482/user/yr (vs. $588)
+- Pro annual: $974/user/yr (vs. $1,188)</p>
+<h3 id="22-detailed-tier-comparison">2.2 Detailed Tier Comparison</h3>
+<h4 id="free-tier-0-up-to-2-users">Free Tier — $0 (up to 2 users)</h4>
+<table>
+<thead>
+<tr>
+<th>Dimension</th>
+<th>Details</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Price</strong></td>
+<td>$0 — no credit card required</td>
+</tr>
+<tr>
+<td><strong>Users</strong></td>
+<td>2 max</td>
+</tr>
+<tr>
+<td><strong>Storage</strong></td>
+<td>500 MB total</td>
+</tr>
+<tr>
+<td><strong>Contacts</strong></td>
+<td>1,000 contacts</td>
+</tr>
+<tr>
+<td><strong>Deals</strong></td>
+<td>Unlimited deals, 1 pipeline</td>
+</tr>
+<tr>
+<td><strong>Pipeline Views</strong></td>
+<td>Kanban + List view</td>
+</tr>
+<tr>
+<td><strong>Email Integration</strong></td>
+<td>Gmail/Outlook sync (1 mailbox)</td>
+</tr>
+<tr>
+<td><strong>Calendar Sync</strong></td>
+<td>Google/Outlook calendar sync</td>
+</tr>
+<tr>
+<td><strong>Mobile App</strong></td>
+<td>Full mobile access (iOS + Android)</td>
+</tr>
+<tr>
+<td><strong>Reporting</strong></td>
+<td>Basic pipeline report, no custom dashboards</td>
+</tr>
+<tr>
+<td><strong>Automation</strong></td>
+<td>5 basic automation rules</td>
+</tr>
+<tr>
+<td><strong>AI Features</strong></td>
+<td>✗ (no AI at Free tier)</td>
+</tr>
+<tr>
+<td><strong>Integrations</strong></td>
+<td>1 integration (native)</td>
+</tr>
+<tr>
+<td><strong>API Access</strong></td>
+<td>Read-only API (limited)</td>
+</tr>
+<tr>
+<td><strong>Support</strong></td>
+<td>Community forum + Help center</td>
+</tr>
+<tr>
+<td><strong>Target Persona</strong></td>
+<td>Sam (Micro Business Owner) — evaluating FrontierCRM</td>
+</tr>
+<tr>
+<td><strong>Competitive Reference</strong></td>
+<td>Compares to HubSpot Free, Zoho Free (3 users), Freshsales Free. Key advantage: no time limit, no feature crippling outside user/contact caps.</td>
+</tr>
+<tr>
+<td><strong>Strategy</strong></td>
+<td>Loss leader for top-of-funnel adoption. Designed to create upgrade path as the business grows past 2 users or hits contact limits. Free tier users convert to Starter at ~15-20% rate.</td>
+</tr>
+</tbody>
+</table>
+<h4 id="starter-tier-19usermo-billed-monthly">Starter Tier — $19/user/mo (billed monthly)</h4>
+<table>
+<thead>
+<tr>
+<th>Dimension</th>
+<th>Details</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Price</strong></td>
+<td>$19/user/mo ($15.58 annually)</td>
+</tr>
+<tr>
+<td><strong>Users</strong></td>
+<td>Unlimited</td>
+</tr>
+<tr>
+<td><strong>Storage</strong></td>
+<td>5 GB per user</td>
+</tr>
+<tr>
+<td><strong>Contacts</strong></td>
+<td>25,000 base (expandable via add-on)</td>
+</tr>
+<tr>
+<td><strong>Deals</strong></td>
+<td>Unlimited deals, 3 pipelines</td>
+</tr>
+<tr>
+<td><strong>Email Integration</strong></td>
+<td>Gmail/Outlook sync (unlimited mailboxes), email templates, email tracking (opens/clicks)</td>
+</tr>
+<tr>
+<td><strong>Calendar Sync</strong></td>
+<td>Full calendar sync + auto meeting logging</td>
+</tr>
+<tr>
+<td><strong>Mobile App</strong></td>
+<td>Full mobile access (iOS + Android), push notifications</td>
+</tr>
+<tr>
+<td><strong>Reporting</strong></td>
+<td>Pipeline reports, activity reports, 5 custom dashboards</td>
+</tr>
+<tr>
+<td><strong>Automation</strong></td>
+<td>50 automation rules, basic workflow builder</td>
+</tr>
+<tr>
+<td><strong>AI Features</strong></td>
+<td>Included: AI lead scoring, AI email drafting, auto-activity capture</td>
+</tr>
+<tr>
+<td><strong>Integrations</strong></td>
+<td>5 native integrations (Gmail, Google Calendar, Slack, Zoom, Zapier)</td>
+</tr>
+<tr>
+<td><strong>API Access</strong></td>
+<td>REST API (1,000 calls/day) + webhooks</td>
+</tr>
+<tr>
+<td><strong>Support</strong></td>
+<td>Email support (4-hour response), Help center, Knowledge base</td>
+</tr>
+<tr>
+<td><strong>Data Export</strong></td>
+<td>CSV/Excel export, bulk export</td>
+</tr>
+<tr>
+<td><strong>Target Persona</strong></td>
+<td>Sam (Biz Owner 5-15 employees), Alex (SMB Sales Rep in 10-25 person company)</td>
+</tr>
+<tr>
+<td><strong>Competitive Reference</strong></td>
+<td>Priced below HubSpot Starter ($20/user/mo + separate hubs), competitive with Zoho Professional ($23/user/mo) and Pipedrive Advanced ($27/user/mo). Unlike competitors, includes AI lead scoring and email tracking at this tier — features Zoho and Pipedrive gate at higher tiers.</td>
+</tr>
+<tr>
+<td><strong>Strategy</strong></td>
+<td>Entry-level paid tier. Position as "the first CRM a growing business ever needs." All AI features included — no upgrade bait. Key conversion trigger: contact cap vs. user cap. A 15-person team pays $285/mo vs. $1,350/mo for HubSpot (Sales + Marketing hubs).</td>
+</tr>
+</tbody>
+</table>
+<h4 id="growth-tier-49usermo-billed-monthly">Growth Tier — $49/user/mo (billed monthly)</h4>
+<table>
+<thead>
+<tr>
+<th>Dimension</th>
+<th>Details</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Price</strong></td>
+<td>$49/user/mo ($40.18 annually)</td>
+</tr>
+<tr>
+<td><strong>Users</strong></td>
+<td>Unlimited</td>
+</tr>
+<tr>
+<td><strong>Storage</strong></td>
+<td>20 GB per user</td>
+</tr>
+<tr>
+<td><strong>Contacts</strong></td>
+<td>100,000 base (expandable via add-on)</td>
+</tr>
+<tr>
+<td><strong>Deals</strong></td>
+<td>Unlimited deals, unlimited pipelines</td>
+</tr>
+<tr>
+<td><strong>Email Integration</strong></td>
+<td>All Starter + email sequences (drip campaigns), mail merge, bulk send, AI compose/suggest</td>
+</tr>
+<tr>
+<td><strong>Calendar</strong></td>
+<td>All Starter + scheduling links (like Calendly), team availability</td>
+</tr>
+<tr>
+<td><strong>Reporting</strong></td>
+<td>All Starter + custom report builder, deal velocity dashboard, rep activity analytics, forecast accuracy tracking, scheduled reports (CSV/PDF)</td>
+</tr>
+<tr>
+<td><strong>Automation</strong></td>
+<td>500 automation rules, no-code workflow builder (drag-and-drop, full visual editor), approval workflows, auto-tagging</td>
+</tr>
+<tr>
+<td><strong>AI Features</strong></td>
+<td>All Starter + <strong>AI meeting summarization</strong> (auto-transcribe, extract action items, update CRM fields), <strong>AI next-best-action</strong> recommendations, predictive lead scoring</td>
+</tr>
+<tr>
+<td><strong>Integrations</strong></td>
+<td>15 native integrations (all Starter + QuickBooks, Xero, Stripe, Shopify, Mailchimp, HubSpot import, Salesforce import)</td>
+</tr>
+<tr>
+<td><strong>API Access</strong></td>
+<td>REST API (10,000 calls/day) + GraphQL + webhooks</td>
+</tr>
+<tr>
+<td><strong>Support</strong></td>
+<td>Email + Chat (2-hour response), dedicated onboarding session, priority support queue</td>
+</tr>
+<tr>
+<td><strong>Admin</strong></td>
+<td>Role-based access control, team management, custom fields, custom pipelines</td>
+</tr>
+<tr>
+<td><strong>Security</strong></td>
+<td>2FA, IP allowlisting, SSO (Google Workspace, Microsoft 365)</td>
+</tr>
+<tr>
+<td><strong>Target Persona</strong></td>
+<td>Morgan (Sales Manager, 25-100 person company), Riley (Sales Director), Casey (Admin)</td>
+</tr>
+<tr>
+<td><strong>Competitive Reference</strong></td>
+<td>Compares to HubSpot Professional ($90/user/mo for Sales Hub — and that's one hub; adding Marketing = $800+). Pipedrive Professional ($49/user/mo — no AI, no auto). Freshsales Pro ($15/user/mo — significantly less capable). FrontierCRM Growth at $49/user/mo undercuts HubSpot Professional by 46% while including AI features HubSpot doesn't have.</td>
+</tr>
+<tr>
+<td><strong>Strategy</strong></td>
+<td>The "sweet spot" tier for FrontierCRM. Best value proposition: all AI features, custom reporting, no-code automation. Primary target segment (10-200 employees) lives mostly in this tier. Expected to be the highest revenue tier by Y2.</td>
+</tr>
+</tbody>
+</table>
+<h4 id="pro-tier-99usermo-billed-monthly">Pro Tier — $99/user/mo (billed monthly)</h4>
+<table>
+<thead>
+<tr>
+<th>Dimension</th>
+<th>Details</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Price</strong></td>
+<td>$99/user/mo ($81.18 annually)</td>
+</tr>
+<tr>
+<td><strong>Users</strong></td>
+<td>Unlimited</td>
+</tr>
+<tr>
+<td><strong>Storage</strong></td>
+<td>50 GB per user</td>
+</tr>
+<tr>
+<td><strong>Contacts</strong></td>
+<td>500,000 base (expandable)</td>
+</tr>
+<tr>
+<td><strong>Deals</strong></td>
+<td>Unlimited deals, unlimited pipelines, multi-threaded deal tracking (stakeholder maps)</td>
+</tr>
+<tr>
+<td><strong>Email</strong></td>
+<td>All Growth + advanced sequences (A/B testing, conditional branching), predictive send time optimization</td>
+</tr>
+<tr>
+<td><strong>Reporting</strong></td>
+<td>All Growth + executive summary dashboard, multi-period forecasting, AI predictive forecasting, customer health scoring, win/loss analysis, territory management dashboard</td>
+</tr>
+<tr>
+<td><strong>Automation</strong></td>
+<td>All Growth + unlimited automation rules, advanced workflow builder (loops, conditions, custom scripts), CPQ (Configure-Price-Quote — product catalog, discount schedules, e-sign), auto-assignment rules (round-robin, weighted)</td>
+</tr>
+<tr>
+<td><strong>AI Features</strong></td>
+<td>All Growth + <strong>AI predictive forecasting</strong> (ML-based close probability), <strong>customer health scoring</strong> (churn prediction), sentiment analysis, conversation intelligence (call/meeting analysis)</td>
+</tr>
+<tr>
+<td><strong>Integrations</strong></td>
+<td>Unlimited native integrations (all Growth + Salesforce bidirectional, HubSpot bidirectional, Jira, Asana, DocuSign, HubSpot marketing, Marketo)</td>
+</tr>
+<tr>
+<td><strong>API Access</strong></td>
+<td>REST API (100,000 calls/day) + GraphQL + webhooks + bulk API</td>
+</tr>
+<tr>
+<td><strong>Support</strong></td>
+<td>Email + Chat + Phone (1-hour response), dedicated account manager, quarterly business reviews, 99.9% SLA uptime</td>
+</tr>
+<tr>
+<td><strong>Admin</strong></td>
+<td>All Growth + custom objects, custom modules, page layouts, audit log (90-day retention), custom roles/permissions, sandbox environment</td>
+</tr>
+<tr>
+<td><strong>Security</strong></td>
+<td>All Growth + SAML/SCIM, advanced SSO, enforced 2FA, data encryption at rest (AES-256), SOC 2 Type II reports</td>
+</tr>
+<tr>
+<td><strong>Target Persona</strong></td>
+<td>Riley (Sales Director, 50-500 person company), Casey (Admin), Dana (C-Suite Executive)</td>
+</tr>
+<tr>
+<td><strong>Competitive Reference</strong></td>
+<td>Compares to Salesforce Enterprise ($175/user/mo — missing AI features), HubSpot Enterprise ($150/user/mo — one hub only). FrontierCRM Pro includes everything for $99/user/mo — vs. Salesforce Enterprise ($175) + Einstein ($50) + CPQ ($75) = $300/user/mo. Even with 18% annual discount, Pro is $81/user/mo — 2.7x cheaper than comparable Salesforce stack.</td>
+</tr>
+<tr>
+<td><strong>Strategy</strong></td>
+<td>High-value tier for mid-market companies. Primary target for the secondary segment (200-1,000 employees). Key conversion from Growth: companies that need CPQ, custom objects, and advanced AI forecasting. Also the primary Enterprise upgrade path — companies that outgrow Pro upgrade to custom Enterprise pricing.</td>
+</tr>
+</tbody>
+</table>
+<h4 id="enterprise-tier-custom-pricing">Enterprise Tier — Custom pricing</h4>
+<table>
+<thead>
+<tr>
+<th>Dimension</th>
+<th>Details</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Price</strong></td>
+<td>Custom (estimated $129-179/user/mo)</td>
+</tr>
+<tr>
+<td><strong>Users</strong></td>
+<td>Unlimited</td>
+</tr>
+<tr>
+<td><strong>Storage</strong></td>
+<td>Custom (unlimited available)</td>
+</tr>
+<tr>
+<td><strong>Contacts</strong></td>
+<td>Custom (unlimited available)</td>
+</tr>
+<tr>
+<td><strong>All Pro Features</strong></td>
+<td>Yes — everything in Pro, plus:</td>
+</tr>
+<tr>
+<td><strong>Enterprise Extras</strong></td>
+<td>White-label branding, custom domain, dedicated infrastructure, on-premise deployment option, advanced data residency (EU, US, APAC regions), custom SLA (99.95%+ uptime), dedicated support team (15-minute response), 24/7 phone support, named solutions architect, priority feature requests, early access to new features, custom integration development, advanced audit log (1-year retention + tamper-proofing), HIPAA compliance (BA agreement), GDPR Data Processing Agreement, custom terms &amp; conditions, volume licensing (flat-rate or tiered user pricing)</td>
+</tr>
+<tr>
+<td><strong>Target Persona</strong></td>
+<td>Dana (C-Suite, 1,000+ person company), Enterprises with compliance needs (finance, healthcare, government)</td>
+</tr>
+<tr>
+<td><strong>Competitive Reference</strong></td>
+<td>Salesforce Unlimited ($350/user/mo), HubSpot Enterprise ($1,200+/mo for full stack), Microsoft Dynamics 365 ($142+/user/mo with confusing licensing). FrontierCRM Enterprise at estimated $129-179/user/mo is 30-60% below comparable enterprise stacks.</td>
+</tr>
+<tr>
+<td><strong>Strategy</strong></td>
+<td>Not a primary target for early years (Y1-Y2). Build a great product at Growth/Pro, and Enterprise deals will follow organically. Enterprise pricing is custom because every enterprise deal has unique requirements (data residency, compliance, volume). Typical enterprise discount: 15-25% off list price for 500+ seats.</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="3-feature-gating-strategy">3. Feature Gating Strategy</h2>
+<h3 id="31-core-differentiator-ai-is-included">3.1 Core Differentiator: AI Is Included</h3>
+<table>
+<thead>
+<tr>
+<th>AI Feature</th>
+<th style="text-align: center;">Free</th>
+<th style="text-align: center;">Starter ($19)</th>
+<th style="text-align: center;">Growth ($49)</th>
+<th style="text-align: center;">Pro ($99)</th>
+<th style="text-align: center;">Enterprise</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Auto-activity capture</td>
+<td style="text-align: center;">✗</td>
+<td style="text-align: center;">✅</td>
+<td style="text-align: center;">✅</td>
+<td style="text-align: center;">✅</td>
+<td style="text-align: center;">✅</td>
+</tr>
+<tr>
+<td>AI lead scoring</td>
+<td style="text-align: center;">✗</td>
+<td style="text-align: center;">✅</td>
+<td style="text-align: center;">✅</td>
+<td style="text-align: center;">✅</td>
+<td style="text-align: center;">✅</td>
+</tr>
+<tr>
+<td>AI email drafting</td>
+<td style="text-align: center;">✗</td>
+<td style="text-align: center;">✅</td>
+<td style="text-align: center;">✅</td>
+<td style="text-align: center;">✅</td>
+<td style="text-align: center;">✅</td>
+</tr>
+<tr>
+<td>Meeting summarization</td>
+<td style="text-align: center;">✗</td>
+<td style="text-align: center;">✗</td>
+<td style="text-align: center;">✅</td>
+<td style="text-align: center;">✅</td>
+<td style="text-align: center;">✅</td>
+</tr>
+<tr>
+<td>Next-best-action recommendations</td>
+<td style="text-align: center;">✗</td>
+<td style="text-align: center;">✗</td>
+<td style="text-align: center;">✅</td>
+<td style="text-align: center;">✅</td>
+<td style="text-align: center;">✅</td>
+</tr>
+<tr>
+<td>Predictive lead scoring</td>
+<td style="text-align: center;">✗</td>
+<td style="text-align: center;">✗</td>
+<td style="text-align: center;">✅</td>
+<td style="text-align: center;">✅</td>
+<td style="text-align: center;">✅</td>
+</tr>
+<tr>
+<td>AI predictive forecasting</td>
+<td style="text-align: center;">✗</td>
+<td style="text-align: center;">✗</td>
+<td style="text-align: center;">✗</td>
+<td style="text-align: center;">✅</td>
+<td style="text-align: center;">✅</td>
+</tr>
+<tr>
+<td>Customer health scoring</td>
+<td style="text-align: center;">✗</td>
+<td style="text-align: center;">✗</td>
+<td style="text-align: center;">✗</td>
+<td style="text-align: center;">✅</td>
+<td style="text-align: center;">✅</td>
+</tr>
+<tr>
+<td>Sentiment analysis</td>
+<td style="text-align: center;">✗</td>
+<td style="text-align: center;">✗</td>
+<td style="text-align: center;">✗</td>
+<td style="text-align: center;">✅</td>
+<td style="text-align: center;">✅</td>
+</tr>
+<tr>
+<td>Conversation intelligence</td>
+<td style="text-align: center;">✗</td>
+<td style="text-align: center;">✗</td>
+<td style="text-align: center;">✗</td>
+<td style="text-align: center;">✅</td>
+<td style="text-align: center;">✅</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Strategic rationale:</strong> AI is included at every paid tier, not upsold. This is FrontierCRM's #1 differentiator. Competitors gate AI behind +$50-100/user/mo. FrontierCRM uses AI as a core product feature that drives adoption and reduces churn, not as a profit center. AI costs are absorbed into platform margin and optimized through shared model serving.</p>
+<h3 id="32-feature-gating-summary">3.2 Feature Gating Summary</h3>
+<table>
+<thead>
+<tr>
+<th>Feature Category</th>
+<th style="text-align: center;">Free</th>
+<th style="text-align: center;">Starter ($19)</th>
+<th style="text-align: center;">Growth ($49)</th>
+<th style="text-align: center;">Pro ($99)</th>
+<th style="text-align: center;">Enterprise</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Contact Management</strong></td>
+<td style="text-align: center;">✅</td>
+<td style="text-align: center;">✅</td>
+<td style="text-align: center;">✅</td>
+<td style="text-align: center;">✅</td>
+<td style="text-align: center;">✅</td>
+</tr>
+<tr>
+<td><strong>Deal Pipeline</strong></td>
+<td style="text-align: center;">✅</td>
+<td style="text-align: center;">✅</td>
+<td style="text-align: center;">✅</td>
+<td style="text-align: center;">✅</td>
+<td style="text-align: center;">✅</td>
+</tr>
+<tr>
+<td><strong>Multi-Pipeline</strong></td>
+<td style="text-align: center;">1 pipeline</td>
+<td style="text-align: center;">3 pipelines</td>
+<td style="text-align: center;">Unlimited</td>
+<td style="text-align: center;">Unlimited</td>
+<td style="text-align: center;">Unlimited</td>
+</tr>
+<tr>
+<td><strong>Email Integration</strong></td>
+<td style="text-align: center;">Basic</td>
+<td style="text-align: center;">Full</td>
+<td style="text-align: center;">Full + Sequences</td>
+<td style="text-align: center;">Full + Advanced</td>
+<td style="text-align: center;">Full + Advanced</td>
+</tr>
+<tr>
+<td><strong>Calendar Sync</strong></td>
+<td style="text-align: center;">✅</td>
+<td style="text-align: center;">✅</td>
+<td style="text-align: center;">✅</td>
+<td style="text-align: center;">✅</td>
+<td style="text-align: center;">✅</td>
+</tr>
+<tr>
+<td><strong>Mobile Access</strong></td>
+<td style="text-align: center;">✅</td>
+<td style="text-align: center;">✅</td>
+<td style="text-align: center;">✅</td>
+<td style="text-align: center;">✅</td>
+<td style="text-align: center;">✅</td>
+</tr>
+<tr>
+<td><strong>Standard Reports</strong></td>
+<td style="text-align: center;">✅</td>
+<td style="text-align: center;">✅</td>
+<td style="text-align: center;">✅</td>
+<td style="text-align: center;">✅</td>
+<td style="text-align: center;">✅</td>
+</tr>
+<tr>
+<td><strong>Custom Reports</strong></td>
+<td style="text-align: center;">✗</td>
+<td style="text-align: center;">✗</td>
+<td style="text-align: center;">✅</td>
+<td style="text-align: center;">✅</td>
+<td style="text-align: center;">✅</td>
+</tr>
+<tr>
+<td><strong>Dashboards</strong></td>
+<td style="text-align: center;">1 dashboard</td>
+<td style="text-align: center;">5 dashboards</td>
+<td style="text-align: center;">Unlimited</td>
+<td style="text-align: center;">Unlimited</td>
+<td style="text-align: center;">Unlimited</td>
+</tr>
+<tr>
+<td><strong>Workflow Automation</strong></td>
+<td style="text-align: center;">5 rules</td>
+<td style="text-align: center;">50 rules</td>
+<td style="text-align: center;">500 rules</td>
+<td style="text-align: center;">Unlimited</td>
+<td style="text-align: center;">Unlimited</td>
+</tr>
+<tr>
+<td><strong>No-Code Workflow Builder</strong></td>
+<td style="text-align: center;">✗</td>
+<td style="text-align: center;">✗</td>
+<td style="text-align: center;">✅</td>
+<td style="text-align: center;">✅</td>
+<td style="text-align: center;">✅</td>
+</tr>
+<tr>
+<td><strong>CPQ (Quoting)</strong></td>
+<td style="text-align: center;">✗</td>
+<td style="text-align: center;">✗</td>
+<td style="text-align: center;">✗</td>
+<td style="text-align: center;">✅</td>
+<td style="text-align: center;">✅</td>
+</tr>
+<tr>
+<td><strong>API Access</strong></td>
+<td style="text-align: center;">Read-only</td>
+<td style="text-align: center;">1K/day</td>
+<td style="text-align: center;">10K/day</td>
+<td style="text-align: center;">100K/day</td>
+<td style="text-align: center;">Custom</td>
+</tr>
+<tr>
+<td><strong>Webhooks</strong></td>
+<td style="text-align: center;">✗</td>
+<td style="text-align: center;">✅</td>
+<td style="text-align: center;">✅</td>
+<td style="text-align: center;">✅</td>
+<td style="text-align: center;">✅</td>
+</tr>
+<tr>
+<td><strong>Custom Objects</strong></td>
+<td style="text-align: center;">✗</td>
+<td style="text-align: center;">✗</td>
+<td style="text-align: center;">✗</td>
+<td style="text-align: center;">✅</td>
+<td style="text-align: center;">✅</td>
+</tr>
+<tr>
+<td><strong>SSO / SAML</strong></td>
+<td style="text-align: center;">✗</td>
+<td style="text-align: center;">✗</td>
+<td style="text-align: center;">✅ (Google/MS)</td>
+<td style="text-align: center;">✅</td>
+<td style="text-align: center;">✅</td>
+</tr>
+<tr>
+<td><strong>Audit Log</strong></td>
+<td style="text-align: center;">✗</td>
+<td style="text-align: center;">✗</td>
+<td style="text-align: center;">✗</td>
+<td style="text-align: center;">90 days</td>
+<td style="text-align: center;">1 year</td>
+</tr>
+<tr>
+<td><strong>Dedicated Support</strong></td>
+<td style="text-align: center;">✗</td>
+<td style="text-align: center;">✗</td>
+<td style="text-align: center;">Onboarding only</td>
+<td style="text-align: center;">✅</td>
+<td style="text-align: center;">✅</td>
+</tr>
+<tr>
+<td><strong>SLA</strong></td>
+<td style="text-align: center;">None</td>
+<td style="text-align: center;">None</td>
+<td style="text-align: center;">None</td>
+<td style="text-align: center;">99.9%</td>
+<td style="text-align: center;">99.95%+</td>
+</tr>
+<tr>
+<td><strong>Data Residency</strong></td>
+<td style="text-align: center;">US only</td>
+<td style="text-align: center;">US only</td>
+<td style="text-align: center;">US only</td>
+<td style="text-align: center;">US + EU</td>
+<td style="text-align: center;">All regions</td>
+</tr>
+</tbody>
+</table>
+<h3 id="33-what-we-do-not-gate-competitor-pain-points-we-avoid">3.3 What We DO NOT Gate (Competitor Pain Points We Avoid)</h3>
+<table>
+<thead>
+<tr>
+<th>Feature</th>
+<th style="text-align: center;">Salesforce</th>
+<th style="text-align: center;">HubSpot</th>
+<th style="text-align: center;">Zoho</th>
+<th style="text-align: center;">Freshsales</th>
+<th style="text-align: center;">FrontierCRM</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Custom fields</strong></td>
+<td style="text-align: center;">✅ (all tiers)</td>
+<td style="text-align: center;">❌ (Enterprise only)</td>
+<td style="text-align: center;">✅ (most tiers)</td>
+<td style="text-align: center;">✅ (most tiers)</td>
+<td style="text-align: center;">✅ (all paid tiers)</td>
+</tr>
+<tr>
+<td><strong>Reporting dashboards</strong></td>
+<td style="text-align: center;">❌ (limited at lower tiers)</td>
+<td style="text-align: center;">❌ (Pro+ only)</td>
+<td style="text-align: center;">✅ (most tiers)</td>
+<td style="text-align: center;">❌ (Pro+ only)</td>
+<td style="text-align: center;">✅ (all paid tiers)</td>
+</tr>
+<tr>
+<td><strong>Email tracking (opens/clicks)</strong></td>
+<td style="text-align: center;">❌ (add-on)</td>
+<td style="text-align: center;">❌ (Pro+ only)</td>
+<td style="text-align: center;">✅ (Pro+)</td>
+<td style="text-align: center;">❌ (add-on)</td>
+<td style="text-align: center;">✅ (Starter+)</td>
+</tr>
+<tr>
+<td><strong>API access</strong></td>
+<td style="text-align: center;">❌ (rate-limited at lower tiers)</td>
+<td style="text-align: center;">✅</td>
+<td style="text-align: center;">✅</td>
+<td style="text-align: center;">✅</td>
+<td style="text-align: center;">✅ (all paid tiers)</td>
+</tr>
+<tr>
+<td><strong>Mobile access</strong></td>
+<td style="text-align: center;">✅</td>
+<td style="text-align: center;">✅</td>
+<td style="text-align: center;">✅</td>
+<td style="text-align: center;">✅</td>
+<td style="text-align: center;">✅ (all tiers, including Free)</td>
+</tr>
+<tr>
+<td><strong>Email sequences</strong></td>
+<td style="text-align: center;">❌ (Pardot add-on)</td>
+<td style="text-align: center;">❌ (Pro+ only)</td>
+<td style="text-align: center;">❌ (Enterprise)</td>
+<td style="text-align: center;">❌ (Pro+ only)</td>
+<td style="text-align: center;">✅ (Growth+)</td>
+</tr>
+<tr>
+<td><strong>Custom objects</strong></td>
+<td style="text-align: center;">✅ (all tiers)</td>
+<td style="text-align: center;">❌ (Enterprise only, 10 limit)</td>
+<td style="text-align: center;">✅ (Pro+)</td>
+<td style="text-align: center;">❌</td>
+<td style="text-align: center;">✅ (Pro+)</td>
+</tr>
+<tr>
+<td><strong>SSO</strong></td>
+<td style="text-align: center;">❌ ($50+/user addon)</td>
+<td style="text-align: center;">❌ (Enterprise only)</td>
+<td style="text-align: center;">❌ (Enterprise)</td>
+<td style="text-align: center;">❌</td>
+<td style="text-align: center;">✅ (Growth+)</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="4-usage-based-add-ons">4. Usage-Based Add-Ons</h2>
+<h3 id="41-add-on-pricing">4.1 Add-On Pricing</h3>
+<table>
+<thead>
+<tr>
+<th>Add-On</th>
+<th>Description</th>
+<th style="text-align: center;">Free</th>
+<th style="text-align: center;">Starter</th>
+<th style="text-align: center;">Growth</th>
+<th style="text-align: center;">Pro</th>
+<th style="text-align: center;">Enterprise</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>AI Credits</strong></td>
+<td>Extra AI operations beyond tier limit (scoring, summarization, enrichment)</td>
+<td style="text-align: center;">N/A</td>
+<td style="text-align: center;">500/mo included</td>
+<td style="text-align: center;">5,000/mo included</td>
+<td style="text-align: center;">25,000/mo included</td>
+<td style="text-align: center;">Custom</td>
+</tr>
+<tr>
+<td>— Overage</td>
+<td>Per 1,000 additional AI credits</td>
+<td style="text-align: center;">N/A</td>
+<td style="text-align: center;">$5</td>
+<td style="text-align: center;">$4</td>
+<td style="text-align: center;">$3</td>
+<td style="text-align: center;">$2</td>
+</tr>
+<tr>
+<td><strong>Extra Storage</strong></td>
+<td>Additional storage beyond per-user allocation</td>
+<td style="text-align: center;">N/A</td>
+<td style="text-align: center;">$10/GB/mo</td>
+<td style="text-align: center;">$8/GB/mo</td>
+<td style="text-align: center;">$5/GB/mo</td>
+<td style="text-align: center;">Custom</td>
+</tr>
+<tr>
+<td><strong>API Rate Limit</strong></td>
+<td>Additional API calls per day</td>
+<td style="text-align: center;">N/A</td>
+<td style="text-align: center;">$10 per 5K/day</td>
+<td style="text-align: center;">$8 per 10K/day</td>
+<td style="text-align: center;">$5 per 50K/day</td>
+<td style="text-align: center;">Custom</td>
+</tr>
+<tr>
+<td><strong>Additional Contacts</strong></td>
+<td>Contacts beyond base tier limit</td>
+<td style="text-align: center;">N/A</td>
+<td style="text-align: center;">$2/1K contacts/mo</td>
+<td style="text-align: center;">$1.50/1K contacts/mo</td>
+<td style="text-align: center;">$1/1K contacts/mo</td>
+<td style="text-align: center;">Custom</td>
+</tr>
+<tr>
+<td><strong>Additional Users</strong> (Free tier)</td>
+<td>Users beyond the 2-user Free limit</td>
+<td style="text-align: center;">$5/user/mo</td>
+<td style="text-align: center;">N/A</td>
+<td style="text-align: center;">N/A</td>
+<td style="text-align: center;">N/A</td>
+<td style="text-align: center;">N/A</td>
+</tr>
+</tbody>
+</table>
+<h3 id="42-marketplace-apps">4.2 Marketplace Apps</h3>
+<table>
+<thead>
+<tr>
+<th>Category</th>
+<th>Description</th>
+<th>Revenue Model</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>First-party apps</strong></td>
+<td>Built by FrontierCRM (e.g., advanced analytics dashboard, email finder, LinkedIn connector)</td>
+<td>Included in subscription or one-time add-on ($5-20/mo)</td>
+</tr>
+<tr>
+<td><strong>Third-party marketplace</strong></td>
+<td>Community-contributed integrations and extensions</td>
+<td>20% revenue share (competitive with Shopify's 15-30% and Salesforce's 25%)</td>
+</tr>
+<tr>
+<td><strong>Premium templates</strong></td>
+<td>Industry-specific pipeline templates, report templates, workflow templates</td>
+<td>$10-50 one-time per template</td>
+</tr>
+<tr>
+<td><strong>Partner apps</strong></td>
+<td>Certified by FrontierCRM, premium placement in marketplace</td>
+<td>25% revenue share + certification fee</td>
+</tr>
+</tbody>
+</table>
+<h3 id="43-ai-credits-detailed-mechanics">4.3 AI Credits — Detailed Mechanics</h3>
+<p>AI Credits are a usage-based measure for server-side AI operations. Each operation consumes a fixed number of credits:</p>
+<table>
+<thead>
+<tr>
+<th>AI Operation</th>
+<th>Credits Consumed</th>
+<th>Notes</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Lead score (single contact)</td>
+<td>1</td>
+<td>Recalculated on activity change</td>
+</tr>
+<tr>
+<td>Email draft (single email)</td>
+<td>2</td>
+<td>On-demand or auto-suggested</td>
+</tr>
+<tr>
+<td>Meeting summary</td>
+<td>10</td>
+<td>Per meeting transcript processed</td>
+</tr>
+<tr>
+<td>Next-best-action (per deal)</td>
+<td>1</td>
+<td>Recalculated on pipeline movement</td>
+</tr>
+<tr>
+<td>Predictive forecast (per rep/territory)</td>
+<td>5</td>
+<td>Weekly recalculation</td>
+</tr>
+<tr>
+<td>Customer health score</td>
+<td>3</td>
+<td>Per account, daily recalculation</td>
+</tr>
+<tr>
+<td>Sentiment analysis (per interaction)</td>
+<td>2</td>
+<td>On conversation ingestion</td>
+</tr>
+<tr>
+<td>Conversation intelligence (per call)</td>
+<td>15</td>
+<td>Full analysis + summary + action items</td>
+</tr>
+<tr>
+<td>Bulk enrichment (per 100 contacts)</td>
+<td>25</td>
+<td>On-demand batch</td>
+</tr>
+</tbody>
+</table>
+<p><strong>AI Credits included by tier:</strong>
+- Starter: 500 credits/mo (covers ~500 lead scores or ~250 email drafts)
+- Growth: 5,000 credits/mo (covers ~5,000 lead scores + meeting summaries + next-best-actions)
+- Pro: 25,000 credits/mo (covers comprehensive AI usage for a 50-person team)
+- Enterprise: Custom</p>
+<p><strong>Why AI Credits instead of unlimited AI?</strong> AI inference costs are real (GPU compute). Without metering, a single heavy user running bulk enrichment on 100K contacts could trigger $500+ infrastructure cost on a $49/user tier. AI Credits align cost with usage while keeping the barrier low. Most users will never hit their included limit.</p>
+<hr />
+<h2 id="5-annual-vs-monthly-discount-analysis">5. Annual vs. Monthly Discount Analysis</h2>
+<h3 id="51-discount-structure">5.1 Discount Structure</h3>
+<table>
+<thead>
+<tr>
+<th>Tier</th>
+<th style="text-align: center;">Monthly Price</th>
+<th style="text-align: center;">Annual Price (per month)</th>
+<th style="text-align: center;">Effective Discount</th>
+<th style="text-align: center;">Annual Commitment</th>
+<th style="text-align: center;">Savings per user/year</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Starter</td>
+<td style="text-align: center;">$19/user/mo</td>
+<td style="text-align: center;">$15.58/user/mo</td>
+<td style="text-align: center;"><strong>18%</strong></td>
+<td style="text-align: center;">$187/user/yr</td>
+<td style="text-align: center;">$41/user/yr</td>
+</tr>
+<tr>
+<td>Growth</td>
+<td style="text-align: center;">$49/user/mo</td>
+<td style="text-align: center;">$40.18/user/mo</td>
+<td style="text-align: center;"><strong>18%</strong></td>
+<td style="text-align: center;">$482/user/yr</td>
+<td style="text-align: center;">$106/user/yr</td>
+</tr>
+<tr>
+<td>Pro</td>
+<td style="text-align: center;">$99/user/mo</td>
+<td style="text-align: center;">$81.18/user/mo</td>
+<td style="text-align: center;"><strong>18%</strong></td>
+<td style="text-align: center;">$974/user/yr</td>
+<td style="text-align: center;">$214/user/yr</td>
+</tr>
+</tbody>
+</table>
+<p><strong>18% annual discount</strong> is chosen because:
+- Matches industry norm of 15-20% annual discount
+- Provides meaningful savings ($106/user/yr on Growth = noticeable for a 50-person team = $5,300/yr savings)
+- Not so aggressive that it devalues monthly billing
+- Creates strong incentive for annual commitment without being punitive to monthly customers</p>
+<h3 id="52-projected-billing-mix">5.2 Projected Billing Mix</h3>
+<p>Based on comparable SaaS benchmarks:</p>
+<table>
+<thead>
+<tr>
+<th>Metric</th>
+<th style="text-align: center;">Year 1</th>
+<th style="text-align: center;">Year 2</th>
+<th style="text-align: center;">Year 3</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Annual billing adoption</td>
+<td style="text-align: center;">55%</td>
+<td style="text-align: center;">62%</td>
+<td style="text-align: center;">70%</td>
+</tr>
+<tr>
+<td>Monthly billing adoption</td>
+<td style="text-align: center;">45%</td>
+<td style="text-align: center;">38%</td>
+<td style="text-align: center;">30%</td>
+</tr>
+<tr>
+<td>Annual churn rate (annual customers)</td>
+<td style="text-align: center;">8%</td>
+<td style="text-align: center;">5%</td>
+<td style="text-align: center;">3%</td>
+</tr>
+<tr>
+<td>Monthly churn rate (monthly customers)</td>
+<td style="text-align: center;">18%</td>
+<td style="text-align: center;">12%</td>
+<td style="text-align: center;">8%</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Rationale:</strong> SMBs start on monthly billing due to budget caution. As they see value, they convert to annual for savings. Annual customers have significantly lower churn due to higher switching cost.</p>
+<hr />
+<h2 id="6-revenue-projections">6. Revenue Projections</h2>
+<h3 id="61-adoption-model-conservative-scenario">6.1 Adoption Model — Conservative Scenario</h3>
+<p><strong>Key assumptions:</strong>
+- TAM: $30B (SMB CRM market, ~30% of $101.4B total)
+- SMB 10-200 employees: ~5M companies globally
+- Average CRM spend (SMB): $1,800/user/yr
+- FrontierCRM capture rate: 0.001% (Y1) → 0.01% (Y2) → 0.04% (Y3) of segment</p>
+<h4 id="year-1-2027-launch-year">Year 1 (2027) — Launch Year</h4>
+<table>
+<thead>
+<tr>
+<th>Metric</th>
+<th style="text-align: center;">Value</th>
+<th>Notes</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Total customers</strong></td>
+<td style="text-align: center;">120</td>
+<td>Early adopters, product-led growth</td>
+</tr>
+<tr>
+<td><strong>Paying customers</strong></td>
+<td style="text-align: center;">85</td>
+<td>~35 Free users that haven't converted</td>
+</tr>
+<tr>
+<td><strong>Tier mix (paying)</strong></td>
+<td style="text-align: center;">Starter: 55%, Growth: 30%, Pro: 15%</td>
+<td>Heavy Starter skew in launch year</td>
+</tr>
+<tr>
+<td><strong>Avg users per account</strong></td>
+<td style="text-align: center;">12</td>
+<td>Small teams evaluating the product</td>
+</tr>
+<tr>
+<td><strong>Monthly ARR run rate (EoY)</strong></td>
+<td style="text-align: center;">$75,000</td>
+<td></td>
+</tr>
+<tr>
+<td><strong>Annual ARR</strong></td>
+<td style="text-align: center;"><strong>$893,000</strong></td>
+<td>Conservative ramp over 12 months</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Monthly ARR Build (Y1):</strong></p>
+<table>
+<thead>
+<tr>
+<th style="text-align: center;">Month</th>
+<th style="text-align: center;">New Customers</th>
+<th style="text-align: center;">Churned</th>
+<th style="text-align: center;">Active (Paying)</th>
+<th style="text-align: center;">Avg Seats</th>
+<th style="text-align: center;">Monthly Revenue</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: center;">Jan</td>
+<td style="text-align: center;">5</td>
+<td style="text-align: center;">0</td>
+<td style="text-align: center;">5</td>
+<td style="text-align: center;">8</td>
+<td style="text-align: center;">$1,064</td>
+</tr>
+<tr>
+<td style="text-align: center;">Feb</td>
+<td style="text-align: center;">7</td>
+<td style="text-align: center;">0</td>
+<td style="text-align: center;">12</td>
+<td style="text-align: center;">9</td>
+<td style="text-align: center;">$2,592</td>
+</tr>
+<tr>
+<td style="text-align: center;">Mar</td>
+<td style="text-align: center;">8</td>
+<td style="text-align: center;">0</td>
+<td style="text-align: center;">20</td>
+<td style="text-align: center;">9</td>
+<td style="text-align: center;">$4,284</td>
+</tr>
+<tr>
+<td style="text-align: center;">Apr</td>
+<td style="text-align: center;">10</td>
+<td style="text-align: center;">0</td>
+<td style="text-align: center;">30</td>
+<td style="text-align: center;">10</td>
+<td style="text-align: center;">$6,870</td>
+</tr>
+<tr>
+<td style="text-align: center;">May</td>
+<td style="text-align: center;">10</td>
+<td style="text-align: center;">1</td>
+<td style="text-align: center;">39</td>
+<td style="text-align: center;">10</td>
+<td style="text-align: center;">$8,790</td>
+</tr>
+<tr>
+<td style="text-align: center;">Jun</td>
+<td style="text-align: center;">12</td>
+<td style="text-align: center;">1</td>
+<td style="text-align: center;">50</td>
+<td style="text-align: center;">11</td>
+<td style="text-align: center;">$12,210</td>
+</tr>
+<tr>
+<td style="text-align: center;">Jul</td>
+<td style="text-align: center;">12</td>
+<td style="text-align: center;">1</td>
+<td style="text-align: center;">61</td>
+<td style="text-align: center;">11</td>
+<td style="text-align: center;">$14,730</td>
+</tr>
+<tr>
+<td style="text-align: center;">Aug</td>
+<td style="text-align: center;">10</td>
+<td style="text-align: center;">2</td>
+<td style="text-align: center;">69</td>
+<td style="text-align: center;">11</td>
+<td style="text-align: center;">$16,170</td>
+</tr>
+<tr>
+<td style="text-align: center;">Sep</td>
+<td style="text-align: center;">12</td>
+<td style="text-align: center;">1</td>
+<td style="text-align: center;">80</td>
+<td style="text-align: center;">12</td>
+<td style="text-align: center;">$19,920</td>
+</tr>
+<tr>
+<td style="text-align: center;">Oct</td>
+<td style="text-align: center;">10</td>
+<td style="text-align: center;">2</td>
+<td style="text-align: center;">88</td>
+<td style="text-align: center;">12</td>
+<td style="text-align: center;">$21,528</td>
+</tr>
+<tr>
+<td style="text-align: center;">Nov</td>
+<td style="text-align: center;">12</td>
+<td style="text-align: center;">1</td>
+<td style="text-align: center;">99</td>
+<td style="text-align: center;">12</td>
+<td style="text-align: center;">$24,588</td>
+</tr>
+<tr>
+<td style="text-align: center;">Dec</td>
+<td style="text-align: center;">8</td>
+<td style="text-align: center;">2</td>
+<td style="text-align: center;">105</td>
+<td style="text-align: center;">12</td>
+<td style="text-align: center;">$25,620</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Total Y1 Revenue: $893,000 ARR</strong></p>
+<h4 id="year-2-2028-growth-year">Year 2 (2028) — Growth Year</h4>
+<table>
+<thead>
+<tr>
+<th>Metric</th>
+<th style="text-align: center;">Value</th>
+<th>Notes</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Total customers (EoY)</strong></td>
+<td style="text-align: center;">1,050</td>
+<td></td>
+</tr>
+<tr>
+<td><strong>Paying customers (EoY)</strong></td>
+<td style="text-align: center;">760</td>
+<td>Conversion rate improving</td>
+</tr>
+<tr>
+<td><strong>Tier mix</strong></td>
+<td style="text-align: center;">Starter: 35%, Growth: 45%, Pro: 20%</td>
+<td>Shift toward Growth tier</td>
+</tr>
+<tr>
+<td><strong>Avg users per account</strong></td>
+<td style="text-align: center;">18</td>
+<td>Teams growing into the product</td>
+</tr>
+<tr>
+<td><strong>Monthly ARR run rate (EoY)</strong></td>
+<td style="text-align: center;">$685,000</td>
+<td></td>
+</tr>
+<tr>
+<td><strong>Annual ARR</strong></td>
+<td style="text-align: center;"><strong>$8,200,000</strong></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Key growth drivers Y2:</strong>
+- Product-market fit validated by Y1 cohort
+- Referral/viral growth from existing customers
+- First integrations marketplace launches Q1
+- Enterprise beta program starts Q3
+- 3-5 case studies published</p>
+<h4 id="year-3-2029-scale-year">Year 3 (2029) — Scale Year</h4>
+<table>
+<thead>
+<tr>
+<th>Metric</th>
+<th style="text-align: center;">Value</th>
+<th>Notes</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Total customers (EoY)</strong></td>
+<td style="text-align: center;">4,500</td>
+<td></td>
+</tr>
+<tr>
+<td><strong>Paying customers (EoY)</strong></td>
+<td style="text-align: center;">3,600</td>
+<td>Conversion rate &gt; 80%</td>
+</tr>
+<tr>
+<td><strong>Tier mix</strong></td>
+<td style="text-align: center;">Starter: 20%, Growth: 50%, Pro: 25%, Enterprise: 5%</td>
+<td>Mature tier distribution</td>
+</tr>
+<tr>
+<td><strong>Avg users per account</strong></td>
+<td style="text-align: center;">28</td>
+<td>Larger deployments</td>
+</tr>
+<tr>
+<td><strong>Monthly ARR run rate (EoY)</strong></td>
+<td style="text-align: center;">$2,875,000</td>
+<td></td>
+</tr>
+<tr>
+<td><strong>Annual ARR</strong></td>
+<td style="text-align: center;"><strong>$34,500,000</strong></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Key growth drivers Y3:</strong>
+- Enterprise segment active (10+ deals &gt; 500 seats)
+- International expansion (EU market entry Q1, APAC Q3)
+- Marketplace ecosystem with 50+ third-party apps
+- AI moat deepens with proprietary models trained on platform data</p>
+<h3 id="62-revenue-breakdown-by-tier-y3-annualized">6.2 Revenue Breakdown by Tier (Y3 Annualized)</h3>
+<table>
+<thead>
+<tr>
+<th style="text-align: center;">Tier</th>
+<th style="text-align: center;">% of Customers</th>
+<th style="text-align: center;">Avg Seats</th>
+<th style="text-align: center;">Customers</th>
+<th style="text-align: center;">Monthly Rev</th>
+<th style="text-align: center;">Annual Rev</th>
+<th style="text-align: center;">% of Total</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: center;">Free</td>
+<td style="text-align: center;">20%</td>
+<td style="text-align: center;">2</td>
+<td style="text-align: center;">720</td>
+<td style="text-align: center;">$0</td>
+<td style="text-align: center;">$0</td>
+<td style="text-align: center;">0%</td>
+</tr>
+<tr>
+<td style="text-align: center;">Starter</td>
+<td style="text-align: center;">16%</td>
+<td style="text-align: center;">15</td>
+<td style="text-align: center;">576</td>
+<td style="text-align: center;">$164,160</td>
+<td style="text-align: center;">$1,969,920</td>
+<td style="text-align: center;">5.7%</td>
+</tr>
+<tr>
+<td style="text-align: center;">Growth</td>
+<td style="text-align: center;">40%</td>
+<td style="text-align: center;">25</td>
+<td style="text-align: center;">1,440</td>
+<td style="text-align: center;">$1,764,000</td>
+<td style="text-align: center;">$21,168,000</td>
+<td style="text-align: center;">61.4%</td>
+</tr>
+<tr>
+<td style="text-align: center;">Pro</td>
+<td style="text-align: center;">20%</td>
+<td style="text-align: center;">40</td>
+<td style="text-align: center;">720</td>
+<td style="text-align: center;">$2,851,200</td>
+<td style="text-align: center;">$34,214,400</td>
+<td style="text-align: center;">99.2%</td>
+</tr>
+<tr>
+<td style="text-align: center;">Enterprise</td>
+<td style="text-align: center;">4%</td>
+<td style="text-align: center;">200+</td>
+<td style="text-align: center;">144</td>
+<td style="text-align: center;">Custom (~$3.5M/mo avg)</td>
+<td style="text-align: center;">$42,000,000</td>
+<td style="text-align: center;">—</td>
+</tr>
+<tr>
+<td style="text-align: center;"><strong>Total</strong></td>
+<td style="text-align: center;"><strong>100%</strong></td>
+<td style="text-align: center;"><strong>—</strong></td>
+<td style="text-align: center;"><strong>3,600</strong></td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;"><strong>&lt; $99.4M</strong></td>
+<td style="text-align: center;"></td>
+</tr>
+</tbody>
+</table>
+<p><em>Note: Enterprise revenue is estimated at $250K avg ACV × 144 customers. The total with Enterprise exceeds the simple ARR projection because Enterprise customers are larger deployments with higher per-seat costs. The $34.5M projection is based on the core product tiers (Free + Starter + Growth + Pro). The Enterprise line is additive and conservative.</em></p>
+<h3 id="63-unit-economics">6.3 Unit Economics</h3>
+<table>
+<thead>
+<tr>
+<th>Metric</th>
+<th style="text-align: center;">Y1</th>
+<th style="text-align: center;">Y2</th>
+<th style="text-align: center;">Y3</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Avg Revenue Per Paying Account (ARPA)</strong></td>
+<td style="text-align: center;">$8,500/yr</td>
+<td style="text-align: center;">$10,800/yr</td>
+<td style="text-align: center;">$14,200/yr</td>
+</tr>
+<tr>
+<td><strong>Avg Revenue Per User (ARPU)</strong></td>
+<td style="text-align: center;">$590/yr</td>
+<td style="text-align: center;">$600/yr</td>
+<td style="text-align: center;">$510/yr</td>
+</tr>
+<tr>
+<td><strong>Gross Margin</strong></td>
+<td style="text-align: center;">72%</td>
+<td style="text-align: center;">78%</td>
+<td style="text-align: center;">82%</td>
+</tr>
+<tr>
+<td><strong>Customer Acquisition Cost (CAC)</strong></td>
+<td style="text-align: center;">$3,200</td>
+<td style="text-align: center;">$2,400</td>
+<td style="text-align: center;">$1,800</td>
+</tr>
+<tr>
+<td><strong>CAC Payback Period</strong></td>
+<td style="text-align: center;">4.5 months</td>
+<td style="text-align: center;">2.7 months</td>
+<td style="text-align: center;">1.5 months</td>
+</tr>
+<tr>
+<td><strong>LTV (paying customers)</strong></td>
+<td style="text-align: center;">$25,500</td>
+<td style="text-align: center;">$43,200</td>
+<td style="text-align: center;">$71,000</td>
+</tr>
+<tr>
+<td><strong>LTV:CAC Ratio</strong></td>
+<td style="text-align: center;">8:1</td>
+<td style="text-align: center;">18:1</td>
+<td style="text-align: center;">39:1</td>
+</tr>
+<tr>
+<td><strong>Net Revenue Retention (NRR)</strong></td>
+<td style="text-align: center;">105%</td>
+<td style="text-align: center;">115%</td>
+<td style="text-align: center;">125%</td>
+</tr>
+<tr>
+<td><strong>Monthly Gross Churn</strong></td>
+<td style="text-align: center;">1.5%</td>
+<td style="text-align: center;">0.8%</td>
+<td style="text-align: center;">0.4%</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Driver of improving unit economics:</strong>
+1. <strong>NRR &gt; 100%</strong> because existing customers expand seats and upgrade tiers as they grow
+2. <strong>ARPA increases</strong> as the customer base shifts from Starter → Growth/Pro
+3. <strong>Gross margin improves</strong> with infrastructure scale (shared inference, optimized storage)
+4. <strong>CAC decreases</strong> as brand awareness grows and product-led conversion improves</p>
+<h3 id="64-sensitivity-analysis">6.4 Sensitivity Analysis</h3>
+<table>
+<thead>
+<tr>
+<th>Scenario</th>
+<th style="text-align: center;">Y1 ARR</th>
+<th style="text-align: center;">Y2 ARR</th>
+<th style="text-align: center;">Y3 ARR</th>
+<th>Key Assumption Changes</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Conservative (Base)</strong></td>
+<td style="text-align: center;">$0.9M</td>
+<td style="text-align: center;">$8.2M</td>
+<td style="text-align: center;">$34.5M</td>
+<td>12-month ramp, 1.5% monthly churn</td>
+</tr>
+<tr>
+<td><strong>Optimistic</strong></td>
+<td style="text-align: center;">$1.8M</td>
+<td style="text-align: center;">$15.0M</td>
+<td style="text-align: center;">$65.0M</td>
+<td>Viral growth, 0.8% monthly churn, $50M seed</td>
+</tr>
+<tr>
+<td><strong>Pessimistic</strong></td>
+<td style="text-align: center;">$0.4M</td>
+<td style="text-align: center;">$3.0M</td>
+<td style="text-align: center;">$12.0M</td>
+<td>Slow adoption, 2.5% monthly churn, weak market</td>
+</tr>
+<tr>
+<td><strong>Enterprise-Led</strong></td>
+<td style="text-align: center;">$0.7M</td>
+<td style="text-align: center;">$6.0M</td>
+<td style="text-align: center;">$28.0M</td>
+<td>SMB slower than expected but enterprise faster</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="7-competitive-positioning-strategy">7. Competitive Positioning Strategy</h2>
+<h3 id="71-price-performance-comparison-10-person-team">7.1 Price-Performance Comparison (10-person team)</h3>
+<table>
+<thead>
+<tr>
+<th>CRM</th>
+<th style="text-align: center;">Monthly Cost (10 users)</th>
+<th>Features Included</th>
+<th style="text-align: center;">Value Score</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>FrontierCRM Starter</strong></td>
+<td style="text-align: center;"><strong>$190</strong></td>
+<td>All core CRM + AI lead scoring + email sync + mobile</td>
+<td style="text-align: center;">⭐⭐⭐⭐⭐</td>
+</tr>
+<tr>
+<td><strong>FrontierCRM Growth</strong></td>
+<td style="text-align: center;"><strong>$490</strong></td>
+<td>All of Starter + AI summary + workflows + custom reports + sequences</td>
+<td style="text-align: center;">⭐⭐⭐⭐⭐</td>
+</tr>
+<tr>
+<td>HubSpot (Sales Hub Starter)</td>
+<td style="text-align: center;">$200</td>
+<td>Core CRM only. No AI, no sequences, no custom reports.</td>
+<td style="text-align: center;">⭐⭐⭐</td>
+</tr>
+<tr>
+<td>HubSpot (Sales + Mktg Pro)</td>
+<td style="text-align: center;">$1,800</td>
+<td>Full platform. AI, sequences, reporting, automation.</td>
+<td style="text-align: center;">⭐⭐⭐⭐</td>
+</tr>
+<tr>
+<td>Salesforce Starter Suite</td>
+<td style="text-align: center;">$250</td>
+<td>Very basic. No AI, no automation, no custom objects.</td>
+<td style="text-align: center;">⭐⭐</td>
+</tr>
+<tr>
+<td>Salesforce Pro Suite</td>
+<td style="text-align: center;">$800</td>
+<td>Better but still no AI. Add Einstein for +$50/user.</td>
+<td style="text-align: center;">⭐⭐⭐</td>
+</tr>
+<tr>
+<td>Zoho CRM Professional</td>
+<td style="text-align: center;">$230</td>
+<td>Good features but dated UI, weak mobile, no AI.</td>
+<td style="text-align: center;">⭐⭐⭐</td>
+</tr>
+<tr>
+<td>Pipedrive Professional</td>
+<td style="text-align: center;">$490</td>
+<td>Sales pipeline only. No marketing, no AI, limited reporting.</td>
+<td style="text-align: center;">⭐⭐⭐</td>
+</tr>
+<tr>
+<td>Freshsales Pro</td>
+<td style="text-align: center;">$150</td>
+<td>Good value but limited ecosystem, no AI, basic automation.</td>
+<td style="text-align: center;">⭐⭐⭐⭐</td>
+</tr>
+</tbody>
+</table>
+<h3 id="72-positioning-by-buyer-persona">7.2 Positioning by Buyer Persona</h3>
+<table>
+<thead>
+<tr>
+<th>Persona</th>
+<th style="text-align: center;">Recommended Tier</th>
+<th>Why This Tier</th>
+<th style="text-align: center;">Competitor They're Switching From</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Sam — Biz Owner (5-15 emp)</strong></td>
+<td style="text-align: center;">Free → Starter</td>
+<td>Needs simplicity. Free tier to evaluate, Starter when hitting limits.</td>
+<td style="text-align: center;">Spreadsheets, HubSpot Free, Zoho Free</td>
+</tr>
+<tr>
+<td><strong>Alex — SMB Rep (10-50 emp)</strong></td>
+<td style="text-align: center;">Starter → Growth</td>
+<td>Needs AI lead scoring and mobile. Growth unlocks workflows + sequences.</td>
+<td style="text-align: center;">Pipedrive, HubSpot, spreadsheets</td>
+</tr>
+<tr>
+<td><strong>Morgan — Sales Manager</strong></td>
+<td style="text-align: center;">Growth</td>
+<td>Needs reporting, analytics, deal velocity, rep activity. AI forecasting.</td>
+<td style="text-align: center;">HubSpot, Salesforce (hates admin)</td>
+</tr>
+<tr>
+<td><strong>Riley — Sales Director</strong></td>
+<td style="text-align: center;">Growth → Pro</td>
+<td>Needs executive dashboards, territory management, multi-period forecasting.</td>
+<td style="text-align: center;">Salesforce, Dynamics 365</td>
+</tr>
+<tr>
+<td><strong>Casey — Admin</strong></td>
+<td style="text-align: center;">Growth → Pro</td>
+<td>Needs API access, custom fields, RBAC, audit logs, SSO.</td>
+<td style="text-align: center;">Salesforce, HubSpot</td>
+</tr>
+<tr>
+<td><strong>Dana — C-Suite Executive</strong></td>
+<td style="text-align: center;">Pro → Enterprise</td>
+<td>Needs executive summary, customer health, NRR, churn analytics.</td>
+<td style="text-align: center;">Multiple vendors, frustrated</td>
+</tr>
+<tr>
+<td><strong>Taylor — Support Agent</strong></td>
+<td style="text-align: center;">Pro (as part of platform)</td>
+<td>Needs ticket management, customer 360, knowledge base.</td>
+<td style="text-align: center;">Zendesk, Freshdesk + separate CRM</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="8-go-to-market-pricing-tactics">8. Go-to-Market Pricing Tactics</h2>
+<h3 id="81-launch-pricing-strategy">8.1 Launch Pricing Strategy</h3>
+<p><strong>Phase 1 — Early Adopter (first 6 months):</strong>
+- <strong>Founder's pricing:</strong> First 100 paid accounts get locked-in pricing at 20% below list for 2 years
+  - Starter: $15.20/user/mo ($11.96 annual)
+  - Growth: $39.20/user/mo ($31.54 annual)
+  - Pro: $79.20/user/mo ($65.29 annual)
+- <strong>Rationale:</strong> Incentivize early adoption, build case studies, gather product feedback, create switching cost for early customers</p>
+<p><strong>Phase 2 — Standard (month 7 onwards):</strong>
+- List pricing as defined in Section 2
+- Annual discount: 18%</p>
+<p><strong>Phase 3 — Enterprise (month 12+):</strong>
+- Custom enterprise pricing introduced
+- Enterprise sales team in place</p>
+<h3 id="82-price-increase-strategy">8.2 Price Increase Strategy</h3>
+<table>
+<thead>
+<tr>
+<th>Milestone</th>
+<th style="text-align: center;">Adjustment</th>
+<th>Rationale</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>After 12 months of GA</td>
+<td style="text-align: center;">+10% across all tiers</td>
+<td>Initial launch pricing was intentionally discounted</td>
+</tr>
+<tr>
+<td>After 24 months</td>
+<td style="text-align: center;">+5% across all tiers</td>
+<td>Value increase from platform maturity</td>
+</tr>
+<tr>
+<td>At $10M ARR</td>
+<td style="text-align: center;">+10% for new customers only</td>
+<td>Grandfather existing customers on current pricing</td>
+</tr>
+<tr>
+<td>At $50M ARR</td>
+<td style="text-align: center;">Evaluate market position</td>
+<td>May reduce premiums to accelerate growth or increase to extract value</td>
+</tr>
+</tbody>
+</table>
+<h3 id="83-discount-policy">8.3 Discount Policy</h3>
+<table>
+<thead>
+<tr>
+<th>Scenario</th>
+<th style="text-align: center;">Discount</th>
+<th>Notes</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Annual prepayment</td>
+<td style="text-align: center;">18%</td>
+<td>Standard (see Section 5)</td>
+</tr>
+<tr>
+<td>Non-profit / education</td>
+<td style="text-align: center;">25%</td>
+<td>Verified 501(c)(3) or .edu domain</td>
+</tr>
+<tr>
+<td>Founder's pricing (first 100)</td>
+<td style="text-align: center;">20% locked for 2 years</td>
+<td>See Phase 1 above</td>
+</tr>
+<tr>
+<td>Beta participant</td>
+<td style="text-align: center;">15% lifetime</td>
+<td>Beta testers who provided substantive feedback</td>
+</tr>
+<tr>
+<td>Volume (50-199 seats)</td>
+<td style="text-align: center;">5%</td>
+<td>Added to annual discount</td>
+</tr>
+<tr>
+<td>Volume (200-499 seats)</td>
+<td style="text-align: center;">10%</td>
+<td>Added to annual discount</td>
+</tr>
+<tr>
+<td>Volume (500+ seats)</td>
+<td style="text-align: center;">Custom</td>
+<td>Enterprise pricing</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Policy:</strong> Discounts are additive only in specific combination (e.g., annual + non-profit = 18% + 25% = 43% max). Standard discount stack: annual (18%) + volume (5-10%) = 23-28% max. Enterprise deals are negotiated individually.</p>
+<hr />
+<h2 id="9-risk-analysis-mitigation">9. Risk Analysis &amp; Mitigation</h2>
+<table>
+<thead>
+<tr>
+<th>Risk</th>
+<th style="text-align: center;">Impact</th>
+<th style="text-align: center;">Probability</th>
+<th>Mitigation</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>AI cost overruns</strong> (inference costs exceed subscription revenue at high usage tiers)</td>
+<td style="text-align: center;">High</td>
+<td style="text-align: center;">Medium</td>
+<td>AI Credits usage metering; model optimization (distillation, quantization); shared inference batching; cost per token declining 20-30%/yr</td>
+</tr>
+<tr>
+<td><strong>Price undercut by Zoho/Freshsales</strong> (competitors drop prices to block entry)</td>
+<td style="text-align: center;">Medium</td>
+<td style="text-align: center;">Medium</td>
+<td>Don't compete on price alone. Win on UX, AI, and all-in-one platform. If needed, introduce Starter at $15/mo as price-match measure.</td>
+</tr>
+<tr>
+<td><strong>Tier complexity confuses buyers</strong> (too many choices reduces conversion)</td>
+<td style="text-align: center;">Medium</td>
+<td style="text-align: center;">Low</td>
+<td>Clear comparison table on pricing page. "Not sure? Try Free" CTA. Tier recommendation quiz. 14-day free trial on any paid tier.</td>
+</tr>
+<tr>
+<td><strong>Annual billing cash flow pressure</strong> (discount reduces early revenue)</td>
+<td style="text-align: center;">Low</td>
+<td style="text-align: center;">Low</td>
+<td>18% discount is standard. Monthly customers provide cash flow. Seed/Series A covers Y1 operational costs.</td>
+</tr>
+<tr>
+<td><strong>Enterprise pricing too low or too high</strong> (miss on enterprise segment)</td>
+<td style="text-align: center;">Medium</td>
+<td style="text-align: center;">Medium</td>
+<td>Custom pricing for enterprise via sales-led motion. Benchmark each deal against Salesforce/HubSpot/Dynamics 365 comparable. Start negotiations at 20% below competitor price.</td>
+</tr>
+<tr>
+<td><strong>Starter tier cannibalizes Growth tier</strong> (companies stay on Starter too long)</td>
+<td style="text-align: center;">Low</td>
+<td style="text-align: center;">Low</td>
+<td>Starter has 3-pipeline limit and 5-integration limit that naturally push companies to Growth as they scale. 25K contact cap on Starter also creates natural upgrade trigger.</td>
+</tr>
+<tr>
+<td><strong>Free tier costs outweigh conversion revenue</strong></td>
+<td style="text-align: center;">Medium</td>
+<td style="text-align: center;">Low</td>
+<td>Free tier costs are modest (no AI, limited storage, no support). 15-20% conversion to paid is break-even. Target 20%+ conversion.</td>
+</tr>
+<tr>
+<td><strong>Currency/regional pricing disparity</strong> (global pricing creates arbitrage)</td>
+<td style="text-align: center;">Low</td>
+<td style="text-align: center;">Medium</td>
+<td>Introduce regional pricing in Year 2 (EU, APAC, LATAM). EU pricing at €19/€49/€99 to match local expectations. APAC at local market rates.</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="10-recommendations">10. Recommendations</h2>
+<h3 id="101-immediate-actions-pre-launch">10.1 Immediate Actions (Pre-Launch)</h3>
+<ol>
+<li><strong>Validate pricing with 20-30 target SMB buyers</strong> via structured pricing surveys or concept testing</li>
+<li><strong>Build interactive pricing calculator</strong> on the website — "calculate your team's cost" with seat count + tier selector</li>
+<li><strong>Prepare first 3 pricing page variants</strong> for A/B testing at launch:</li>
+<li>Variant A: Feature comparison table (traditional)</li>
+<li>Variant B: "Pick your team size" interactive calculator</li>
+<li>Variant C: AI-recommended tier based on questionnaire</li>
+<li><strong>Draft 5 comparison pages</strong> — "FrontierCRM vs [HubSpot/Salesforce/Zoho/Pipedrive/Freshsales]"</li>
+<li><strong>Set up Stripe billing with usage-based add-on metering</strong> for AI Credits from day 1</li>
+</ol>
+<h3 id="102-medium-term-6-12-months-post-launch">10.2 Medium-Term (6-12 Months Post-Launch)</h3>
+<ol>
+<li><strong>Introduce EU pricing</strong> (€19/€49/€99 + VAT) — launch with EU data residency</li>
+<li><strong>Launch marketplace app revenue sharing</strong> (20-25% take rate)</li>
+<li><strong>Begin enterprise sales motion</strong> with 2-3 dedicated enterprise AEs</li>
+<li><strong>A/B test price point elasticity</strong> — test $22/55/109 for 2 weeks, measure conversion impact</li>
+<li><strong>Introduce partner/reseller pricing</strong> (20% margin for implementation partners)</li>
+</ol>
+<h3 id="103-key-metrics-to-track">10.3 Key Metrics to Track</h3>
+<table>
+<thead>
+<tr>
+<th>Metric</th>
+<th style="text-align: center;">Target (Y1)</th>
+<th style="text-align: center;">Target (Y2)</th>
+<th style="text-align: center;">Target (Y3)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Free → Paid conversion</td>
+<td style="text-align: center;">15%</td>
+<td style="text-align: center;">20%</td>
+<td style="text-align: center;">25%</td>
+</tr>
+<tr>
+<td>Monthly → Annual conversion</td>
+<td style="text-align: center;">55%</td>
+<td style="text-align: center;">62%</td>
+<td style="text-align: center;">70%</td>
+</tr>
+<tr>
+<td>Net Revenue Retention (NRR)</td>
+<td style="text-align: center;">105%</td>
+<td style="text-align: center;">115%</td>
+<td style="text-align: center;">125%</td>
+</tr>
+<tr>
+<td>Monthly gross churn</td>
+<td style="text-align: center;">&lt; 2%</td>
+<td style="text-align: center;">&lt; 1.5%</td>
+<td style="text-align: center;">&lt; 1%</td>
+</tr>
+<tr>
+<td>AI Credits utilization (of included)</td>
+<td style="text-align: center;">40%</td>
+<td style="text-align: center;">50%</td>
+<td style="text-align: center;">55%</td>
+</tr>
+<tr>
+<td>AI Credits overage revenue</td>
+<td style="text-align: center;">&lt; 5% of total</td>
+<td style="text-align: center;">3-5% of total</td>
+<td style="text-align: center;">2-4% of total</td>
+</tr>
+<tr>
+<td>Marketplace take rate revenue</td>
+<td style="text-align: center;">N/A</td>
+<td style="text-align: center;">1% of total</td>
+<td style="text-align: center;">3-5% of total</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="appendix-a-full-pricing-reference-card">Appendix A: Full Pricing Reference Card</h2>
+<h3 id="monthly-pricing">Monthly Pricing</h3>
+<div class="highlight"><pre><span></span><code>┌──────────────┬─────────┬────────────┬──────────┬─────────┬──────────────┐
+│              │  FREE   │  STARTER   │  GROWTH  │   PRO   │  ENTERPRISE  │
+├──────────────┼─────────┼────────────┼──────────┼─────────┼──────────────┤
+│ Per user/mo  │   $0    │    $19     │   $49    │   $99   │   Custom     │
+│ Annual/mo    │   $0    │  $15.58    │ $40.18   │ $81.18  │   Custom     │
+│ Min users    │   2     │     1      │    1     │    1    │    50+       │
+│ Max users    │   2     │  Unlimited │ Unlimited│ Unlimited│  Unlimited   │
+│ Storage/user │ 250 MB  │    5 GB    │  20 GB   │  50 GB  │   Custom     │
+│ Contacts     │  1,000  │  25,000    │ 100,000  │ 500,000 │  Unlimited   │
+│ Pipelines    │    1    │     3      │ Unlimited│ Unlimited│  Unlimited   │
+│ Integrations │    1    │     5      │    15    │Unlimited │  Unlimited   │
+│ Dashboards   │    1    │     5      │Unlimited │Unlimited │  Unlimited   │
+│ API calls/d  │  Read   │  1,000     │ 10,000   │ 100,000  │  Custom      │
+│ AI Credits   │   —     │   500      │  5,000   │ 25,000   │  Custom      │
+│ Support      │  Forum  │  Email/4h  │ Chat/2h  │ Phone/1h │  15min/24/7  │
+│ SLA          │   —     │    —       │    —     │  99.9%   │  99.95%+     │
+└──────────────┴─────────┴────────────┴──────────┴─────────┴──────────────┘
+</code></pre></div>
+<h3 id="annual-pricing">Annual Pricing</h3>
+<table>
+<thead>
+<tr>
+<th style="text-align: center;">Tier</th>
+<th style="text-align: center;">Annual/User/Month</th>
+<th style="text-align: center;">Annual/User/Year</th>
+<th style="text-align: center;">10 Users/Year</th>
+<th style="text-align: center;">25 Users/Year</th>
+<th style="text-align: center;">50 Users/Year</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: center;">Free</td>
+<td style="text-align: center;">$0</td>
+<td style="text-align: center;">$0</td>
+<td style="text-align: center;">$0</td>
+<td style="text-align: center;">$0</td>
+<td style="text-align: center;">$0</td>
+</tr>
+<tr>
+<td style="text-align: center;">Starter</td>
+<td style="text-align: center;">$15.58</td>
+<td style="text-align: center;">$187</td>
+<td style="text-align: center;">$1,870</td>
+<td style="text-align: center;">$4,675</td>
+<td style="text-align: center;">$9,350</td>
+</tr>
+<tr>
+<td style="text-align: center;">Growth</td>
+<td style="text-align: center;">$40.18</td>
+<td style="text-align: center;">$482</td>
+<td style="text-align: center;">$4,820</td>
+<td style="text-align: center;">$12,050</td>
+<td style="text-align: center;">$24,100</td>
+</tr>
+<tr>
+<td style="text-align: center;">Pro</td>
+<td style="text-align: center;">$81.18</td>
+<td style="text-align: center;">$974</td>
+<td style="text-align: center;">$9,740</td>
+<td style="text-align: center;">$24,350</td>
+<td style="text-align: center;">$48,700</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<p><em>End of Pricing Tier Analysis &amp; Strategy Document</em></p>
+
+
+
+
+
+
+
+  
+  
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Back to top
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": ".", "features": ["navigation.sections", "navigation.top", "search.suggest", "search.highlight", "content.code.copy"], "search": "assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="assets/javascripts/bundle.79ae519e.min.js"></script>
+      
+    
+  </body>
+</html>

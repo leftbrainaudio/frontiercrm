@@ -1,0 +1,3005 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="Project documentation — design system, roadmap, devops, brand, architecture">
+      
+      
+        <meta name="author" content="atlas">
+      
+      
+      
+      
+      
+        
+      
+      
+      <link rel="icon" href="assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.6">
+    
+    
+      
+        <title>ADR-012: Data Sync Architecture — Bidirectional Email & Calendar Sync - FrontierCRM</title>
+      
+    
+    
+      <link rel="stylesheet" href="assets/stylesheets/main.484c7ddc.min.css">
+      
+        
+        <link rel="stylesheet" href="assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="stylesheets/extra.css">
+    
+    <script>__md_scope=new URL(".",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="teal">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#adr-012-data-sync-architecture-bidirectional-email-calendar-sync" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="." title="FrontierCRM" class="md-header__button md-logo" aria-label="FrontierCRM" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            FrontierCRM
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              ADR-012: Data Sync Architecture — Bidirectional Email &amp; Calendar Sync
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+    
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+        <div class="md-search__suggest" data-md-component="search-suggest"></div>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="." title="FrontierCRM" class="md-nav__button md-logo" aria-label="FrontierCRM" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    FrontierCRM
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="index.md" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Home
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="10_ROADMAP.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Roadmap
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--active"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="12_DEVOPS.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    DevOps
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--active"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4" >
+        
+          
+          <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Brand Guidelines
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Brand Guidelines
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="08_BRAND_GUIDELINES.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Brand Identity
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--complete"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="ui-design-system.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Design System Overview
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--complete"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="design-system-gaps.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Implementation Gaps
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--active"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="06_DATA_ARCHITECTURE.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Architecture
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--complete"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="05_TECH_STACK.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Tech Stack
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--complete"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="11_DECISION_LOG.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Decision Log
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--complete"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_8" >
+        
+          
+          <label class="md-nav__link" for="__nav_8" id="__nav_8_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Research
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_8_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_8">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Research
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="01_MARKET_RESEARCH.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Market
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--complete"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="02_FEATURE_MATRIX.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Features
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--complete"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="04_INTEGRATIONS.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Integrations
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--completed"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="04B_EMERGING_TECH.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Emerging Tech
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--complete"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="03_PERSONAS.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Personas
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--complete"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="09_PRICING.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Pricing
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--complete"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="07_UX_WORKFLOWS.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    UX & Workflows
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--complete"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="api-endpoints.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    API
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--complete"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#table-of-contents" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Table of Contents
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#1-context" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1. Context
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="1. Context">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#provider-landscape" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Provider Landscape
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2-decision-drivers" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2. Decision Drivers
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#3-options-considered" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3. Options Considered
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="3. Options Considered">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#option-1-build-in-house-sync-engine-selected" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Option 1: Build In-House Sync Engine (Selected)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#option-2-sync-middleware-nylas-cronofy" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Option 2: Sync Middleware (Nylas / Cronofy)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#option-3-hybrid-selected-variation" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Option 3: Hybrid (Selected Variation)
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#4-decision-unified-sync-engine-with-adapter-pattern" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4. Decision: Unified Sync Engine with Adapter Pattern
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="4. Decision: Unified Sync Engine with Adapter Pattern">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#why-in-house-for-primary-providers" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Why In-House for Primary Providers
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#provider-priority" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Provider Priority
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#5-sync-engine-architecture" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5. Sync Engine Architecture
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="5. Sync Engine Architecture">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#high-level-design" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        High-Level Design
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#adapter-interface" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Adapter Interface
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#unified-data-models" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Unified Data Models
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#sync-worker-flow-detailed" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Sync Worker Flow (Detailed)
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#6-adapter-implementations" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6. Adapter Implementations
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="6. Adapter Implementations">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#61-microsoft-graph-adapter" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6.1 Microsoft Graph Adapter
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#62-gmail-adapter" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6.2 Gmail Adapter
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#63-google-calendar-adapter" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6.3 Google Calendar Adapter
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#64-imap-adapter" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6.4 IMAP Adapter
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#7-delta-sync-strategy" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        7. Delta Sync Strategy
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="7. Delta Sync Strategy">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#cursor-types-by-provider" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Cursor Types by Provider
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#delta-sync-decision-tree" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Delta Sync Decision Tree
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#full-resync-strategy" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Full Resync Strategy
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#8-conflict-resolution" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        8. Conflict Resolution
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="8. Conflict Resolution">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#conflict-types" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Conflict Types
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#resolution-rules" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Resolution Rules
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#conflict-logging" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Conflict Logging
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#9-real-time-architecture" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        9. Real-Time Architecture
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="9. Real-Time Architecture">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#architecture-diagram" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Architecture Diagram
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#event-pubsub-websocket-flow" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Event → Pub/Sub → WebSocket Flow
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#websocket-connection-management" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        WebSocket Connection Management
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#connection-registry" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Connection Registry
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#10-websocket-channels" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        10. WebSocket Channels
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="10. WebSocket Channels">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#channel-authorization" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Channel Authorization
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#11-notifications-architecture" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        11. Notifications Architecture
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="11. Notifications Architecture">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#notification-types" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Notification Types
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#notification-delivery-flow" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Notification Delivery Flow
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#push-notification-pwa" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Push Notification (PWA)
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#12-search-architecture" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        12. Search Architecture
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="12. Search Architecture">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#index-strategy" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Index Strategy
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#index-configuration" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Index Configuration
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#search-query-flow" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Search Query Flow
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#postgresql-fts-fallback" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        PostgreSQL FTS Fallback
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#how-it-works" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        How It Works
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#13-file-attachment-storage-architecture" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        13. File &amp; Attachment Storage Architecture
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="13. File &amp; Attachment Storage Architecture">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#storage-decision-cloudflare-r2" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Storage Decision: Cloudflare R2
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#upload-flow" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Upload Flow
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#signed-url-strategy" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Signed URL Strategy
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#storage-key-structure" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Storage Key Structure
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#processing-pipeline" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Processing Pipeline
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#14-consequences" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        14. Consequences
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="14. Consequences">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#positive" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Positive
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#negative" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Negative
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#15-risks-mitigations" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        15. Risks &amp; Mitigations
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#appendix-a-real-time-websocket-message-types" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Appendix A: Real-Time WebSocket Message Types
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Appendix A: Real-Time WebSocket Message Types">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#pipeline-updates" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Pipeline Updates
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#notifications" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Notifications
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#sync-status" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Sync Status
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#appendix-b-search-performance-targets" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Appendix B: Search Performance Targets
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#appendix-c-file-storage-size-estimates" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Appendix C: File Storage Size Estimates
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+
+<h1 id="adr-012-data-sync-architecture-bidirectional-email-calendar-sync">ADR-012: Data Sync Architecture — Bidirectional Email &amp; Calendar Sync</h1>
+<blockquote>
+<p>Architecture Decision Record
+Context: Data Architecture &amp; API Design (T6), Integration Landscape (T3)
+Dated: 2026-06-28
+Status: ✅ Accepted</p>
+</blockquote>
+<hr />
+<h2 id="table-of-contents">Table of Contents</h2>
+<ol>
+<li><a href="#1-context">Context</a></li>
+<li><a href="#2-decision-drivers">Decision Drivers</a></li>
+<li><a href="#3-options-considered">Options Considered</a></li>
+<li><a href="#4-decision-unified-sync-engine-with-adapter-pattern">Decision: Unified Sync Engine with Adapter Pattern</a></li>
+<li><a href="#5-sync-engine-architecture">Sync Engine Architecture</a></li>
+<li><a href="#6-adapter-implementations">Adapter Implementations</a></li>
+<li><a href="#7-delta-sync-strategy">Delta Sync Strategy</a></li>
+<li><a href="#8-conflict-resolution">Conflict Resolution</a></li>
+<li><a href="#9-real-time-architecture">Real-Time Architecture</a></li>
+<li><a href="#10-websocket-channels">WebSocket Channels</a></li>
+<li><a href="#11-notifications-architecture">Notifications Architecture</a></li>
+<li><a href="#12-search-architecture">Search Architecture</a></li>
+<li><a href="#13-file--attachment-storage-architecture">File &amp; Attachment Storage Architecture</a></li>
+<li><a href="#14-consequences">Consequences</a></li>
+<li><a href="#15-risks--mitigations">Risks &amp; Mitigations</a></li>
+</ol>
+<hr />
+<h2 id="1-context">1. Context</h2>
+<p>FrontierCRM needs bidirectional sync between CRM data and external providers (Gmail, Microsoft Graph, Google Calendar, Outlook Calendar). The sync must handle:</p>
+<ul>
+<li><strong>Email sync:</strong> Read emails from providers, link to CRM contacts/deals, track read/unread status, send emails via connected provider</li>
+<li><strong>Calendar sync:</strong> Sync events, detect conflicts, expand recurring events, support free/busy lookups</li>
+<li><strong>Bidirectional changes:</strong> A deal linked to an email thread in CRM should be reflected. A calendar event created in Google Calendar should appear in CRM, and an event created in CRM should appear in the user's calendar.</li>
+<li><strong>Delta sync:</strong> Only sync what changed since last sync, not the entire mailbox</li>
+<li><strong>Conflict resolution:</strong> Handle the case where the same entity is modified in both CRM and the provider simultaneously</li>
+</ul>
+<h3 id="provider-landscape">Provider Landscape</h3>
+<table>
+<thead>
+<tr>
+<th>Provider</th>
+<th>Email API</th>
+<th>Calendar API</th>
+<th>Sync Method</th>
+<th>Complexity</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Gmail</strong></td>
+<td>Gmail API v1 + Pub/Sub</td>
+<td>Google Calendar API v3</td>
+<td>historyId / syncToken</td>
+<td>Medium-High</td>
+</tr>
+<tr>
+<td><strong>Microsoft Graph</strong></td>
+<td>Graph <code>/me/messages/delta</code></td>
+<td>Graph <code>/me/calendarView/delta</code></td>
+<td>deltaLink</td>
+<td>Medium</td>
+</tr>
+<tr>
+<td><strong>IMAP/SMTP</strong></td>
+<td>IMAP UID + CONDSTORE</td>
+<td>None (CalDAV for calendar)</td>
+<td>UIDVALIDITY/MODSEQ</td>
+<td>High</td>
+</tr>
+<tr>
+<td><strong>CalDAV</strong></td>
+<td>N/A</td>
+<td>CalDAV sync-collection</td>
+<td>ETag / sync-token</td>
+<td>Very High</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="2-decision-drivers">2. Decision Drivers</h2>
+<table>
+<thead>
+<tr>
+<th>#</th>
+<th>Driver</th>
+<th>Constraint</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td><strong>Async everything</strong></td>
+<td>Never block an HTTP request on third-party API calls. All sync runs via Celery workers.</td>
+</tr>
+<tr>
+<td>2</td>
+<td><strong>Provider-agnostic core</strong></td>
+<td>The CRM should not depend on provider-specific code. Every provider has an adapter with the same interface.</td>
+</tr>
+<tr>
+<td>3</td>
+<td><strong>Delta-first sync</strong></td>
+<td>Full sync only on initial connection or when delta cursors expire. Normal operation is incremental.</td>
+</tr>
+<tr>
+<td>4</td>
+<td><strong>Eventually consistent</strong></td>
+<td>Sync latency of 30–60s is acceptable for the SMB segment. Not a financial trading system.</td>
+</tr>
+<tr>
+<td>5</td>
+<td><strong>Idempotent operations</strong></td>
+<td>Running the same sync twice should produce the same result.</td>
+</tr>
+<tr>
+<td>6</td>
+<td><strong>Traceable conflicts</strong></td>
+<td>Every conflict is logged with before/after snapshots for audit/debugging.</td>
+</tr>
+<tr>
+<td>7</td>
+<td><strong>OAuth lifecycle</strong></td>
+<td>Token refresh failures are surfaced to users. Connections with expired tokens are paused, not silently broken.</td>
+</tr>
+<tr>
+<td>8</td>
+<td><strong>Tiered sync intervals</strong></td>
+<td>Free plan: 120s polling. Starter: 60s. Growth: 30s + webhooks. Enterprise: real-time webhooks.</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="3-options-considered">3. Options Considered</h2>
+<h3 id="option-1-build-in-house-sync-engine-selected">Option 1: Build In-House Sync Engine (Selected)</h3>
+<p>Build a unified sync engine with adapter pattern — one adapter per provider.</p>
+<p><strong>Cost:</strong> 6–10 weeks development (email + calendar for Graph and Gmail)
+<strong>Per-user cost:</strong> $0 (no middleware fees)
+<strong>Control:</strong> Full control over conflict resolution, data model, OAuth flow
+<strong>Provider coverage:</strong> Graph + Gmail Calendar + Google Calendar (80% of SMB). IMAP/CalDAV via middleware.</p>
+<h3 id="option-2-sync-middleware-nylas-cronofy">Option 2: Sync Middleware (Nylas / Cronofy)</h3>
+<p>Use a third-party sync middleware that abstracts multiple providers.</p>
+<p><strong>Cost:</strong> $2–5/user/month (at 100 users: $200–500/mo)
+<strong>Time to market:</strong> 1–2 weeks
+<strong>Data privacy:</strong> Email bodies pass through third-party service
+<strong>Provider coverage:</strong> All providers out of the box
+<strong>Risk:</strong> Vendor lock-in, data residency concerns, adds latency</p>
+<h3 id="option-3-hybrid-selected-variation">Option 3: Hybrid (Selected Variation)</h3>
+<p>Build native adapters for Graph and Google Calendar (covering 80%+). Use middleware for IMAP/CalDAV long-tail.</p>
+<p><strong>Cost:</strong> 4–6 weeks for native adapters + $200/mo for middleware covering the remaining 20%
+<strong>Best of both:</strong> Full control over primary providers, rapid coverage of edge cases</p>
+<p><strong>Recommendation:</strong> <strong>Option 3 (Hybrid).</strong> Build native Graph and Google Calendar adapters first. Add middleware for IMAP/CalDAV in Phase 2 when demand materializes.</p>
+<hr />
+<h2 id="4-decision-unified-sync-engine-with-adapter-pattern">4. Decision: Unified Sync Engine with Adapter Pattern</h2>
+<h3 id="why-in-house-for-primary-providers">Why In-House for Primary Providers</h3>
+<ol>
+<li><strong>Data model control.</strong> Email body parsing, thread grouping, and CRM linking are core CRM features. Building them on top of a middleware limits what we can do.</li>
+<li><strong>Cost.</strong> At $2–5/user/month, middleware costs exceed FrontierCRM's target margin (planning $29/user/mo). 100 users on middleware = $200–500/mo vs $0 for in-house.</li>
+<li><strong>Latency.</strong> Every middleware hop adds 100–500ms. For sync operations that already have provider latency (100–1000ms), this cumulatively hurts.</li>
+<li><strong>Data privacy.</strong> Email bodies contain sensitive customer data. Keeping them within our infra avoids another party having access.</li>
+<li><strong>OAuth ownership.</strong> Managing OAuth tokens ourselves means we control refresh, expiry handling, and user-facing error messages.</li>
+</ol>
+<h3 id="provider-priority">Provider Priority</h3>
+<table>
+<thead>
+<tr>
+<th>Phase</th>
+<th>Provider</th>
+<th>Sync Type</th>
+<th>Implementation</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>P0</strong></td>
+<td>Microsoft Graph</td>
+<td>Email + Calendar</td>
+<td>Native adapter (build)</td>
+</tr>
+<tr>
+<td><strong>P0</strong></td>
+<td>Google Calendar</td>
+<td>Calendar</td>
+<td>Native adapter (build)</td>
+</tr>
+<tr>
+<td><strong>P1</strong></td>
+<td>Gmail API</td>
+<td>Email</td>
+<td>Native adapter (build)</td>
+</tr>
+<tr>
+<td><strong>P2</strong></td>
+<td>IMAP/SMTP</td>
+<td>Email only</td>
+<td>Middleware (Nylas)</td>
+</tr>
+<tr>
+<td><strong>P3</strong></td>
+<td>CalDAV</td>
+<td>Calendar (read-only)</td>
+<td>Middleware (Cronofy)</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="5-sync-engine-architecture">5. Sync Engine Architecture</h2>
+<h3 id="high-level-design">High-Level Design</h3>
+<div class="highlight"><pre><span></span><code>┌──────────────────────────────────────────────────────────┐
+│                    Sync Engine                            │
+│                                                          │
+│  ┌──────────────────────────────────────────────────┐    │
+│  │              Sync Scheduler                       │    │
+│  │  - Reads sync_states table for next_sync_at       │    │
+│  │  - Enqueues Celery tasks per connection + type    │    │
+│  │  - Respects tier-based intervals (30s/60s/120s)   │    │
+│  │  - Honors per-provider rate limits                │    │
+│  └──────────┬───────────────────────────────────────┘    │
+│             │                                            │
+│     ┌───────┴─────────┐                                  │
+│     │   Sync Worker    │  (Celery task, per connection)  │
+│     │                  │                                  │
+│     │  1. Check sync_state for cursor                    │
+│     │  2. Call adapter.delta_sync(cursor)                 │
+│     │  3. Process changes (create/update/delete)          │
+│     │  4. Update cursor in sync_state                     │
+│     │  5. Handle conflicts                                │
+│     │  6. Update sync_connection.last_sync_at             │
+│     └──────────────────┘                                  │
+│                                                          │
+│  ┌──────────────────────────────────────────────────┐    │
+│  │           Provider Adapters                      │    │
+│  │  ┌──────────┐ ┌──────────┐ ┌──────────┐          │    │
+│  │  │ Gmail    │ │  Graph   │ │  IMAP    │          │    │
+│  │  │ Adapter  │ │  Adapter │ │  Adapter │          │    │
+│  │  └──────────┘ └──────────┘ └──────────┘          │    │
+│  └──────────────────────────────────────────────────┘    │
+└──────────────────────────────────────────────────────────┘
+</code></pre></div>
+<h3 id="adapter-interface">Adapter Interface</h3>
+<div class="highlight"><pre><span></span><code><span class="k">class</span><span class="w"> </span><span class="nc">SyncAdapter</span><span class="p">(</span><span class="n">ABC</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Abstract interface for all sync providers.&quot;&quot;&quot;</span>
+
+    <span class="c1"># ========== Email ==========</span>
+
+    <span class="nd">@abstractmethod</span>
+    <span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">get_email_delta</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span> <span class="n">cursor</span><span class="p">:</span> <span class="nb">dict</span> <span class="o">|</span> <span class="kc">None</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">DeltaResult</span><span class="p">[</span><span class="n">EmailMessage</span><span class="p">]:</span> <span class="o">...</span>
+
+    <span class="nd">@abstractmethod</span>
+    <span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">send_email</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span> <span class="n">message</span><span class="p">:</span> <span class="n">OutgoingEmail</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">EmailSendResult</span><span class="p">:</span> <span class="o">...</span>
+
+    <span class="nd">@abstractmethod</span>
+    <span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">mark_read</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span> <span class="n">provider_message_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">is_read</span><span class="p">:</span> <span class="nb">bool</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span> <span class="o">...</span>
+
+    <span class="nd">@abstractmethod</span>
+    <span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">get_initial_cursor</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span> <span class="o">...</span>
+
+    <span class="c1"># ========== Calendar ==========</span>
+
+    <span class="nd">@abstractmethod</span>
+    <span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">get_event_delta</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span> <span class="n">cursor</span><span class="p">:</span> <span class="nb">dict</span> <span class="o">|</span> <span class="kc">None</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">DeltaResult</span><span class="p">[</span><span class="n">CalendarEvent</span><span class="p">]:</span> <span class="o">...</span>
+
+    <span class="nd">@abstractmethod</span>
+    <span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">create_event</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span> <span class="n">event</span><span class="p">:</span> <span class="n">CalendarEvent</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">CalendarEvent</span><span class="p">:</span> <span class="o">...</span>
+
+    <span class="nd">@abstractmethod</span>
+    <span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">update_event</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span> <span class="n">provider_event_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">event</span><span class="p">:</span> <span class="n">CalendarEvent</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">CalendarEvent</span><span class="p">:</span> <span class="o">...</span>
+
+    <span class="nd">@abstractmethod</span>
+    <span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">delete_event</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span> <span class="n">provider_event_id</span><span class="p">:</span> <span class="nb">str</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span> <span class="o">...</span>
+
+    <span class="nd">@abstractmethod</span>
+    <span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">get_freebusy</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span> <span class="n">time_min</span><span class="p">:</span> <span class="n">datetime</span><span class="p">,</span> <span class="n">time_max</span><span class="p">:</span> <span class="n">datetime</span><span class="p">,</span> <span class="n">users</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">FreeBusyResult</span><span class="p">:</span> <span class="o">...</span>
+
+    <span class="c1"># ========== Lifecycle ==========</span>
+
+    <span class="nd">@abstractmethod</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">validate_connection</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span> <span class="n">access_token</span><span class="p">:</span> <span class="nb">str</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">ConnectionStatus</span><span class="p">:</span> <span class="o">...</span>
+
+    <span class="nd">@abstractmethod</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">refresh_token</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span> <span class="n">refresh_token</span><span class="p">:</span> <span class="nb">str</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">TokenRefreshResult</span><span class="p">:</span> <span class="o">...</span>
+</code></pre></div>
+<h3 id="unified-data-models">Unified Data Models</h3>
+<div class="highlight"><pre><span></span><code><span class="nd">@dataclass</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">DeltaResult</span><span class="p">[</span><span class="n">T</span><span class="p">]:</span>
+    <span class="n">items</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="n">T</span><span class="p">]</span>                <span class="c1"># New/modified items</span>
+    <span class="n">deleted_ids</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span>        <span class="c1"># Deleted provider IDs</span>
+    <span class="n">new_cursor</span><span class="p">:</span> <span class="nb">dict</span>              <span class="c1"># Updated cursor for next delta call</span>
+    <span class="n">has_more</span><span class="p">:</span> <span class="nb">bool</span>                <span class="c1"># More pages available (pagination cursor)</span>
+    <span class="n">full_resync_required</span><span class="p">:</span> <span class="nb">bool</span>    <span class="c1"># Cursor expired, need full re-sync</span>
+
+<span class="nd">@dataclass</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">EmailMessage</span><span class="p">:</span>
+    <span class="n">provider_id</span><span class="p">:</span> <span class="nb">str</span>
+    <span class="n">thread_id</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span>
+    <span class="n">message_id</span><span class="p">:</span> <span class="nb">str</span>               <span class="c1"># RFC 2822 Message-ID</span>
+    <span class="n">subject</span><span class="p">:</span> <span class="nb">str</span>
+    <span class="n">from_address</span><span class="p">:</span> <span class="nb">str</span>
+    <span class="n">from_name</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span>
+    <span class="n">to_addresses</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span>
+    <span class="n">cc_addresses</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span>
+    <span class="n">bcc_addresses</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span>
+    <span class="n">body_text</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span>
+    <span class="n">body_html</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span>
+    <span class="n">snippet</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span>
+    <span class="n">sent_at</span><span class="p">:</span> <span class="n">datetime</span>
+    <span class="n">received_at</span><span class="p">:</span> <span class="n">datetime</span>
+    <span class="n">is_read</span><span class="p">:</span> <span class="nb">bool</span>
+    <span class="n">is_starred</span><span class="p">:</span> <span class="nb">bool</span>
+    <span class="n">labels</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span>
+    <span class="n">attachments</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="n">AttachmentInfo</span><span class="p">]</span>
+    <span class="n">raw_headers</span><span class="p">:</span> <span class="nb">dict</span>
+
+<span class="nd">@dataclass</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">CalendarEvent</span><span class="p">:</span>
+    <span class="n">provider_id</span><span class="p">:</span> <span class="nb">str</span>
+    <span class="n">ical_uid</span><span class="p">:</span> <span class="nb">str</span>
+    <span class="n">title</span><span class="p">:</span> <span class="nb">str</span>
+    <span class="n">description</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span>
+    <span class="n">location</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span>
+    <span class="n">start_at</span><span class="p">:</span> <span class="n">datetime</span>
+    <span class="n">end_at</span><span class="p">:</span> <span class="n">datetime</span>
+    <span class="n">is_all_day</span><span class="p">:</span> <span class="nb">bool</span>
+    <span class="n">timezone</span><span class="p">:</span> <span class="nb">str</span>
+    <span class="n">recurrence_rule</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span>          <span class="c1"># RRULE string</span>
+    <span class="n">recurrence_exception_dates</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="n">datetime</span><span class="p">]</span>
+    <span class="n">attendees</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="n">Attendee</span><span class="p">]</span>
+    <span class="n">organizer</span><span class="p">:</span> <span class="n">Attendee</span> <span class="o">|</span> <span class="kc">None</span>
+    <span class="n">is_organizer</span><span class="p">:</span> <span class="nb">bool</span>
+    <span class="n">status</span><span class="p">:</span> <span class="nb">str</span>                          <span class="c1"># confirmed, tentative, cancelled</span>
+    <span class="n">conference_link</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span>
+    <span class="n">etag</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span>                     <span class="c1"># For CalDAV</span>
+</code></pre></div>
+<h3 id="sync-worker-flow-detailed">Sync Worker Flow (Detailed)</h3>
+<div class="highlight"><pre><span></span><code>sync_worker(connection_id, sync_type):
+  1. Load connection + sync_state from DB
+  2. Determine adapter class from connection.provider
+  3. Initialize adapter with OAuth tokens
+  4. If tokens expired → attempt refresh
+     - If refresh fails → mark connection as &#39;expired&#39;, notify user, abort
+  5. Load cursor from sync_state.cursor_data
+  6. If no cursor (first sync) → full_sync:
+     a. Call adapter.get_initial_cursor()
+     b. Call adapter.get_email_delta(None) → full result
+     c. Process all items (batch insert, create activities)
+     d. Save cursor
+  7. If cursor exists → delta_sync:
+     a. Call adapter.get_email_delta(cursor)
+     b. If full_resync_required → goto full_sync
+     c. For each new/modified item:
+        - Upsert into emails/events table
+        - Update or create CRM link (contact matching by email)
+        - Create activity entry in timeline
+     d. For each deleted item:
+        - Soft-delete in CRM (don&#39;t hard delete — user may want to review)
+        - Create activity entry for deletion
+     e. Save new cursor
+  8. Update sync_state (last_delta_sync_at, total_synced_count, etc.)
+  9. Update sync_connection (last_sync_at, last_sync_success = true)
+  10. Handle rate limits:
+      - If 429 received → respect Retry-After, schedule next sync with backoff
+      - Increment error_count, handle consecutive failures
+</code></pre></div>
+<hr />
+<h2 id="6-adapter-implementations">6. Adapter Implementations</h2>
+<h3 id="61-microsoft-graph-adapter">6.1 Microsoft Graph Adapter</h3>
+<p><strong>Email delta sync:</strong>
+<div class="highlight"><pre><span></span><code>GET /me/messages/delta?$select=id,subject,from,toRecipients,...
+  → Response includes @odata.deltaLink
+  → Store deltaLink in sync_state.cursor_data
+  → Next call: GET {deltaLink}
+</code></pre></div></p>
+<p><strong>Calendar delta sync:</strong>
+<div class="highlight"><pre><span></span><code>GET /me/calendarView/delta?startDateTime=2026-01-01T00:00:00Z&amp;endDateTime=2027-01-01T00:00:00Z
+  → Response includes @odata.deltaLink
+  → Store deltaLink
+  → Next call: GET {deltaLink}
+</code></pre></div></p>
+<p><strong>Key notes:</strong>
+- deltaLink works for ~14 days before requiring full resync
+- Use <code>$select</code> to minimize payload (don't fetch full body on list calls)
+- Batch individual message fetches when full body is needed
+- Differentiate Outlook.com (consumer) vs Office 365 (business) — feature detection via API</p>
+<h3 id="62-gmail-adapter">6.2 Gmail Adapter</h3>
+<p><strong>Email delta sync:</strong>
+<div class="highlight"><pre><span></span><code>1. Start sync:
+   POST /gmail/v1/users/me/watch → { historyId, expiration }
+   GET /gmail/v1/users/me/messages?maxResults=100&amp;q=after:{timestamp}
+
+2. Delta sync (after initial):
+   GET /gmail/v1/users/me/history?startHistoryId={historyId}
+   → Returns { history: [{ messagesAdded, messagesDeleted, labelsAdded, labelsRemoved }] }
+   → Store latest historyId for next call
+</code></pre></div></p>
+<p><strong>Key notes:</strong>
+- historyId expires after ~7 days → fallback to full time-range sync
+- Pub/Sub watch renewal is optional (skip for MVP — use polling + history)
+- Need separate GCP Pub/Sub topic per user for push (costly at scale — polling is cheaper)
+- Fetch full message body via <code>GET /gmail/v1/users/me/messages/{id}?format=full</code>
+- Send via <code>POST /gmail/v1/users/me/messages/send</code> with RFC 2822 MIME body</p>
+<h3 id="63-google-calendar-adapter">6.3 Google Calendar Adapter</h3>
+<p><strong>Calendar delta sync:</strong>
+<div class="highlight"><pre><span></span><code>1. Initial sync:
+   GET /calendar/v3/calendars/primary/events?singleEvents=true&amp;timeMin=2026-01-01T00:00:00Z
+   → Response includes nextSyncToken in nextPageToken field
+   → Store syncToken
+
+2. Delta sync:
+   GET /calendar/v3/calendars/primary/events?syncToken={token}
+   → Returns changed events + cancelled events (status: &quot;cancelled&quot;)
+   → On 410 Gone → full resync
+</code></pre></div></p>
+<p><strong>Key notes:</strong>
+- syncToken expires after ~30 days (undocumented, but empirical)
+- Use <code>singleEvents=true</code> for expanded recurring events (simpler than managing RRULE ourselves)
+- For two-way sync: events created in CRM get <code>POST</code> to Google Calendar; events modified in Google Calendar come via delta
+- Free/busy via <code>POST /calendar/v3/freeBusy</code></p>
+<h3 id="64-imap-adapter">6.4 IMAP Adapter</h3>
+<p><strong>Email delta sync:</strong>
+<div class="highlight"><pre><span></span><code>1. Initial sync:
+   - Connect to IMAP with XOAUTH2
+   - SELECT INBOX
+   - Store UIDVALIDITY, UIDNEXT
+   - FETCH UID 1:* (FLAGS BODY.PEEK[HEADER.FIELDS (DATE FROM SUBJECT MESSAGE-ID)])
+
+2. Delta sync:
+   - UID SEARCH UID UIDNEXT:* (new messages since last sync)
+   - UID SEARCH MODSEQ {last_modseq} * (changed flags since last sync)
+   - Store updated UIDNEXT, MODSEQ
+</code></pre></div></p>
+<p><strong>Key notes:</strong>
+- IMAP IDLE not used — doesn't scale beyond ~50 concurrent connections
+- Only sync inbox and sent folders (not spam, trash)
+- Body parsing done client-side (MIME extraction via Python's <code>email</code> stdlib)
+- Gmail IMAP quirks: labels map poorly to folders, All Mail contains everything</p>
+<hr />
+<h2 id="7-delta-sync-strategy">7. Delta Sync Strategy</h2>
+<h3 id="cursor-types-by-provider">Cursor Types by Provider</h3>
+<table>
+<thead>
+<tr>
+<th>Provider</th>
+<th>Email Cursor</th>
+<th>Calendar Cursor</th>
+<th>Expiry</th>
+<th>Full Resync Trigger</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Graph</td>
+<td>deltaLink URL</td>
+<td>deltaLink URL</td>
+<td>~14 days</td>
+<td>414 URI too long, 410 Gone</td>
+</tr>
+<tr>
+<td>Gmail</td>
+<td>historyId (integer)</td>
+<td>syncToken (string)</td>
+<td>~7 days (email), ~30 days (calendar)</td>
+<td>404 history not found, 410 Gone</td>
+</tr>
+<tr>
+<td>IMAP</td>
+<td>uidvalidity + uidnext + modseq</td>
+<td>N/A</td>
+<td>Permanent (uidvalidity changes on mailbox recreate)</td>
+<td>UIDVALIDITY changed</td>
+</tr>
+<tr>
+<td>CalDAV</td>
+<td>N/A</td>
+<td>sync-token (opaque token)</td>
+<td>Server-dependent</td>
+<td>sync-token expired</td>
+</tr>
+</tbody>
+</table>
+<h3 id="delta-sync-decision-tree">Delta Sync Decision Tree</h3>
+<div class="highlight"><pre><span></span><code>Has existing cursor in sync_state?
+  ├── Yes → Attempt delta sync
+  │         ├── Success → Update cursor, mark success
+  │         ├── 404/410/Expired cursor → Full resync
+  │         └── 429 rate limit → Backoff, retry with Backoff-After
+  └── No → Full sync (first connection or reset)
+          └── Save initial cursor for next delta
+</code></pre></div>
+<h3 id="full-resync-strategy">Full Resync Strategy</h3>
+<p>Full resyncs are expensive (could be 10K+ emails for a 2-year mailbox). To mitigate:</p>
+<ol>
+<li><strong>Throttle full resync to once per 24 hours per connection</strong></li>
+<li><strong>Yield between batches</strong> — after processing 100 items, check if there's more work to do</li>
+<li><strong>Priority by recency</strong> — sync last 30 days first (high-value), backfill older emails in low-priority background queue</li>
+<li><strong>Monitor</strong> — alert on full resyncs (indicates cursor expiry pattern → bug or provider issue)</li>
+</ol>
+<hr />
+<h2 id="8-conflict-resolution">8. Conflict Resolution</h2>
+<h3 id="conflict-types">Conflict Types</h3>
+<table>
+<thead>
+<tr>
+<th>Type</th>
+<th>Scenario</th>
+<th>Resolution Strategy</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Concurrent edit</strong></td>
+<td>Email marked read in CRM + read in Gmail simultaneously</td>
+<td><strong>Last-write-wins</strong> (compare <code>updated_at</code> timestamps)</td>
+</tr>
+<tr>
+<td><strong>Delete elsewhere</strong></td>
+<td>Email deleted in Gmail but still in CRM</td>
+<td><strong>CRM marks deleted</strong> — soft-delete in CRM, log in sync_conflicts</td>
+</tr>
+<tr>
+<td><strong>Version mismatch</strong></td>
+<td>Email body differs between CRM and provider</td>
+<td><strong>Provider wins</strong> — trust external source of truth for email bodies</td>
+</tr>
+<tr>
+<td><strong>Calendar time conflict</strong></td>
+<td>Event time changed in both CRM and Google Calendar</td>
+<td><strong>Last-write-wins</strong> + log conflict for manual review</td>
+</tr>
+<tr>
+<td><strong>Event deleted in CRM</strong></td>
+<td>User removes event from CRM that exists in Calendar</td>
+<td><strong>Propagate deletion</strong> to Calendar (with confirmation flow)</td>
+</tr>
+</tbody>
+</table>
+<h3 id="resolution-rules">Resolution Rules</h3>
+<div class="highlight"><pre><span></span><code>1. EMAIL: Provider wins for body, headers, attachments.
+   CRM wins for: is_read, is_starred, labels, CRM links (deal_id, contact_id).
+   Rationale: Email content is from the provider. CRM metadata is from our system.
+
+2. CALENDAR EVENT: Last-write-wins based on last_modified_at.
+   If timestamps are within 60 seconds → flag for manual review.
+   If provider updated_at &gt; crm updated_at → use provider version.
+   If crm updated_at &gt; provider updated_at → use CRM version → push to provider.
+
+3. CONTACT: CRM wins for CRM-specific fields (lifecycle_stage, owner, tags).
+   Provider wins for: name, email, phone, job_title.
+   Rationale: Contact enrichment from email signatures, calendar attendees.
+
+4. DELETE: Both directions propagate.
+   Delete in CRM → sync to provider (if appropriate, e.g., calendar event).
+   Delete in provider → soft-delete in CRM (never hard-delete).
+</code></pre></div>
+<h3 id="conflict-logging">Conflict Logging</h3>
+<p>Every unresolved or auto-resolved conflict is recorded in <code>sync_conflicts</code>:</p>
+<div class="highlight"><pre><span></span><code><span class="p">{</span>
+<span class="w">  </span><span class="nt">&quot;entity_type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;event&quot;</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">&quot;entity_id&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;uuid&quot;</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">&quot;external_id&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;provider-event-123&quot;</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">&quot;conflict_type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;concurrent_edit&quot;</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">&quot;resolution_strategy&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;last_write_wins&quot;</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">&quot;crm_version&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nt">&quot;title&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Meeting with Acme&quot;</span><span class="p">,</span><span class="w"> </span><span class="nt">&quot;start_at&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;2026-06-28T14:00:00Z&quot;</span><span class="p">,</span><span class="w"> </span><span class="nt">&quot;updated_at&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;2026-06-28T13:00:00Z&quot;</span><span class="w"> </span><span class="p">},</span>
+<span class="w">  </span><span class="nt">&quot;provider_version&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nt">&quot;title&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Call with Acme&quot;</span><span class="p">,</span><span class="w"> </span><span class="nt">&quot;start_at&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;2026-06-28T15:00:00Z&quot;</span><span class="p">,</span><span class="w"> </span><span class="nt">&quot;updated_at&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;2026-06-28T13:30:00Z&quot;</span><span class="w"> </span><span class="p">},</span>
+<span class="w">  </span><span class="nt">&quot;resolved_data&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nt">&quot;title&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Call with Acme&quot;</span><span class="p">,</span><span class="w"> </span><span class="nt">&quot;start_at&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;2026-06-28T15:00:00Z&quot;</span><span class="w"> </span><span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div>
+<hr />
+<h2 id="9-real-time-architecture">9. Real-Time Architecture</h2>
+<p>Real-time updates in FrontierCRM are handled through two mechanisms:</p>
+<ol>
+<li><strong>WebSocket connections</strong> — for live updates to the UI (pipeline changes, notifications)</li>
+<li><strong>Redis Pub/Sub</strong> — the backbone connecting application events to WebSocket broadcast</li>
+</ol>
+<h3 id="architecture-diagram">Architecture Diagram</h3>
+<div class="highlight"><pre><span></span><code>┌─────────────┐     ┌─────────────────────────────────────────┐
+│   Client A   │     │  FastAPI Application                     │
+│  (WebSocket) │◄────│                                         │
+└─────────────┘     │  ┌──────────────────────────────────┐    │
+                    │  │  WebSocket Manager                │    │
+┌─────────────┐     │  │  - Connection registry            │    │
+│   Client B   │◄────│  │  - Channel subscription mgmt     │    │
+│  (WebSocket) │     │  │  - Auth per connection            │    │
+└─────────────┘     │  └──────────┬───────────────────────┘    │
+                    │             │                             │
+                    │  ┌──────────▼───────────────────────┐    │
+                    │  │   Redis Pub/Sub Subscriber        │    │
+                    │  │   Subscribes to:                  │    │
+                    │  │   - `ws:tenant:{id}:pipeline`     │    │
+                    │  │   - `ws:tenant:{id}:notifications`│    │
+                    │  │   - `ws:user:{id}:personal`       │    │
+                    │  └──────────────────────────────────┘    │
+                    │                                          │
+                    │  ┌──────────────────────────────────┐    │
+                    │  │   Event Publishers                │    │
+                    │  │   - API mutation → publish to Redis│    │
+                    │  │   - Celery task complete → publish │    │
+                    │  │   - Webhook received → publish     │    │
+                    │  └──────────────────────────────────┘    │
+                    └─────────────────────────────────────────┘
+</code></pre></div>
+<h3 id="event-pubsub-websocket-flow">Event → Pub/Sub → WebSocket Flow</h3>
+<div class="highlight"><pre><span></span><code>1. Event occurs (e.g., user moves deal to new stage via PATCH /deals/{id}/move)
+2. FastAPI handler:
+   a. Performs the database update
+   b. Creates activity record
+   c. Publishes to Redis Pub/Sub: `ws:tenant:{tenant_id}:pipeline`
+      Payload: { type: &quot;deal.stage_changed&quot;, deal_id: &quot;...&quot;, stage_id: &quot;...&quot;, ... }
+3. Redis Pub/Sub subscriber (running in the FastAPI process):
+   a. Receives the message
+   b. Looks up all WebSocket connections for this tenant
+   c. For each connection, checks:
+      - Is the user authorized to see this change? (RBAC check)
+      - Is the user subscribed to this channel?
+   d. Sends JSON message over WebSocket
+4. Client receives message, updates UI (TanStack Query invalidation or direct state update)
+</code></pre></div>
+<h3 id="websocket-connection-management">WebSocket Connection Management</h3>
+<div class="highlight"><pre><span></span><code>WebSocket URL: wss://api.frontiercrm.com/api/v1/ws
+
+Connection establishment:
+1. Client connects with `?token={clerk_jwt}` query parameter
+2. FastAPI validates JWT (same middleware as REST)
+3. Connection registered in WS connection registry (in-memory dict, keyed by tenant_id)
+4. Client sends subscription request:
+   {
+     &quot;type&quot;: &quot;subscribe&quot;,
+     &quot;channels&quot;: [&quot;pipeline&quot;, &quot;notifications&quot;, &quot;deal:uuid&quot;]
+   }
+5. Acknowledged:
+   {
+     &quot;type&quot;: &quot;subscribed&quot;,
+     &quot;channels&quot;: [&quot;pipeline&quot;, &quot;notifications&quot;, &quot;deal:uuid&quot;]
+   }
+</code></pre></div>
+<h3 id="connection-registry">Connection Registry</h3>
+<p>The WebSocket connection registry is <strong>in-process</strong> (not Redis-backed) because:</p>
+<ul>
+<li>With Cloud Run auto-scaling, WebSocket connections are sticky to a specific instance</li>
+<li>Cross-instance broadcast happens via Redis Pub/Sub (every instance subscribes to the same channels)</li>
+<li>If a user is connected to instance A, and a deal update comes in on instance B, the message flows: B → Redis → A → Client</li>
+<li>This works because Cloud Run supports WebSocket connections (HTTP/1.1 upgrade) with a 60-minute timeout per connection; clients reconnect on timeout</li>
+</ul>
+<p><strong>Important limitation:</strong> Cloud Run's WebSocket support has a 60-minute idle timeout. Clients must implement automatic reconnection. For Phase 2+, consider dedicated WebSocket infrastructure (Socket.io-compatible service or a purpose-built WS server).</p>
+<hr />
+<h2 id="10-websocket-channels">10. WebSocket Channels</h2>
+<table>
+<thead>
+<tr>
+<th>Channel</th>
+<th>Scope</th>
+<th>Payload</th>
+<th>Purpose</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>pipeline</code></td>
+<td>Tenant</td>
+<td><code>{ type, deal_id, stage_id, pipeline_id }</code></td>
+<td>Real-time kanban board updates</td>
+</tr>
+<tr>
+<td><code>notifications</code></td>
+<td>Tenant</td>
+<td><code>{ type, title, body, action_url }</code></td>
+<td>Toast/notification stream</td>
+</tr>
+<tr>
+<td><code>deal:{deal_id}</code></td>
+<td>Entity</td>
+<td><code>{ type, field, old_value, new_value }</code></td>
+<td>Collaborative deal editing</td>
+</tr>
+<tr>
+<td><code>sync:status</code></td>
+<td>User</td>
+<td><code>{ connection_id, status, progress }</code></td>
+<td>Sync status updates</td>
+</tr>
+<tr>
+<td><code>user:{user_id}</code></td>
+<td>Personal</td>
+<td><code>{ type, ... }</code></td>
+<td>Private messages (task assigned, @mention)</td>
+</tr>
+</tbody>
+</table>
+<h3 id="channel-authorization">Channel Authorization</h3>
+<table>
+<thead>
+<tr>
+<th>Channel</th>
+<th>Who Can Subscribe</th>
+<th>Notes</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>pipeline</code></td>
+<td>All tenant users</td>
+<td>Broadcast all pipeline changes</td>
+</tr>
+<tr>
+<td><code>notifications</code></td>
+<td>All tenant users</td>
+<td>Filtered server-side per user</td>
+</tr>
+<tr>
+<td><code>deal:{deal_id}</code></td>
+<td>Users with deal access</td>
+<td>RBAC check on subscription</td>
+</tr>
+<tr>
+<td><code>sync:status</code></td>
+<td>Only the connection owner</td>
+<td>One-to-one</td>
+</tr>
+<tr>
+<td><code>user:{user_id}</code></td>
+<td>Only the user</td>
+<td>One-to-one</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="11-notifications-architecture">11. Notifications Architecture</h2>
+<h3 id="notification-types">Notification Types</h3>
+<table>
+<thead>
+<tr>
+<th>Type</th>
+<th>Trigger</th>
+<th>Delivery</th>
+<th>Frequency</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Deal stage changed</td>
+<td>Deal moved</td>
+<td>WS + Push + Email digest</td>
+<td>Immediate</td>
+</tr>
+<tr>
+<td>Task assigned</td>
+<td>Task created/assigned</td>
+<td>WS + Push + Email</td>
+<td>Immediate</td>
+</tr>
+<tr>
+<td>@mention in note</td>
+<td>Note body contains @username</td>
+<td>WS + Push</td>
+<td>Immediate</td>
+</tr>
+<tr>
+<td>Email matched to deal</td>
+<td>Inbound email linked to deal</td>
+<td>WS + Push + Email</td>
+<td>Immediate</td>
+</tr>
+<tr>
+<td>Sync error</td>
+<td>Connection error</td>
+<td>Push + Email</td>
+<td>Immediate</td>
+</tr>
+<tr>
+<td>Daily digest</td>
+<td>Scheduled</td>
+<td>Email</td>
+<td>Daily (configurable)</td>
+</tr>
+<tr>
+<td>Weekly report</td>
+<td>Scheduled</td>
+<td>Email</td>
+<td>Weekly (configurable)</td>
+</tr>
+</tbody>
+</table>
+<h3 id="notification-delivery-flow">Notification Delivery Flow</h3>
+<div class="highlight"><pre><span></span><code>Notification triggered
+  → Published to Redis `ws:tenant:{id}:notifications`
+  → WebSocket subscriber delivers to connected clients (in-app toast/notification badge)
+  → If user not connected (or notification is &quot;push&quot; type):
+    → Queue push notification via Web Push API (PWA) or native push (when RN app exists)
+  → If notification is &quot;email&quot; type:
+    → Queue email via Resend
+</code></pre></div>
+<h3 id="push-notification-pwa">Push Notification (PWA)</h3>
+<div class="highlight"><pre><span></span><code>POST /api/v1/push/subscribe
+Body: { endpoint, keys: { p256dh, auth } }
+
+→ Store subscription in push_subscriptions table
+
+On notification:
+→ Fetch user&#39;s push subscriptions
+→ Send via Web Push API (VAPID keys)
+→ Handle 410 Gone (subscription expired) → remove subscription
+</code></pre></div>
+<hr />
+<h2 id="12-search-architecture">12. Search Architecture</h2>
+<h3 id="index-strategy">Index Strategy</h3>
+<p>Meilisearch indexes are updated via Celery workers triggered by entity create/update/delete events.</p>
+<div class="highlight"><pre><span></span><code>Entity changed (Contact created, Deal updated, Email synced)
+  → Publish to Redis pub/sub: &#39;search:index&#39;
+  → Celery worker picks up the event
+  → Calls Meilisearch client to add/update/delete document
+  → Documents include tenant_id for multi-tenant filtering
+</code></pre></div>
+<h3 id="index-configuration">Index Configuration</h3>
+<div class="highlight"><pre><span></span><code><span class="c1"># Meilisearch index settings (applied on startup via migration)</span>
+<span class="n">INDEX_SETTINGS</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s2">&quot;contacts&quot;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s2">&quot;filterableAttributes&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;tenant_id&quot;</span><span class="p">,</span> <span class="s2">&quot;lifecycle_stage&quot;</span><span class="p">,</span> <span class="s2">&quot;owner_id&quot;</span><span class="p">,</span> <span class="s2">&quot;tags&quot;</span><span class="p">],</span>
+        <span class="s2">&quot;sortableAttributes&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;created_at&quot;</span><span class="p">,</span> <span class="s2">&quot;last_name&quot;</span><span class="p">],</span>
+        <span class="s2">&quot;searchableAttributes&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;first_name&quot;</span><span class="p">,</span> <span class="s2">&quot;last_name&quot;</span><span class="p">,</span> <span class="s2">&quot;company&quot;</span><span class="p">,</span> <span class="s2">&quot;email&quot;</span><span class="p">,</span> <span class="s2">&quot;phone&quot;</span><span class="p">],</span>
+        <span class="s2">&quot;typoTolerance&quot;</span><span class="p">:</span> <span class="p">{</span> <span class="s2">&quot;enabled&quot;</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span> <span class="s2">&quot;minWordSizeForTypos&quot;</span><span class="p">:</span> <span class="p">{</span> <span class="s2">&quot;one&quot;</span><span class="p">:</span> <span class="mi">4</span><span class="p">,</span> <span class="s2">&quot;two&quot;</span><span class="p">:</span> <span class="mi">6</span> <span class="p">}</span> <span class="p">}</span>
+    <span class="p">},</span>
+    <span class="s2">&quot;deals&quot;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s2">&quot;filterableAttributes&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;tenant_id&quot;</span><span class="p">,</span> <span class="s2">&quot;stage_id&quot;</span><span class="p">,</span> <span class="s2">&quot;owner_id&quot;</span><span class="p">,</span> <span class="s2">&quot;pipeline_id&quot;</span><span class="p">,</span> <span class="s2">&quot;tags&quot;</span><span class="p">,</span> <span class="s2">&quot;deal_health&quot;</span><span class="p">],</span>
+        <span class="s2">&quot;sortableAttributes&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;value&quot;</span><span class="p">,</span> <span class="s2">&quot;expected_close_at&quot;</span><span class="p">,</span> <span class="s2">&quot;created_at&quot;</span><span class="p">],</span>
+        <span class="s2">&quot;searchableAttributes&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;name&quot;</span><span class="p">,</span> <span class="s2">&quot;description&quot;</span><span class="p">,</span> <span class="s2">&quot;contact_name&quot;</span><span class="p">,</span> <span class="s2">&quot;account_name&quot;</span><span class="p">]</span>
+    <span class="p">},</span>
+    <span class="s2">&quot;emails&quot;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s2">&quot;filterableAttributes&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;tenant_id&quot;</span><span class="p">,</span> <span class="s2">&quot;contact_id&quot;</span><span class="p">,</span> <span class="s2">&quot;deal_id&quot;</span><span class="p">,</span> <span class="s2">&quot;direction&quot;</span><span class="p">,</span> <span class="s2">&quot;is_read&quot;</span><span class="p">],</span>
+        <span class="s2">&quot;sortableAttributes&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;sent_at&quot;</span><span class="p">],</span>
+        <span class="s2">&quot;searchableAttributes&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;subject&quot;</span><span class="p">,</span> <span class="s2">&quot;snippet&quot;</span><span class="p">,</span> <span class="s2">&quot;from&quot;</span><span class="p">,</span> <span class="s2">&quot;to&quot;</span><span class="p">]</span>
+    <span class="p">},</span>
+    <span class="s2">&quot;notes&quot;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s2">&quot;filterableAttributes&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;tenant_id&quot;</span><span class="p">,</span> <span class="s2">&quot;entity_type&quot;</span><span class="p">,</span> <span class="s2">&quot;entity_id&quot;</span><span class="p">,</span> <span class="s2">&quot;user_id&quot;</span><span class="p">],</span>
+        <span class="s2">&quot;sortableAttributes&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;created_at&quot;</span><span class="p">],</span>
+        <span class="s2">&quot;searchableAttributes&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;title&quot;</span><span class="p">,</span> <span class="s2">&quot;body&quot;</span><span class="p">]</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div>
+<h3 id="search-query-flow">Search Query Flow</h3>
+<div class="highlight"><pre><span></span><code>Client: GET /api/v1/search?q=acme&amp;filter[entity]=contact,deal
+  → FastAPI search endpoint
+  → Extract tenant_id from JWT
+  → Build Meilisearch query:
+     Multi-search across contacts, deals indexes
+     Filter: tenant_id == current_tenant_id
+     Limit: 20 per index
+     Facets: [entity, stage, owner_id]
+  → Merge results, enrich with CRM context (owner names, URLs)
+  → Return { results, facets }
+</code></pre></div>
+<h3 id="postgresql-fts-fallback">PostgreSQL FTS Fallback</h3>
+<p>If Meilisearch is unavailable, the search endpoint falls back to PostgreSQL full-text search:</p>
+<div class="highlight"><pre><span></span><code><span class="k">SELECT</span><span class="w"> </span><span class="n">id</span><span class="p">,</span><span class="w"> </span><span class="n">first_name</span><span class="w"> </span><span class="o">||</span><span class="w"> </span><span class="s1">&#39; &#39;</span><span class="w"> </span><span class="o">||</span><span class="w"> </span><span class="n">last_name</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">name</span><span class="p">,</span><span class="w"> </span><span class="n">company</span><span class="p">,</span>
+<span class="w">       </span><span class="n">ts_rank</span><span class="p">(</span><span class="n">search_vector</span><span class="p">,</span><span class="w"> </span><span class="n">plainto_tsquery</span><span class="p">(</span><span class="s1">&#39;english&#39;</span><span class="p">,</span><span class="w"> </span><span class="err">$</span><span class="mi">1</span><span class="p">))</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">rank</span>
+<span class="k">FROM</span><span class="w"> </span><span class="n">contacts</span>
+<span class="k">WHERE</span><span class="w"> </span><span class="n">tenant_id</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="err">$</span><span class="mi">2</span>
+<span class="w">  </span><span class="k">AND</span><span class="w"> </span><span class="n">search_vector</span><span class="w"> </span><span class="o">@@</span><span class="w"> </span><span class="n">plainto_tsquery</span><span class="p">(</span><span class="s1">&#39;english&#39;</span><span class="p">,</span><span class="w"> </span><span class="err">$</span><span class="mi">1</span><span class="p">)</span>
+<span class="w">  </span><span class="k">AND</span><span class="w"> </span><span class="n">deleted_at</span><span class="w"> </span><span class="k">IS</span><span class="w"> </span><span class="k">NULL</span>
+<span class="k">ORDER</span><span class="w"> </span><span class="k">BY</span><span class="w"> </span><span class="n">rank</span><span class="w"> </span><span class="k">DESC</span>
+<span class="k">LIMIT</span><span class="w"> </span><span class="mi">20</span>
+</code></pre></div>
+<h3 id="how-it-works">How It Works</h3>
+<div class="highlight"><pre><span></span><code>Primary path: Meilisearch
+  → 10–50ms response, typo-tolerant, faceted
+Fallback path: PostgreSQL FTS
+  → 50–200ms response, no typo tolerance, no facets
+Health check: Cron job pings Meilisearch every 30s
+  → If unavailable, set feature flag: use_postgres_search = true
+</code></pre></div>
+<hr />
+<h2 id="13-file-attachment-storage-architecture">13. File &amp; Attachment Storage Architecture</h2>
+<h3 id="storage-decision-cloudflare-r2">Storage Decision: Cloudflare R2</h3>
+<p>As decided in ADR-010, Cloudflare R2 is the file storage backend (S3-compatible, zero egress fees).</p>
+<h3 id="upload-flow">Upload Flow</h3>
+<div class="highlight"><pre><span></span><code>Small files (&lt;10MB) — Proxy upload:
+  Multipart POST /api/v1/files/upload
+    → FastAPI receives file stream
+    → Writes to temp location
+    → Creates file record (processing_status = &#39;pending&#39;)
+    → Queues Celery task:
+      1. Upload to R2 (tenant_id/uuid/filename)
+      2. Virus scan (ClamAV or API-based)
+      3. Thumbnail generation (images — resize to 200x200, 800x800)
+      4. Generate signed URL (24h TTL)
+      5. Update file record: processing_status = &#39;ready&#39;
+    → Returns file metadata + placeholder
+
+Large files (&gt;10MB) — Direct-to-R2 upload:
+  POST /api/v1/files/upload-url
+    → Returns { upload_url, file_id, expires_at }
+  Client uploads PUT to R2 upload_url
+  POST /api/v1/files/confirm { file_id, storage_key }
+    → Triggers processing (virus scan, thumbnail)
+</code></pre></div>
+<h3 id="signed-url-strategy">Signed URL Strategy</h3>
+<table>
+<thead>
+<tr>
+<th>Use Case</th>
+<th>TTL</th>
+<th>Notes</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Direct download</td>
+<td>1 hour</td>
+<td>Standard download link</td>
+</tr>
+<tr>
+<td>Email preview</td>
+<td>24 hours</td>
+<td>Inline image display</td>
+</tr>
+<tr>
+<td>Attachment download (bulk)</td>
+<td>1 hour</td>
+<td>Zip archive download</td>
+</tr>
+<tr>
+<td>Thumbnail</td>
+<td>7 days</td>
+<td>Cached previews, longer TTL</td>
+</tr>
+<tr>
+<td>Profile avatar</td>
+<td>30 days</td>
+<td>Public profile images (can be public)</td>
+</tr>
+</tbody>
+</table>
+<h3 id="storage-key-structure">Storage Key Structure</h3>
+<div class="highlight"><pre><span></span><code>{tenant_id}/{entity_type}/{entity_id}/{uuid}_{original_filename}
+  → e.g., &quot;abc123/contact/def456/a1b2c3_avatar.jpg&quot;
+  → e.g., &quot;abc123/deal/789012/a1b2c3_proposal.pdf&quot;
+  → e.g., &quot;abc123/email/345678/a1b2c3_attachment.docx&quot;
+</code></pre></div>
+<h3 id="processing-pipeline">Processing Pipeline</h3>
+<div class="highlight"><pre><span></span><code>File uploaded → Celery task queued:
+
+1. VIRUS SCAN (Celery worker):
+   - For files &gt; 100MB: skip scan, mark as &#39;skipped&#39;
+   - For known-safe types (.txt, .csv, .md): quick check
+   - For all others: ClamAV scan
+   - If infected: mark file processing_status = &#39;failed&#39;, notify uploader
+
+2. THUMBNAIL GENERATION (Celery worker):
+   - For images: generate 200x200 and 800x800 JPEG thumbnails
+   - For PDFs: generate first-page thumbnail (via PyMuPDF)
+   - For videos: generate frame at 00:01 (via ffmpeg)
+   - Upload thumbnails to R2 with key: {storage_key}/thumb_{size}.jpg
+
+3. SEARCH INDEX UPDATE (Celery worker):
+   - Add file metadata to Meilisearch notes index (filename, mime_type)
+   - Future: OCR for searchable PDF content (Phase 2)
+</code></pre></div>
+<hr />
+<h2 id="14-consequences">14. Consequences</h2>
+<h3 id="positive">Positive</h3>
+<ol>
+<li><strong>Provider-agnostic core</strong> — Adding a new provider (Yahoo Mail, ProtonMail, iCloud) means writing one adapter class. The sync engine, conflict resolution, and data model don't change.</li>
+<li><strong>Delta sync efficiency</strong> — After the initial full sync, most operations process 0–5 changed items per polling interval. Bandwidth and API quota usage are minimal.</li>
+<li><strong>Conflict traceability</strong> — Every conflict is logged with before/after snapshots. Debugging sync issues is straightforward.</li>
+<li><strong>Tiered sync</strong> — The same engine powers all plans. Free users get fewer polling intervals and no webhooks; Enterprise users get real-time.</li>
+<li><strong>Real-time without extra infra</strong> — Redis Pub/Sub + in-process WebSocket manager provides real-time updates without a dedicated service.</li>
+</ol>
+<h3 id="negative">Negative</h3>
+<ol>
+<li><strong>OAuth maintenance burden</strong> — We manage token refresh, expiry, and error handling for every provider. A token refresh bug affects all sync for that user.</li>
+<li><strong>WebSocket state on Cloud Run</strong> — WebSocket connections are limited by Cloud Run's 60-minute timeout and instance-based connection registry. Clients must handle reconnection.</li>
+<li><strong>Full resync cost</strong> — If a delta cursor expires (e.g., user hasn't opened CRM in 30 days), sync will require a full mailbox pull. Mitigated by the priority-by-recent-customer approach.</li>
+<li><strong>IMAP complexity</strong> — IMAP adapter is the most complex to build correctly. Multi-part MIME parsing, UIDVALIDITY tracking, and flag synchronization are error-prone.</li>
+<li><strong>Meilisearch sync latency</strong> — There's a ~5–30 second lag between a CRM change and it appearing in search results. Acceptable for SMB but worth noting.</li>
+</ol>
+<hr />
+<h2 id="15-risks-mitigations">15. Risks &amp; Mitigations</h2>
+<table>
+<thead>
+<tr>
+<th>Risk</th>
+<th>Likelihood</th>
+<th>Impact</th>
+<th>Mitigation</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>OAuth token refresh fails silently</td>
+<td>Medium</td>
+<td>High</td>
+<td>Alerting on failed refresh, user-facing "Reconnect" prompt, automatic connection pausing</td>
+</tr>
+<tr>
+<td>Gmail API daily quota exceeded at 200+ users</td>
+<td>Medium</td>
+<td>Medium</td>
+<td>Per-user quota tracking, staggered sync schedules, IMAP fallback for heavy users</td>
+</tr>
+<tr>
+<td>WebSocket cloud-run timeout drops client connection</td>
+<td>High</td>
+<td>Medium</td>
+<td>Client-side auto-reconnect with exponential backoff, last-known-state rehydration</td>
+</tr>
+<tr>
+<td>Meilisearch goes down</td>
+<td>Low</td>
+<td>Medium</td>
+<td>Transparent fallback to PostgreSQL FTS, health-check-based feature flag</td>
+</tr>
+<tr>
+<td>Calendar event timezone mismatch</td>
+<td>Medium</td>
+<td>Medium</td>
+<td>Always store in UTC, convert on display, log timezone mismatch warnings</td>
+</tr>
+<tr>
+<td>Delta cursor expiry causes full resync</td>
+<td>Medium</td>
+<td>Low</td>
+<td>Alert on cursor expiry pattern; implement priority-by-recent-customer backfill</td>
+</tr>
+<tr>
+<td>IMAP Gmail label mapping loss</td>
+<td>High</td>
+<td>Low</td>
+<td>Store both IMAP folder and Gmail label IDs, document lossy mapping in UI</td>
+</tr>
+<tr>
+<td>Concurrent sync for same user from multiple instances</td>
+<td>Low</td>
+<td>Medium</td>
+<td>Redis lock per <code>connection_id</code> during sync; re-queue on lock conflict</td>
+</tr>
+<tr>
+<td>Provider API deprecation (e.g., Graph beta endpoint removed)</td>
+<td>Low</td>
+<td>High</td>
+<td>Adapter version pinning, integration tests against v1.0 endpoints, deprecation monitoring</td>
+</tr>
+<tr>
+<td>Large email attachments consume disk space</td>
+<td>Medium</td>
+<td>Low</td>
+<td>Direct-to-R2 upload for &gt;10MB, no temp storage on application server</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="appendix-a-real-time-websocket-message-types">Appendix A: Real-Time WebSocket Message Types</h2>
+<h3 id="pipeline-updates">Pipeline Updates</h3>
+<div class="highlight"><pre><span></span><code><span class="p">{</span>
+<span class="w">  </span><span class="nt">&quot;type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;deal.created&quot;</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">&quot;deal_id&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;uuid&quot;</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">&quot;pipeline_id&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;uuid&quot;</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">&quot;stage_id&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;uuid&quot;</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">&quot;name&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Acme Corp Deal&quot;</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">&quot;value&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">50000</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">&quot;owner_id&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;uuid&quot;</span>
+<span class="p">}</span>
+
+<span class="p">{</span>
+<span class="w">  </span><span class="nt">&quot;type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;deal.moved&quot;</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">&quot;deal_id&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;uuid&quot;</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">&quot;from_stage_id&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;uuid&quot;</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">&quot;to_stage_id&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;uuid&quot;</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">&quot;dwell_seconds&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">604800</span>
+<span class="p">}</span>
+
+<span class="p">{</span>
+<span class="w">  </span><span class="nt">&quot;type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;deal.updated&quot;</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">&quot;deal_id&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;uuid&quot;</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">&quot;changes&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="nt">&quot;value&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nt">&quot;from&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">50000</span><span class="p">,</span><span class="w"> </span><span class="nt">&quot;to&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">60000</span><span class="w"> </span><span class="p">},</span>
+<span class="w">    </span><span class="nt">&quot;expected_close_at&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nt">&quot;from&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;2026-07-01&quot;</span><span class="p">,</span><span class="w"> </span><span class="nt">&quot;to&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;2026-08-01&quot;</span><span class="w"> </span><span class="p">}</span>
+<span class="w">  </span><span class="p">}</span>
+<span class="p">}</span>
+
+<span class="p">{</span>
+<span class="w">  </span><span class="nt">&quot;type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;deal.deleted&quot;</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">&quot;deal_id&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;uuid&quot;</span>
+<span class="p">}</span>
+</code></pre></div>
+<h3 id="notifications">Notifications</h3>
+<div class="highlight"><pre><span></span><code><span class="p">{</span>
+<span class="w">  </span><span class="nt">&quot;type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;notification&quot;</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">&quot;notification_type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;deal.stage_changed&quot;</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">&quot;title&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Deal moved to Negotiation&quot;</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">&quot;body&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Acme Corp Deal moved from Proposal to Negotiation by Alice&quot;</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">&quot;action_url&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;/deals/uuid&quot;</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">&quot;actor_id&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;uuid&quot;</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">&quot;actor_name&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Alice Smith&quot;</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">&quot;created_at&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;2026-06-28T14:30:00Z&quot;</span>
+<span class="p">}</span>
+</code></pre></div>
+<h3 id="sync-status">Sync Status</h3>
+<div class="highlight"><pre><span></span><code><span class="p">{</span>
+<span class="w">  </span><span class="nt">&quot;type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;sync.status&quot;</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">&quot;connection_id&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;uuid&quot;</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">&quot;provider&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;gmail&quot;</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">&quot;status&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;syncing&quot;</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">&quot;progress&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nt">&quot;current&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">42</span><span class="p">,</span><span class="w"> </span><span class="nt">&quot;total&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">150</span><span class="w"> </span><span class="p">},</span>
+<span class="w">  </span><span class="nt">&quot;message&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Processing emails...&quot;</span>
+<span class="p">}</span>
+</code></pre></div>
+<h2 id="appendix-b-search-performance-targets">Appendix B: Search Performance Targets</h2>
+<table>
+<thead>
+<tr>
+<th>Metric</th>
+<th>Target</th>
+<th>Meilisearch</th>
+<th>PostgreSQL FTS (Fallback)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>P50 latency</td>
+<td>&lt;50ms</td>
+<td>5–15ms</td>
+<td>20–50ms</td>
+</tr>
+<tr>
+<td>P99 latency</td>
+<td>&lt;200ms</td>
+<td>50–100ms</td>
+<td>100–200ms</td>
+</tr>
+<tr>
+<td>Typo tolerance</td>
+<td>2 chars</td>
+<td>Built-in</td>
+<td>None</td>
+</tr>
+<tr>
+<td>Faceted counts</td>
+<td>&lt;100ms</td>
+<td>Built-in (instant)</td>
+<td>Requires COUNT query</td>
+</tr>
+<tr>
+<td>Index update lag</td>
+<td>&lt;30s</td>
+<td>1–5s</td>
+<td>N/A (same DB)</td>
+</tr>
+<tr>
+<td>Concurrent queries</td>
+<td>100/s</td>
+<td>500+</td>
+<td>100+ (connection pool dependent)</td>
+</tr>
+</tbody>
+</table>
+<h2 id="appendix-c-file-storage-size-estimates">Appendix C: File Storage Size Estimates</h2>
+<table>
+<thead>
+<tr>
+<th>File Category</th>
+<th>Avg Size</th>
+<th>Count/Month</th>
+<th>Storage/Month</th>
+<th>Thumbnail?</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Email attachments</td>
+<td>500KB</td>
+<td>10,000</td>
+<td>5 GB</td>
+<td>PDF first-page</td>
+</tr>
+<tr>
+<td>Deal documents</td>
+<td>2MB</td>
+<td>500</td>
+<td>1 GB</td>
+<td>First page</td>
+</tr>
+<tr>
+<td>Profile images</td>
+<td>100KB</td>
+<td>100</td>
+<td>10 MB</td>
+<td>Yes (200px, 800px)</td>
+</tr>
+<tr>
+<td>Call recordings</td>
+<td>5MB</td>
+<td>1,000</td>
+<td>5 GB</td>
+<td>No</td>
+</tr>
+<tr>
+<td>Report exports</td>
+<td>200KB</td>
+<td>200</td>
+<td>40 MB</td>
+<td>No</td>
+</tr>
+<tr>
+<td><strong>Total</strong></td>
+<td></td>
+<td></td>
+<td><strong>~11 GB/month</strong></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<p>At scale (100 tenants, 1000 users): ~11 GB/month storage, ~$0/month egress (R2). Well within R2's $15/1TB pricing. Compression of call recordings (Opus format) can reduce storage by 70%.</p>
+
+
+
+
+
+
+
+  
+  
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Back to top
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": ".", "features": ["navigation.sections", "navigation.top", "search.suggest", "search.highlight", "content.code.copy"], "search": "assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="assets/javascripts/bundle.79ae519e.min.js"></script>
+      
+    
+  </body>
+</html>

@@ -4,6 +4,7 @@ djangorestframework==3.16
 djangorestframework-simplejwt==5.5
 django-cors-headers==4.9
 django-filter==25.1
+drf-spectacular==0.29.0
 django-storages==1.14
 django-redis==5.4
 celery[redis]==5.4
@@ -12,6 +13,8 @@ channels-redis==4.2
 gunicorn==23.0
 psycopg[binary]>=3.2,<3.4
 meilisearch==0.41
+pyotp>=2.9.0
+python3-saml>=1.16.0
 pydantic==2.13
 pydantic-settings==2.11
 python-dotenv==1.2

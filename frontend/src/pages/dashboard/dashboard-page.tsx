@@ -18,14 +18,16 @@ import {
   ResponsiveContainer,
   CartesianGrid,
 } from 'recharts';
-import { Card } from '../../components/ui/card';
-import { Skeleton } from '../../components/ui/skeleton';
-import { Badge } from '../../components/ui/badge';
-import { Button } from '../../components/ui/button';
+import { Card } from '../../components/molecules/card';
+import { Skeleton } from '../../components/atoms/skeleton';
+import { Badge } from '../../components/atoms/badge';
+import { Avatar } from '../../components/atoms/avatar';
+import { Button } from '../../components/atoms/button';
 import { useDashboardReport, useStaleDeals } from '../../api/reports';
-import { useActivities } from '../../api/activities';
+import { useActivityTimeline } from '../../api/activities';
 import { useTasks } from '../../api/tasks';
 import { cn } from '../../lib/utils';
+import type { TimelineEntry } from '../../types';
 
 function formatCurrency(value: number): string {
   return new Intl.NumberFormat('en-US', {
@@ -49,6 +51,7 @@ interface MetricCardProps {
 }
 
 function MetricCard({ title, value, icon, trend, loading }: MetricCardProps) {
+  const isZero = value === '$0' || value === '0%' || value === '0';
   return (
     <Card className="relative overflow-hidden">
       {loading ? (
@@ -64,15 +67,21 @@ function MetricCard({ title, value, icon, trend, loading }: MetricCardProps) {
               <p className="text-sm font-medium text-text-secondary dark:text-dark-text-secondary">
                 {title}
               </p>
-              <p className="text-2xl font-bold text-text-primary dark:text-dark-text-primary">
-                {value}
-              </p>
+              {isZero ? (
+                <span className="inline-flex items-center rounded-full bg-gray-100 dark:bg-gray-800 px-2.5 py-0.5 text-xs font-medium text-text-tertiary dark:text-dark-text-tertiary">
+                  No data
+                </span>
+              ) : (
+                <p className="text-2xl font-bold text-text-primary dark:text-dark-text-primary">
+                  {value}
+                </p>
+              )}
             </div>
             <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-brand-50 text-brand-600 dark:bg-brand-900/30 dark:text-brand-400">
               {icon}
             </div>
           </div>
-          {trend && (
+          {!isZero && trend && (
             <div className="mt-3 flex items-center gap-1.5">
               <span
                 className={cn(
@@ -95,6 +104,28 @@ function MetricCard({ title, value, icon, trend, loading }: MetricCardProps) {
   );
 }
 
+function ActivityEmptyState() {
+  return (
+    <div className="flex flex-col items-center justify-center py-8 text-center">
+      <div className="relative mb-4 h-20 w-full max-w-[200px]">
+        <svg viewBox="0 0 200 60" className="h-full w-full" aria-hidden="true">
+          <path
+            d="M0 50 Q20 35 40 45 Q60 55 80 40 Q100 25 120 38 Q140 50 160 35 Q180 20 200 30"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="2"
+            className="text-gray-200 dark:text-slate-700"
+          />
+          <circle cx="160" cy="35" r="3" className="fill-brand-400" />
+          <circle cx="120" cy="38" r="2" className="fill-gray-300 dark:fill-slate-600" />
+          <circle cx="40" cy="45" r="2" className="fill-gray-300 dark:fill-slate-600" />
+        </svg>
+      </div>
+      <Badge variant="neutral" size="sm">No recent activity</Badge>
+    </div>
+  );
+}
+
 function EmptyState({ message }: { message: string }) {
   return (
     <div className="flex flex-col items-center justify-center py-12 text-center">
@@ -111,11 +142,17 @@ function EmptyState({ message }: { message: string }) {
 function ActivityItem({
   title,
   type,
+  actorName,
   time,
+  entityName,
+  onEntityClick,
 }: {
   title: string;
   type: string;
+  actorName?: string;
   time: string;
+  entityName?: string;
+  onEntityClick?: () => void;
 }) {
   const typeIcon: Record<string, string> = {
     note: '📝',
@@ -140,9 +177,19 @@ function ActivityItem({
         <p className="truncate text-sm text-text-primary dark:text-dark-text-primary">
           {title}
         </p>
-        <p className="mt-0.5 text-xs text-text-tertiary dark:text-dark-text-tertiary">
-          {time}
-        </p>
+        <div className="mt-0.5 flex flex-wrap items-center gap-x-2 gap-y-0.5 text-xs text-text-tertiary dark:text-dark-text-tertiary">
+          <span>{time}</span>
+          {actorName && <span>· {actorName}</span>}
+          {entityName && (
+            <button
+              type="button"
+              onClick={onEntityClick}
+              className="truncate max-w-[120px] text-brand-600 hover:text-brand-700 dark:text-brand-400 transition-colors hover:underline"
+            >
+              · {entityName}
+            </button>
+          )}
+        </div>
       </div>
     </div>
   );
@@ -208,8 +255,8 @@ export function DashboardPage() {
     end_date: new Date().toISOString().slice(0, 10),
   });
   const { data: staleDeals } = useStaleDeals({ days_since_activity: '14', limit: '5' });
-  const { data: activitiesData, isLoading: activitiesLoading } = useActivities({
-    page_size: '5',
+  const { data: timelineData, isLoading: activitiesLoading } = useActivityTimeline({
+    page_size: 10,
   });
   const { data: tasksData, isLoading: tasksLoading } = useTasks({ page_size: '5' });
 
@@ -225,8 +272,10 @@ export function DashboardPage() {
     })) ?? [];
 
   const hasDeals = report && report.summary.active_deals > 0;
-  const activities = activitiesData?.results ?? [];
+  const activities = timelineData?.results ?? [];
   const tasks = tasksData?.results ?? [];
+
+  const noReportData = !isLoading && (!report || report.summary.active_deals === 0);
 
   return (
     <div className="space-y-6">
@@ -284,6 +333,7 @@ export function DashboardPage() {
               : undefined
           }
           loading={isLoading}
+          noData={noReportData}
         />
         <MetricCard
           title="Won Deals"
@@ -298,6 +348,7 @@ export function DashboardPage() {
               : undefined
           }
           loading={isLoading}
+          noData={noReportData}
         />
         <MetricCard
           title="Win Rate"
@@ -312,6 +363,7 @@ export function DashboardPage() {
               : undefined
           }
           loading={isLoading}
+          noData={noReportData}
         />
         <MetricCard
           title="Active Deals"
@@ -326,6 +378,7 @@ export function DashboardPage() {
               : undefined
           }
           loading={isLoading}
+          noData={noReportData}
         />
       </div>
 
@@ -398,17 +451,31 @@ export function DashboardPage() {
                 ))}
               </div>
             ) : activities.length === 0 ? (
-              <EmptyState message="No recent activity" />
+              <ActivityEmptyState />
             ) : (
               <div className="divide-y divide-border dark:divide-dark-border">
-                {activities.map((activity) => (
+                {activities.map((activity: TimelineEntry) => (
                   <ActivityItem
                     key={activity.id}
                     title={activity.title}
                     type={activity.activity_type}
+                    actorName={activity.actor?.name}
                     time={formatRelativeTime(activity.created_at)}
+                    entityName={activity.entity?.name}
+                    onEntityClick={() => activity.entity?.url && navigate(activity.entity.url)}
                   />
                 ))}
+              </div>
+            )}
+            {activities.length > 0 && (
+              <div className="mt-2 border-t border-border dark:border-dark-border pt-2 text-center">
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  onClick={() => navigate('/timeline')}
+                >
+                  View full timeline →
+                </Button>
               </div>
             )}
           </Card>
@@ -446,7 +513,7 @@ export function DashboardPage() {
       </div>
 
       {/* Quick Actions */}
-      <div className="flex flex-wrap items-center gap-3">
+      <div className="flex flex-wrap items-center gap-2 sm:gap-3">
         <Button
           variant="secondary"
           icon={<ClipboardList className="h-4 w-4" />}

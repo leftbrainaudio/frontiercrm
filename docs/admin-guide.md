@@ -104,10 +104,69 @@ Once connected:
 - Inbound/outbound emails sync every 10 minutes.
 - Emails are linked to contacts by matching the sender/recipient email address.
 - Each user's Gmail sync is independent (per-user OAuth tokens).
+- **Email compose (v1.1.0):** users can send email from the CRM compose modal. Gmail must be connected — sends fail with a clear error if no connection exists.
 
 To disconnect: Settings → Integrations → **Disconnect**.
 
-### Slack alerts (admin)
+### Google Calendar
+
+Sync calendar events to contact activity timelines — **v1.2.0**.
+
+1. Click **Connect Google Calendar**.
+2. Authorize with your Google account.
+3. FrontierCRM requests the `calendar.events.readonly` scope (read-only event access).
+
+Once connected:
+- Events sync every 15 minutes via Celery Beat (`sync_all_calendars` task).
+- Sync window: 90 days past, 30 days future.
+- Uses Google Calendar syncToken for efficient delta sync — falls back to time-range full sync if token expires (410 response).
+- Event participants are matched to contacts by email address within the tenant.
+- Each event creates an `Activity` record with type `event` and metadata stored in `Activity.metadata` JSONField.
+- Tokens refresh automatically when expired.
+
+**Calendar uses the same Google OAuth credentials (GOOGLE_CLIENT_ID / GOOGLE_CLIENT_SECRET) as Gmail sync** — no additional environment variables required. The `calendar.events.readonly` scope is additive and does not require re-consent for existing Gmail connections.
+
+### Slack Notifications (v1.2.0)
+
+Slack notifications can be configured per tenant via the UI or API. Unlike infrastructure alerts (below), these are user-managed webhook configurations.
+
+**To add a webhook:**
+1. Create an **Incoming Webhook** in Slack: https://api.slack.com/messaging/webhooks
+2. In FrontierCRM, go to Settings → Integrations → Slack.
+3. Paste the webhook URL.
+4. Optionally configure:
+   - **Display name** — a label for this webhook in the UI
+   - **Channel override** — post to a specific channel (defaults to the webhook's Slack-configured channel)
+   - **Subscribed events** — list of activity types to notify on. Leave empty for all events
+   - **Pipeline filter** — only notify on deals in a specific pipeline
+
+**How it works:**
+- When an Activity is created (deal stage change, activity logged, etc.), the `deliver_slack_notifications` Celery task fires.
+- The task checks all active webhooks in the activity's tenant against the subscription and pipeline filters.
+- Matching webhooks receive a Slack Block Kit message with formatted details.
+- Rate limiting: 1 request/second per webhook URL.
+- Auto-deactivation: a webhook is deactivated after 10 consecutive delivery failures.
+
+**API management:**
+```bash
+# List webhooks
+GET /api/slack/webhooks/
+
+# Create a webhook
+POST /api/slack/webhooks/
+{
+  "webhook_url": "https://hooks.slack.com/services/T00/B00/xxx",
+  "display_name": "Sales Alerts",
+  "subscribed_events": ["deal_stage_change", "deal_status_change"],
+  "is_active": true
+}
+
+# Update or delete
+PATCH /api/slack/webhooks/{id}/
+DELETE /api/slack/webhooks/{id}/
+```
+
+### Infrastructure alerts (Slack)
 
 Slack alerts are configured via environment variables (requires Fly.io deploy):
 
@@ -121,6 +180,15 @@ Alerts are sent to the configured channel for:
 - Celery task failure rate > 5%
 - Database connection pool exhaustion
 - Fly.io machine crash/restart
+
+## Export (v1.1.0)
+
+CSV export is available from the Pipeline and Contacts pages. Exports are tenant-scoped (only this organization's data). The download is a streaming CSV — files start downloading immediately even for large datasets.
+
+Available exports:
+- **Contacts CSV** — first name, last name, email, phone, mobile, job title, department, address, account name, owner, tags, created/updated timestamps
+- **Deals CSV** — name, value, currency, status, pipeline, stage, probability, weighted value, expected close date, contact, account, owner, tags, entered stage at, created/updated timestamps
+- **Pipeline report CSV** — pipeline name, stage name, deal count, total value, probability
 
 ### Sentry (error tracking)
 

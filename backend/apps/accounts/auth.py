@@ -7,8 +7,24 @@ from typing import Any
 from django.contrib.auth import get_user_model
 from django.contrib.auth.backends import BaseBackend
 from django.utils import timezone
+from rest_framework_simplejwt.tokens import AccessToken
 
 UserModel = get_user_model()
+
+
+class TwoFactorToken(AccessToken):
+    """Short-lived JWT for the 2FA challenge step."""
+    token_type = "2fa"
+    lifetime = timezone.timedelta(minutes=5)
+
+    @classmethod
+    def for_user(cls, user) -> "TwoFactorToken":
+        token = super().for_user(user)
+        token["purpose"] = "2fa_challenge"
+        token["user_id"] = str(user.id)
+        if user.tenant_id:
+            token["tenant_id"] = str(user.tenant_id)
+        return token
 
 
 class EmailPasswordBackend(BaseBackend):

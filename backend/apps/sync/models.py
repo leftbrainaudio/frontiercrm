@@ -188,9 +188,50 @@ class SyncConflict(TenantScopedModel):
         ]
 
 
+class CalendarWatchChannel(TenantScopedModel):
+    """Tracks active Google Calendar watch channels for push notifications.
+
+    One channel per SyncConnection (primary calendar).
+    Channels expire after 7 days and must be renewed.
+    """
+
+    connection = models.ForeignKey(
+        SyncConnection, on_delete=models.CASCADE,
+        related_name="watch_channels",
+    )
+
+    channel_id = models.CharField(max_length=255, unique=True)
+    resource_id = models.CharField(max_length=512)
+    resource_uri = models.CharField(max_length=1024, blank=True, default="")
+    webhook_url = models.CharField(max_length=1024)
+
+    expires_at = models.DateTimeField()
+    last_push_at = models.DateTimeField(null=True, blank=True)
+    last_message_number = models.BigIntegerField(null=True, blank=True)
+
+    STATE_CHOICES = [
+        ("active", "Active"),
+        ("expired", "Expired"),
+        ("renewal_failed", "Renewal Failed"),
+        ("stopped", "Stopped"),
+    ]
+    state = models.CharField(max_length=20, choices=STATE_CHOICES, default="active")
+    error_message = models.TextField(blank=True, default="")
+
+    class Meta:
+        db_table = "sync_calendar_watch_channels"
+        indexes = [
+            models.Index(fields=["channel_id"]),
+            models.Index(fields=["state", "expires_at"]),
+            models.Index(fields=["connection"]),
+        ]
+
+    def __str__(self) -> str:
+        return f"WatchChannel {self.channel_id[:12]} [{self.state}]"
+
+
 class EmailThread(TenantScopedModel):
     """CRM grouping of emails into threads/subjects."""
-
     subject = models.CharField(max_length=512, blank=True, default="")
     normalized_subject = models.CharField(max_length=512, blank=True, default="")
     participants = models.JSONField(default=list, blank=True)

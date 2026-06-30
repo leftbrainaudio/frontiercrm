@@ -1,5 +1,5 @@
 import { Table, type Column } from '../ui/table';
-import { Card } from '../ui/card';
+import { Card } from '../molecules/card';
 import { formatCurrency, formatPercent } from './shared';
 
 export interface OwnerMetrics {

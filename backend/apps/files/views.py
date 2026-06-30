@@ -10,6 +10,8 @@ from rest_framework.decorators import action
 from rest_framework.request import Request
 from rest_framework.response import Response
 
+from apps.core.permissions import RolePermission, TenantAwarePermission
+
 from .models import FileUpload
 
 
@@ -36,6 +38,17 @@ class FileUploadSerializer(serializers.ModelSerializer):
 class FileUploadViewSet(viewsets.ModelViewSet):
     queryset = FileUpload.objects.all()
     serializer_class = FileUploadSerializer
+    permission_classes = [TenantAwarePermission, RolePermission]
+
+    def get_required_permission(self) -> str | None:
+        return {
+            "list": None,
+            "retrieve": None,
+            "create": "files.upload",
+            "update": None,
+            "partial_update": None,
+            "destroy": "files.delete",
+        }.get(self.action)
 
     def get_queryset(self):
         return FileUpload.objects.filter(tenant_id=self.request.user.tenant_id)

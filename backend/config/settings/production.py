@@ -4,6 +4,16 @@ from .base import *  # noqa: F403, F401
 
 DEBUG = False
 
+# ── Database ───────────────────────────────────────────────────────────────────
+# Base.py uses SQLite by default. Override with DATABASE_URL for
+# production (Supabase PostgreSQL, Fly Postgres, etc.).
+import dj_database_url  # noqa: F811
+_DB_URL = os.environ.get("DATABASE_URL", "")
+if _DB_URL:
+    DATABASES = {"default": dj_database_url.config(default=_DB_URL, conn_max_age=600)}  # noqa: F405
+else:
+    raise RuntimeError("DATABASE_URL environment variable is required in production")
+
 # ── SSL / Security headers ────────────────────────────────────────────────────
 # Django's SECURE_SSL_REDIRECT would cause a redirect loop because Fly.io
 # terminates TLS at the edge and forwards HTTP internally. Fly.io handles

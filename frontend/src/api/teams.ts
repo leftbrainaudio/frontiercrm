@@ -16,10 +16,26 @@ export function useRoles() {
   });
 }
 
-export function useMemberships() {
+export function useUsers() {
   return useQuery({
     queryKey: ['memberships'],
-    queryFn: () => apiClient.get<{ results: Membership[] }>('/teams/memberships/').then((r) => r.data.results),
+    queryFn: () =>
+      apiClient.get<{ results: Membership[] }>('/teams/memberships/').then((r) => r.data.results),
+  });
+}
+
+export function useMemberships() {
+  return useUsers();
+}
+
+export function useUpdateUserRole() {
+  const qc = useQueryClient();
+  return useMutation({
+    mutationFn: ({ membershipId, roleId }: { membershipId: string; roleId: string }) =>
+      apiClient.patch(`/teams/memberships/${membershipId}/`, { role_id: roleId }),
+    onSuccess: () => {
+      qc.invalidateQueries({ queryKey: ['memberships'] });
+    },
   });
 }
 

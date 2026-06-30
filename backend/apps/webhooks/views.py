@@ -1,4 +1,4 @@
-"""Webhook hub: receiver, signature verification, retry with backoff."""
+"""Webhook hub: receiver, API viewsets, and dead-event replay."""
 
 from __future__ import annotations
 
@@ -9,17 +9,16 @@ import time
 from typing import Any
 
 import requests
-from celery import shared_task
 from rest_framework import serializers, status, viewsets
-from rest_framework.decorators import api_view, permission_classes
+from rest_framework.decorators import action, api_view, permission_classes
 from rest_framework.permissions import AllowAny
 from rest_framework.request import Request
 from rest_framework.response import Response
 
-from .models import WebhookEndpoint, WebhookEvent
+from apps.webhooks.models import WebhookDeadEvent, WebhookEndpoint, WebhookEvent
+from apps.webhooks.services import WebhookDeliveryService, compute_signature
 
-# ── API ──────────────────────────────────────────────────────────────────────
-
+# ── Serializers ─────────────────────────────────────────────────────────────
 
 class WebhookEndpointSerializer(serializers.ModelSerializer):
     class Meta:
@@ -33,6 +32,16 @@ class WebhookEventSerializer(serializers.ModelSerializer):
         model = WebhookEvent
         exclude = ()
         read_only_fields = ("id", "tenant_id", "created_at", "updated_at")
+
+
+class WebhookDeadEventSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = WebhookDeadEvent
+        exclude = ()
+        read_only_fields = ("id", "tenant_id", "created_at", "updated_at")
+
+
+# ── ViewSets ────────────────────────────────────────────────────────────────
 
 
 class WebhookEndpointViewSet(viewsets.ModelViewSet):
@@ -55,7 +64,57 @@ class WebhookEventViewSet(viewsets.ReadOnlyModelViewSet):
         return WebhookEvent.objects.filter(tenant_id=self.request.user.tenant_id)
 
 
-# ── Webhook receiver (public) ────────────────────────────────────────────────
+class WebhookDeadEventViewSet(viewsets.ReadOnlyModelViewSet):
+    queryset = WebhookDeadEvent.objects.all()
+    serializer_class = WebhookDeadEventSerializer
+    filterset_fields = ["event_type", "endpoint", "resolved_at"]
+
+    def get_queryset(self):
+        return WebhookDeadEvent.objects.filter(tenant_id=self.request.user.tenant_id)
+
+    @action(detail=True, methods=["post"])
+    def replay(self, request: Request, pk=None):
+        """Replay a dead-letter event as a fresh webhook delivery."""
+        dead_event = self.get_object()
+
+        if dead_event.resolved_at is not None and dead_event.resolution_notes != "Replayed via admin action":
+            return Response(
+                {"error": "Dead event is already resolved"},
+                status=status.HTTP_400_BAD_REQUEST,
+            )
+
+        try:
+            event = WebhookDeliveryService.enqueue(
+                dead_event.endpoint,
+                dead_event.event_type,
+                dead_event.payload,
+            )
+            from apps.webhooks.tasks import deliver_webhook
+
+            deliver_webhook.delay(str(event.id))
+
+            # Mark dead event as resolved
+            from django.utils import timezone
+            dead_event.resolved_at = timezone.now()
+            dead_event.resolution_notes = "Replayed via API"
+            dead_event.save(update_fields=["resolved_at", "resolution_notes"])
+
+            return Response(
+                {
+                    "new_event_id": str(event.id),
+                    "status": "pending",
+                    "message": "Webhook event re-queued for delivery",
+                },
+                status=status.HTTP_201_CREATED,
+            )
+        except Exception as exc:
+            return Response(
+                {"error": f"Failed to replay dead event: {exc}"},
+                status=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            )
+
+
+# ── Webhook receiver (public, inbound) ──────────────────────────────────────
 
 
 @api_view(["POST"])
@@ -85,7 +144,7 @@ def webhook_receiver(request: Request) -> Response:
     for endpoint in endpoints:
         # Verify signature if endpoint has a secret
         if endpoint.secret and signature:
-            expected_sig = _compute_signature(payload, endpoint.secret, timestamp)
+            expected_sig = compute_signature(payload, endpoint.secret, timestamp)
             if not hmac.compare_digest(signature, expected_sig):
                 continue  # skip — signature mismatch
 
@@ -95,69 +154,8 @@ def webhook_receiver(request: Request) -> Response:
             event_type=event_type,
             payload=payload,
         )
-        dispatch_webhook.delay(event.id)
+        from apps.webhooks.tasks import deliver_webhook
+
+        deliver_webhook.delay(event.id)
 
     return Response({"status": "accepted"}, status=status.HTTP_202_ACCEPTED)
-
-
-@shared_task(bind=True, max_retries=3, default_retry_delay=60)
-def dispatch_webhook(self, event_id: str) -> None:
-    """Deliver webhook event with exponential backoff retry."""
-    try:
-        event = WebhookEvent.objects.get(id=event_id)
-    except WebhookEvent.DoesNotExist:
-        return
-
-    endpoint = event.endpoint
-    event.attempt_count += 1
-    event.last_attempt_at = __import__("django.utils.timezone", fromlist=["now"]).now()
-
-    try:
-        resp = requests.post(
-            endpoint.url,
-            json=event.payload,
-            headers={
-                "Content-Type": "application/json",
-                "X-Webhook-Signature": _compute_signature(event.payload, endpoint.secret, str(int(time.time()))),
-                "User-Agent": "FrontierCRM-Webhook/1.0",
-            },
-            timeout=30,
-        )
-        event.response_status = resp.status_code
-        event.response_body = resp.text[:2000]
-
-        if 200 <= resp.status_code < 300:
-            event.status = WebhookEvent.EventStatus.DELIVERED
-            endpoint.last_triggered_at = event.last_attempt_at
-            endpoint.failure_count = 0
-            endpoint.save(update_fields=["last_triggered_at", "failure_count"])
-        else:
-            _retry_or_fail(self, event, endpoint, f"HTTP {resp.status_code}: {resp.text[:200]}")
-
-    except requests.RequestException as exc:
-        _retry_or_fail(self, event, endpoint, str(exc))
-
-    event.save()
-
-
-def _retry_or_fail(task: Any, event: WebhookEvent, endpoint: WebhookEndpoint, error: str) -> None:
-    """Retry with backoff or mark as failed."""
-    event.error_message = error
-    if event.attempt_count < endpoint.max_retries:
-        event.status = WebhookEvent.EventStatus.PENDING
-        delay = 60 * (2 ** (event.attempt_count - 1))  # 60s, 120s, 240s
-        event.next_retry_at = __import__("django.utils.timezone", fromlist=["now"]).now() + __import__(
-            "datetime", fromlist=["timedelta"]
-        ).timedelta(seconds=delay)
-        task.retry(countdown=delay)
-    else:
-        event.status = WebhookEvent.EventStatus.FAILED
-        endpoint.failure_count += 1
-        endpoint.save(update_fields=["failure_count"])
-
-
-def _compute_signature(payload: dict[str, Any], secret: str, timestamp: str) -> str:
-    """HMAC-SHA256 signature of payload + timestamp."""
-    raw = json.dumps(payload, sort_keys=True, separators=(",", ":"))
-    message = f"{timestamp}.{raw}"
-    return hmac.new(secret.encode(), message.encode(), hashlib.sha256).hexdigest()

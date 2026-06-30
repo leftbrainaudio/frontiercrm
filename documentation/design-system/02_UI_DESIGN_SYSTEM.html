@@ -1,0 +1,4176 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="Project documentation — design system, roadmap, devops, brand, architecture">
+      
+      
+      
+      
+      
+      
+        
+      
+      
+      <link rel="icon" href="../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.6">
+    
+    
+      
+        <title>FrontierCRM — UI Design System & Component Library - FrontierCRM</title>
+      
+    
+    
+      <link rel="stylesheet" href="../assets/stylesheets/main.484c7ddc.min.css">
+      
+        
+        <link rel="stylesheet" href="../assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../stylesheets/extra.css">
+    
+    <script>__md_scope=new URL("..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="teal">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#frontiercrm-ui-design-system-component-library" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href=".." title="FrontierCRM" class="md-header__button md-logo" aria-label="FrontierCRM" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            FrontierCRM
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              FrontierCRM — UI Design System &amp; Component Library
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+    
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+        <div class="md-search__suggest" data-md-component="search-suggest"></div>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href=".." title="FrontierCRM" class="md-nav__button md-logo" aria-label="FrontierCRM" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    FrontierCRM
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../index.md" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Home
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../10_ROADMAP.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Roadmap
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--active"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../12_DEVOPS.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    DevOps
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--active"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4" >
+        
+          
+          <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Brand Guidelines
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Brand Guidelines
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../08_BRAND_GUIDELINES.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Brand Identity
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--complete"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../ui-design-system.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Design System Overview
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--complete"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../design-system-gaps.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Implementation Gaps
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--active"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../06_DATA_ARCHITECTURE.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Architecture
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--complete"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../05_TECH_STACK.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Tech Stack
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--complete"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../11_DECISION_LOG.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Decision Log
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--complete"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_8" >
+        
+          
+          <label class="md-nav__link" for="__nav_8" id="__nav_8_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Research
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_8_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_8">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Research
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../01_MARKET_RESEARCH.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Market
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--complete"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../02_FEATURE_MATRIX.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Features
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--complete"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../04_INTEGRATIONS.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Integrations
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--completed"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../04B_EMERGING_TECH.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Emerging Tech
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--complete"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../03_PERSONAS.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Personas
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--complete"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../09_PRICING.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Pricing
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--complete"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../07_UX_WORKFLOWS.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    UX & Workflows
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--complete"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../api-endpoints.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    API
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--complete"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#1-layout-system" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1. Layout System
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="1. Layout System">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#11-shell-layout" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1.1 Shell Layout
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#12-content-area-panel-system" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1.2 Content Area Panel System
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#13-top-bar-components" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1.3 Top Bar Components
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2-core-components" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2. Core Components
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="2. Core Components">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#21-button" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.1 Button
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#22-input-text" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.2 Input (Text)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#23-card" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.3 Card
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#24-modal-dialog" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.4 Modal &amp; Dialog
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#25-table" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.5 Table
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#26-form" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.6 Form
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#27-badge" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.7 Badge
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#28-avatar" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.8 Avatar
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#29-dropdown" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.9 Dropdown
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#210-menu-navigation" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.10 Menu (Navigation)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#211-sidebar-application-shell" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.11 Sidebar (Application Shell)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#212-pipeline-kanban" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.12 Pipeline Kanban
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#213-dashboard-widget" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.13 Dashboard Widget
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#214-timeline-activity-feed" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.14 Timeline / Activity Feed
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#215-searchbar" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.15 SearchBar
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#216-notification" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.16 Notification
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#217-onboarding-step-wizard" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.17 Onboarding Step (Wizard)
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#3-data-visualization-components" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3. Data Visualization Components
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="3. Data Visualization Components">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#31-chart-system" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.1 Chart System
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#32-kanban-pipeline" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.2 Kanban Pipeline
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#33-activity-timeline" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.3 Activity Timeline
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#34-heatmap-activity-density" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.4 Heatmap (Activity Density)
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#4-responsive-breakpoints" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4. Responsive Breakpoints
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#5-component-states-reference" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5. Component States Reference
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="5. Component States Reference">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#51-loading-states" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5.1 Loading States
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#52-empty-states" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5.2 Empty States
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#53-error-states" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5.3 Error States
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#54-transition-states" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5.4 Transition States
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#6-accessibility-wcag-21-aa" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6. Accessibility (WCAG 2.1 AA)
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="6. Accessibility (WCAG 2.1 AA)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#61-color-and-contrast" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6.1 Color and Contrast
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#62-keyboard-navigation" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6.2 Keyboard Navigation
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#63-screen-reader-support" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6.3 Screen Reader Support
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#64-focus-management" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6.4 Focus Management
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#65-reduced-motion" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6.5 Reduced Motion
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#7-dark-mode" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        7. Dark Mode
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="7. Dark Mode">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#71-theme-switching" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        7.1 Theme Switching
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#72-surface-colors" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        7.2 Surface Colors
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#73-text-colors" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        7.3 Text Colors
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#74-interactive-colors" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        7.4 Interactive Colors
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#75-shadows-and-elevation" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        7.5 Shadows and Elevation
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#76-data-visualization-in-dark-mode" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        7.6 Data Visualization in Dark Mode
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#8-css-architecture" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        8. CSS Architecture
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="8. CSS Architecture">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#81-class-naming-convention" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        8.1 Class Naming Convention
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#82-design-token-delivery" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        8.2 Design Token Delivery
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#83-tailwind-config-extensions" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        8.3 Tailwind Config Extensions
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#appendix-a-component-dependency-graph" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Appendix A: Component Dependency Graph
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#appendix-b-implementation-priority" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Appendix B: Implementation Priority
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#appendix-c-component-spec-api-shape" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Appendix C: Component Spec (API Shape)
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+
+<h1 id="frontiercrm-ui-design-system-component-library">FrontierCRM — UI Design System &amp; Component Library</h1>
+<p><strong>Version:</strong> 1.0
+<strong>Date:</strong> 2026-06-28
+<strong>Framework target:</strong> React 19 + Tailwind CSS v4 + Framer Motion (Next.js 15)
+<strong>Design tokens reference:</strong> Brand Identity &amp; Guidelines (§3-4, Appendix B)</p>
+<hr />
+<h2 id="1-layout-system">1. Layout System</h2>
+<h3 id="11-shell-layout">1.1 Shell Layout</h3>
+<div class="highlight"><pre><span></span><code>┌─────────────────────────────────────────────────┐
+│                      Top Bar                      │
+│  [☰ Menu] [FrontierCRM] [Search...]  [⚙︎] [👤]   │
+├──────────┬──────────────────────────────────────┤
+│          │                                    │ │
+│  Sidebar │          Content Area               │ │
+│  (w: 240)│    (w: 1fr — min 0 ── 1fr)         │ │
+│          │                                    │ │
+│  ┌──────┐│  ┌────────────────────────────────┐ │ │
+│  │Dashboard◀─▶│ Deal Pipeline Kanban          │ │ │
+│  │ Pipeline││  │                                │ │ │
+│  │ Contacts││  │  ┌───┐ ┌───┐ ┌───┐            │ │ │
+│  │ Activity││  │  │New│ │Qlf│ │Prp│            │ │ │
+│  │ Reports ││  │  └───┘ └───┘ └───┘            │ │ │
+│  │ Settings ││  └────────────────────────────────┘ │ │
+│  └────────┘│                                    │ │
+│            │                                    │ │
+└────────────┴────────────────────────────────────┘
+</code></pre></div>
+<p><strong>Breakpoint behavior:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Breakpoint</th>
+<th>Sidebar</th>
+<th>Content Area</th>
+<th>Notes</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>≥1280px (wide)</td>
+<td>Fixed 240px, always visible</td>
+<td>Full remaining</td>
+<td>Split panel works</td>
+</tr>
+<tr>
+<td>1024-1279px (desktop)</td>
+<td>Fixed 240px, always visible</td>
+<td>Full remaining</td>
+<td>Standard layout</td>
+</tr>
+<tr>
+<td>768-1023px (tablet)</td>
+<td>Collapsible drawer, closed by default</td>
+<td>Full width</td>
+<td>Toggle via ☰</td>
+</tr>
+<tr>
+<td>&lt;768px (mobile)</td>
+<td>Slide-over overlay, closed</td>
+<td>Full width</td>
+<td>☰ opens overlay</td>
+</tr>
+</tbody>
+</table>
+<h3 id="12-content-area-panel-system">1.2 Content Area Panel System</h3>
+<p>The content area supports three panel configurations:</p>
+<div class="highlight"><pre><span></span><code>Single Panel (default)      Split Panel              Detail Panel
+┌────────────────────┐   ┌────────┬──────────┐   ┌────────┬──────────────┐
+│                    │   │        │          │   │ List   │ Detail View  │
+│   Main Content     │   │ List   │ Detail   │   │ (40%)  │ (60%)        │
+│   (100%)           │   │ (45%)  │ (55%)    │   │        │              │
+│                    │   │        │          │   │        │              │
+└────────────────────┘   └────────┴──────────┘   └────────┴──────────────┘
+</code></pre></div>
+<ul>
+<li>Split panel: Used for contact list→detail, deal list→preview pattern</li>
+<li>Detail panel: Used for email thread viewer, activity feed alongside a record</li>
+<li>Panel resizing: Drag handle between panels (min 30%/max 70% for each)</li>
+<li>Panel must work at ≥768px; below that, stack vertically or use push navigation</li>
+</ul>
+<h3 id="13-top-bar-components">1.3 Top Bar Components</h3>
+<div class="highlight"><pre><span></span><code>│ [FrontierCRM logo] [Global Search... ⌘K] [☐ Import] [Activities] [⚙︎ ⬇] [👤 Alex Chen ▼] │
+</code></pre></div>
+<table>
+<thead>
+<tr>
+<th>Region</th>
+<th>Elements</th>
+<th>Max Width</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Left</td>
+<td>Logo wordmark, breadcrumb (optional secondary nav)</td>
+<td>auto</td>
+</tr>
+<tr>
+<td>Center</td>
+<td>Global Search (140px on mobile, 320px on desktop)</td>
+<td>560px</td>
+</tr>
+<tr>
+<td>Right</td>
+<td>Quick actions, Notification icon with count, Settings dropdown, User menu</td>
+<td>auto</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="2-core-components">2. Core Components</h2>
+<h3 id="21-button">2.1 Button</h3>
+<table>
+<thead>
+<tr>
+<th>Variant</th>
+<th>CSS Class</th>
+<th>Background</th>
+<th>Text</th>
+<th>Hover</th>
+<th>Active</th>
+<th>Disabled</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Primary</td>
+<td><code>btn-primary</code></td>
+<td>primary-500</td>
+<td>white</td>
+<td>primary-600</td>
+<td>primary-700</td>
+<td>opacity-50, cursor-not-allowed</td>
+</tr>
+<tr>
+<td>Secondary</td>
+<td><code>btn-secondary</code></td>
+<td>white</td>
+<td>neutral-700</td>
+<td>neutral-100 bg</td>
+<td>neutral-200 bg</td>
+<td>opacity-40</td>
+</tr>
+<tr>
+<td>Outline</td>
+<td><code>btn-outline</code></td>
+<td>transparent</td>
+<td>primary-600</td>
+<td>primary-50 bg</td>
+<td>primary-100 bg</td>
+<td>opacity-40</td>
+</tr>
+<tr>
+<td>Ghost</td>
+<td><code>btn-ghost</code></td>
+<td>transparent</td>
+<td>neutral-600</td>
+<td>neutral-100 bg</td>
+<td>neutral-200 bg</td>
+<td>opacity-40</td>
+</tr>
+<tr>
+<td>Danger</td>
+<td><code>btn-danger</code></td>
+<td>error</td>
+<td>white</td>
+<td>error-600</td>
+<td>error-700</td>
+<td>opacity-50</td>
+</tr>
+<tr>
+<td>Link</td>
+<td><code>btn-link</code></td>
+<td>transparent</td>
+<td>primary-600</td>
+<td>underline</td>
+<td>primary-700</td>
+<td>opacity-40</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Sizes:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Size</th>
+<th>Height</th>
+<th>Padding</th>
+<th>Font Size</th>
+<th>Icon Size</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>xs</td>
+<td>24px</td>
+<td>6px 8px</td>
+<td>12px</td>
+<td>12px</td>
+</tr>
+<tr>
+<td>sm</td>
+<td>32px</td>
+<td>8px 12px</td>
+<td>13px</td>
+<td>14px</td>
+</tr>
+<tr>
+<td>md</td>
+<td>40px</td>
+<td>10px 16px</td>
+<td>14px</td>
+<td>16px</td>
+</tr>
+<tr>
+<td>lg</td>
+<td>48px</td>
+<td>12px 24px</td>
+<td>16px</td>
+<td>18px</td>
+</tr>
+<tr>
+<td>xl</td>
+<td>56px</td>
+<td>16px 32px</td>
+<td>18px</td>
+<td>20px</td>
+</tr>
+</tbody>
+</table>
+<p><strong>States (all variants):</strong></p>
+<ul>
+<li><strong>Default:</strong> As spec'd above</li>
+<li><strong>Hover:</strong> Background shifts one step, cursor:pointer</li>
+<li><strong>Active/Pressed:</strong> Background shifts two steps, scale(0.97) for 100ms</li>
+<li><strong>Focus:</strong> 3px ring in primary-300/primary-500, offset 2px white (WCAG focus indicator)</li>
+<li><strong>Loading:</strong> Replace label text with spinner, maintain width to prevent layout shift. Disabled while loading.</li>
+<li><strong>Disabled:</strong> Opacity reduction, cursor-not-allowed, no hover effect</li>
+</ul>
+<p><strong>Button groups:</strong> Adjacent buttons join with 0 gap. Middle buttons have square corners. First button has left-radius, last button has right-radius.</p>
+<h3 id="22-input-text">2.2 Input (Text)</h3>
+<table>
+<thead>
+<tr>
+<th>Property</th>
+<th>Value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Height (default)</td>
+<td>40px</td>
+</tr>
+<tr>
+<td>Padding</td>
+<td>10px 12px</td>
+</tr>
+<tr>
+<td>Border</td>
+<td>1px solid neutral-300</td>
+</tr>
+<tr>
+<td>Border radius</td>
+<td>6px (borderRadius-md)</td>
+</tr>
+<tr>
+<td>Background</td>
+<td>white</td>
+</tr>
+<tr>
+<td>Text</td>
+<td>14px, neutral-800</td>
+</tr>
+<tr>
+<td>Placeholder</td>
+<td>neutral-400</td>
+</tr>
+<tr>
+<td>Icon prefix</td>
+<td>16px icon at left, neutral-400, 8px from left edge</td>
+</tr>
+</tbody>
+</table>
+<p><strong>States:</strong></p>
+<table>
+<thead>
+<tr>
+<th>State</th>
+<th>Border</th>
+<th>Background</th>
+<th>Notes</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Default</td>
+<td>neutral-300</td>
+<td>white</td>
+<td></td>
+</tr>
+<tr>
+<td>Hover</td>
+<td>neutral-400</td>
+<td>white</td>
+<td></td>
+</tr>
+<tr>
+<td>Focus</td>
+<td>primary-500 + 3px primary-200 ring</td>
+<td>white</td>
+<td>Outline offset 2px</td>
+</tr>
+<tr>
+<td>Filled</td>
+<td>neutral-300</td>
+<td>white</td>
+<td></td>
+</tr>
+<tr>
+<td>Error</td>
+<td>error + 3px error-100 ring</td>
+<td>error-50 bg</td>
+<td>Error message ↓8px below</td>
+</tr>
+<tr>
+<td>Disabled</td>
+<td>neutral-200</td>
+<td>neutral-100</td>
+<td>Text: neutral-400, cursor-not-allowed</td>
+</tr>
+<tr>
+<td>Read-only</td>
+<td>neutral-200</td>
+<td>neutral-50</td>
+<td>No focus ring</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Variants:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Variant</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Standard</td>
+<td>Single line text</td>
+</tr>
+<tr>
+<td>Textarea</td>
+<td>Multi-line, 3 rows default, resize vertical only</td>
+</tr>
+<tr>
+<td>Search</td>
+<td>Rounded (borderRadius-lg = 8px), magnifying glass icon prefix, ⨯ clear button on type</td>
+</tr>
+<tr>
+<td>URL/Email</td>
+<td>Special keyboard on mobile, validation pattern</td>
+</tr>
+<tr>
+<td>Password</td>
+<td>Toggle visibility icon button suffix</td>
+</tr>
+<tr>
+<td>With prefix</td>
+<td>Icon/currency symbol before text (left padding adjusted)</td>
+</tr>
+<tr>
+<td>With suffix</td>
+<td>Helper text, clear button, or status indicator after text</td>
+</tr>
+</tbody>
+</table>
+<h3 id="23-card">2.3 Card</h3>
+<div class="highlight"><pre><span></span><code>┌────────────────────────────────────────┐
+│ [Icon] Card Title           [Badge] [⋮] │
+├────────────────────────────────────────┤
+│ Card content — flexible layout.         │
+│ Supports children of any component.     │
+│                                         │
+│ Can contain: avatar rows, stat groups,  │
+│ mini tables, kanban cards, etc.        │
+├────────────────────────────────────────┤
+│ Card Footer (optional) — actions        │
+└────────────────────────────────────────┘
+</code></pre></div>
+<table>
+<thead>
+<tr>
+<th>Token</th>
+<th>Value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Padding</td>
+<td>16px (space-4) — 24px (space-6) for emphasis cards</td>
+</tr>
+<tr>
+<td>Background</td>
+<td>neutral-100 (light) / neutral-900 (dark)</td>
+</tr>
+<tr>
+<td>Border</td>
+<td>1px solid neutral-200 (light) / neutral-800 (dark)</td>
+</tr>
+<tr>
+<td>Radius</td>
+<td>8px (borderRadius-lg)</td>
+</tr>
+<tr>
+<td>Shadow</td>
+<td>shadow-sm (light) / none (dark)</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Card variants:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Variant</th>
+<th>Usage</th>
+<th>Special</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Default</td>
+<td>General content containers</td>
+<td>Standard spec</td>
+</tr>
+<tr>
+<td>Clickable</td>
+<td>Navigation cards, summary cards</td>
+<td>Hover: shadow-md, cursor-pointer. Focus ring. Entire card clickable</td>
+</tr>
+<tr>
+<td>Stat</td>
+<td>Dashboard KPI cards</td>
+<td>Optional accent bar at top (4px, semantic color)</td>
+</tr>
+<tr>
+<td>Kanban</td>
+<td>Pipeline deal cards</td>
+<td>Drag source, compact padding (12px), deal value prominent</td>
+</tr>
+<tr>
+<td>Elevated</td>
+<td>Modals, dropdown children</td>
+<td>shadow-lg</td>
+</tr>
+<tr>
+<td>Bordered</td>
+<td>Detail sections</td>
+<td>Slightly thicker border (2px) for visual grouping</td>
+</tr>
+</tbody>
+</table>
+<h3 id="24-modal-dialog">2.4 Modal &amp; Dialog</h3>
+<div class="highlight"><pre><span></span><code>┌─────────────────────────────────────────┐
+│ Overlay (bg-neutral-900/60, backdrop)   │
+│  ┌─────────────────────────────────┐    │
+│  │ Modal Header        [⨯ Close]    │    │
+│  ├─────────────────────────────────┤    │
+│  │                                 │    │
+│  │ Modal Body (scrollable)         │    │
+│  │                                 │    │
+│  ├─────────────────────────────────┤    │
+│  │ Footer: [Cancel]   [Primary]    │    │
+│  └─────────────────────────────────┘    │
+└─────────────────────────────────────────┘
+</code></pre></div>
+<table>
+<thead>
+<tr>
+<th>Property</th>
+<th>Value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Width (default)</td>
+<td>480px / 30rem</td>
+</tr>
+<tr>
+<td>Width (small)</td>
+<td>400px / 25rem — confirmations</td>
+</tr>
+<tr>
+<td>Width (large)</td>
+<td>640px / 40rem — complex forms</td>
+</tr>
+<tr>
+<td>Max height</td>
+<td>85vh — scrolls if exceeded</td>
+</tr>
+<tr>
+<td>Header height</td>
+<td>56px — title H3 + close button</td>
+</tr>
+<tr>
+<td>Footer height</td>
+<td>64px — action buttons, right-aligned</td>
+</tr>
+<tr>
+<td>Animation</td>
+<td>Fade scale (opacity 0→1, scale 0.95→1, 200ms ease-out)</td>
+</tr>
+<tr>
+<td>Close</td>
+<td>X button top-right + Escape key + click-outside-overlay</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Dismiss behavior:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Trigger</th>
+<th>Action</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Click X</td>
+<td>Close (no save)</td>
+</tr>
+<tr>
+<td>Press Escape</td>
+<td>Close (no save)</td>
+</tr>
+<tr>
+<td>Click overlay</td>
+<td>Close (no save) — except for destructive content</td>
+</tr>
+<tr>
+<td>Submit primary</td>
+<td>Close + apply</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Focus trap:</strong> Tab cycles through modal elements only. First focusable element receives focus on open. Return focus to trigger on close.</p>
+<h3 id="25-table">2.5 Table</h3>
+<div class="highlight"><pre><span></span><code>┌──────────────────────────────────────────────────────────────┐
+│ [☐]  Name      Company       Stage    Value     Owner    ⋮   │ ← header row
+├──────────────────────────────────────────────────────────────┤
+│ [☐]  Alex C.   Acme Corp    Proposal  $24,500  You      ⋮   │ ← interactive row
+│ [☐]  Jamie L.  Beta Inc     Closed Won $52,000 Dana     ⋮   │
+│ [☐]  Sam K.    Gamma LLC    Discovery $8,200   Morgan   ⋮   │ ← selected row
+└──────────────────────────────────────────────────────────────┘
+</code></pre></div>
+<table>
+<thead>
+<tr>
+<th>Token</th>
+<th>Value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Header bg</td>
+<td>neutral-50 (light) / neutral-850 (dark)</td>
+</tr>
+<tr>
+<td>Header text</td>
+<td>neutral-500, caption-bold</td>
+</tr>
+<tr>
+<td>Row height</td>
+<td>52px (compact: 40px, comfortable: 60px)</td>
+</tr>
+<tr>
+<td>Cell padding</td>
+<td>8px 16px</td>
+</tr>
+<tr>
+<td>Border</td>
+<td>1px solid neutral-200 bottom only</td>
+</tr>
+<tr>
+<td>Selection</td>
+<td>primary-50 bg + primary-500 left border (3px)</td>
+</tr>
+<tr>
+<td>Hover</td>
+<td>neutral-50 bg (light) / neutral-800 bg (dark)</td>
+</tr>
+<tr>
+<td>Sort</td>
+<td>Click header to toggle asc/desc. Active sort column: header text bold + arrow indicator</td>
+</tr>
+<tr>
+<td>Striped</td>
+<td>Optional — even rows get neutral-50 bg. Off by default (modern look)</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Row states:</strong></p>
+<table>
+<thead>
+<tr>
+<th>State</th>
+<th>Visual</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Default</td>
+<td>White bg (light) / neutral-900 (dark)</td>
+</tr>
+<tr>
+<td>Hover</td>
+<td>neutral-50 bg (light)</td>
+</tr>
+<tr>
+<td>Selected</td>
+<td>primary-50 bg + 3px primary-500 left border</td>
+</tr>
+<tr>
+<td>Expanded</td>
+<td>Row expands with + icon → chevron-down icon. Sub-content panel becomes visible below row</td>
+</tr>
+<tr>
+<td>Dragging</td>
+<td>Opacity 0.8, shadow-md, original position shows grey placeholder</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Responsive table:</strong> At &lt;768px, tables with &gt;5 columns become horizontally scrollable within a container. Critical columns (e.g., Name, Stage) remain pinned left. Or switch to card-list view at &lt;480px.</p>
+<h3 id="26-form">2.6 Form</h3>
+<div class="highlight"><pre><span></span><code>┌─────────────────────────────────┐
+│  Section Header (H3)            │
+│                                 │
+│  Email Address      [Helper]    │ ── field group
+│  ┌───────────────────────┐     │
+│  │ user@example.com      │     │
+│  └───────────────────────┘     │
+│  ┌───────────────────────┐     │
+│  │ ✓ Valid email format  │     │ ── validation message (success)
+│  └───────────────────────┘     │
+│                                 │
+│  Full Name                     │
+│  ┌───────────────────────┐     │
+│  │                      ✕ │     │ ── field with error
+│  └───────────────────────┘     │
+│  ┌───────────────────────┐     │
+│  │ ✗ Full name required   │     │ ── validation message (error)
+│  └───────────────────────┘     │
+│                                 │
+│  ┌───────────────────────────┐ │
+│  │ [Cancel]     [Save Changes]│ │ ── form actions
+│  └───────────────────────────┘ │
+└─────────────────────────────────┘
+</code></pre></div>
+<p><strong>Form layout:</strong>
+- Single column preferred (better readability, fewer user errors)
+- Two columns for related pairs (First Name / Last Name) on ≥768px
+- Label above input, not inline left
+- Helper text below input in neutral-400 (12px)
+- Validation message below helper/input in error color (12px)
+- Required indicator: asterisk in red before label text
+- Form sections separated by H3 headers and 24px vertical gap</p>
+<p><strong>Form elements:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Element</th>
+<th>Component Used</th>
+<th>Notes</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Text field</td>
+<td>Input (§2.2)</td>
+<td></td>
+</tr>
+<tr>
+<td>Select</td>
+<td>Custom dropdown</td>
+<td>Same height as input, 40px</td>
+</tr>
+<tr>
+<td>Checkbox</td>
+<td>Square, 16px, primary-500 when checked</td>
+<td>Label right, 8px gap</td>
+</tr>
+<tr>
+<td>Radio</td>
+<td>Circle, 16px, primary-500 dot when selected</td>
+<td>Label right, 8px gap</td>
+</tr>
+<tr>
+<td>Toggle/Switch</td>
+<td>36×20px pill, primary-500 when on</td>
+<td>Label right or left</td>
+</tr>
+<tr>
+<td>Date picker</td>
+<td>Input type=date or custom popover</td>
+<td>Same 40px height</td>
+</tr>
+<tr>
+<td>Multi-select</td>
+<td>Chips in input area, dropdown below</td>
+<td>Same height expands</td>
+</tr>
+<tr>
+<td>File upload</td>
+<td>Drag-and-drop zone (dashed border, 120px height)</td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<h3 id="27-badge">2.7 Badge</h3>
+<div class="highlight"><pre><span></span><code> ● Lead     ● Qualified    ● Proposal    ● Closed Won  ← colored badges
+ ○ Archived ○ Lost          ○ On Hold                    ← muted badges
+</code></pre></div>
+<table>
+<thead>
+<tr>
+<th>Variant</th>
+<th>Background</th>
+<th>Text Color</th>
+<th>Dot Color</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Neutral</td>
+<td>neutral-100</td>
+<td>neutral-600</td>
+<td>neutral-400</td>
+</tr>
+<tr>
+<td>Primary</td>
+<td>primary-100</td>
+<td>primary-700</td>
+<td>primary-500</td>
+</tr>
+<tr>
+<td>Success</td>
+<td>secondary-100</td>
+<td>secondary-700</td>
+<td>secondary-500</td>
+</tr>
+<tr>
+<td>Warning</td>
+<td>accent-100</td>
+<td>accent-700</td>
+<td>accent-500</td>
+</tr>
+<tr>
+<td>Error</td>
+<td>error-100</td>
+<td>error-700</td>
+<td>error-500</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Properties:</strong>
+- Height: 22px (compact) / 26px (standard)
+- Padding: 4px 8px (with dot: 4px 8px 4px 6px)
+- Border radius: borderRadius-full (pill)
+- Font: 12px, 600 weight (caption-bold)
+- Optional: Leading dot (4px circle, matches variant color), 4px gap from text
+- Optional: Remove/close icon (⨯) for dismissible badges (tags, filters)
+- Multiple badges: 4px gap between adjacent badges</p>
+<h3 id="28-avatar">2.8 Avatar</h3>
+<div class="highlight"><pre><span></span><code>   ┌────┐   ┌────┐   ┌────┐   ┌────┐
+   │ AC │   │ 💁 │   │ 😊 │   │ +3 │    ← size variants
+   └────┘   └────┘   └────┘   └────┘
+   Initials  Photo    Icon    Count
+</code></pre></div>
+<table>
+<thead>
+<tr>
+<th>Size</th>
+<th>Diameter</th>
+<th>Font</th>
+<th>Usage</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>xs</td>
+<td>24px</td>
+<td>10px</td>
+<td>Inline with text, compact lists</td>
+</tr>
+<tr>
+<td>sm</td>
+<td>32px</td>
+<td>12px</td>
+<td>Table cells, comments</td>
+</tr>
+<tr>
+<td>md</td>
+<td>40px</td>
+<td>14px</td>
+<td>User menus, record headers</td>
+</tr>
+<tr>
+<td>lg</td>
+<td>56px</td>
+<td>18px</td>
+<td>Profile headers</td>
+</tr>
+<tr>
+<td>xl</td>
+<td>72px</td>
+<td>24px</td>
+<td>User settings pages</td>
+</tr>
+</tbody>
+</table>
+<p><strong>States:</strong>
+- <strong>Initials:</strong> First name initial + last name initial, white text on primary-500 background
+- <strong>Photo:</strong> Circular, object-fit:cover, 1px neutral-200 border
+- <strong>Online indicator:</strong> 8px green dot, bottom-right, 2px white border (absolute positioned)
+- <strong>Group:</strong> Stacked overlap (adjacent avatar clips 8px into previous). Count badge at the end "+N"
+- <strong>Clickable:</strong> Hover adds subtle overlay, cursor:pointer</p>
+<h3 id="29-dropdown">2.9 Dropdown</h3>
+<div class="highlight"><pre><span></span><code>┌──────────────────────────────────────┐
+│  Label (or trigger element)      ▼   │ ← trigger
+└──────────────────────────────────────┘
+            │
+            ▼
+┌──────────────────────────────────────┐
+│  ┌────────────────────────────────┐  │
+│  │ 🔍 Search items...             │  │ ← optional search
+│  └────────────────────────────────┘  │
+│  ──────────────────────────────────  │
+│  ● Selected Item                    │
+│  ○ Unselected Item                  │
+│  ○ Disabled Item          (greyed)  │
+│  ──────────────────────────────────  │
+│  ┌─┐ Item with icon                 │
+│  └─┘                                │
+│  ──────────────────────────────────  │
+│  Color-coded option ●  Active       │
+│  Color-coded option ○  Archived     │
+└──────────────────────────────────────┘
+</code></pre></div>
+<table>
+<thead>
+<tr>
+<th>Property</th>
+<th>Value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Width</td>
+<td>Matches trigger, min 180px</td>
+</tr>
+<tr>
+<td>Max height</td>
+<td>320px (scrolls)</td>
+</tr>
+<tr>
+<td>Background</td>
+<td>white (light) / neutral-850 (dark)</td>
+</tr>
+<tr>
+<td>Border</td>
+<td>1px neutral-200</td>
+</tr>
+<tr>
+<td>Radius</td>
+<td>6px</td>
+</tr>
+<tr>
+<td>Shadow</td>
+<td>shadow-lg</td>
+</tr>
+<tr>
+<td>Items</td>
+<td>36px height, 8px 12px padding, 14px text</td>
+</tr>
+<tr>
+<td>Divider</td>
+<td>1px neutral-100</td>
+</tr>
+<tr>
+<td>Z-index</td>
+<td>50 (above modals: works within modal stack)</td>
+</tr>
+<tr>
+<td>Animation</td>
+<td>Fade + translateY(4px→0), 150ms</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Item types:</strong>
+- <strong>Default:</strong> Label text, optional left icon (16px, neutral-400)
+- <strong>Selected:</strong> Checkmark icon right (active item, keep checkmark on close)
+- <strong>Disabled:</strong> neutral-300 text, no hover effect
+- <strong>Danger:</strong> Red text on hover
+- <strong>With description:</strong> 14px label + 11px caption below
+- <strong>With color dot:</strong> Pipeline stage colors
+- <strong>Separator:</strong> Neutral-100 1px line between groups
+- <strong>Header:</strong> 11px uppercase label, neutral-500, non-interactive</p>
+<p><strong>Position:</strong> Bottom-left by default. Flips to top if insufficient space below. Right-align if trigger is right-aligned.</p>
+<h3 id="210-menu-navigation">2.10 Menu (Navigation)</h3>
+<div class="highlight"><pre><span></span><code>┌─────────────────────────────────────┐
+│                                      │
+│  ● Dashboard               [3]      │ ← active item (bold, color)
+│  ○ Pipeline                [12]     │ ← has badge count
+│  ○ Contacts                          │
+│  ○ Companies                         │
+│  ○ Activity Feed                     │
+│  ─────────────────────────────      │
+│  ○ Reports                          │
+│  ○ Forecast                         │
+│  ○ Goals                            │
+│  ─────────────────────────────      │
+│  ○ Settings                [✱]      │ ← premium feature
+│  ○ Integrations                     │
+│                                      │
+└─────────────────────────────────────┘
+</code></pre></div>
+<p><strong>Two variants:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Variant</th>
+<th>Width</th>
+<th>Icon</th>
+<th>Text</th>
+<th>Active Indicator</th>
+<th>Usage</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Sidebar menu</td>
+<td>240px</td>
+<td>20px icon left, neutral-400</td>
+<td>14px, neutral-600</td>
+<td>3px primary-500 left border + primary-600 text</td>
+<td>Main navigation</td>
+</tr>
+<tr>
+<td>Horizontal menu</td>
+<td>auto</td>
+<td>16px icon, neutral-400</td>
+<td>14px, neutral-600</td>
+<td>Underline or bg highlight</td>
+<td>Top-bar secondary nav</td>
+</tr>
+</tbody>
+</table>
+<table>
+<thead>
+<tr>
+<th>State</th>
+<th>Background</th>
+<th>Text</th>
+<th>Icon</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Default</td>
+<td>transparent</td>
+<td>neutral-600</td>
+<td>neutral-400</td>
+</tr>
+<tr>
+<td>Hover</td>
+<td>neutral-100</td>
+<td>neutral-700</td>
+<td>neutral-500</td>
+</tr>
+<tr>
+<td>Active</td>
+<td>primary-50</td>
+<td>primary-600</td>
+<td>primary-500</td>
+</tr>
+<tr>
+<td>Disabled</td>
+<td>transparent</td>
+<td>neutral-300</td>
+<td>neutral-300</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Sidebar menu specifics:</strong>
+- Item height: 40px
+- Padding: 0 16px
+- Icon: 20px, 12px right margin
+- Group separator: 24px above/below, 1px neutral-200 line
+- Section header: 11px uppercase, neutral-500, padding 16px 16px 8px
+- Collapse sub-items: 4px left indent per level (max 3 levels)
+- Badge: 4px right of label, neutral badge variant</p>
+<h3 id="211-sidebar-application-shell">2.11 Sidebar (Application Shell)</h3>
+<div class="highlight"><pre><span></span><code>┌──────────┬────────────────────────┐
+│ ⋮        │ [⇱] Collapse toggle    │ ← optional collapsible
+│ Panel    │                        │
+│                    │
+│ ┌──────┐ │                        │
+│ │Navigation│ │   Content Area       │
+│ │  Menu    │ │                        │
+│ │  (§2.10) │ │                        │
+│ └──────┘ │                        │
+│          │                        │
+│ ┌────────────────────────────┐    │
+│ │ Upgrade to Growth          │    │ ← utility area
+│ │ $29/seat/mo    [Compare]   │    │
+│ └────────────────────────────┘    │
+│                                      │
+│ User: Alex Chen                   │ ← user section
+│ Profile · Logout                  │
+└──────────┴────────────────────────┘
+</code></pre></div>
+<table>
+<thead>
+<tr>
+<th>Mode</th>
+<th>Width</th>
+<th>Background</th>
+<th>Behavior</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Expanded</td>
+<td>240px</td>
+<td>neutral-50 (light) / neutral-900 (dark)</td>
+<td>Full nav visible</td>
+</tr>
+<tr>
+<td>Collapsed</td>
+<td>60px</td>
+<td>Same</td>
+<td>Icons only, labels as tooltip on hover</td>
+</tr>
+<tr>
+<td>Closed (mobile)</td>
+<td>0px</td>
+<td>—</td>
+<td>Hidden by default, opens as overlay</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Sections (top to bottom):</strong>
+1. <strong>App switcher / logo</strong> — 56px height, logo mark + name
+2. <strong>Navigation</strong> — Menu component (§2.10), scrollable
+3. <strong>Utility zone</strong> — Upgrade prompt, quick actions, contextual help
+4. <strong>User zone</strong> — Avatar + name + settings/logout</p>
+<h3 id="212-pipeline-kanban">2.12 Pipeline Kanban</h3>
+<div class="highlight"><pre><span></span><code>┌──────────────────────────────────────────────────────────────┐
+│ Pipeline: Q2 Deals                  [+ Add Deal]  🔍 ⚙︎      │
+├──────────┬──────────┬──────────┬──────────┬──────────┬───────┤
+│          │          │          │          │          │       │
+│  Lead    │Qualified │Proposal  │Negotiate │Closed Won│Lost   │
+│  $92K(4) │ $145K(6) │ $210K(5)│ $380K(3) │ $1.2M(8) │(2)    │
+│          │          │          │          │          │       │
+│ ┌──────┐ │ ┌──────┐ │ ┌──────┐ │ ┌──────┐ │ ┌──────┐ │       │
+│ │Acme  │ │ │Beta  │ │ │Gamma │ │ │Delta │ │ │Done  │ │       │
+│ │$24K  │ │ │$52K  │ │ │$120K │ │ │$380K │ │ │$510K │ │       │
+│ │Alex·P│ │ │Jamie │ │ │Sam   │ │ │Dana  │ │ │Riley │ │       │
+│ └──────┘ │ └──────┘ │ └──────┘ │ └──────┘ │ └──────┘ │       │
+│ ┌──────┐ │ ┌──────┐ │ ┌──────┐ │          │ ┌──────┐ │       │
+│ │Omega │ │ │Zeta  │ │ │Eta   │ │          │ │Pulse │ │       │
+│ │$8K   │ │ │$15K  │ │ │$90K  │ │          │ │$690K │ │       │
+│ │Sam   │ │ │Alex·P│ │ │Morgan│ │          │ │Alex  │ │       │
+│ └──────┘ │ └──────┘ │ └──────┘ │          │ └──────┘ │       │
+│          │          │          │          │          │       │
+│   Empty  │          │          │          │          │       │
+│    Drop  │          │          │          │          │       │
+│   Zone ▼ │          │          │          │          │       │
+│          │          │          │          │          │       │
+└──────────┴──────────┴──────────┴──────────┴──────────┴───────┘
+</code></pre></div>
+<table>
+<thead>
+<tr>
+<th>Property</th>
+<th>Value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Column width</td>
+<td>240px minimum, flex-grow equal</td>
+</tr>
+<tr>
+<td>Column header</td>
+<td>40px height, neutral-700 H4, deal count badge</td>
+</tr>
+<tr>
+<td>Column bg</td>
+<td>neutral-50 (light) / neutral-850 (dark)</td>
+</tr>
+<tr>
+<td>Column separator</td>
+<td>1px neutral-200</td>
+</tr>
+<tr>
+<td>Card width</td>
+<td>Fill column width minus 8px padding each side</td>
+</tr>
+<tr>
+<td>Card height</td>
+<td>auto (min 80px)</td>
+</tr>
+<tr>
+<td>Card radius</td>
+<td>6px</td>
+</tr>
+<tr>
+<td>Card bg</td>
+<td>white (light) / neutral-800 (dark)</td>
+</tr>
+<tr>
+<td>Card shadow</td>
+<td>shadow-sm</td>
+</tr>
+<tr>
+<td>Card padding</td>
+<td>12px</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Kanban card content:</strong>
+<div class="highlight"><pre><span></span><code>┌──────────────────────┐
+│ Deal Name (H3)       │
+│ Company              │
+│ $24,500         64%  │ ← value + AI confidence
+│ Alex Chen     2 days │ ← owner + days in stage
+│ [Email] [Call] [⋮]   │ ← quick actions
+└──────────────────────┘
+</code></pre></div></p>
+<p><strong>Drag-and-drop behavior:</strong>
+- Drag source: Card opacity 0.8, original position shows neutral-100 ghost placeholder
+- Drop target: Column highlights border (primary-400 dashed), shows insertion line
+- On drop: Brief success animation (scale 1.02 → 1.0, 200ms)
+- Multi-select: Cmd+click cards, drag batch
+- Undo: Toast "Moved to Qualified" with [Undo] link, 5s timeout</p>
+<p><strong>Empty state per column:</strong> Dashed border zone in column body with "Drop deals here" text (neutral-300, 14px, centered, min 60px height)</p>
+<h3 id="213-dashboard-widget">2.13 Dashboard Widget</h3>
+<div class="highlight"><pre><span></span><code>┌──────────────────────────────────────┐
+│ Pipeline Value    [Today] [Week] [M] │ ← widget header
+│                                        │
+│              $847,500                  │ ← KPI value (display font)
+│              +12.3% vs last week       │ ← trend indicator
+│                                        │
+│ ████████████████░░░░░░░░░░░░░  64%    │ ← progress bar
+│                                        │
+│ [View full report →]                   │ ← footer action
+└──────────────────────────────────────┘
+</code></pre></div>
+<p><strong>Widget types:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Type</th>
+<th>Content</th>
+<th>Height</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>KPI</td>
+<td>Single metric + trend + optional sparkline</td>
+<td>140px</td>
+</tr>
+<tr>
+<td>Chart</td>
+<td>Bar/line/area chart</td>
+<td>280px</td>
+</tr>
+<tr>
+<td>List</td>
+<td>Top-N items (deals, contacts, activities)</td>
+<td>auto</td>
+</tr>
+<tr>
+<td>Progress</td>
+<td>Goal tracking with progress bar + remaining</td>
+<td>160px</td>
+</tr>
+<tr>
+<td>Activity</td>
+<td>Recent activity feed (4-6 items)</td>
+<td>auto</td>
+</tr>
+<tr>
+<td>Kanban-mimi</td>
+<td>Single-column preview (3-4 cards)</td>
+<td>auto</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Properties:</strong>
+- Widget header: 48px, H3 title left, action icons right (fullscreen, refresh, ⋮ menu)
+- Widget body: Flexible
+- Widget footer: Optional, 40px, right-aligned link/action
+- Grid: CSS Grid, auto-fill, minimum column width 300px, gap 16px
+- Drag to reorder: Widget drag handle (⋮⋮) top-left of header
+- Empty widget state: "No data yet. [Configure data source]" centered</p>
+<h3 id="214-timeline-activity-feed">2.14 Timeline / Activity Feed</h3>
+<div class="highlight"><pre><span></span><code>───  Today ─────────────────────────────────────────────────
+ ● 2:30 PM │ Jamie Lee sent a follow-up email
+           │ &quot;Following up on our call last Tuesday...&quot;
+           │ ┌──┐ ┌──────────┐ ┌──────────┐
+           │    │Reply│  │View Deal│  │Call Back│
+           │    └──┘ └──────────┘ └──────────┘
+ ● 1:15 PM │ Alex Chen updated Beta Inc from Qualified → Proposal
+           │ ┌──────────┐
+           │ │Undo      │
+           │ └──────────┘
+ ● 11:00 AM│ Call with Dana Riley — 22 min
+           │ Notes: &quot;Interested in enterprise plan...
+           │ ┌──────────┐
+           │ │Add Notes │
+           │ └──────────┘
+
+───  Yesterday ──────────────────────────────────────────────
+ ● 4:20 PM │ System: 14 new leads imported from Webflow form
+ ● 2:00 PM │ Morgan reviewed pipeline with Alex
+           │ &quot;Pipeline health: 3 deals at risk...&quot;
+
+───  This Week ──────────────────────────────────────────────
+ ● Mon     │ Email sequence &quot;Q2 Follow-up&quot; sent to 47 contacts
+           │ Opened: 32%  ·  Replied: 8%  ·  Unsub: 2%
+</code></pre></div>
+<table>
+<thead>
+<tr>
+<th>Property</th>
+<th>Value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Timeline line</td>
+<td>2px neutral-200 vertical line, 24px from left edge</td>
+</tr>
+<tr>
+<td>Dot</td>
+<td>8px circle, color-coded by type (primary=system, secondary=user, accent=auto)</td>
+</tr>
+<tr>
+<td>Item padding</td>
+<td>12px 16px 12px 48px (dot offset + spacing)</td>
+</tr>
+<tr>
+<td>Date headers</td>
+<td>Sticky, neutral-500 bold 12px, neutral-100 background at scroll</td>
+</tr>
+<tr>
+<td>Hover</td>
+<td>neutral-50 bg on item row</td>
+</tr>
+<tr>
+<td>Action buttons</td>
+<td>Ghost size-sm, shown on hover or always if primary action</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Activity types and icons:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Type</th>
+<th>Icon</th>
+<th>Dot Color</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Email sent</td>
+<td>✉</td>
+<td>primary-500</td>
+</tr>
+<tr>
+<td>Call logged</td>
+<td>📞</td>
+<td>secondary-500</td>
+</tr>
+<tr>
+<td>Deal stage change</td>
+<td>↔</td>
+<td>primary-500</td>
+</tr>
+<tr>
+<td>Note added</td>
+<td>📝</td>
+<td>neutral-400</td>
+</tr>
+<tr>
+<td>Lead imported</td>
+<td>➕</td>
+<td>secondary-500</td>
+</tr>
+<tr>
+<td>Task completed</td>
+<td>✓</td>
+<td>success</td>
+</tr>
+<tr>
+<td>System action</td>
+<td>⚙</td>
+<td>neutral-300</td>
+</tr>
+<tr>
+<td>Sequence event</td>
+<td>🔄</td>
+<td>accent-500</td>
+</tr>
+</tbody>
+</table>
+<h3 id="215-searchbar">2.15 SearchBar</h3>
+<div class="highlight"><pre><span></span><code>┌──────────────────────────────────────────────────────────┐
+│ 🔍 Search contacts, deals, companies...    [⌘K] [⏎]   │
+└──────────────────────────────────────────────────────────┘
+                         │
+                         ▼
+┌──────────────────────────────────────────────────────────┐
+│  Results                                    [Filters ▼]  │
+│ ──────────────────────────────────────────────────────    │
+│ Deals (5)                                                   │
+│ ┌───────────────────────────────────────────────────┐    │
+│ │ Acme Corp · Proposal · $24,500            Alex    │    │ ← result item
+│ │ Beta Inc · Qualified · $52,000            Jamie   │    │
+│ └───────────────────────────────────────────────────┘    │
+│ Contacts (12)                                              │
+│ ┌───────────────────────────────────────────────────┐    │
+│ │ Jamie Chen · jamie@acme.com              Acme Corp│    │
+│ │ Alex Lee · alex@beta.io                    Beta Inc│    │
+│ └───────────────────────────────────────────────────┘    │
+│ Email, Note, Activity...                                   │
+│                                                         │
+│ ⬇ Show all 24 results                                     │
+└──────────────────────────────────────────────────────────┘
+</code></pre></div>
+<table>
+<thead>
+<tr>
+<th>Property</th>
+<th>Value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Height (default)</td>
+<td>40px</td>
+</tr>
+<tr>
+<td>Width (default)</td>
+<td>320px, expands on focus to 480px</td>
+</tr>
+<tr>
+<td>Radius</td>
+<td>borderRadius-lg (8px)</td>
+</tr>
+<tr>
+<td>Icon</td>
+<td>🔍 16px left-neutral-400</td>
+</tr>
+<tr>
+<td>Keyboard shortcut</td>
+<td>⌘K to activate (or / on non-mac)</td>
+</tr>
+<tr>
+<td>Placeholder</td>
+<td>"Search contacts, deals, companies..."</td>
+</tr>
+<tr>
+<td>Results max height</td>
+<td>500px (scrollable)</td>
+</tr>
+<tr>
+<td>Category headers</td>
+<td>12px bold, neutral-500, 8px padding</td>
+</tr>
+<tr>
+<td>Result item</td>
+<td>40px height, 8px 12px padding, 14px text</td>
+</tr>
+<tr>
+<td>Selected result</td>
+<td>primary-50 bg, primary-600 text</td>
+</tr>
+<tr>
+<td>Empty results</td>
+<td>"No results for [query]. Try different keywords." centered</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Keyboard navigation in results:</strong> Arrow keys to move, Enter to select, Escape to close.</p>
+<h3 id="216-notification">2.16 Notification</h3>
+<div class="highlight"><pre><span></span><code>   ┌──┐           ┌──────────────────────────────────┐
+   │3 │           │ ● New: Alex updated Beta Inc     │
+   └──┘           │   2 min ago                       │
+  icon badge      │ ┌──┐ ┌───┐                       │
+                  │ │View│ │Dismiss│                   │
+   Active         │ └──┘ └───┘                       │
+  indicator       ├──────────────────────────────────┤
+   ● ● ●          │ ○ Alex replied to your comment    │
+                  │   15 min ago                       │
+                  ├──────────────────────────────────┤
+                  │ ○ 14 leads imported                │
+                  │   1h ago                           │
+                  └──────────────────────────────────┘
+                     Toast Notification Panel
+</code></pre></div>
+<p><strong>Toast (temporary):</strong></p>
+<table>
+<thead>
+<tr>
+<th>Property</th>
+<th>Value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Position</td>
+<td>Bottom-right, 24px from edges</td>
+</tr>
+<tr>
+<td>Width</td>
+<td>380px</td>
+</tr>
+<tr>
+<td>Animation</td>
+<td>Slide in from right, fade in 300ms ease-out</td>
+</tr>
+<tr>
+<td>Auto-dismiss</td>
+<td>5 seconds (success/info) / persistent (error)</td>
+</tr>
+<tr>
+<td>Stack</td>
+<td>Vertical stack, 8px gap between toasts</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Notification Panel:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Property</th>
+<th>Value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Position</td>
+<td>Top-bar bell icon → dropdown panel</td>
+</tr>
+<tr>
+<td>Width</td>
+<td>400px</td>
+</tr>
+<tr>
+<td>Max height</td>
+<td>480px</td>
+</tr>
+<tr>
+<td>Header</td>
+<td>"Notifications" H3 + "Mark all read" link</td>
+</tr>
+<tr>
+<td>Items</td>
+<td>64px height, 12px padding</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Notification types:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Type</th>
+<th>Icon</th>
+<th>Color</th>
+<th>Behavior</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Deal update</td>
+<td>↔</td>
+<td>primary-500</td>
+<td>Toast + badge count</td>
+</tr>
+<tr>
+<td>Assignment</td>
+<td>👤</td>
+<td>primary-500</td>
+<td>Toast + badge</td>
+</tr>
+<tr>
+<td>Comment</td>
+<td>💬</td>
+<td>neutral-400</td>
+<td>Badge only</td>
+</tr>
+<tr>
+<td>System</td>
+<td>⚙</td>
+<td>neutral-300</td>
+<td>Badge only</td>
+</tr>
+<tr>
+<td>Error</td>
+<td>⚠</td>
+<td>error</td>
+<td>Persistent toast</td>
+</tr>
+<tr>
+<td>Reminder</td>
+<td>🔔</td>
+<td>accent-500</td>
+<td>Toast + sound (optional)</td>
+</tr>
+</tbody>
+</table>
+<h3 id="217-onboarding-step-wizard">2.17 Onboarding Step (Wizard)</h3>
+<div class="highlight"><pre><span></span><code>Stage 1 of 5: Import Your Contacts
+
+┌──────────────────────────────────────────────┐
+│                                              │
+│  🎯 Let&#39;s bring your contacts into Frontier  │
+│                                              │
+│  ┌──────────────────────────────────────┐    │
+│  │                                      │    │
+│  │       [Drag &amp; drop CSV here]         │    │
+│  │       or [Browse files]              │    │
+│  │                                      │    │
+│  └──────────────────────────────────────┘    │
+│                                              │
+│  ┌────────────┐                               │
+│  │ Connect    │  ┌────────────┐              │
+│  │ Gmail      │  │ Connect    │              │
+│  └────────────┘  │ Outlook    │              │
+│                  └────────────┘              │
+│                                              │
+│  ┌──────────────────────────────────────────┐│
+│  │     Back           │  Next: Match Fields ││
+│  └──────────────────────────────────────────┘│
+└──────────────────────────────────────────────┘
+
+○ ● ○ ○ ○    ← progress steps (current = filled, done = checkmark)
+</code></pre></div>
+<p><strong>Wizard layout:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Section</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Step indicator</td>
+<td>Top: horizontal step indicators (circles), labeled</td>
+</tr>
+<tr>
+<td>Title</td>
+<td>H1 display text, centered</td>
+</tr>
+<tr>
+<td>Content</td>
+<td>Single column, max-width 480px, centered</td>
+</tr>
+<tr>
+<td>Navigation</td>
+<td>Fixed footer, "Back" ghost left, "Next" primary right</td>
+</tr>
+<tr>
+<td>Progress</td>
+<td>Optional: "Step 3 of 5" text below indicator</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Step states:</strong></p>
+<table>
+<thead>
+<tr>
+<th>State</th>
+<th>Visual</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Completed</td>
+<td>✓ in primary-500 circle, line complete to next</td>
+</tr>
+<tr>
+<td>Current</td>
+<td>● primary-500 filled circle, bold label</td>
+</tr>
+<tr>
+<td>Future</td>
+<td>○ neutral-300 circle, neutral-400 label</td>
+</tr>
+<tr>
+<td>Error</td>
+<td>✗ error circle, error message below</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Branching:</strong> SMB vs Enterprise path. At step 2 ("Team size"), show different options for 1-10 vs 10+ users. Branch remembered, not shown again.</p>
+<hr />
+<h2 id="3-data-visualization-components">3. Data Visualization Components</h2>
+<h3 id="31-chart-system">3.1 Chart System</h3>
+<p><strong>Library:</strong> Recharts (React-native composable charts, MIT licensed)</p>
+<p><strong>Chart types:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Type</th>
+<th>Usage</th>
+<th>Data Points</th>
+<th>Interaction</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Line</td>
+<td>Revenue over time, forecast trends</td>
+<td>Up to 200 temporal points</td>
+<td>Tooltip on hover, click to drill</td>
+</tr>
+<tr>
+<td>Bar</td>
+<td>Monthly comparison, stage distribution</td>
+<td>Up to 30 categories</td>
+<td>Tooltip + click filter</td>
+</tr>
+<tr>
+<td>Area</td>
+<td>Cumulative metrics (ARR, pipeline value)</td>
+<td>Up to 200 temporal points</td>
+<td>Tooltip, gradient fill</td>
+</tr>
+<tr>
+<td>Pie/Donut</td>
+<td>Stage breakdown, source attribution</td>
+<td>Up to 12 slices (6+ shows "Other")</td>
+<td>Hover expand, click filter</td>
+</tr>
+<tr>
+<td>Stacked bar</td>
+<td>Multi-series comparison</td>
+<td>Up to 10 categories × 5 series</td>
+<td>Tooltip with series breakdown</td>
+</tr>
+<tr>
+<td>Funnel</td>
+<td>Conversion rates between stages</td>
+<td>Up to 8 stages</td>
+<td>Hover: conversion %, click: filter</td>
+</tr>
+<tr>
+<td>Sparkline</td>
+<td>Inline mini-trend in KPI cards</td>
+<td>20-50 points</td>
+<td>No interaction</td>
+</tr>
+<tr>
+<td>Heatmap</td>
+<td>Activity by day/hour, user workload</td>
+<td>7×24 max</td>
+<td>Tooltip with value</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Chart styling:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Element</th>
+<th>Token/CSS</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Axis labels</td>
+<td>neutral-400, 11px</td>
+</tr>
+<tr>
+<td>Axis lines</td>
+<td>neutral-200, 1px</td>
+</tr>
+<tr>
+<td>Grid lines</td>
+<td>neutral-100, dashed</td>
+</tr>
+<tr>
+<td>Color palette</td>
+<td>primary-500, secondary-500, accent-500, primary-300, secondary-300, accent-300, neutral-400, neutral-500</td>
+</tr>
+<tr>
+<td>Tooltip</td>
+<td>white bg (light) / neutral-800 (dark), border neutral-200, shadow-md, 12px padding</td>
+</tr>
+<tr>
+<td>Legend</td>
+<td>12px, neutral-600, horizontal by default</td>
+</tr>
+<tr>
+<td>Animation</td>
+<td>Fade in on appear, 500ms, staggered series</td>
+</tr>
+</tbody>
+</table>
+<h3 id="32-kanban-pipeline">3.2 Kanban Pipeline</h3>
+<p>(See §2.12 for full spec)</p>
+<h3 id="33-activity-timeline">3.3 Activity Timeline</h3>
+<p>(See §2.14 for full spec)</p>
+<h3 id="34-heatmap-activity-density">3.4 Heatmap (Activity Density)</h3>
+<div class="highlight"><pre><span></span><code>         Mon  Tue  Wed  Thu  Fri  Sat  Sun
+   8am   ░░   ░░   ██   ░░   ░░   ░░   ░░
+   9am   ██   ██   ██   ██   ██   ░░   ░░
+  10am   ██   ██   ██   ██   ██   ░░   ░░
+  11am   ██   ██   ██   ██   ██   ░░   ░░
+  12pm   ░░   ░░   ░░   ░░   ░░   ░░   ░░
+   1pm   ██   ██   ██   ██   ██   ░░   ░░
+   2pm   ██   ██   ██   ██   ██   ░░   ░░
+   3pm   ██   ░░   ██   ██   ██   ░░   ░░
+   4pm   ░░   ░░   ██   ░░   ░░   ░░   ░░
+</code></pre></div>
+<table>
+<thead>
+<tr>
+<th>Property</th>
+<th>Value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Cell size</td>
+<td>20×20px</td>
+</tr>
+<tr>
+<td>Empty</td>
+<td>neutral-100 fill</td>
+</tr>
+<tr>
+<td>Light</td>
+<td>primary-200 fill (1-25% activity)</td>
+</tr>
+<tr>
+<td>Medium</td>
+<td>primary-400 fill (26-50%)</td>
+</tr>
+<tr>
+<td>High</td>
+<td>primary-600 fill (51-75%)</td>
+</tr>
+<tr>
+<td>Max</td>
+<td>primary-800 fill (76-100%)</td>
+</tr>
+<tr>
+<td>Tooltip</td>
+<td>"Mon 9am: 12 calls, 8 emails"</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="4-responsive-breakpoints">4. Responsive Breakpoints</h2>
+<table>
+<thead>
+<tr>
+<th>Name</th>
+<th>Width</th>
+<th>Layout</th>
+<th>Sidebar</th>
+<th>Content</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>mobile</strong></td>
+<td>&lt;480px</td>
+<td>Single column stack</td>
+<td>Overlay drawer</td>
+<td>Full width, stacked panels</td>
+</tr>
+<tr>
+<td><strong>tablet</strong></td>
+<td>480-767px</td>
+<td>Single column + collapsible</td>
+<td>Overlay drawer</td>
+<td>Full width, stacked panels</td>
+</tr>
+<tr>
+<td><strong>tablet-landscape</strong></td>
+<td>768-1023px</td>
+<td>Two column w/ split</td>
+<td>Collapsed (60px icons)</td>
+<td>Full width remaining</td>
+</tr>
+<tr>
+<td><strong>desktop</strong></td>
+<td>1024-1279px</td>
+<td>Full shell</td>
+<td>Expanded (240px)</td>
+<td>Content + optional split</td>
+</tr>
+<tr>
+<td><strong>wide</strong></td>
+<td>1280-1535px</td>
+<td>Full shell</td>
+<td>Expanded (240px)</td>
+<td>Content + split panel</td>
+</tr>
+<tr>
+<td><strong>ultrawide</strong></td>
+<td>≥1536px</td>
+<td>Full shell + centered max</td>
+<td>Expanded (240px)</td>
+<td>Content centered max 1440px</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Responsive component behavior:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Component</th>
+<th>Mobile (&lt;768px)</th>
+<th>Tablet (768-1023)</th>
+<th>Desktop (≥1024)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Table → Card-list</td>
+<td>Switch to card layout</td>
+<td>Keep table, horizontal scroll</td>
+<td>Full table</td>
+</tr>
+<tr>
+<td>Kanban</td>
+<td>Single column, swipe to navigate</td>
+<td>2-3 columns visible</td>
+<td>All columns horizontal</td>
+</tr>
+<tr>
+<td>Dashboard widgets</td>
+<td>Single column stack</td>
+<td>2-col grid</td>
+<td>3-4 col auto-fill</td>
+</tr>
+<tr>
+<td>Forms</td>
+<td>Full width</td>
+<td>Full width</td>
+<td>Max 480px center</td>
+</tr>
+<tr>
+<td>Modals</td>
+<td>Full screen overlay</td>
+<td>90% width</td>
+<td>Centered fixed width</td>
+</tr>
+<tr>
+<td>Search</td>
+<td>Full screen search overlay</td>
+<td>Dropdown results</td>
+<td>Inline dropdown</td>
+</tr>
+<tr>
+<td>Top bar</td>
+<td>Condensed (icons only)</td>
+<td>Labels + icons</td>
+<td>Full labels</td>
+</tr>
+<tr>
+<td>Detail panels</td>
+<td>Push navigation (list → detail)</td>
+<td>Split panel</td>
+<td>Split panel</td>
+</tr>
+<tr>
+<td>Data tables</td>
+<td>Horizontal scroll wrapper</td>
+<td>Horizontal scroll</td>
+<td>Full table</td>
+</tr>
+<tr>
+<td>Date pickers</td>
+<td>Native date input</td>
+<td>Custom popover</td>
+<td>Custom popover</td>
+</tr>
+<tr>
+<td>Drag-and-drop</td>
+<td>Tap to select, then choose target</td>
+<td>Swipe + drag</td>
+<td>Full drag-and-drop</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="5-component-states-reference">5. Component States Reference</h2>
+<p>Every interactive component supports these states. This section defines the standard implementations.</p>
+<h3 id="51-loading-states">5.1 Loading States</h3>
+<table>
+<thead>
+<tr>
+<th>Component</th>
+<th>Loading Treatment</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Button</td>
+<td>Replace text with spinner (16px, animate-spin), maintain width</td>
+</tr>
+<tr>
+<td>Table</td>
+<td>Skeleton rows: 3-5 placeholder rows with animated pulse gradient</td>
+</tr>
+<tr>
+<td>Card</td>
+<td>Skeleton: Image placeholder (40% width) + 2 text lines</td>
+</tr>
+<tr>
+<td>Modal</td>
+<td>Skeleton inside modal body</td>
+</tr>
+<tr>
+<td>Dropdown</td>
+<td>Spinner inside dropdown (centered, 24px)</td>
+</tr>
+<tr>
+<td>Chart</td>
+<td>Skeleton chart outline + shimmer animation</td>
+</tr>
+<tr>
+<td>Kanban</td>
+<td>Skeleton cards per column (2 per column, pulse animation)</td>
+</tr>
+<tr>
+<td>Activity feed</td>
+<td>Skeleton items: dot + line + line (3 items)</td>
+</tr>
+<tr>
+<td>Dashboard widget</td>
+<td>Skeleton: title bar + content box (pulse)</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Skeleton animation specs:</strong>
+- Base gradient: neutral-200 → neutral-100 → neutral-200 (light mode)
+- Dark gradient: neutral-800 → neutral-700 → neutral-800
+- Animation: <code>shimmer</code> — translateX(-100% → 100%) over 1.5s, infinite
+- Border radius: match component (6px cards, 4px lines)</p>
+<h3 id="52-empty-states">5.2 Empty States</h3>
+<p>Every data-display component with zero data must show an empty state (never a blank/empty container).</p>
+<table>
+<thead>
+<tr>
+<th>Component</th>
+<th>Empty State Content</th>
+<th>CTA</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Pipeline Kanban</td>
+<td>"No deals yet. Ready to build your pipeline?"</td>
+<td>[+ Add Deal]</td>
+</tr>
+<tr>
+<td>Contact list</td>
+<td>"No contacts in this list."</td>
+<td>[Import from CSV] [Add Manually]</td>
+</tr>
+<tr>
+<td>Activity feed</td>
+<td>"No recent activity for this record."</td>
+<td>[Add Note]</td>
+</tr>
+<tr>
+<td>Dashboard widget</td>
+<td>"No data yet for this metric."</td>
+<td>[Configure Source]</td>
+</tr>
+<tr>
+<td>Table</td>
+<td>"No matching records found."</td>
+<td>[Clear Filters] [Create New]</td>
+</tr>
+<tr>
+<td>Search results</td>
+<td>"No results for '[query]'"</td>
+<td>[Clear Search]</td>
+</tr>
+<tr>
+<td>Timeline</td>
+<td>"No activity logged for this deal."</td>
+<td>[Log Call] [Send Email]</td>
+</tr>
+<tr>
+<td>Notification panel</td>
+<td>"You're all caught up!" with checkmark icon</td>
+<td>—</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Empty state visual:</strong>
+- Centered in the container
+- Large illustration (64-120px, brand color, semi-transparent)
+- Body text (16px, neutral-600, max-width 360px)
+- Primary CTA button below text
+- Subtle secondary action as text link below button</p>
+<h3 id="53-error-states">5.3 Error States</h3>
+<table>
+<thead>
+<tr>
+<th>Component</th>
+<th>Error Treatment</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Form field</td>
+<td>Error: red border + error text below. Success: green border + check mark</td>
+</tr>
+<tr>
+<td>Page section</td>
+<td>Error banner with message + [Retry] button</td>
+</tr>
+<tr>
+<td>Data fetch</td>
+<td>Full error state: icon + "Could not load [name]" + [Retry]</td>
+</tr>
+<tr>
+<td>Toast</td>
+<td>Error toast: red left border, icon, message, persistent (no auto-dismiss)</td>
+</tr>
+<tr>
+<td>Whole page</td>
+<td>Error page: icon + message + [Go to Dashboard] or [Reload]</td>
+</tr>
+</tbody>
+</table>
+<h3 id="54-transition-states">5.4 Transition States</h3>
+<table>
+<thead>
+<tr>
+<th>State</th>
+<th>Visual</th>
+<th>Duration</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Loading → Content</td>
+<td>Fade in (opacity 0→1)</td>
+<td>300ms</td>
+</tr>
+<tr>
+<td>Loading → Error</td>
+<td>Slide down error banner from top</td>
+<td>200ms</td>
+</tr>
+<tr>
+<td>Empty → Loaded</td>
+<td>Items fade in staggered (each 50ms apart)</td>
+<td>200ms per item</td>
+</tr>
+<tr>
+<td>Content → Loading</td>
+<td>Content fades to 0.3 opacity, skeleton appears</td>
+<td>200ms</td>
+</tr>
+<tr>
+<td>Drag start</td>
+<td>Scale(1) → scale(1.05), shadow-sm → shadow-md</td>
+<td>100ms</td>
+</tr>
+<tr>
+<td>Drag end</td>
+<td>Scale(1.05) → scale(1), shadow-md → shadow-sm</td>
+<td>150ms spring</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="6-accessibility-wcag-21-aa">6. Accessibility (WCAG 2.1 AA)</h2>
+<h3 id="61-color-and-contrast">6.1 Color and Contrast</h3>
+<ul>
+<li>All text meets 4.5:1 minimum contrast ratio (body text) and 3:1 for large text (≥18px bold / ≥24px regular)</li>
+<li>Non-text elements (icons, form controls) meet 3:1 vs adjacent colors</li>
+<li>Focus indicators: 3px solid primary-500 outline + 2px white outline offset</li>
+<li>Active elements in dark mode tested against neutral-900 backgrounds</li>
+<li>Color is never the sole indicator of state (accompany with icon or text)</li>
+<li>Semantic colors paired with label text (e.g., "Error: ..." not just red)</li>
+</ul>
+<h3 id="62-keyboard-navigation">6.2 Keyboard Navigation</h3>
+<table>
+<thead>
+<tr>
+<th>Pattern</th>
+<th>Implementation</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Tab order</td>
+<td>Logical DOM order (left→right, top→bottom). No tabindex &gt; 0</td>
+</tr>
+<tr>
+<td>Arrow keys</td>
+<td>List navigation (dropdown, kanban, table rows)</td>
+</tr>
+<tr>
+<td>Escape</td>
+<td>Close modals, dropdowns, menus, search</td>
+</tr>
+<tr>
+<td>Enter/Space</td>
+<td>Activate focused element</td>
+</tr>
+<tr>
+<td>Tab</td>
+<td>Move to next focusable element</td>
+</tr>
+<tr>
+<td>Shift+Tab</td>
+<td>Move to previous focusable element</td>
+</tr>
+<tr>
+<td>Home/End</td>
+<td>First/last item in list, first/last tab panel</td>
+</tr>
+<tr>
+<td>⌘K</td>
+<td>Global search activate</td>
+</tr>
+<tr>
+<td>?</td>
+<td>Show keyboard shortcuts help overlay</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Tab traps:</strong>
+- Modals: Focus trapped inside modal while open
+- Dropdown: Focus trapped until Escape or selection
+- Slide-over panels: Focus trapped while panel is open</p>
+<h3 id="63-screen-reader-support">6.3 Screen Reader Support</h3>
+<table>
+<thead>
+<tr>
+<th>Element</th>
+<th>ARIA Pattern</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Sidebar nav</td>
+<td><code>role="navigation"</code> with <code>aria-label="Main navigation"</code></td>
+</tr>
+<tr>
+<td>Modal</td>
+<td><code>role="dialog"</code>, <code>aria-modal="true"</code>, <code>aria-labelledby="header-id"</code></td>
+</tr>
+<tr>
+<td>Tab panels</td>
+<td><code>role="tablist"</code>, <code>role="tab"</code>, <code>role="tabpanel"</code>, <code>aria-selected</code>, <code>aria-controls</code></td>
+</tr>
+<tr>
+<td>Dropdown menu</td>
+<td><code>role="menu"</code>, <code>role="menuitem"</code></td>
+</tr>
+<tr>
+<td>Alert/toast</td>
+<td><code>role="alert"</code> with <code>aria-live="polite"</code> (or "assertive" for errors)</td>
+</tr>
+<tr>
+<td>Progress indicator</td>
+<td><code>role="progressbar"</code>, <code>aria-valuenow</code>, <code>aria-valuemin</code>, <code>aria-valuemax</code></td>
+</tr>
+<tr>
+<td>Toggle</td>
+<td><code>role="switch"</code>, <code>aria-checked</code></td>
+</tr>
+<tr>
+<td>Tooltip</td>
+<td><code>aria-describedby</code> on trigger element</td>
+</tr>
+<tr>
+<td>Table sort</td>
+<td><code>aria-sort="ascending"</code> or <code>"descending"</code> on header cell</td>
+</tr>
+<tr>
+<td>Drag-and-drop</td>
+<td><code>role="button"</code>, <code>aria-grabbed</code> (false/true), keyboard alternative</td>
+</tr>
+<tr>
+<td>Search</td>
+<td><code>role="combobox"</code> with <code>aria-expanded</code></td>
+</tr>
+<tr>
+<td>Notification badge</td>
+<td><code>aria-label="3 unread notifications"</code></td>
+</tr>
+</tbody>
+</table>
+<h3 id="64-focus-management">6.4 Focus Management</h3>
+<ul>
+<li>Focus goes to first interactive element when a modal/dialog opens</li>
+<li>Focus returns to trigger element on modal/dialog close</li>
+<li>Dynamic content (loading → loaded) does not steal focus unless it's a critical update</li>
+<li>Route changes: focus heading of new page (h1) via <code>tabindex="-1"</code> + <code>.focus()</code></li>
+<li>Toast notifications: include in live region but don't move focus</li>
+<li>Skeleton loading: <code>aria-busy="true"</code> on container</li>
+</ul>
+<h3 id="65-reduced-motion">6.5 Reduced Motion</h3>
+<ul>
+<li>All animations respect <code>prefers-reduced-motion: reduce</code></li>
+<li>Substitute: opacity transitions for translate/scale transitions</li>
+<li>Skeleton shimmer becomes static placeholder</li>
+<li>Drag ghost becomes instant snap (no bouncy transition)</li>
+<li>Notification slide-in becomes instant appear</li>
+<li>Staggered list fade becomes batch appear</li>
+</ul>
+<hr />
+<h2 id="7-dark-mode">7. Dark Mode</h2>
+<h3 id="71-theme-switching">7.1 Theme Switching</h3>
+<ul>
+<li><strong>Default:</strong> Follow <code>prefers-color-scheme</code> OS setting</li>
+<li><strong>Override:</strong> Toggle in Settings → Appearance → Light / Dark / System</li>
+<li><strong>Persistence:</strong> Saved to localStorage, synced across sessions</li>
+<li><strong>Transition:</strong> <code>color-scheme</code> on <code>&lt;html&gt;</code>, CSS custom properties swap, 300ms transition on <code>background-color</code> and <code>color</code></li>
+</ul>
+<h3 id="72-surface-colors">7.2 Surface Colors</h3>
+<table>
+<thead>
+<tr>
+<th>Light Token</th>
+<th>Dark Token</th>
+<th>Usage</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>neutral-50 (#F8FAFC)</td>
+<td>neutral-950 (#0B1120)</td>
+<td>Page background</td>
+</tr>
+<tr>
+<td>neutral-100 (#F1F5F9)</td>
+<td>neutral-900 (#121A2E)</td>
+<td>Card/surface background</td>
+</tr>
+<tr>
+<td>neutral-200 (#E2E8F0)</td>
+<td>neutral-800 (#1E293B)</td>
+<td>Borders, dividers</td>
+</tr>
+<tr>
+<td>white</td>
+<td>neutral-850 (#172032)</td>
+<td>Elevated surfaces (modals, dropdowns)</td>
+</tr>
+</tbody>
+</table>
+<h3 id="73-text-colors">7.3 Text Colors</h3>
+<table>
+<thead>
+<tr>
+<th>Light Token</th>
+<th>Dark Token</th>
+<th>Usage</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>neutral-800 (#1E293B)</td>
+<td>neutral-100 (#F1F5F9)</td>
+<td>Primary text, headings</td>
+</tr>
+<tr>
+<td>neutral-600 (#475569)</td>
+<td>neutral-300 (#CBD5E1)</td>
+<td>Body text</td>
+</tr>
+<tr>
+<td>neutral-500 (#64748B)</td>
+<td>neutral-400 (#94A3B8)</td>
+<td>Secondary/muted text</td>
+</tr>
+<tr>
+<td>neutral-400 (#94A3B8)</td>
+<td>neutral-500 (#64748B)</td>
+<td>Placeholder text</td>
+</tr>
+</tbody>
+</table>
+<h3 id="74-interactive-colors">7.4 Interactive Colors</h3>
+<table>
+<thead>
+<tr>
+<th>Light</th>
+<th>Dark</th>
+<th>Notes</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>primary-500 → primary-600</td>
+<td>primary-400 → primary-500</td>
+<td>Buttons: dark mode uses lighter shade for contrast on dark bg</td>
+</tr>
+<tr>
+<td>primary-50</td>
+<td>neutral-800</td>
+<td>Active nav item background</td>
+</tr>
+<tr>
+<td>primary-100</td>
+<td>neutral-700</td>
+<td>Selected table row background</td>
+</tr>
+<tr>
+<td>primary-200 ring</td>
+<td>primary-400 ring</td>
+<td>Focus ring</td>
+</tr>
+</tbody>
+</table>
+<h3 id="75-shadows-and-elevation">7.5 Shadows and Elevation</h3>
+<ul>
+<li>Dark mode shadows: reduced visibility. <code>shadow-sm</code> becomes <code>0 1px 2px 0 rgb(0 0 0 / 0.3)</code></li>
+<li>Elevation indicated by surface color (brighter = higher elevation) rather than shadow</li>
+<li>Dropdown: neutral-850 background, 1px neutral-800 border (no shadow)</li>
+</ul>
+<h3 id="76-data-visualization-in-dark-mode">7.6 Data Visualization in Dark Mode</h3>
+<table>
+<thead>
+<tr>
+<th>Light</th>
+<th>Dark</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>neutral-100 grid lines</td>
+<td>neutral-800 grid lines</td>
+</tr>
+<tr>
+<td>neutral-500 axis labels</td>
+<td>neutral-400 axis labels</td>
+</tr>
+<tr>
+<td>Chart tooltip white bg</td>
+<td>Chart tooltip neutral-850 bg</td>
+</tr>
+<tr>
+<td>Chart series colors are light-mode stable (primary-500, secondary-500 don't change)</td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="8-css-architecture">8. CSS Architecture</h2>
+<h3 id="81-class-naming-convention">8.1 Class Naming Convention</h3>
+<p>Tailwind CSS with custom variants. Component-level classes only for custom components (not in Tailwind's default):</p>
+<div class="highlight"><pre><span></span><code>&lt;Button className=&quot;btn-primary btn-lg&quot; /&gt;
+&lt;Card className=&quot;card card-elevated&quot; /&gt;
+</code></pre></div>
+<p>Component base classes reference Tailwind tokens:</p>
+<div class="highlight"><pre><span></span><code><span class="p">.</span><span class="nc">btn-primary</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="err">@apply</span><span class="w"> </span><span class="err">bg-primary-500</span><span class="w"> </span><span class="err">text-white</span><span class="w"> </span><span class="err">px-4</span><span class="w"> </span><span class="err">py-2.5</span><span class="w"> </span><span class="err">rounded-lg</span><span class="w"> </span><span class="err">font-medium</span><span class="w"> </span><span class="err">text-sm</span><span class="p">;</span>
+<span class="w">  </span><span class="err">@apply</span><span class="w"> </span><span class="n">hover</span><span class="p">:</span><span class="n">bg-primary-600</span><span class="w"> </span><span class="n">active</span><span class="o">:</span><span class="n">bg-primary-700</span><span class="p">;</span>
+<span class="w">  </span><span class="err">@apply</span><span class="w"> </span><span class="n">focus-visible</span><span class="p">:</span><span class="k">outline</span><span class="mi">-2</span><span class="w"> </span><span class="n">focus-visible</span><span class="o">:</span><span class="k">outline</span><span class="o">-</span><span class="n">primary-500</span><span class="w"> </span><span class="n">focus-visible</span><span class="o">:</span><span class="k">outline-offset</span><span class="mi">-2</span><span class="p">;</span>
+<span class="w">  </span><span class="err">@apply</span><span class="w"> </span><span class="n">disabled</span><span class="p">:</span><span class="k">opacity</span><span class="mi">-50</span><span class="w"> </span><span class="n">disabled</span><span class="o">:</span><span class="k">cursor</span><span class="o">-</span><span class="kc">not-allowed</span><span class="p">;</span>
+<span class="w">  </span><span class="err">@apply</span><span class="w"> </span><span class="err">transition-colors</span><span class="w"> </span><span class="err">duration-200</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></div>
+<h3 id="82-design-token-delivery">8.2 Design Token Delivery</h3>
+<p>Tokens shipped as CSS custom properties on <code>:root</code> and <code>.dark</code>:</p>
+<div class="highlight"><pre><span></span><code><span class="p">:</span><span class="nd">root</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="nv">--color-primary-500</span><span class="p">:</span><span class="w"> </span><span class="mh">#3B82F6</span><span class="p">;</span>
+<span class="w">  </span><span class="nv">--color-primary-600</span><span class="p">:</span><span class="w"> </span><span class="mh">#2563EB</span><span class="p">;</span>
+<span class="w">  </span><span class="c">/* ... all brand colors as CSS variables */</span>
+<span class="w">  </span><span class="nv">--spacing-4</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="kt">rem</span><span class="p">;</span>
+<span class="w">  </span><span class="nv">--duration-200</span><span class="p">:</span><span class="w"> </span><span class="mi">200</span><span class="kt">ms</span><span class="p">;</span>
+<span class="w">  </span><span class="nv">--ease-out</span><span class="p">:</span><span class="w"> </span><span class="nb">cubic-bezier</span><span class="p">(</span><span class="mf">0.16</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="mf">0.3</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="p">);</span>
+<span class="p">}</span>
+
+<span class="p">.</span><span class="nc">dark</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="nv">--color-neutral-50</span><span class="p">:</span><span class="w"> </span><span class="mh">#0B1120</span><span class="p">;</span>
+<span class="w">  </span><span class="nv">--color-neutral-100</span><span class="p">:</span><span class="w"> </span><span class="mh">#121A2E</span><span class="p">;</span>
+<span class="w">  </span><span class="c">/* ... dark mode overrides */</span>
+<span class="p">}</span>
+</code></pre></div>
+<h3 id="83-tailwind-config-extensions">8.3 Tailwind Config Extensions</h3>
+<div class="highlight"><pre><span></span><code><span class="c1">// tailwind.config.js</span>
+<span class="nx">module</span><span class="p">.</span><span class="nx">exports</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="nx">content</span><span class="o">:</span><span class="w"> </span><span class="p">[</span><span class="s1">&#39;./src/**/*.{ts,tsx}&#39;</span><span class="p">],</span>
+<span class="w">  </span><span class="nx">theme</span><span class="o">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="nx">extend</span><span class="o">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">      </span><span class="nx">colors</span><span class="o">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="nx">primary</span><span class="o">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">          </span><span class="mf">50</span><span class="o">:</span><span class="w"> </span><span class="s1">&#39;#EFF6FF&#39;</span><span class="p">,</span><span class="w"> </span><span class="mf">100</span><span class="o">:</span><span class="w"> </span><span class="s1">&#39;#DBEAFE&#39;</span><span class="p">,</span><span class="w"> </span><span class="mf">200</span><span class="o">:</span><span class="w"> </span><span class="s1">&#39;#BFDBFE&#39;</span><span class="p">,</span>
+<span class="w">          </span><span class="mf">300</span><span class="o">:</span><span class="w"> </span><span class="s1">&#39;#93C5FD&#39;</span><span class="p">,</span><span class="w"> </span><span class="mf">400</span><span class="o">:</span><span class="w"> </span><span class="s1">&#39;#60A5FA&#39;</span><span class="p">,</span><span class="w"> </span><span class="mf">500</span><span class="o">:</span><span class="w"> </span><span class="s1">&#39;#3B82F6&#39;</span><span class="p">,</span>
+<span class="w">          </span><span class="mf">600</span><span class="o">:</span><span class="w"> </span><span class="s1">&#39;#2563EB&#39;</span><span class="p">,</span><span class="w"> </span><span class="mf">700</span><span class="o">:</span><span class="w"> </span><span class="s1">&#39;#1D4ED8&#39;</span><span class="p">,</span><span class="w"> </span><span class="mf">800</span><span class="o">:</span><span class="w"> </span><span class="s1">&#39;#1E40AF&#39;</span><span class="p">,</span><span class="w"> </span><span class="mf">900</span><span class="o">:</span><span class="w"> </span><span class="s1">&#39;#1E3A5F&#39;</span><span class="p">,</span>
+<span class="w">        </span><span class="p">},</span>
+<span class="w">        </span><span class="nx">secondary</span><span class="o">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">          </span><span class="mf">50</span><span class="o">:</span><span class="w"> </span><span class="s1">&#39;#ECFDF5&#39;</span><span class="p">,</span><span class="w"> </span><span class="mf">100</span><span class="o">:</span><span class="w"> </span><span class="s1">&#39;#D1FAE5&#39;</span><span class="p">,</span><span class="w"> </span><span class="mf">200</span><span class="o">:</span><span class="w"> </span><span class="s1">&#39;#A7F3D0&#39;</span><span class="p">,</span>
+<span class="w">          </span><span class="mf">400</span><span class="o">:</span><span class="w"> </span><span class="s1">&#39;#34D399&#39;</span><span class="p">,</span><span class="w"> </span><span class="mf">500</span><span class="o">:</span><span class="w"> </span><span class="s1">&#39;#14B8A6&#39;</span><span class="p">,</span><span class="w"> </span><span class="mf">600</span><span class="o">:</span><span class="w"> </span><span class="s1">&#39;#0D9488&#39;</span><span class="p">,</span>
+<span class="w">          </span><span class="mf">700</span><span class="o">:</span><span class="w"> </span><span class="s1">&#39;#0F766E&#39;</span><span class="p">,</span><span class="w"> </span><span class="mf">900</span><span class="o">:</span><span class="w"> </span><span class="s1">&#39;#064E3B&#39;</span><span class="p">,</span>
+<span class="w">        </span><span class="p">},</span>
+<span class="w">        </span><span class="nx">accent</span><span class="o">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">          </span><span class="mf">50</span><span class="o">:</span><span class="w"> </span><span class="s1">&#39;#FFFBEB&#39;</span><span class="p">,</span><span class="w"> </span><span class="mf">100</span><span class="o">:</span><span class="w"> </span><span class="s1">&#39;#FEF3C7&#39;</span><span class="p">,</span><span class="w"> </span><span class="mf">400</span><span class="o">:</span><span class="w"> </span><span class="s1">&#39;#FBBF24&#39;</span><span class="p">,</span>
+<span class="w">          </span><span class="mf">500</span><span class="o">:</span><span class="w"> </span><span class="s1">&#39;#F59E0B&#39;</span><span class="p">,</span><span class="w"> </span><span class="mf">600</span><span class="o">:</span><span class="w"> </span><span class="s1">&#39;#D97706&#39;</span><span class="p">,</span><span class="w"> </span><span class="mf">700</span><span class="o">:</span><span class="w"> </span><span class="s1">&#39;#B45309&#39;</span><span class="p">,</span>
+<span class="w">        </span><span class="p">},</span>
+<span class="w">        </span><span class="nx">neutral</span><span class="o">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">          </span><span class="mf">50</span><span class="o">:</span><span class="w"> </span><span class="s1">&#39;#F8FAFC&#39;</span><span class="p">,</span><span class="w"> </span><span class="mf">100</span><span class="o">:</span><span class="w"> </span><span class="s1">&#39;#F1F5F9&#39;</span><span class="p">,</span><span class="w"> </span><span class="mf">200</span><span class="o">:</span><span class="w"> </span><span class="s1">&#39;#E2E8F0&#39;</span><span class="p">,</span>
+<span class="w">          </span><span class="mf">300</span><span class="o">:</span><span class="w"> </span><span class="s1">&#39;#CBD5E1&#39;</span><span class="p">,</span><span class="w"> </span><span class="mf">400</span><span class="o">:</span><span class="w"> </span><span class="s1">&#39;#94A3B8&#39;</span><span class="p">,</span><span class="w"> </span><span class="mf">500</span><span class="o">:</span><span class="w"> </span><span class="s1">&#39;#64748B&#39;</span><span class="p">,</span>
+<span class="w">          </span><span class="mf">600</span><span class="o">:</span><span class="w"> </span><span class="s1">&#39;#475569&#39;</span><span class="p">,</span><span class="w"> </span><span class="mf">700</span><span class="o">:</span><span class="w"> </span><span class="s1">&#39;#334155&#39;</span><span class="p">,</span><span class="w"> </span><span class="mf">800</span><span class="o">:</span><span class="w"> </span><span class="s1">&#39;#1E293B&#39;</span><span class="p">,</span>
+<span class="w">          </span><span class="mf">850</span><span class="o">:</span><span class="w"> </span><span class="s1">&#39;#172032&#39;</span><span class="p">,</span><span class="w"> </span><span class="mf">900</span><span class="o">:</span><span class="w"> </span><span class="s1">&#39;#121A2E&#39;</span><span class="p">,</span><span class="w"> </span><span class="mf">950</span><span class="o">:</span><span class="w"> </span><span class="s1">&#39;#0B1120&#39;</span><span class="p">,</span>
+<span class="w">        </span><span class="p">},</span>
+<span class="w">        </span><span class="nx">semantic</span><span class="o">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">          </span><span class="nx">success</span><span class="o">:</span><span class="w"> </span><span class="s1">&#39;#10B981&#39;</span><span class="p">,</span><span class="w"> </span><span class="nx">warning</span><span class="o">:</span><span class="w"> </span><span class="s1">&#39;#F59E0B&#39;</span><span class="p">,</span>
+<span class="w">          </span><span class="nx">error</span><span class="o">:</span><span class="w"> </span><span class="s1">&#39;#EF4444&#39;</span><span class="p">,</span><span class="w"> </span><span class="nx">info</span><span class="o">:</span><span class="w"> </span><span class="s1">&#39;#3B82F6&#39;</span><span class="p">,</span>
+<span class="w">        </span><span class="p">},</span>
+<span class="w">      </span><span class="p">},</span>
+<span class="w">      </span><span class="nx">fontFamily</span><span class="o">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="nx">sans</span><span class="o">:</span><span class="w"> </span><span class="p">[</span><span class="s1">&#39;Inter&#39;</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;-apple-system&#39;</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;BlinkMacSystemFont&#39;</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;&quot;Segoe UI&quot;&#39;</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;sans-serif&#39;</span><span class="p">],</span>
+<span class="w">        </span><span class="nx">mono</span><span class="o">:</span><span class="w"> </span><span class="p">[</span><span class="s1">&#39;&quot;JetBrains Mono&quot;&#39;</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;&quot;Fira Code&quot;&#39;</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;Consolas&#39;</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;monospace&#39;</span><span class="p">],</span>
+<span class="w">      </span><span class="p">},</span>
+<span class="w">      </span><span class="nx">spacing</span><span class="o">:</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="mf">1</span><span class="o">:</span><span class="w"> </span><span class="s1">&#39;0.25rem&#39;</span><span class="p">,</span><span class="w"> </span><span class="mf">2</span><span class="o">:</span><span class="w"> </span><span class="s1">&#39;0.5rem&#39;</span><span class="p">,</span><span class="w"> </span><span class="mf">3</span><span class="o">:</span><span class="w"> </span><span class="s1">&#39;0.75rem&#39;</span><span class="p">,</span><span class="w"> </span><span class="cm">/* ... */</span><span class="w"> </span><span class="p">},</span>
+<span class="w">      </span><span class="nx">borderRadius</span><span class="o">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="nx">sm</span><span class="o">:</span><span class="w"> </span><span class="s1">&#39;4px&#39;</span><span class="p">,</span><span class="w"> </span><span class="nx">md</span><span class="o">:</span><span class="w"> </span><span class="s1">&#39;6px&#39;</span><span class="p">,</span><span class="w"> </span><span class="nx">lg</span><span class="o">:</span><span class="w"> </span><span class="s1">&#39;8px&#39;</span><span class="p">,</span><span class="w"> </span><span class="nx">xl</span><span class="o">:</span><span class="w"> </span><span class="s1">&#39;12px&#39;</span><span class="p">,</span>
+<span class="w">      </span><span class="p">},</span>
+<span class="w">      </span><span class="nx">boxShadow</span><span class="o">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="nx">sm</span><span class="o">:</span><span class="w"> </span><span class="s1">&#39;0 1px 2px 0 rgb(0 0 0 / 0.05)&#39;</span><span class="p">,</span>
+<span class="w">        </span><span class="nx">md</span><span class="o">:</span><span class="w"> </span><span class="s1">&#39;0 4px 6px -1px rgb(0 0 0 / 0.1)&#39;</span><span class="p">,</span>
+<span class="w">        </span><span class="nx">lg</span><span class="o">:</span><span class="w"> </span><span class="s1">&#39;0 10px 15px -3px rgb(0 0 0 / 0.1)&#39;</span><span class="p">,</span>
+<span class="w">        </span><span class="nx">xl</span><span class="o">:</span><span class="w"> </span><span class="s1">&#39;0 20px 25px -5px rgb(0 0 0 / 0.1)&#39;</span><span class="p">,</span>
+<span class="w">      </span><span class="p">},</span>
+<span class="w">      </span><span class="nx">animation</span><span class="o">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="s1">&#39;shimmer&#39;</span><span class="o">:</span><span class="w"> </span><span class="s1">&#39;shimmer 1.5s infinite&#39;</span><span class="p">,</span>
+<span class="w">      </span><span class="p">},</span>
+<span class="w">      </span><span class="nx">keyframes</span><span class="o">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="nx">shimmer</span><span class="o">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">          </span><span class="s1">&#39;0%&#39;</span><span class="o">:</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nx">backgroundPosition</span><span class="o">:</span><span class="w"> </span><span class="s1">&#39;-200% 0&#39;</span><span class="w"> </span><span class="p">},</span>
+<span class="w">          </span><span class="s1">&#39;100%&#39;</span><span class="o">:</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nx">backgroundPosition</span><span class="o">:</span><span class="w"> </span><span class="s1">&#39;200% 0&#39;</span><span class="w"> </span><span class="p">},</span>
+<span class="w">        </span><span class="p">},</span>
+<span class="w">      </span><span class="p">},</span>
+<span class="w">    </span><span class="p">},</span>
+<span class="w">  </span><span class="p">},</span>
+<span class="p">};</span>
+</code></pre></div>
+<hr />
+<h2 id="appendix-a-component-dependency-graph">Appendix A: Component Dependency Graph</h2>
+<div class="highlight"><pre><span></span><code>Layout
+  ├── TopBar
+  │     ├── SearchBar
+  │     ├── Notification (badge + panel)
+  │     └── Avatar (user menu dropdown)
+  ├── Sidebar
+  │     ├── Logo/Wordmark
+  │     └── Menu
+  │           ├── Badge (counts)
+  │           └── Icon (lucide)
+  └── Content Area
+        ├── Panel System
+        │     └── Split/Drawer
+        ├── Cards
+        ├── Forms (Input, Select, Checkbox, Toggle, DatePicker)
+        ├── Tables
+        │     └── Badge (status cells)
+        ├── Pipeline Kanban
+        │     ├── Card (compact variant)
+        │     ├── DragDrop provider
+        │     └── Badge (stage counts)
+        ├── Charts (Recharts)
+        ├── Timeline
+        ├── Dashboard Widgets
+        │     ├── Card
+        │     ├── Sparkline (mini chart)
+        │     └── Badge/KPI
+        ├── Modals
+        ├── Onboarding Wizard
+        │     ├── StepIndicator
+        │     └── Button
+        └── Dropdown (everywhere)
+</code></pre></div>
+<h2 id="appendix-b-implementation-priority">Appendix B: Implementation Priority</h2>
+<table>
+<thead>
+<tr>
+<th>Tier</th>
+<th>Components</th>
+<th>Rationale</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>P0 — Ship first</strong></td>
+<td>Layout shell (TopBar, Sidebar, Content Area), Button, Input, Card, Badge, Avatar, Menu, Dropdown</td>
+<td>Every screen needs these. Without them, no page can render</td>
+</tr>
+<tr>
+<td><strong>P1 — Core workflows</strong></td>
+<td>Forms (all elements), Table, Pipeline Kanban, Modal, Notification, SearchBar</td>
+<td>Deal pipeline, contact management, lead capture all depend on these</td>
+</tr>
+<tr>
+<td><strong>P2 — Data &amp; insights</strong></td>
+<td>Dashboard Widget, Charts, Timeline, Heatmap</td>
+<td>Value-add for reporting views, requires P1 screens to exist first</td>
+</tr>
+<tr>
+<td><strong>P3 — Polish</strong></td>
+<td>Onboarding Wizard, Skeleton/loading states, Dark mode, Animation system</td>
+<td>Delight + completeness. Can ship after MVP</td>
+</tr>
+</tbody>
+</table>
+<h2 id="appendix-c-component-spec-api-shape">Appendix C: Component Spec (API Shape)</h2>
+<p>Each component should accept these standard props:</p>
+<div class="highlight"><pre><span></span><code><span class="kd">interface</span><span class="w"> </span><span class="nx">BaseProps</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="nx">className?</span><span class="o">:</span><span class="w"> </span><span class="kt">string</span><span class="p">;</span>
+<span class="w">  </span><span class="nx">children?</span><span class="o">:</span><span class="w"> </span><span class="kt">React.ReactNode</span><span class="p">;</span>
+<span class="w">  </span><span class="s1">&#39;data-testid&#39;</span><span class="nx">?</span><span class="o">:</span><span class="w"> </span><span class="kt">string</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></div>
+<p>Standard state props for interactive components:</p>
+<div class="highlight"><pre><span></span><code><span class="kd">interface</span><span class="w"> </span><span class="nx">InteractiveProps</span><span class="w"> </span><span class="k">extends</span><span class="w"> </span><span class="nx">BaseProps</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="nx">disabled?</span><span class="o">:</span><span class="w"> </span><span class="kt">boolean</span><span class="p">;</span>
+<span class="w">  </span><span class="nx">loading?</span><span class="o">:</span><span class="w"> </span><span class="kt">boolean</span><span class="p">;</span>
+<span class="w">  </span><span class="nx">onFocus</span><span class="o">?:</span><span class="w"> </span><span class="p">(</span><span class="nx">e</span><span class="o">:</span><span class="w"> </span><span class="kt">React.FocusEvent</span><span class="p">)</span><span class="w"> </span><span class="p">=&gt;</span><span class="w"> </span><span class="ow">void</span><span class="p">;</span>
+<span class="w">  </span><span class="nx">onBlur</span><span class="o">?:</span><span class="w"> </span><span class="p">(</span><span class="nx">e</span><span class="o">:</span><span class="w"> </span><span class="kt">React.FocusEvent</span><span class="p">)</span><span class="w"> </span><span class="p">=&gt;</span><span class="w"> </span><span class="ow">void</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></div>
+<p>Size variants: All components with sizing accept <code>size?: 'xs' | 'sm' | 'md' | 'lg' | 'xl'</code> with a sensible default (usually 'md').</p>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Back to top
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "..", "features": ["navigation.sections", "navigation.top", "search.suggest", "search.highlight", "content.code.copy"], "search": "../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="../assets/javascripts/bundle.79ae519e.min.js"></script>
+      
+    
+  </body>
+</html>

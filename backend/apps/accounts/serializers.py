@@ -8,13 +8,14 @@ from typing import Any
 from django.contrib.auth import authenticate, get_user_model
 from rest_framework import serializers
 
+from apps.core.role_defaults import DEFAULT_ROLES
 from apps.teams.models import Membership, Role, Team, Tenant
 
 UserModel = get_user_model()
 
 
 class SignupSerializer(serializers.ModelSerializer):
-    """User registration serializer — also creates Tenant, default Role, default Team, and Membership."""
+    """User registration serializer — also creates Tenant, default Roles, default Team, and Membership."""
 
     password = serializers.CharField(write_only=True, min_length=8)
     organization_name = serializers.CharField(write_only=True, required=False, help_text="Name of the tenant/organization")
@@ -33,19 +34,22 @@ class SignupSerializer(serializers.ModelSerializer):
         tenant_name = org_name or f"{email.split('@')[0]}'s Organization"
         tenant = Tenant.objects.create(name=tenant_name)
 
-        # Create default admin role for this tenant
-        admin_role = Role.objects.create(
-            tenant=tenant,
-            name="Admin",
-            description="Full administrative access",
-            is_admin=True,
-            permissions={
-                "manage_team": True,
-                "manage_billing": True,
-                "manage_settings": True,
-                "export_data": True,
-            },
-        )
+        # Create default roles for this tenant
+        roles: dict[str, Role] = {}
+        for role_def in DEFAULT_ROLES:
+            r = Role.objects.create(
+                tenant=tenant,
+                name=role_def["name"],
+                description=role_def["description"],
+                permissions=role_def["permissions"],
+                is_admin=role_def.get("is_admin", False),
+            )
+            roles[role_def["name"]] = r
+
+        # Set up inheritance (Manager -> Sales Rep)
+        if "Manager" in roles and "Sales Rep" in roles:
+            roles["Manager"].inherits_from = roles["Sales Rep"]
+            roles["Manager"].save(update_fields=["inherits_from"])
 
         # Create default team for this tenant
         default_team = Team.objects.create(
@@ -63,7 +67,7 @@ class SignupSerializer(serializers.ModelSerializer):
         Membership.objects.create(
             user=user,
             tenant=tenant,
-            role=admin_role,
+            role=roles["Admin"],
             team=default_team,
             is_owner=True,
         )
@@ -136,3 +140,71 @@ class MagicLinkConfirmSerializer(serializers.Serializer):
             raise serializers.ValidationError("Invalid or expired token.")
         data["user"] = user
         return data
+
+
+# ── 2FA / TOTP Serializers ────────────────────────────────────────────────────
+
+
+class TwoFactorSetupSerializer(serializers.Serializer):
+    """Initiate 2FA setup — no input, generates secret and provisioning URI."""
+
+
+class TwoFactorConfirmSerializer(serializers.Serializer):
+    """Confirm 2FA setup with a TOTP code."""
+
+    code = serializers.CharField(min_length=6, max_length=6)
+
+    def validate_code(self, value: str) -> str:
+        if not value.strip().isdigit():
+            raise serializers.ValidationError("Code must be 6 digits.")
+        return value.strip()
+
+
+class TwoFactorVerifySerializer(serializers.Serializer):
+    """Verify 2FA code during login using a 2fa_token."""
+
+    two_factor_token = serializers.CharField(write_only=True, source="2fa_token")
+    code = serializers.CharField()
+    is_recovery = serializers.BooleanField(default=False, required=False)
+
+
+class TwoFactorDisableSerializer(serializers.Serializer):
+    """Disable 2FA with password + TOTP code."""
+
+    password = serializers.CharField()
+    code = serializers.CharField()
+
+
+class TwoFactorRegenerateSerializer(serializers.Serializer):
+    """Regenerate recovery codes with TOTP code verification."""
+
+    code = serializers.CharField()
+
+
+# ── SAML Serializers ──────────────────────────────────────────────────────────
+
+
+class SamlProviderSerializer(serializers.ModelSerializer):
+    """Create/read/update SAML provider configuration."""
+
+    class Meta:
+        model = None  # set at runtime
+        fields = (
+            "id", "idp_entity_id", "idp_sso_url", "idp_slo_url",
+            "idp_x509_cert", "attribute_mapping", "default_role_id",
+            "auto_create_users", "allowed_domains", "is_active",
+            "sp_entity_id", "acs_url", "last_used_at", "tenant_id",
+        )
+        read_only_fields = ("id", "sp_entity_id", "acs_url", "last_used_at", "tenant_id")
+
+
+class SamlLoginSerializer(serializers.Serializer):
+    """Start SP-initiated SAML login."""
+
+    email = serializers.EmailField()
+
+
+class SamlDomainCheckSerializer(serializers.Serializer):
+    """Check if an email domain has SAML configured."""
+
+    email = serializers.EmailField()

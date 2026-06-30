@@ -142,3 +142,156 @@ class SyncAdapter(ABC):
     def refresh_token(self) -> TokenRefreshResult:
         """Refresh an expired OAuth token."""
         ...
+
+
+# ── Calendar Data Models ──────────────────────────────────────────────────
+
+
+@dataclass
+class CalendarEvent:
+    """Normalized calendar event from any provider."""
+
+    provider_id: str  # Google Calendar event ID
+    calendar_id: str  # Usually "primary"
+    i_cal_uid: str | None = None
+    summary: str = ""
+    description: str | None = None
+    start: datetime | None = None
+    end: datetime | None = None
+    all_day: bool = False
+    timezone: str = "UTC"
+    location: str | None = None
+    hangout_link: str | None = None
+    status: str = "confirmed"  # confirmed, tentative, cancelled
+    recurrence: list[str] = field(default_factory=list)
+    recurring_event_id: str | None = None
+    original_start_time: datetime | None = None
+    attendees: list[dict] = field(default_factory=list)
+    creator: dict | None = None
+    organizer: dict | None = None
+    created: datetime | None = None
+    updated: datetime | None = None
+    html_link: str | None = None
+
+
+@dataclass
+class CalendarDeltaResult:
+    """Result of a calendar delta sync operation."""
+
+    items: list[CalendarEvent] = field(default_factory=list)
+    deleted_ids: list[str] = field(default_factory=list)
+    new_cursor: dict[str, Any] = field(default_factory=dict)
+    has_more: bool = False
+    full_resync_required: bool = False
+
+
+class CalendarSyncAdapter(ABC):
+    """Abstract interface for calendar sync providers."""
+
+    PROVIDER = ""
+    REQUIRED_SCOPES: list[str] = []
+
+    @abstractmethod
+    def get_calendar_delta(self, cursor: dict | None) -> CalendarDeltaResult:
+        """Fetch calendar event changes since the given cursor.
+
+        When cursor is None or expired, triggers a full sync within
+        the default time window (last 90 days to next 30 days).
+        """
+        ...
+
+    @abstractmethod
+    def get_initial_cursor(self) -> dict:
+        """Fetch the starting cursor for delta sync (syncToken or time)."""
+        ...
+
+    @abstractmethod
+    def validate_connection(self) -> ConnectionStatus:
+        """Test that the OAuth token works and has the right scopes."""
+        ...
+
+    @abstractmethod
+    def refresh_token(self) -> TokenRefreshResult:
+        """Refresh an expired OAuth token."""
+        ...
+
+    # ── Write Methods (Event Creation) ──────────────────────────────────────
+
+    @abstractmethod
+    def create_event(
+        self,
+        summary: str,
+        start: datetime,
+        end: datetime,
+        *,
+        description: str | None = None,
+        location: str | None = None,
+        timezone: str = "UTC",
+        all_day: bool = False,
+        attendees: list[dict] | None = None,
+        recurrence: list[str] | None = None,
+        hangout_link: str | None = None,
+        source_activity_id: str | None = None,
+        source_entity_type: str | None = None,
+        source_entity_id: str | None = None,
+    ) -> CalendarEvent:
+        """Create a new calendar event on the provider.
+
+        Returns the full CalendarEvent as created by the provider
+        (including the provider-assigned event ID).
+        """
+        ...
+
+    @abstractmethod
+    def update_event(
+        self,
+        event_id: str,
+        *,
+        summary: str | None = None,
+        start: datetime | None = None,
+        end: datetime | None = None,
+        description: str | None = None,
+        location: str | None = None,
+        timezone: str | None = None,
+        all_day: bool | None = None,
+        attendees: list[dict] | None = None,
+        recurrence: list[str] | None = None,
+    ) -> CalendarEvent | None:
+        """Update an existing calendar event on the provider.
+
+        Returns the updated CalendarEvent, or None if the event
+        was deleted on the provider side.
+        """
+        ...
+
+    @abstractmethod
+    def delete_event(self, event_id: str) -> bool:
+        """Delete a calendar event on the provider.
+
+        Returns True if deletion succeeded, False if the event
+        was already deleted or not found.
+        """
+        ...
+
+    # ── Watch Channel Methods (Push Notifications) ──────────────────────
+
+    @abstractmethod
+    def setup_watch(
+        self,
+        channel_id: str,
+        webhook_url: str,
+        ttl_seconds: int = 604800,
+    ) -> dict[str, Any]:
+        """Register a watch channel for push notifications.
+
+        Returns the provider's response including resourceId.
+        """
+        ...
+
+    @abstractmethod
+    def stop_watch(self, channel_id: str, resource_id: str) -> bool:
+        """Stop a watch channel.
+
+        Returns True if the channel was stopped, False if not found.
+        """
+        ...

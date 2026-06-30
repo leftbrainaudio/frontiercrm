@@ -1,7 +1,7 @@
 import { useNavigate } from 'react-router-dom';
 import { Table, type Column } from '../ui/table';
-import { Card } from '../ui/card';
-import { Badge } from '../ui/badge';
+import { Card } from '../molecules/card';
+import { Badge } from '../atoms/badge';
 import { formatCurrency } from './shared';
 import type { StaleDeal } from '../../types';
 

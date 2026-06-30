@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { Calendar, Filter } from 'lucide-react';
-import { Button } from '../ui/button';
+import { Button } from '../atoms/button';
 import { cn } from '../../lib/utils';
 
 export type PresetRange = '7d' | '30d' | '90d' | 'quarter' | 'custom';

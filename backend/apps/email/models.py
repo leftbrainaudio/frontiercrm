@@ -1,12 +1,88 @@
 """EmailMessage model — synced from Gmail or sent from FrontierCRM."""
 from __future__ import annotations
 
+import re
 import uuid
 from typing import Any
 
 from django.db import models
 
 from apps.core.models import TenantScopedModel
+
+
+class EmailTemplate(TenantScopedModel):
+    """Reusable email template with variable placeholders."""
+
+    class Category(models.TextChoices):
+        GENERAL = "general", "General"
+        INTRODUCTION = "introduction", "Introduction"
+        FOLLOW_UP = "follow_up", "Follow-up"
+        MEETING = "meeting", "Meeting Confirmation"
+        PROPOSAL = "proposal", "Proposal"
+        THANK_YOU = "thank_you", "Thank You"
+        REMINDER = "reminder", "Reminder"
+        CUSTOM = "custom", "Custom"
+
+    # Identity
+    name = models.CharField(max_length=255)
+    description = models.TextField(blank=True, default="")
+
+    # Template content (with {{variable}} placeholders)
+    subject_template = models.CharField(max_length=1000)
+    body_html = models.TextField(blank=True, default="")
+    body_text = models.TextField(
+        blank=True, default="",
+        help_text="Plain text fallback. Auto-generated from HTML if empty.",
+    )
+
+    # Categorization
+    category = models.CharField(
+        max_length=50, choices=Category.choices,
+        default=Category.GENERAL, db_index=True,
+    )
+
+    # Scope
+    is_shared = models.BooleanField(
+        default=True,
+        help_text="Shared with entire team vs. personal only",
+    )
+    created_by = models.ForeignKey(
+        "accounts.User", on_delete=models.SET_NULL,
+        null=True, blank=True, related_name="email_templates",
+    )
+
+    # Introspection — populated on save by parsing the templates
+    variables_used = models.JSONField(
+        default=list, blank=True,
+        help_text="List of variable names found in subject_template / body_html / body_text",
+    )
+
+    class Meta:
+        db_table = "email_templates"
+        indexes = [
+            models.Index(fields=["tenant_id", "category"]),
+            models.Index(fields=["tenant_id", "created_by"]),
+            models.Index(fields=["tenant_id", "-updated_at"]),
+        ]
+        ordering = ["-updated_at"]
+        verbose_name = "Email Template"
+        verbose_name_plural = "Email Templates"
+
+    def __str__(self) -> str:
+        return self.name
+
+    def save(self, *args, **kwargs):
+        """Auto-populate variables_used by scanning template fields."""
+        self.variables_used = self._extract_variables()
+        super().save(*args, **kwargs)
+
+    def _extract_variables(self) -> list[str]:
+        """Scan template content for {{variable}} patterns."""
+        pattern = r"\{\{(\w+)\}\}"
+        found: set[str] = set()
+        for field in [self.subject_template, self.body_html, self.body_text]:
+            found.update(re.findall(pattern, field))
+        return sorted(found)
 
 
 class EmailMessage(TenantScopedModel):

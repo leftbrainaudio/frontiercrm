@@ -1,5 +1,5 @@
 import { Table, type Column } from '../ui/table';
-import { Card } from '../ui/card';
+import { Card } from '../molecules/card';
 
 export interface DealVelocityTableProps {
   data: { stage_name: string; avg_days: number; deals_in_stage: number }[];
