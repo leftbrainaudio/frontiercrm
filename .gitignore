@@ -6,6 +6,7 @@ dist/
 build/
 *.egg
 .venv/
+.venv_py311/
 venv/
 env/
 .coverage
@@ -23,10 +24,18 @@ node_modules/
 frontend/dist/
 frontend/.next/
 
+# Build artifacts
+documentation/
+frontend/storybook-static/
+frontend/.storybook/out/
+
 # Environment
 .env
 .env.local
 .env.production
+
+# OS
+.DS_Store
 
 # IDE
 .idea/
