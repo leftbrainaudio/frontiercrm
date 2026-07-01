@@ -22,8 +22,8 @@ def deal_changed_handler(sender, instance, created, **kwargs):
       - deal.created
       - deal.updated
     """
-    if not instance.is_active:
-        return  # skip archived/inactive deals
+    if instance.status == "abandoned":
+        return  # skip abandoned deals
 
     event_type = "deal.created" if created else "deal.updated"
     _fire_webhooks(instance.tenant_id, event_type, _build_deal_payload(instance))
