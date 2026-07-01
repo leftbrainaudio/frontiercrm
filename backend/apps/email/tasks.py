@@ -215,7 +215,11 @@ def send_gmail_message(
     user_id: str,
     email_id: str,
 ) -> dict[str, Any]:
-    """Send an email via Gmail API, updating the existing EmailMessage record."""
+    """Send an email via Gmail API (preferred) or SMTP fallback.
+
+    If the user has a Google OAuth access token, sends via Gmail API.
+    Otherwise falls back to SMTP (requires SMTP_* settings in .env).
+    """
     try:
         user = User.objects.get(id=user_id)
     except User.DoesNotExist:
@@ -235,6 +239,14 @@ def send_gmail_message(
     msg["Subject"] = email_msg.subject
     msg["From"] = user.email
 
+    # Route: Gmail API or SMTP fallback
+    if user.google_access_token:
+        return _send_via_gmail_api(user, email_msg, msg)
+    return _send_via_smtp(user, email_msg, msg)
+
+
+def _send_via_gmail_api(user, email_msg, msg) -> dict[str, Any]:
+    """Send via Gmail API using user's OAuth access token."""
     raw = base64.urlsafe_b64encode(msg.as_bytes()).decode("ascii")
 
     headers = {"Authorization": f"Bearer {user.google_access_token}", "Content-Type": "application/json"}
@@ -255,34 +267,67 @@ def send_gmail_message(
         )
 
     if resp.status_code != 200:
-        email_msg.status = EmailMessage.EmailStatus.FAILED
-        email_msg.error_message = f"Send failed: {resp.text[:2000]}"
-        email_msg.save(update_fields=["status", "error_message", "updated_at"])
-
-        # Create failure activity entry
-        Activity.objects.create(
-            tenant_id=user.tenant_id,
-            activity_type=Activity.ActivityType.EMAIL,
-            title=f"Email send failed: {email_msg.subject[:80] or '(no subject)'}",
-            description=(email_msg.error_message or "")[:500],
-            entity_type="email",
-            entity_id=email_msg.id,
-            actor_id=user.id,
-            metadata={
-                "status": "failed",
-                "error": email_msg.error_message,
-                "to": email_msg.to_emails,
-                "subject": email_msg.subject,
-            },
-        )
-
-        return {"status": "failed", "error": email_msg.error_message}
+        return _mark_failed(email_msg, f"Send failed: {resp.text[:2000]}")
 
     sent_data = resp.json()
     gmail_id = sent_data.get("id", "")
     thread_id = sent_data.get("threadId", "")
 
-    # Update the existing record
+    return _mark_sent(email_msg, user, gmail_id, thread_id)
+
+
+def _send_via_smtp(user, email_msg, msg) -> dict[str, Any]:
+    """Send via SMTP using app password from settings."""
+    import smtplib
+    from django.conf import settings
+
+    smtp_host = settings.EMAIL_HOST
+    smtp_port = settings.EMAIL_PORT
+    smtp_user = settings.EMAIL_HOST_USER
+    smtp_pass = settings.EMAIL_HOST_PASSWORD
+
+    if not all([smtp_host, smtp_port, smtp_user, smtp_pass]):
+        return _mark_failed(email_msg, "SMTP not configured — set EMAIL_HOST/USER/PASSWORD in .env")
+
+    try:
+        with smtplib.SMTP(smtp_host, smtp_port, timeout=15) as server:
+            server.starttls()
+            server.login(smtp_user, smtp_pass)
+            server.send_message(msg)
+
+        email_msg.smtp_id = f"smtp-{email_msg.id}"
+        return _mark_sent(email_msg, user, email_msg.smtp_id, "")
+
+    except Exception as exc:
+        return _mark_failed(email_msg, f"SMTP send failed: {exc}")
+
+
+def _mark_failed(email_msg, error_text: str) -> dict[str, Any]:
+    """Mark an email as failed and create an activity entry."""
+    email_msg.status = EmailMessage.EmailStatus.FAILED
+    email_msg.error_message = error_text
+    email_msg.save(update_fields=["status", "error_message", "updated_at"])
+
+    Activity.objects.create(
+        tenant_id=email_msg.tenant_id,
+        activity_type=Activity.ActivityType.EMAIL,
+        title=f"Email send failed: {email_msg.subject[:80] or '(no subject)'}",
+        description=error_text[:500],
+        entity_type="email",
+        entity_id=email_msg.id,
+        actor_id=None,
+        metadata={
+            "status": "failed",
+            "error": error_text,
+            "to": email_msg.to_emails,
+            "subject": email_msg.subject,
+        },
+    )
+    return {"status": "failed", "error": error_text}
+
+
+def _mark_sent(email_msg, user, gmail_id: str, thread_id: str) -> dict[str, Any]:
+    """Mark an email as sent and create an activity entry."""
     email_msg.status = EmailMessage.EmailStatus.SENT
     email_msg.message_id = gmail_id
     email_msg.external_id = gmail_id
@@ -294,15 +339,14 @@ def send_gmail_message(
         "is_read", "sent_at", "updated_at",
     ])
 
-    # Create Activity entry
     Activity.objects.create(
-        tenant_id=user.tenant_id,
+        tenant_id=email_msg.tenant_id,
         activity_type=Activity.ActivityType.EMAIL,
         title=f"Email sent: {email_msg.subject[:100]}" if email_msg.subject else "Email sent",
         description=f"Sent email to {', '.join(email_msg.to_emails)[:200]}",
         entity_type="email",
         entity_id=email_msg.id,
-        actor_id=user.id,
+        actor_id=user.id if user else None,
         metadata={
             "status": "sent",
             "subject": email_msg.subject,
@@ -310,5 +354,4 @@ def send_gmail_message(
             "message_id": gmail_id,
         },
     )
-
     return {"status": "sent", "message_id": gmail_id}
