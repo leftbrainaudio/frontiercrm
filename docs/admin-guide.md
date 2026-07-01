@@ -181,6 +181,157 @@ Alerts are sent to the configured channel for:
 - Database connection pool exhaustion
 - Fly.io machine crash/restart
 
+## Outbound Webhook Delivery Engine (v1.3.0)
+
+The outbound webhook delivery engine automatically fires webhook events when Deals, Contacts, or Activities are created or updated.
+
+### How it works
+
+1. A **signal handler** detects changes: `Deal.post_save`, `Contact.post_save`, `Activity.post_save`
+2. The **`WebhookDeliveryService`** enriches the payload with hydrated data (full deal with stage/owner, contact with account, etc.)
+3. Payloads are signed with **HMAC-SHA256** and the signature is sent in the `X-Signature-256` header
+4. Events are dispatched to all matching `WebhookEndpoint` URLs configured for the tenant
+5. Delivery uses exponential backoff: 60s / 120s / 240s (3 retries total)
+6. Events that exhaust all retries land in `WebhookDeadEvent` — the dead-letter queue
+
+### Verifying webhook payloads
+
+Consumers can verify that a webhook payload genuinely came from FrontierCRM:
+
+```python
+import hmac, hashlib
+
+secret = b"<your_webhook_secret>"
+payload = request.body
+received_sig = request.headers["X-Signature-256"]
+
+expected_sig = hmac.new(secret, payload, hashlib.sha256).hexdigest()
+if hmac.compare_digest(expected_sig, received_sig):
+    print("Verified — payload is from FrontierCRM")
+```
+
+### Dead events management
+
+| Action | API |
+|--------|-----|
+| List dead events | `GET /api/webhooks/dead-events/` |
+| View dead event detail | `GET /api/webhooks/dead-events/{id}/` |
+| Replay a dead event | `POST /api/webhooks/dead-events/{id}/replay/` |
+
+Dead events are kept until resolved or pruned. Automated cleanup:
+- `retry_stale_webhooks` — runs every 5 minutes, retries events past `next_retry_at`
+- `prune_dead_events` — runs daily at 03:00 UTC, removes resolved/stale entries
+
+### Creating a webhook endpoint
+
+```bash
+POST /api/webhooks/
+{
+  "url": "https://hooks.example.com/crm-events",
+  "secret": "your-webhook-secret",
+  "subscribed_events": ["deal.created", "deal.updated", "contact.created"],
+  "is_active": true
+}
+```
+
+Rich payload example (deal created):
+
+```json
+{
+  "event": "deal.created",
+  "timestamp": "2026-06-30T15:00:00Z",
+  "tenant_id": "uuid",
+  "data": {
+    "id": "uuid",
+    "name": "Acme Corp Deal",
+    "value": "50000.00",
+    "stage": {"name": "Proposal", "probability": 60},
+    "pipeline": {"name": "Sales Pipeline"},
+    "owner": {"email": "alice@example.com", "full_name": "Alice Smith"},
+    "contact": {"name": "Bob Jones", "email": "bob@acme.com"}
+  }
+}
+```
+
+## Two-Factor Authentication Admin (v1.3.0)
+
+### Resetting a user's 2FA
+
+If a user loses access to both their authenticator app and recovery codes, an admin can reset their 2FA:
+
+```bash
+POST /api/auth/2fa/admin/reset/{user_id}/
+Authorization: Bearer <admin_token>
+```
+
+This disables 2FA for the user. They must set up 2FA again from Settings → Security.
+
+Only users with admin-level roles can perform this action.
+
+## API Keys Management (v1.3.0)
+
+### Managing keys from the admin panel
+
+API keys are managed per-user via Settings → API Keys. Key characteristics:
+
+| Property | Value |
+|----------|-------|
+| Format | `fcrm_` + 40-character alphanumeric |
+| Storage | SHA-256 hashed (plaintext not retrievable) |
+| Expiry | Optional — keys can be set to auto-expire |
+| Scopes | Optional permission scopes |
+
+**Best practices:**
+- Create separate keys for each integration
+- Set expiry dates for temporary integrations
+- Rotate keys periodically
+- Revoke keys immediately when an integration is decommissioned
+- Never share keys in logs or commit them to source control
+
+### Auditing key usage
+
+API key requests are logged in the audit log with `auth_method: apikey`. Review the audit log to track which keys are being used and by which integrations.
+
+## Audit Log (v1.3.0)
+
+The audit log provides a searchable record of all changes made in the system.
+
+### Frontend
+
+Available at **Settings → Audit Log** (`/settings/audit-log`):
+
+| Column | Description |
+|--------|-------------|
+| Timestamp | When the action occurred |
+| User | Who performed the action |
+| Action | What was done (created, updated, deleted) |
+| Entity Type | Which resource was affected (contact, deal, account, etc.) |
+| Entity Name | The specific resource name |
+| Details | Additional context (field changes, values) |
+
+**Filters:**
+- **Entity type** — filter to one resource type
+- **Action** — show only creates, updates, or deletes
+- **Date range** — start and end date picker
+
+Action types are colour-coded: create (green), update (blue), delete (red). Active filters show as removable chips with a "Clear All" option.
+
+### API
+
+```bash
+# List audit log entries (paginated)
+GET /api/accounts/audit-log/?page=1&page_size=50
+
+# Filter by entity type
+GET /api/accounts/audit-log/?entity_type=contact
+
+# Filter by action
+GET /api/accounts/audit-log/?action=created
+
+# Filter by date range
+GET /api/accounts/audit-log/?start_date=2026-06-01&end_date=2026-06-30
+```
+
 ## Export (v1.1.0)
 
 CSV export is available from the Pipeline and Contacts pages. Exports are tenant-scoped (only this organization's data). The download is a streaming CSV — files start downloading immediately even for large datasets.
@@ -277,8 +428,12 @@ PATCH /api/accounts/tenant/
 # List all members
 GET /api/accounts/memberships/
 
-# Get audit log (future)
+# Get audit log
 GET /api/accounts/audit-log/
+
+# Reset user 2FA (admin only)
+POST /api/auth/2fa/admin/reset/{user_id}/
+Authorization: Bearer <admin_token>
 ```
 
 ## Security checklist

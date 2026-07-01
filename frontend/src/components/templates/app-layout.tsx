@@ -14,7 +14,7 @@ export function AppLayout() {
   // Close mobile menu on route change
   useEffect(() => {
     setMobileOpen(false);
-  }, []);
+  }, [location]);
 
   if (isLoading) {
     return <Spinner fullPage />;

@@ -259,7 +259,7 @@ export function Table<T>({
                     onRowClick && 'cursor-pointer hover:bg-surface-tertiary dark:hover:bg-dark-surface-tertiary',
                     striped && ri % 2 === 1 && 'bg-surface-secondary/50 dark:bg-dark-surface-secondary/30',
                     bordered && 'border-b border-border dark:border-dark-border',
-                    selectable && selectedKeys?.has(rowKey?.(row) ?? '') && 'bg-brand-50 dark:bg-brand-900/20',
+                    selectable && selectedKeys?.has(rowKey?.(row) ?? '') && 'bg-brand-50 dark:bg-brand-900/20 border-l-3 border-l-brand-500',
                   )}
                   onClick={() => {
                     onRowClick?.(row);

@@ -69,7 +69,9 @@ User ──► Cloudflare (DNS + R2)
 | Notes | `/api/notes/` | Free-form notes |
 | Tasks | `/api/tasks/` | Task management |
 | Teams | `/api/teams/` | Team management |
-| Webhooks | `/api/webhooks/` | Outbound webhook delivery |
+| Webhooks | `/api/webhooks/` | Outbound webhook delivery + dead events |
+| API Keys | `/api/apikeys/` | Programmatic API key management |
+| Core | `/api/core/` | Custom field definitions |
 | Files | `/api/files/` | File uploads to R2 |
 | Search | `/api/search/` | Full-text search via Meilisearch |
 

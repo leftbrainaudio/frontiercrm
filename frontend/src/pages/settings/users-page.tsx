@@ -65,7 +65,7 @@ function InviteMemberForm({ onSuccess }: { onSuccess: () => void }) {
         <select
           value={roleId}
           onChange={(e) => setRoleId(e.target.value)}
-          className="w-full rounded-lg border border-border bg-white px-3 py-2.5 text-sm text-text-primary focus:border-brand-500 focus:outline-none focus:ring-2 focus:ring-brand-500/20 dark:border-dark-border dark:bg-transparent dark:text-dark-text-primary"
+          className="w-full rounded-lg border border-border bg-white px-3 py-2.5 text-sm text-text-primary focus:border-brand-500 focus:outline-none focus:ring-2 focus:ring-brand-500/20 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-500 dark:border-dark-border dark:bg-transparent dark:text-dark-text-primary"
         >
           <option value="">Default role</option>
           {(roles ?? []).map((r) => (
@@ -131,7 +131,7 @@ function MemberRow({
             <select
               value={selectedRole}
               onChange={(e) => setSelectedRole(e.target.value)}
-              className="flex-1 rounded border border-border bg-white px-2 py-1 text-xs dark:border-dark-border dark:bg-transparent dark:text-dark-text-primary"
+              className="flex-1 rounded border border-border bg-white px-2 py-1 text-xs focus:outline-none focus:ring-2 focus:ring-brand-500/20 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-500 dark:border-dark-border dark:bg-transparent dark:text-dark-text-primary"
             >
               {roles.map((r) => (
                 <option key={r.id} value={r.id}>

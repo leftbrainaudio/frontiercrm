@@ -86,7 +86,7 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
                   : undefined
             }
             className={cn(
-              'w-full rounded-lg transition-colors duration-150',
+              'w-full rounded-md transition-colors duration-150',
               'placeholder:text-text-tertiary dark:placeholder:text-dark-text-tertiary',
               'focus:outline-none focus:ring-2 focus:ring-brand-500/20',
               'disabled:cursor-not-allowed disabled:opacity-50 disabled:bg-gray-50 dark:disabled:bg-dark-surface-tertiary',

@@ -62,7 +62,8 @@ export function Sidebar({ collapsed, onToggle, mobileOpen, onMobileClose }: Side
         </Link>
         <button
           onClick={onToggle}
-          className="hidden md:flex h-8 w-8 items-center justify-center rounded-md text-gray-400 hover:text-gray-600 hover:bg-gray-100 dark:hover:bg-slate-800"
+          className="hidden lg:flex h-8 w-8 items-center justify-center rounded-md text-gray-400 hover:text-gray-600 hover:bg-gray-100 dark:hover:bg-slate-800 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-500"
+          aria-label={collapsed ? 'Expand sidebar' : 'Collapse sidebar'}
         >
           {collapsed ? <ChevronRight size={16} /> : <ChevronLeft size={16} />}
         </button>
@@ -78,6 +79,7 @@ export function Sidebar({ collapsed, onToggle, mobileOpen, onMobileClose }: Side
               to={item.to}
               onClick={onMobileClose}
               aria-current={isActive ? 'page' : undefined}
+              aria-label={collapsed ? item.label : undefined}
               className={cn(
                 'flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-colors',
                 isActive
@@ -116,8 +118,8 @@ export function Sidebar({ collapsed, onToggle, mobileOpen, onMobileClose }: Side
       {/* Desktop sidebar */}
       <aside
         className={cn(
-          'hidden md:flex h-screen flex-col transition-all duration-200',
-          collapsed ? 'w-16' : 'w-64'
+          'hidden lg:flex h-screen flex-col transition-all duration-200',
+          collapsed ? 'w-16' : 'w-60'
         )}
       >
         {sidebarContent}
@@ -125,14 +127,15 @@ export function Sidebar({ collapsed, onToggle, mobileOpen, onMobileClose }: Side
 
       {/* Mobile overlay */}
       {mobileOpen && (
-        <div className="fixed inset-0 z-50 md:hidden">
+        <div className="fixed inset-0 z-50 lg:hidden">
           <div className="absolute inset-0 bg-black/50" onClick={onMobileClose} />
           <aside className="absolute left-0 top-0 h-full w-72 bg-white dark:bg-slate-900 shadow-xl z-10">
             <div className="flex justify-end p-2">
               <button
-                onClick={onMobileClose}
-                className="p-2 rounded-md text-gray-400 hover:text-gray-600"
-              >
+                                  onClick={onMobileClose}
+                                  className="p-2 rounded-md text-gray-400 hover:text-gray-600 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-500"
+                                  aria-label="Close menu"
+                                >
                 <X size={20} />
               </button>
             </div>
@@ -148,7 +151,7 @@ export function MobileMenuButton({ onClick }: { onClick: () => void }) {
   return (
     <button
       onClick={onClick}
-      className="md:hidden p-2 rounded-md text-gray-500 hover:bg-gray-100 dark:hover:bg-slate-800"
+      className="lg:hidden p-2 rounded-md text-gray-500 hover:bg-gray-100 dark:hover:bg-slate-800 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-500"
       aria-label="Open menu"
     >
       <Menu size={20} />

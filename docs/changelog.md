@@ -1,5 +1,187 @@
 # Changelog — FrontierCRM MVP
 
+## v1.3.0 (2026-06-30)
+
+Post-Phase 5 release. Two-Factor Authentication, SSO/SAML, API Keys, Custom Fields UI, Audit Log UI, Bulk Operations, Outbound Webhook Delivery Engine, Calendar Event Creation, Email Templates.
+
+### Features
+
+**Two-Factor Authentication (P2)**
+- TOTP-based 2FA setup with QR code scan → verification → recovery codes flow
+- `POST /api/auth/2fa/setup/` — generates TOTP provisioning URI + QR code secret
+- `POST /api/auth/2fa/confirm/` — verifies the setup with an initial TOTP token
+- `POST /api/auth/2fa/verify/` — verifies a TOTP token at login (step 2 of 2FA challenge)
+- `POST /api/auth/2fa/disable/` — disables 2FA on the current account
+- `GET /api/auth/2fa/status/` — returns whether 2FA is enabled and recovery codes remaining count
+- `POST /api/auth/2fa/recovery-codes/regenerate/` — regenerates recovery codes
+- `POST /api/auth/2fa/admin/reset/{user_id}/` — admin endpoint to reset another user's 2FA
+- Frontend: Settings → Security page with state machine: QR scan → verify → recovery codes → active
+- `TwoFactorToken` JWT issued after password verification, consumed by 2FA verify step
+- Recovery codes: 8 one-time-use codes, stored as bcrypt hashes
+- Dependencies: `pyotp 2.10.0`, `bcrypt 5.0.0`
+
+**SSO/SAML (P2)**
+- `SamlProvider` model: entity ID, SSO URL, x509 certificate, JIT provisioning flag, default role, tenant-scoped
+- `POST /api/auth/saml/login/` — initiates SP-initiated SAML login, returns IdP redirect URL
+- `POST /api/auth/saml/{tenant_id}/acs/` — Assertion Consumer Service — processes SAML response, auto-provisions user on first login
+- `GET /api/auth/saml/{tenant_id}/metadata/` — returns SP metadata XML for IdP configuration
+- `GET /api/auth/saml/domain-check/` — checks if an email domain is linked to a SAML provider (for frontend redirect)
+- `POST /api/auth/saml/logout/` — SAML single logout
+- `GET/POST /api/auth/saml/providers/` — list or create SAML providers (tenant-scoped)
+- `GET/PATCH/DELETE /api/auth/saml/providers/{id}/` — SAML provider CRUD
+- SSO domain detection on login page — auto-redirects to IdP when email domain matches a SAML provider
+- Frontend: SAML callback route at `/auth/saml/callback`
+- JIT provisioning: new users auto-created with configurable default role on first SAML login
+- Dependencies: `python3-saml 1.16.0`
+
+**API Keys (P2)**
+- New `apps.apikeys` Django app at `/api/apikeys/`
+- `APIKey` model: prefixed key (`fcrm_`), SHA-256 hashed storage, name, scopes, active/revoked status, expiry date
+- DRF authentication backend — authenticate API requests with `Authorization: Bearer fcrm_...`
+- `POST /api/apikeys/` — creates an API key, returns plaintext key once (copy-on-create)
+- `GET /api/apikeys/` — lists API keys (masked, no plaintext)
+- `GET /api/apikeys/{id}/` — detail view (masked)
+- `POST /api/apikeys/{id}/revoke/` — revokes an API key
+- `PATCH /api/apikeys/{id}/` — update name or scopes
+- `DELETE /api/apikeys/{id}/` — deletes an API key
+- Frontend: Settings → API Keys page with CreateKeyModal (copy-once flow), KeyCard with revoke/delete
+- All endpoints tenant-scoped
+
+**Custom Fields UI (P2)**
+- `CustomFieldDef` model at `/api/core/custom-fields/`: name, key, field type, entity type, required flag, options (for select), display order
+- Entity types: contacts, deals, accounts
+- Field types: text, number, date, select
+- `GET/POST /api/core/custom-fields/` — list or create custom field definitions
+- `GET/PATCH/DELETE /api/core/custom-fields/{id}/` — custom field CRUD
+- Frontend: Settings → Custom Fields page with full CRUD table (add, edit, delete)
+- Custom fields displayed on contact detail page and pipeline page deal cards
+- Custom field values stored in `custom_fields` JSONField on existing models
+
+**Audit Log UI (P2)**
+- Frontend page at `/settings/audit-log` with paginated table:
+  - 6 columns: timestamp, user, action, entity type, entity name, details
+- Filters: entity type, action type, date range (start/end date)
+- Loading skeleton, error state with retry, contextual empty state
+- Action type colour badges (create=green, update=blue, delete=red)
+- Filter chips with "Clear All" — active filters shown as removable chips
+- Sidebar navigation entry under Settings
+
+**Bulk Operations (P2)**
+- Frontend bulk select and batch action toolbar for contacts, deals, and accounts
+- `BulkSelect` component — checkbox column with indeterminate state for "some selected"
+- `SelectAllBanner` — "All N items selected. Select all X items?" with one-click select-all
+- `BatchActionToolbar` — contextual toolbar appears when items are selected
+- `BulkProgressBar` — progress tracking for async bulk jobs
+- Batch action dialogs:
+  - `BulkConfirmDialog` — generic delete confirmation with item count
+  - `BulkAssignDialog` — assign selected items to a user
+  - `BulkChangeStageDialog` — move deals to a new pipeline stage
+  - `BulkChangeStatusDialog` — bulk change deal status (won/lost/abandoned)
+  - `BulkTagDialog` — add, remove, or replace tags on selected items
+- 7 API mutation hooks: useBulkDelete, useBulkAssign, useBulkChangeStage, useBulkChangeStatus, useBulkAddTag, useBulkRemoveTag, useBulkReplaceTags
+- useBulkJob polling hook for progress tracking
+- useBulkExportUrl hook for bulk CSV export
+- Entity types supported: contact, deal, account
+
+**Outbound Webhook Delivery Engine (P2)**
+- `WebhookDeliveryService` class — testable delivery service with payload enrichment
+- Django signal handlers: `Deal.post_save`, `Contact.post_save`, `Activity.post_save` — fire webhook deliveries on create/update
+- Payload enrichment — hydrated deal/contact data with all relevant fields, not raw JSON
+- HMAC-SHA256 signed payloads with `X-Signature-256` header for consumer verification
+- `WebhookDeadEvent` model — dead-letter queue for events that exhausted retries
+- `GET /api/webhooks/dead-events/` — list dead events (paginated, filterable by status, webhook, date range)
+- `GET /api/webhooks/dead-events/{id}/` — dead event detail
+- `POST /api/webhooks/dead-events/{id}/replay/` — re-queue a dead event for delivery
+- Celery Beat: `retry_stale_webhooks` runs every 5 minutes, retries events past `next_retry_at`
+- Celery Beat: `prune_dead_events` runs daily at 03:00 UTC, removes resolved/stale dead events
+- Migration 0002: WebhookDeadEvent model added
+
+**Calendar Event Creation and Push (P2)**
+- Create Google Calendar events from CRM — `POST /api/sync/connections/calendar/events/`
+- Push event updates to Google Calendar — `PATCH /api/sync/connections/calendar/events/{id}/`
+- Delete events from Google Calendar — `DELETE /api/sync/connections/calendar/events/{id}/`
+- List calendar events — `GET /api/sync/connections/calendar/events/`
+- CalendarWatchChannel — manages push notification channels for real-time event updates
+- Celery Beat: watch channel renewal schedule
+- Frontend modal for event creation linked to deals and contacts
+- Frontend event list view showing synced and created events
+
+**Email Templates (P2)**
+- 8 API endpoints for email template CRUD
+- Frontend template editor with subject, body, and variable insertion
+- Variable picker — insert contact/deal/account fields into template (e.g. `{{contact.first_name}}`, `{{deal.name}}`)
+- `VariableResolver` — resolves template variables at send time with actual data
+- Templates selectable from the compose modal — pick a template, populate from current entity
+- Template library page at `/email/templates`
+
+### Breaking Changes
+
+- Deals and Contacts now fire webhook events on create/update via Django signals — existing WebhookEndpoint configurations receive enriched payloads automatically
+- API Key authentication (`Authorization: Bearer fcrm_*`) bypasses 2FA verification — API keys are a separate auth path from session tokens
+- Login flow now checks 2FA status — users with 2FA enabled must complete TOTP verification after password
+- SAML JIT provisioning creates users on first login — ensure default role is configured before enabling
+
+### New Celery Tasks
+
+| Task | Schedule | Description |
+|------|----------|-------------|
+| `apps.webhooks.tasks.retry_stale_webhooks` | Every 5 min (Beat) | Retries webhook events past `next_retry_at` |
+| `apps.webhooks.tasks.prune_dead_events` | Daily 03:00 UTC | Removes resolved/stale dead-letter events |
+| Watch channel renewal | Per-channel schedule | Renews Google Calendar watch channels for push notifications |
+
+### New Python Packages
+
+- `pyotp==2.10.0` — TOTP generation and verification for 2FA
+- `bcrypt==5.0.0` — recovery code hashing
+- `python3-saml==1.16.0` — SAML SSO protocol implementation
+
+### New Apps
+
+- `apps.apikeys` registered in `INSTALLED_APPS` — API Keys at `/api/apikeys/`
+- `apps.core` registered in `INSTALLED_APPS` — Custom Fields at `/api/core/custom-fields/`
+
+### New URL Namespaces
+
+- `/api/auth/2fa/` — 2FA setup, confirm, verify, disable, status, recovery codes, admin reset
+- `/api/auth/saml/` — SAML login, ACS, metadata, domain check, logout, provider CRUD
+- `/api/apikeys/` — API key CRUD + revoke
+- `/api/core/custom-fields/` — Custom field definition CRUD
+- `/api/webhooks/dead-events/` — Dead event list, detail, replay
+- `/api/sync/connections/calendar/events/` — Calendar event CRUD
+- `/email/templates` — email template library (frontend)
+- `/settings/custom-fields` — custom fields settings (frontend)
+- `/settings/audit-log` — audit log viewer (frontend)
+- `/settings/security` — 2FA settings (frontend)
+- `/settings/api-keys` — API key management (frontend)
+
+### Documentation
+
+- Updated changelog with post-Phase 5 entries (v1.3.0)
+- Updated API docs with 2FA, SAML, API Keys, Custom Fields, Webhook Dead Events, Calendar Events, and Email Templates endpoints
+- Updated user guide with 2FA setup, custom fields UI, bulk operations, email templates, calendar event creation, API keys
+- Updated admin guide with 2FA admin reset, API keys management, outbound webhook delivery engine, audit log
+
+### Resolved Limitations
+
+The following limitations from v1.2.0 are now resolved:
+
+- ~~No email templates~~ **Resolved in v1.3.0** — Email template editor, variable picker, and compose integration
+- ~~No bulk operations~~ **Resolved in v1.3.0** — Full bulk select, edit, assign, tag, stage change on contacts, deals, and accounts
+- ~~No webhook outbound events~~ **Resolved in v1.3.0** — Outbound Webhook Delivery Engine with signal-based triggers, enriched payloads, HMAC signatures, dead-letter queue, and replay
+- ~~No two-factor authentication~~ **Resolved in v1.3.0** — TOTP-based 2FA with QR setup, recovery codes, admin reset
+- ~~No audit log UI~~ **Resolved in v1.3.0** — Audit log page with filters, pagination, and action badges
+- ~~No SSO/SAML~~ **Resolved in v1.3.0** — SAML provider CRUD, JIT provisioning, domain-based auto-redirect
+- ~~No API keys~~ **Resolved in v1.3.0** — Key generation with `fcrm_` prefix, SHA-256 storage, copy-once flow
+- ~~No custom fields UI~~ **Resolved in v1.3.0** — Custom field definition CRUD with 4 field types, displayed on contact detail and pipeline cards
+
+### Remaining Limitations
+
+- No CSV import (export only)
+- No mobile app (PWA covers installability)
+- No full managed billing (usage tracking API available)
+
+---
+
 ## v1.2.0 (2026-06-30)
 
 Phase 5 release. Calendar Sync, Slack Notifications, API Documentation (PWA), Progressive Web App.
@@ -89,16 +271,9 @@ Phase 5 release. Calendar Sync, Slack Notifications, API Documentation (PWA), Pr
 The following remain for post-MVP development:
 
 - No CSV import (export only)
-- No email templates
-- No bulk operations
-- No mobile app (PWA covers installability)
-- No webhook outbound events (webhook CRUD exists, delivery engine is future work)
-- No two-factor authentication
-- No audit log UI (API exists)
-- No SSO/SAML
-- No API keys (user-bound auth only)
-- No custom fields UI (API-only)
 - No full managed billing (usage tracking API available)
+
+*The following v1.2.0 limitations have been resolved in v1.3.0: Email Templates, Bulk Operations, Outbound Webhook Delivery Engine, Two-Factor Authentication, Audit Log UI, SSO/SAML, API Keys, Custom Fields UI.*
 
 ---
 

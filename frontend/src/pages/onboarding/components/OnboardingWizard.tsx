@@ -137,10 +137,10 @@ export function OnboardingWizard() {
         />
         <button
           type="button"
-          onClick={() => navigate('/dashboard')}
+          onClick={handleFinish}
           className="text-sm text-gray-400 hover:text-gray-600 dark:text-slate-500 dark:hover:text-slate-300"
         >
-          Exit
+          Skip onboarding &raquo;
         </button>
       </div>
 

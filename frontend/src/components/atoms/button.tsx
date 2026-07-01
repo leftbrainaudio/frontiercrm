@@ -4,27 +4,31 @@ import { cn } from '../../lib/utils';
 
 const variantStyles = {
   primary:
-    'bg-brand-600 text-white hover:bg-brand-700 focus-visible:ring-brand-500 shadow-sm dark:bg-brand-500 dark:hover:bg-brand-600',
+    'bg-brand-600 text-white hover:bg-brand-700 active:bg-brand-800 focus-visible:ring-brand-500 shadow-sm dark:bg-brand-500 dark:hover:bg-brand-600',
   secondary:
-    'bg-surface-secondary text-text-primary hover:bg-surface-tertiary border border-border focus-visible:ring-brand-500 shadow-sm dark:bg-dark-surface-secondary dark:text-dark-text-primary dark:hover:bg-dark-surface-tertiary dark:border-dark-border',
+    'bg-surface-secondary text-text-primary hover:bg-surface-tertiary active:bg-gray-200 active:dark:bg-dark-surface-tertiary border border-border focus-visible:ring-brand-500 shadow-sm dark:bg-dark-surface-secondary dark:text-dark-text-primary dark:hover:bg-dark-surface-tertiary dark:border-dark-border',
   outline:
-    'bg-transparent text-text-primary border-2 border-border hover:bg-surface-secondary hover:border-brand-500 focus-visible:ring-brand-500 dark:text-dark-text-primary dark:border-dark-border dark:hover:bg-dark-surface-secondary',
+    'bg-transparent text-text-primary border-2 border-border hover:bg-surface-secondary hover:border-brand-500 active:bg-surface-secondary active:border-brand-600 focus-visible:ring-brand-500 dark:text-dark-text-primary dark:border-dark-border dark:hover:bg-dark-surface-secondary',
   ghost:
-    'bg-transparent text-text-primary hover:bg-surface-secondary focus-visible:ring-brand-500 dark:text-dark-text-primary dark:hover:bg-dark-surface-secondary',
+    'bg-transparent text-text-primary hover:bg-surface-secondary active:bg-gray-200 active:dark:bg-dark-surface-tertiary focus-visible:ring-brand-500 dark:text-dark-text-primary dark:hover:bg-dark-surface-secondary',
   danger:
-    'bg-red-600 text-white hover:bg-red-700 focus-visible:ring-red-500 shadow-sm dark:bg-red-500 dark:hover:bg-red-600',
+    'bg-red-600 text-white hover:bg-red-700 active:bg-red-800 focus-visible:ring-red-500 shadow-sm dark:bg-red-500 dark:hover:bg-red-600',
 } as const;
 
 const sizeStyles = {
+  xs: 'h-6 px-2 text-xs gap-1',
   sm: 'h-8 px-3 text-xs gap-1.5',
   md: 'h-10 px-4 text-sm gap-2',
   lg: 'h-12 px-6 text-base gap-2.5',
+  xl: 'h-14 px-8 text-lg gap-3',
 } as const;
 
 const spinnerSizes = {
+  xs: 'h-3 w-3',
   sm: 'h-3.5 w-3.5',
   md: 'h-4 w-4',
   lg: 'h-5 w-5',
+  xl: 'h-6 w-6',
 } as const;
 
 export interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {

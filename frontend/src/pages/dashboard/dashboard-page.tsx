@@ -424,7 +424,7 @@ export function DashboardPage() {
                   />
                   <Bar
                     dataKey="value"
-                    fill="var(--color-brand-500, #6366f1)"
+                    fill="var(--color-brand-500, #3B82F6)"
                     radius={[4, 4, 0, 0]}
                     maxBarSize={48}
                   />

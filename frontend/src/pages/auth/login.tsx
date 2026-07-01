@@ -121,15 +121,15 @@ export function LoginPage() {
 
   return (
     <div className="w-[400px] max-w-full">
-      <div className="bg-white dark:bg-slate-800 rounded-2xl shadow-sm border border-gray-200 dark:border-slate-700 p-8">
+      <div className="bg-surface dark:bg-dark-surface rounded-2xl shadow-sm border border-border dark:border-dark-border p-8">
         <div className="text-center mb-8">
           <div className="flex justify-center mb-4">
             <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-brand-600 text-white font-bold text-xl">
               F
             </div>
           </div>
-          <h1 className="text-2xl font-bold text-gray-900 dark:text-slate-100">Welcome back</h1>
-          <p className="text-sm text-gray-500 dark:text-slate-400 mt-1">
+          <h1 className="text-3xl font-bold text-text-primary dark:text-dark-text-primary">Welcome back</h1>
+          <p className="text-sm text-text-secondary dark:text-dark-text-secondary mt-1">
             Sign in to FrontierCRM
           </p>
         </div>
@@ -139,7 +139,7 @@ export function LoginPage() {
           <button
             type="button"
             onClick={() => initiateOAuth('google')}
-            className="w-full flex items-center justify-center px-4 py-2.5 border border-gray-300 dark:border-slate-600 rounded-lg text-sm font-medium text-gray-700 dark:text-slate-300 bg-white dark:bg-slate-700 hover:bg-gray-50 dark:hover:bg-slate-600 transition-colors"
+            className="w-full flex items-center justify-center px-4 py-2.5 border border-border dark:border-dark-border rounded-lg text-sm font-medium text-text-primary dark:text-dark-text-primary bg-surface dark:bg-dark-surface-secondary hover:bg-surface-secondary dark:hover:bg-dark-surface-tertiary transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-500"
           >
             <GoogleIcon />
             Continue with Google
@@ -147,7 +147,7 @@ export function LoginPage() {
           <button
             type="button"
             onClick={() => initiateOAuth('microsoft')}
-            className="w-full flex items-center justify-center px-4 py-2.5 border border-gray-300 dark:border-slate-600 rounded-lg text-sm font-medium text-gray-700 dark:text-slate-300 bg-white dark:bg-slate-700 hover:bg-gray-50 dark:hover:bg-slate-600 transition-colors"
+            className="w-full flex items-center justify-center px-4 py-2.5 border border-border dark:border-dark-border rounded-lg text-sm font-medium text-text-primary dark:text-dark-text-primary bg-surface dark:bg-dark-surface-secondary hover:bg-surface-secondary dark:hover:bg-dark-surface-tertiary transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-500"
           >
             <MicrosoftIcon />
             Continue with Microsoft
@@ -156,10 +156,10 @@ export function LoginPage() {
 
         <div className="relative mb-6">
           <div className="absolute inset-0 flex items-center">
-            <div className="w-full border-t border-gray-200 dark:border-slate-700" />
+            <div className="w-full border-t border-border dark:border-dark-border" />
           </div>
           <div className="relative flex justify-center text-sm">
-            <span className="px-2 bg-white dark:bg-slate-800 text-gray-500 dark:text-slate-400">or sign in with email</span>
+            <span className="px-2 bg-surface dark:bg-dark-surface text-text-secondary dark:text-dark-text-secondary">or sign in with email</span>
           </div>
         </div>
 
@@ -213,7 +213,7 @@ export function LoginPage() {
             type="button"
             onClick={handleSsoRedirect}
             disabled={ssoLoading}
-            className="w-full flex items-center justify-center px-4 py-2.5 border border-gray-300 dark:border-slate-600 rounded-lg text-sm font-medium text-gray-700 dark:text-slate-300 bg-white dark:bg-slate-700 hover:bg-gray-50 dark:hover:bg-slate-600 transition-colors disabled:opacity-50"
+            className="w-full flex items-center justify-center px-4 py-2.5 border border-border dark:border-dark-border rounded-lg text-sm font-medium text-text-primary dark:text-dark-text-primary bg-surface dark:bg-dark-surface-secondary hover:bg-surface-secondary dark:hover:bg-dark-surface-tertiary transition-colors disabled:opacity-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-500"
           >
             {ssoLoading ? (
               <span className="flex items-center gap-2">
@@ -229,17 +229,17 @@ export function LoginPage() {
         <div className="mt-6 text-center">
           <Link
             to="/magic-link"
-            className="text-sm text-brand-600 dark:text-brand-400 hover:underline"
+            className="text-sm text-brand-600 dark:text-brand-400 hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-500 focus-visible:ring-offset-2 rounded"
           >
             Sign in with magic link
           </Link>
         </div>
 
         <div className="mt-4 text-center">
-          <span className="text-sm text-gray-500 dark:text-slate-400">
+          <span className="text-sm text-text-secondary dark:text-dark-text-secondary">
             Don't have an account?{' '}
           </span>
-          <Link to="/signup" className="text-sm text-brand-600 dark:text-brand-400 hover:underline font-medium">
+          <Link to="/signup" className="text-sm text-brand-600 dark:text-brand-400 hover:underline font-medium focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-500 focus-visible:ring-offset-2 rounded">
             Sign up
           </Link>
         </div>

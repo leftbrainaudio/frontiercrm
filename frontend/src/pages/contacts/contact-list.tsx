@@ -8,6 +8,7 @@ import { Badge } from '../../components/atoms/badge';
 import { Avatar } from '../../components/atoms/avatar';
 import { Skeleton } from '../../components/atoms/skeleton';
 import { ExportButton } from '../../components/ui/export-button';
+import { Table, type Column } from '../../components/ui/table';
 import { cn } from '../../lib/utils';
 import { useContacts } from '../../api/contacts';
 import type { Contact } from '../../types';
@@ -72,34 +73,6 @@ function ErrorState({
   );
 }
 
-function SkeletonRow() {
-  return (
-    <tr className="border-b border-border dark:border-dark-border">
-      <td className="px-4 py-3">
-        <div className="flex items-center gap-3">
-          <Skeleton variant="circular" width={36} height={36} />
-          <Skeleton variant="text" width={140} />
-        </div>
-      </td>
-      <td className="px-4 py-3">
-        <Skeleton variant="text" width={180} />
-      </td>
-      <td className="px-4 py-3">
-        <Skeleton variant="text" width={120} />
-      </td>
-      <td className="px-4 py-3">
-        <Skeleton variant="text" width={130} />
-      </td>
-      <td className="px-4 py-3">
-        <Skeleton variant="text" width={100} />
-      </td>
-      <td className="px-4 py-3">
-        <Skeleton variant="text" width={90} />
-      </td>
-    </tr>
-  );
-}
-
 export function ContactListPage() {
   const navigate = useNavigate();
   const [search, setSearch] = useState('');
@@ -135,6 +108,73 @@ export function ContactListPage() {
     [navigate],
   );
 
+  const columns: Column<Contact>[] = [
+    {
+      header: 'Name',
+      accessor: 'full_name',
+      cell: (contact) => (
+        <div className="flex items-center gap-3">
+          <Avatar
+            src={contact.avatar_url || undefined}
+            fallback={`${contact.first_name} ${contact.last_name}`}
+            size="sm"
+          />
+          <span className="font-medium text-text-primary dark:text-dark-text-primary">
+            {contact.full_name}
+          </span>
+        </div>
+      ),
+    },
+    {
+      header: 'Email',
+      accessor: 'email',
+      cell: (contact) => (
+        <span className="text-text-secondary dark:text-dark-text-secondary">
+          {contact.email}
+        </span>
+      ),
+    },
+    {
+      header: 'Phone',
+      accessor: (contact) => contact.phone || contact.mobile || '-',
+      cell: (contact) => (
+        <span className="text-text-secondary dark:text-dark-text-secondary">
+          {contact.phone || contact.mobile || '-'}
+        </span>
+      ),
+    },
+    {
+      header: 'Job Title',
+      accessor: (contact) => contact.job_title || '-',
+      cell: (contact) => (
+        <span className="text-text-secondary dark:text-dark-text-secondary">
+          {contact.job_title || '-'}
+        </span>
+      ),
+    },
+    {
+      header: 'Account',
+      accessor: (contact) => contact.account_name || '-',
+      cell: (contact) =>
+        contact.account_name ? (
+          <Badge variant="neutral" size="sm">
+            {contact.account_name}
+          </Badge>
+        ) : (
+          <span className="text-text-tertiary dark:text-dark-text-tertiary">-</span>
+        ),
+    },
+    {
+      header: 'Created',
+      accessor: (contact) => formatDate(contact.created_at),
+      cell: (contact) => (
+        <span className="text-text-tertiary dark:text-dark-text-tertiary">
+          {formatDate(contact.created_at)}
+        </span>
+      ),
+    },
+  ];
+
   return (
     <div className="space-y-6">
       {/* Page Header */}
@@ -169,182 +209,80 @@ export function ContactListPage() {
         <Card>
           <ErrorState message="Failed to load contacts" onRetry={() => refetch()} />
         </Card>
+      ) : contacts.length === 0 && !isLoading ? (
+        <Card>
+          <EmptyState message="No contacts yet" />
+        </Card>
       ) : (
         <Card className="overflow-hidden p-0">
-          {isLoading ? (
-            <table className="w-full text-left text-sm">
-              <thead>
-                <tr className="border-b border-border bg-surface-secondary dark:border-dark-border dark:bg-dark-surface-secondary">
-                  <th className="px-4 py-3 text-xs font-semibold uppercase tracking-wider text-text-secondary dark:text-dark-text-secondary">
-                    Name
-                  </th>
-                  <th className="px-4 py-3 text-xs font-semibold uppercase tracking-wider text-text-secondary dark:text-dark-text-secondary">
-                    Email
-                  </th>
-                  <th className="px-4 py-3 text-xs font-semibold uppercase tracking-wider text-text-secondary dark:text-dark-text-secondary">
-                    Phone
-                  </th>
-                  <th className="px-4 py-3 text-xs font-semibold uppercase tracking-wider text-text-secondary dark:text-dark-text-secondary">
-                    Job Title
-                  </th>
-                  <th className="px-4 py-3 text-xs font-semibold uppercase tracking-wider text-text-secondary dark:text-dark-text-secondary">
-                    Account
-                  </th>
-                  <th className="px-4 py-3 text-xs font-semibold uppercase tracking-wider text-text-secondary dark:text-dark-text-secondary">
-                    Created
-                  </th>
-                </tr>
-              </thead>
-              <tbody>
-                {Array.from({ length: 8 }).map((_, i) => (
-                  <SkeletonRow key={i} />
-                ))}
-              </tbody>
-            </table>
-          ) : contacts.length === 0 ? (
-            <EmptyState message="No contacts yet" />
-          ) : (
-            <>
-              <div className="overflow-x-auto">
-                <table className="w-full text-left text-sm">
-                  <thead>
-                    <tr className="border-b border-border bg-surface-secondary dark:border-dark-border dark:bg-dark-surface-secondary">
-                      <th className="px-4 py-3 text-xs font-semibold uppercase tracking-wider text-text-secondary dark:text-dark-text-secondary">
-                        Name
-                      </th>
-                      <th className="px-4 py-3 text-xs font-semibold uppercase tracking-wider text-text-secondary dark:text-dark-text-secondary">
-                        Email
-                      </th>
-                      <th className="px-4 py-3 text-xs font-semibold uppercase tracking-wider text-text-secondary dark:text-dark-text-secondary">
-                        Phone
-                      </th>
-                      <th className="px-4 py-3 text-xs font-semibold uppercase tracking-wider text-text-secondary dark:text-dark-text-secondary">
-                        Job Title
-                      </th>
-                      <th className="px-4 py-3 text-xs font-semibold uppercase tracking-wider text-text-secondary dark:text-dark-text-secondary">
-                        Account
-                      </th>
-                      <th className="px-4 py-3 text-xs font-semibold uppercase tracking-wider text-text-secondary dark:text-dark-text-secondary">
-                        Created
-                      </th>
-                    </tr>
-                  </thead>
-                  <tbody className="divide-y divide-border dark:divide-dark-border">
-                    {contacts.map((contact) => (
-                      <tr
-                        key={contact.id}
-                        className="cursor-pointer transition-colors hover:bg-surface-tertiary dark:hover:bg-dark-surface-tertiary"
-                        onClick={() => handleRowClick(contact)}
-                        tabIndex={0}
-                        role="button"
-                        onKeyDown={(e) => {
-                          if (e.key === 'Enter' || e.key === ' ') {
-                            e.preventDefault();
-                            handleRowClick(contact);
-                          }
-                        }}
-                        aria-label={`View ${contact.full_name}`}
-                      >
-                        <td className="px-4 py-3">
-                          <div className="flex items-center gap-3">
-                            <Avatar
-                              src={contact.avatar_url || undefined}
-                              fallback={`${contact.first_name} ${contact.last_name}`}
-                              size="sm"
-                            />
-                            <span className="font-medium text-text-primary dark:text-dark-text-primary">
-                              {contact.full_name}
-                            </span>
-                          </div>
-                        </td>
-                        <td className="px-4 py-3 text-text-secondary dark:text-dark-text-secondary">
-                          {contact.email}
-                        </td>
-                        <td className="px-4 py-3 text-text-secondary dark:text-dark-text-secondary">
-                          {contact.phone || contact.mobile || '-'}
-                        </td>
-                        <td className="px-4 py-3 text-text-secondary dark:text-dark-text-secondary">
-                          {contact.job_title || '-'}
-                        </td>
-                        <td className="px-4 py-3">
-                          {contact.account_name ? (
-                            <Badge variant="neutral" size="sm">
-                              {contact.account_name}
-                            </Badge>
-                          ) : (
-                            <span className="text-text-tertiary dark:text-dark-text-tertiary">
-                              -
-                            </span>
-                          )}
-                        </td>
-                        <td className="px-4 py-3 text-text-tertiary dark:text-dark-text-tertiary">
-                          {formatDate(contact.created_at)}
-                        </td>
-                      </tr>
-                    ))}
-                  </tbody>
-                </table>
-              </div>
+          <Table<Contact>
+            columns={columns}
+            data={contacts}
+            loading={isLoading}
+            skeletonRows={8}
+            onRowClick={handleRowClick}
+            emptyContent="No contacts found."
+          />
 
-              {/* Pagination */}
-              <div className="flex items-center justify-between border-t border-border px-4 py-3 dark:border-dark-border">
-                <p className="text-sm text-text-secondary dark:text-dark-text-secondary">
-                  Showing{' '}
-                  <span className="font-medium">
-                    {Math.min((page - 1) * pageSize + 1, totalCount)}
-                  </span>{' '}
-                  to{' '}
-                  <span className="font-medium">
-                    {Math.min(page * pageSize, totalCount)}
-                  </span>{' '}
-                  of <span className="font-medium">{totalCount}</span> contacts
-                </p>
-                <div className="flex items-center gap-2">
-                  <Button
-                    variant="secondary"
-                    size="sm"
-                    disabled={page <= 1}
-                    onClick={() => setPage((p) => Math.max(1, p - 1))}
-                  >
-                    Previous
-                  </Button>
-                  <div className="flex items-center gap-1">
-                    {generatePageNumbers(page, totalPages).map((p, i) =>
-                      p === '...' ? (
-                        <span
-                          key={`ellipsis-${i}`}
-                          className="px-1 text-sm text-text-tertiary dark:text-dark-text-tertiary"
-                        >
-                          ...
-                        </span>
-                      ) : (
-                        <button
-                          key={p}
-                          type="button"
-                          onClick={() => setPage(p as number)}
-                          className={cn(
-                            'flex h-8 w-8 items-center justify-center rounded-md text-sm transition-colors',
-                            p === page
-                              ? 'bg-brand-600 text-white'
-                              : 'text-text-secondary hover:bg-surface-secondary dark:text-dark-text-secondary dark:hover:bg-dark-surface-secondary',
-                          )}
-                        >
-                          {p}
-                        </button>
-                      ),
-                    )}
-                  </div>
-                  <Button
-                    variant="secondary"
-                    size="sm"
-                    disabled={page >= totalPages}
-                    onClick={() => setPage((p) => p + 1)}
-                  >
-                    Next
-                  </Button>
+          {/* Pagination */}
+          {!isLoading && totalPages > 1 && (
+            <div className="flex items-center justify-between border-t border-border px-4 py-3 dark:border-dark-border">
+              <p className="text-sm text-text-secondary dark:text-dark-text-secondary">
+                Showing{' '}
+                <span className="font-medium">
+                  {Math.min((page - 1) * pageSize + 1, totalCount)}
+                </span>{' '}
+                to{' '}
+                <span className="font-medium">
+                  {Math.min(page * pageSize, totalCount)}
+                </span>{' '}
+                of <span className="font-medium">{totalCount}</span> contacts
+              </p>
+              <div className="flex items-center gap-2">
+                <Button
+                  variant="secondary"
+                  size="sm"
+                  disabled={page <= 1}
+                  onClick={() => setPage((p) => Math.max(1, p - 1))}
+                >
+                  Previous
+                </Button>
+                <div className="flex items-center gap-1">
+                  {generatePageNumbers(page, totalPages).map((p, i) =>
+                    p === '...' ? (
+                      <span
+                        key={`ellipsis-${i}`}
+                        className="px-1 text-sm text-text-tertiary dark:text-dark-text-tertiary"
+                      >
+                        ...
+                      </span>
+                    ) : (
+                      <button
+                        key={p}
+                        type="button"
+                        onClick={() => setPage(p as number)}
+                        className={cn(
+                          'flex h-8 w-8 items-center justify-center rounded-md text-sm transition-colors',
+                          p === page
+                            ? 'bg-brand-600 text-white'
+                            : 'text-text-secondary hover:bg-surface-secondary dark:text-dark-text-secondary dark:hover:bg-dark-surface-secondary',
+                        )}
+                      >
+                        {p}
+                      </button>
+                    ),
+                  )}
                 </div>
+                <Button
+                  variant="secondary"
+                  size="sm"
+                  disabled={page >= totalPages}
+                  onClick={() => setPage((p) => p + 1)}
+                >
+                  Next
+                </Button>
               </div>
-            </>
+            </div>
           )}
         </Card>
       )}

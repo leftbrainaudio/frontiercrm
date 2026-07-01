@@ -177,6 +177,22 @@ Connect your Google Calendar to see events linked to your contacts and deals.
 
 **Manual sync:** You can trigger a sync from the integration status panel.
 
+### Calendar Event Creation (v1.3.0)
+
+Create events in Google Calendar directly from the CRM. Events appear on both your Google Calendar and in the CRM's event list.
+
+**To create an event:**
+1. Open a deal or contact.
+2. Click the **Calendar** tab or use the event creation button.
+3. Set the title, date/time, description, and add attendees.
+4. Click **Create Event** — the event is pushed to Google Calendar and linked to the CRM entity.
+
+**To edit:** Open the event from the CRM and update it. Changes sync to Google Calendar.
+
+**To delete:** Remove the event from the CRM — it's removed from Google Calendar too.
+
+Events created here appear alongside synced events in a unified CRM calendar view.
+
 ### Slack Notifications (v1.2.0)
 
 Get real-time pipeline notifications in Slack when deals move or activities are logged.
@@ -219,6 +235,106 @@ FrontierCRM can be installed on your phone or desktop as a standalone app — no
 - Offline-capable: previously visited pages load from cache
 - Background data cache for faster load times
 
+### Two-Factor Authentication (v1.3.0)
+
+Add an extra layer of security to your account with TOTP-based 2FA.
+
+**Setup:**
+1. Go to **Settings → Security**.
+2. Click **Enable 2FA**.
+3. Scan the QR code with your authenticator app (Google Authenticator, Authy, 1Password, etc.).
+4. Enter the 6-digit code from your app to confirm setup.
+5. **Save your recovery codes** — 8 one-time-use codes. Store them somewhere safe. Each code can be used once if you lose access to your authenticator.
+
+**Login with 2FA:**
+1. Enter your email and password as usual.
+2. On the 2FA prompt, enter the 6-digit code from your authenticator app.
+3. If you don't have your phone, click **Use recovery code** and enter one of the 8 codes.
+
+**Disable 2FA:** Settings → Security → **Disable**. You'll be asked to confirm with your current TOTP code.
+
+**Regenerate recovery codes:** Settings → Security → **Regenerate codes**. This invalidates all previous codes.
+
+If you lose access to both your authenticator and recovery codes, contact an admin. They can reset your 2FA from the admin panel.
+
+### Custom Fields (v1.3.0)
+
+Add custom fields to contacts, deals, and accounts to capture information specific to your business.
+
+**Field types:**
+- **Text** — free-form text input
+- **Number** — numeric values
+- **Date** — date picker
+- **Select** — drop-down with predefined options
+
+**Manage fields:**
+1. Go to **Settings → Custom Fields**.
+2. Click **+ Add Field**.
+3. Choose the entity type (contacts, deals, or accounts), field type, and name.
+4. For Select fields, add the option list.
+5. Click **Save**.
+
+Custom fields appear on the contact detail page, deal cards in the pipeline, and account detail pages. They can be filled in during create/update.
+
+### Bulk Operations (v1.3.0)
+
+Perform actions on multiple contacts, deals, or accounts at once.
+
+**Select items:**
+1. Go to the Contacts, Pipeline, or Accounts page.
+2. Click the checkbox on any row to select it. The batch action toolbar appears.
+3. Select individual items, or click **Select all** to choose everything on the current page.
+4. The **Select All Banner** offers one-click selection of every item across all pages.
+
+**Available batch actions:**
+| Action | Description |
+|--------|-------------|
+| **Delete** | Confirmation dialog shows count; deletes all selected items |
+| **Assign** | Move ownership to another team member |
+| **Change Stage** | (Deals only) Move deals to a new pipeline stage |
+| **Change Status** | (Deals only) Bulk set deal status (won/lost/abandoned) |
+| **Add Tag** | Add a tag to all selected items |
+| **Remove Tag** | Remove a tag from all selected items |
+| **Replace Tags** | Replace all tags on selected items with a new set |
+
+Progress tracking: a progress bar shows the status of async bulk jobs.
+
+### Email Templates (v1.3.0)
+
+Create reusable email templates with variable substitution for faster email composition.
+
+**Manage templates:**
+1. Go to **Email → Templates** (`/email/templates`).
+2. Click **+ New Template**.
+3. Enter a name, subject, and body.
+4. Use **variables** to personalise: click the **Insert Variable** button to add placeholders like `{{contact.first_name}}`, `{{deal.name}}`, `{{account.name}}`, or `{{user.full_name}}`.
+5. Categorise templates (e.g. "follow-up", "proposal", "onboarding") and save.
+
+**Use a template:**
+1. Open the compose modal from the email page.
+2. Click **Pick Template** — a selector shows available templates.
+3. Select a template. The subject and body are populated with the template content.
+4. Variables are resolved automatically based on the linked contact, deal, or account.
+
+### API Keys (v1.3.0)
+
+Generate API keys for programmatic access to the FrontierCRM API (scripts, CI/CD, integrations).
+
+**Manage keys:**
+1. Go to **Settings → API Keys**.
+2. Click **+ Create Key**.
+3. Give the key a name (e.g. "CI Deploy Token").
+4. Optionally set scopes and an expiry date.
+5. Click **Create** — the plaintext key is shown **exactly once**. Copy and store it securely.
+
+**Revoke a key:** From the API Keys page, click the key's **Revoke** button. Revoked keys cannot be re-activated.
+
+**Delete a key:** Permanently removes the key record.
+
+**API key format:** `fcrm_` followed by a 40-character alphanumeric string.
+
+**Authentication:** Pass the key in the `Authorization: Bearer fcrm_<key>` header. API key auth does not require 2FA — suitable for automated workflows.
+
 ### Tasks
 
 Task management with priority and assignee.
@@ -259,7 +375,7 @@ A: Go to the Pipeline or Contacts page and click the **Export** button. Download
 A: Contacts are soft-deleted (hidden from the UI, retained in the database for 30 days per backup retention). Deleted contacts can be restored by an admin.
 
 **Q: Can I customize fields?**
-A: Custom fields are supported on contacts, accounts, and deals via the `custom_fields` JSON field on the API. UI support is in development.
+A: Yes. Go to Settings → Custom Fields to add text, number, date, or select fields to contacts, deals, and accounts. Custom fields appear on detail pages and deal cards.
 
 ## Keyboard shortcuts
 

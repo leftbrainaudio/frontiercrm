@@ -47,7 +47,7 @@ export function Card({
 
   return (
     <div
-      className={cn('rounded-xl', variantStyles[variant], className)}
+      className={cn('rounded-lg', variantStyles[variant], className)}
       {...props}
     >
       {showHeader && (

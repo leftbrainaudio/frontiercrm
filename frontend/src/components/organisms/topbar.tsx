@@ -292,16 +292,16 @@ export function TopBar({ onMenuClick }: TopBarProps) {
           {/* Theme toggle */}
           <button
             onClick={toggle}
-            className="p-2 rounded-lg text-gray-500 hover:bg-gray-100 dark:hover:bg-slate-800 transition-colors"
+            className="p-2 rounded-lg text-gray-500 hover:bg-gray-100 dark:hover:bg-slate-800 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-500"
             aria-label="Toggle theme"
           >
             {theme === 'dark' ? <Sun size={18} /> : <Moon size={18} />}
           </button>
 
           {/* Notifications */}
-          <button className="p-2 rounded-lg text-gray-500 hover:bg-gray-100 dark:hover:bg-slate-800 transition-colors relative">
+          <button className="p-2 rounded-lg text-gray-500 hover:bg-gray-100 dark:hover:bg-slate-800 transition-colors relative focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-500" aria-label="Notifications">
             <Bell size={18} />
-            <span className="absolute top-1.5 right-1.5 w-2 h-2 rounded-full bg-red-500" />
+            <span className="absolute top-1.5 right-1.5 w-2 h-2 rounded-full bg-red-500" aria-label="Unread notifications" />
           </button>
         </div>
 
@@ -309,7 +309,7 @@ export function TopBar({ onMenuClick }: TopBarProps) {
         <div className="relative md:hidden">
           <button
             onClick={() => setMoreOpen(!moreOpen)}
-            className="p-2 rounded-lg text-gray-500 hover:bg-gray-100 dark:hover:bg-slate-800 transition-colors"
+            className="p-2 rounded-lg text-gray-500 hover:bg-gray-100 dark:hover:bg-slate-800 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-500"
             aria-label="More actions"
           >
             <MoreHorizontal size={18} />
@@ -320,14 +320,14 @@ export function TopBar({ onMenuClick }: TopBarProps) {
               <div className="absolute right-0 top-full mt-1 w-44 bg-white dark:bg-slate-800 rounded-lg shadow-lg border border-gray-200 dark:border-slate-700 py-1 z-20">
                 <button
                   onClick={() => { toggle(); setMoreOpen(false); }}
-                  className="w-full flex items-center gap-3 px-4 py-2 text-sm text-gray-700 dark:text-slate-300 hover:bg-gray-50 dark:hover:bg-slate-700"
+                  className="w-full flex items-center gap-3 px-4 py-2 text-sm text-gray-700 dark:text-slate-300 hover:bg-gray-50 dark:hover:bg-slate-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-500"
                 >
                   {theme === 'dark' ? <Sun size={16} /> : <Moon size={16} />}
                   {theme === 'dark' ? 'Light mode' : 'Dark mode'}
                 </button>
                 <button
                   onClick={() => { setMoreOpen(false); }}
-                  className="w-full flex items-center gap-3 px-4 py-2 text-sm text-gray-700 dark:text-slate-300 hover:bg-gray-50 dark:hover:bg-slate-700"
+                  className="w-full flex items-center gap-3 px-4 py-2 text-sm text-gray-700 dark:text-slate-300 hover:bg-gray-50 dark:hover:bg-slate-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-500"
                 >
                   <Bell size={16} />
                   Notifications
@@ -341,7 +341,7 @@ export function TopBar({ onMenuClick }: TopBarProps) {
         <div className="relative">
           <button
             onClick={() => setProfileOpen(!profileOpen)}
-            className="flex items-center gap-2 p-1.5 rounded-lg hover:bg-gray-100 dark:hover:bg-slate-800 transition-colors"
+            className="flex items-center gap-2 p-1.5 rounded-lg hover:bg-gray-100 dark:hover:bg-slate-800 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-500"
           >
             <div className="flex h-8 w-8 items-center justify-center rounded-full bg-brand-100 dark:bg-brand-900/50 text-brand-700 dark:text-brand-300 text-sm font-medium">
               {user?.first_name?.[0]}{user?.last_name?.[0]}

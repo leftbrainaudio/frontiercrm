@@ -178,12 +178,56 @@ GET /api/deals/?ordering=pipeline_name,stage_name
 | Method | Endpoint | Auth | Description |
 |--------|----------|------|-------------|
 | POST | `/api/auth/signup/` | None | Create account + tenant |
-| POST | `/api/auth/login/` | None | Email + password login |
+| POST | `/api/auth/login/` | None | Email + password login (returns TwoFactorToken if 2FA enabled) |
 | POST | `/api/auth/token/refresh/` | None | Refresh access token |
 | POST | `/api/auth/magic-link/request/` | None | Request magic link |
 | POST | `/api/auth/magic-link/confirm/` | None | Confirm magic link |
 | GET | `/api/auth/google/init/` | None | Google OAuth URL |
 | POST | `/api/auth/google/callback/` | None | Google OAuth callback |
+
+**Two-Factor Authentication (v1.3.0)**
+
+| Method | Endpoint | Auth | Description |
+|--------|----------|------|-------------|
+| POST | `/api/auth/2fa/setup/` | TwoFactorToken | Generate TOTP provisioning URI + QR code secret |
+| POST | `/api/auth/2fa/confirm/` | TwoFactorToken | Verify setup with initial TOTP token |
+| POST | `/api/auth/2fa/verify/` | TwoFactorToken | Verify TOTP at login (returns access/refresh tokens) |
+| POST | `/api/auth/2fa/disable/` | Bearer | Disable 2FA on current account |
+| GET | `/api/auth/2fa/status/` | Bearer | Returns 2FA enabled status + recovery codes remaining |
+| POST | `/api/auth/2fa/recovery-codes/regenerate/` | Bearer | Regenerate recovery codes (invalidates old ones) |
+| POST | `/api/auth/2fa/admin/reset/{user_id}/` | Bearer (admin) | Reset another user's 2FA |
+
+When 2FA is enabled, the login flow issues a `TwoFactorToken` instead of access/refresh tokens. The client must call `/api/auth/2fa/verify/` with a TOTP code (or recovery code) to complete authentication.
+
+Recovery codes: 8 one-time-use codes displayed at setup. Each code can be used once. Hashed with bcrypt.
+
+**SAML SSO (v1.3.0)**
+
+| Method | Endpoint | Auth | Description |
+|--------|----------|------|-------------|
+| POST | `/api/auth/saml/login/` | None | Initiate SP-initiated SAML login — returns IdP redirect URL |
+| POST | `/api/auth/saml/{tenant_id}/acs/` | None | Assertion Consumer Service — processes SAML response |
+| GET | `/api/auth/saml/{tenant_id}/metadata/` | None | SP metadata XML for IdP configuration |
+| GET | `/api/auth/saml/domain-check/` | None | Check if email domain is linked to a SAML provider |
+| POST | `/api/auth/saml/logout/` | Bearer | SAML single logout |
+| GET, POST | `/api/auth/saml/providers/` | Bearer | List or create SAML providers (tenant-scoped) |
+| GET, PATCH, DELETE | `/api/auth/saml/providers/{id}/` | Bearer | SAML provider CRUD |
+
+`SamlProvider` fields:
+
+```json
+{
+  "entity_id": "https://idp.example.com/metadata",
+  "sso_url": "https://idp.example.com/sso",
+  "x509_cert": "-----BEGIN CERTIFICATE-----\n...",
+  "jit_provision": true,
+  "default_role": "member",
+  "domain": "example.com",
+  "is_active": true
+}
+```
+
+JIT provisioning: when `jit_provision` is true, users who authenticate via SAML for the first time are auto-created with the configured `default_role`.
 
 ### Accounts
 
@@ -300,6 +344,71 @@ Task statuses: `todo`, `in_progress`, `done`, `cancelled`.
 | GET, PATCH, DELETE | `/api/webhooks/:id/` | Webhook CRUD |
 | POST | `/api/webhooks/:id/test/` | Send test event |
 
+**Dead Events (v1.3.0)**
+
+| Method | Endpoint | Description |
+|--------|----------|-------------|
+| GET | `/api/webhooks/dead-events/` | List dead events (paginated; filter by status, webhook, date range) |
+| GET | `/api/webhooks/dead-events/:id/` | Dead event detail |
+| POST | `/api/webhooks/dead-events/:id/replay/` | Re-queue a dead event for delivery |
+
+Outbound webhook delivery now fires automatically on `Deal.post_save`, `Contact.post_save`, and `Activity.post_save` — no manual dispatch needed. Webhook payloads are enriched with hydrated deal/contact data and signed with HMAC-SHA256 (`X-Signature-256` header) for consumer verification. Events that exhaust all retries land in `WebhookDeadEvent` for manual review and replay.
+
+### API Keys (v1.3.0)
+
+| Method | Endpoint | Description |
+|--------|----------|-------------|
+| POST | `/api/apikeys/` | Create an API key — returns plaintext key once |
+| GET | `/api/apikeys/` | List API keys (masked values) |
+| GET | `/api/apikeys/:id/` | API key detail (masked) |
+| POST | `/api/apikeys/:id/revoke/` | Revoke an API key |
+| PATCH | `/api/apikeys/:id/` | Update name or scopes |
+| DELETE | `/api/apikeys/:id/` | Delete an API key |
+
+**Key format:** `fcrm_` prefix + 40-character alphanumeric string. The plaintext key is shown **once** at creation — store it immediately.
+
+**Authentication:** Use `Authorization: Bearer fcrm_<key>` on API requests. API key auth bypasses 2FA — designed for programmatic access.
+
+**API key fields:**
+
+```json
+{
+  "name": "CI/CD Deploy Token",
+  "scopes": ["deals:read", "contacts:read"],
+  "is_active": true,
+  "expires_at": "2026-12-31T23:59:59Z"
+}
+```
+
+### Custom Fields (v1.3.0)
+
+Custom field definitions are managed via `apps.core`:
+
+| Method | Endpoint | Description |
+|--------|----------|-------------|
+| GET, POST | `/api/core/custom-fields/` | List or create custom field definitions |
+| GET, PATCH, DELETE | `/api/core/custom-fields/:id/` | Custom field definition CRUD |
+
+**Supported entity types:** `contacts`, `deals`, `accounts`
+
+**Supported field types:** `text`, `number`, `date`, `select`
+
+`select` fields use the `options` array for valid choices:
+
+```json
+{
+  "name": "Industry",
+  "key": "industry",
+  "field_type": "select",
+  "entity_type": "contacts",
+  "required": false,
+  "options": ["Technology", "Healthcare", "Finance", "Other"],
+  "display_order": 1
+}
+```
+
+Custom field values are stored in the `custom_fields` JSONField on each entity record. Values are keyed by the custom field definition's `key`. Custom fields defined here appear in the frontend's contact detail and pipeline deal card views.
+
 ### Files
 
 | Method | Endpoint | Description |
@@ -368,6 +477,38 @@ All export endpoints require authentication and are tenant-scoped. Responses are
 || POST | `/api/sync/connections/calendar/auth-url/` | Get Google Calendar OAuth URL (P5) |
 || POST | `/api/sync/connections/calendar/callback/` | Handle Calendar OAuth callback (P5) |
 || GET | `/api/sync/connections/calendar/auth-status/` | Check Calendar auth status — connected, email, last sync, event count (P5) |
+
+**Calendar Event CRUD (v1.3.0)**
+
+| Method | Endpoint | Description |
+|--------|----------|-------------|
+| GET | `/api/sync/connections/calendar/events/` | List calendar events |
+| POST | `/api/sync/connections/calendar/events/` | Create a Google Calendar event from CRM |
+| PATCH | `/api/sync/connections/calendar/events/:id/` | Push event updates to Google Calendar |
+| DELETE | `/api/sync/connections/calendar/events/:id/` | Delete an event from Google Calendar |
+
+Events created via these endpoints are synced both ways: they appear in the CRM's event list and on the user's Google Calendar. Calendar watch channels provide push notification support for real-time updates.
+
+### Email Templates (v1.3.0)
+
+| Method | Endpoint | Description |
+|--------|----------|-------------|
+| GET, POST | `/api/email/templates/` | List or create email templates |
+| GET, PATCH, DELETE | `/api/email/templates/:id/` | Email template CRUD |
+
+**Template fields:**
+
+```json
+{
+  "name": "Follow-up After Demo",
+  "subject": "Following up on our {{deal.name}} demo",
+  "body": "<p>Hi {{contact.first_name}},</p><p>Thanks for the demo of {{deal.name}}...</p>",
+  "category": "follow-up",
+  "is_shared": true
+}
+```
+
+Variables resolve at send time using the `VariableResolver` — `{{contact.*}}`, `{{deal.*}}`, `{{account.*}}`, and `{{user.*}}` placeholders are replaced with actual data from the linked entity. Templates can be selected from the compose modal.
 
 ### Slack Webhooks
 

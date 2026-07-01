@@ -127,7 +127,7 @@ export function Modal({
     >
       {/* Backdrop */}
       <div
-        className="fixed inset-0 bg-black/50 backdrop-blur-sm animate-fade-in"
+        className="fixed inset-0 bg-black/60 backdrop-blur-sm animate-fade-in"
         aria-hidden="true"
         onClick={handleBackdropClick}
       />
@@ -177,7 +177,7 @@ export function Modal({
         )}
 
         {/* Body */}
-        <div className={cn('px-6 py-3 overflow-y-auto max-h-[60vh]', !title && 'pt-6')}>
+        <div className={cn('px-6 py-3 overflow-y-auto max-h-[85vh]', !title && 'pt-6')}>
           {children}
         </div>
 
